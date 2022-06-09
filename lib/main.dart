@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
 
 void main() {
   runApp(const MyApp());
@@ -117,6 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+double _x = 100;
+double _y = 100;
+
+const step = 10.0;
+
+JoystickMode _joystickMode = JoystickMode.all;
+
 class RoverPage extends StatelessWidget {
   final String roverID;
   const RoverPage({Key? key, required this.roverID}) : super(key: key);
@@ -132,17 +140,25 @@ class RoverPage extends StatelessWidget {
         backgroundColor: Colors.blue,
         foregroundColor: const Color.fromARGB(255, 30, 0, 0),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 220, 220, 220),
-            border: Border.all(
-                width: 50, color: const Color.fromARGB(255, 250, 250, 250)),
-            borderRadius: const BorderRadius.all(Radius.circular(70))),
-        margin: const EdgeInsets.only(bottom: 400),
-        child: const Text(
-          "Video Here",
-          textScaleFactor: 1.7,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              color: Colors.green,
+            ),
+            Align(
+              alignment: const Alignment(0, 0.8),
+              child: Joystick(
+                mode: _joystickMode,
+                listener: (details) {
+                  setState(() {
+                    _x = _x + step * details.x;
+                    _y = _y + step * details.y;
+                  });
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
