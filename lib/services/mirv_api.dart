@@ -21,7 +21,7 @@ class MirvApi {
     String lol =
         '{"roverId":"rover1","state":"docked","status":"available","battery":22,"health":{"electronics":"healthy","drivetrain":"unavailable","intake":"healthy","sensors":"healthy","garage":"degraded","power":"unavailable","general":"degraded"},"telemetry":{"location":{"long":-104.969454,"lat":40.474101},"heading":149.68,"speed":12.62}}';
 
-    var roverMetrics = RoverMetrics.fromJson(json.decode(lol));
+    var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
 

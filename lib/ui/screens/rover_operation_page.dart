@@ -27,10 +27,9 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
   RoverMetrics roverMetrics = RoverMetrics();
 
   _updateMetrics() async {
-    var roverMetrics = await _mirvApi.getRoverMetrics(widget.roverID);
-    print(roverMetrics);
+    var roverMetricsTemp = await _mirvApi.getRoverMetrics(widget.roverID);
     setState(() {
-      roverMetrics;
+      roverMetrics = roverMetricsTemp;
     });
   }
 
