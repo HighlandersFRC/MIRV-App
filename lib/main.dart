@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:test/models/rover_summary.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -30,8 +34,16 @@ class MirvApi {
     return "auth token";
   }
 
-  List<String> getRovers() {
-    return <String>[firstRover, secondRover, thirdRover];
+  Future<List<RoverSummary>> getRovers() async {
+    List<RoverSummary> rovers;
+    var response = await http.get(Uri.parse("http://localhost:8000/rovers"));
+    print(response.body);
+    // response = '[{"roverId":"rover_1","state":"docked","status":"available","battery":99},{"roverId":"rover_2","state":"remoteOperation","status":"available","battery":20}]';
+    // var resp = json.decode('{"roverId": "rover_1", "state": "docked", "status": "available", "battery": "99"}');
+    // var temp = RoverSummary.fromJson(resp);
+    rovers = (json.decode(response.body) as List).map((i) => RoverSummary.fromJson(i)).toList();
+    return rovers;
+    // return <String>[firstRover, secondRover, thirdRover];
   }
 }
 
@@ -45,15 +57,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> entries = <String>[];
+  List<RoverSummary> roverList = <RoverSummary>[];
   MirvApi mirvApi = MirvApi();
-  var roverList = <String>['1', '2', '3'];
+  // var roverList = <String>['1', '2', '3'];
 
-  void _refreshRoversList() {
-    entries = mirvApi.getRovers();
+  void _refreshRoversList() async {
+    roverList = await mirvApi.getRovers();
     setState(() {
-      entries;
+      roverList;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshRoversList();
   }
 
   @override
@@ -71,8 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: const EdgeInsets.only(right: 50.0),
                 child: GestureDetector(
                   onTap: _refreshRoversList,
-                  child: const Icon(Icons.replay_circle_filled_sharp,
-                      size: 50.0, color: Color.fromARGB(199, 30, 0, 0)),
+                  child: const Icon(Icons.replay_circle_filled_sharp, size: 50.0, color: Color.fromARGB(199, 30, 0, 0)),
                 )),
           ],
         ), //appbar
@@ -82,18 +99,15 @@ class _MyHomePageState extends State<MyHomePage> {
               late String pageOfRover = "RoverPage${roverList[index]}";
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => RoverPage(roverID: roverList[index])),
+                MaterialPageRoute(builder: (context) => RoverPage(roverID: roverList[index].roverId)),
               );
             }
 
             return Container(
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 220, 220, 220),
-                    border: Border.all(
-                        width: 10, color: Color.fromARGB(255, 250, 250, 250)),
-                    borderRadius: const BorderRadius.all(
-                        const Radius.elliptical(30, 25))),
+                    border: Border.all(width: 10, color: Color.fromARGB(255, 250, 250, 250)),
+                    borderRadius: const BorderRadius.all(const Radius.elliptical(30, 25))),
                 child: ListTile(
                   trailing: ElevatedButton(
                     onPressed: _pressedButton,
@@ -107,8 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     "Rover ${roverList[index]}",
                     textAlign: TextAlign.left,
                     textScaleFactor: 3,
-                    textHeightBehavior: const TextHeightBehavior(
-                        applyHeightToFirstAscent: true),
+                    textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: true),
                   ),
                 ));
           },
@@ -119,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class RoverPage extends StatelessWidget {
   final String roverID;
-  RoverPage({Key key, required this.roverID}) : super(key: key);
+  RoverPage({Key? key, required this.roverID}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     void _goBack() {
@@ -129,8 +142,8 @@ class RoverPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
-        title: const Text(
-          'Rover Control',
+        title: Text(
+          'Rover Control $roverID',
           textScaleFactor: 2,
         ),
         backgroundColor: Colors.blue,
@@ -140,8 +153,7 @@ class RoverPage extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: Color.fromARGB(255, 220, 220, 220),
-            border: Border.all(
-                width: 50, color: Color.fromARGB(255, 250, 250, 250)),
+            border: Border.all(width: 50, color: Color.fromARGB(255, 250, 250, 250)),
             borderRadius: const BorderRadius.all(const Radius.circular(70))),
         child: Text(
           "Video Here",

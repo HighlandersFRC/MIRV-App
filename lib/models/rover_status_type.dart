@@ -1,0 +1,1 @@
+enum RoverStatusType { available, unavailable }
