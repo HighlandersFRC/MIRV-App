@@ -42,7 +42,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 padding: const EdgeInsets.only(right: 50.0),
                 child: GestureDetector(
                   onTap: _refreshRoversList,
-                  child: const Icon(Icons.replay_circle_filled_sharp, size: 50.0, color: Color.fromARGB(199, 30, 0, 0)),
+                  child: const Icon(Icons.refresh_sharp,
+                      size: 50.0, color: Color.fromARGB(199, 30, 0, 0)),
                 )),
           ],
         ), //appbar
@@ -52,15 +53,19 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               late String pageOfRover = "RoverPage${roverList[index]}";
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RoverOperationPage(roverID: roverList[index].roverId)),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        RoverOperationPage(roverID: roverList[index].roverId)),
               );
             }
 
             return Container(
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 220, 220, 220),
-                    border: Border.all(width: 10, color: Color.fromARGB(255, 250, 250, 250)),
-                    borderRadius: const BorderRadius.all(const Radius.elliptical(30, 25))),
+                    border: Border.all(
+                        width: 10, color: Color.fromARGB(255, 250, 250, 250)),
+                    borderRadius: const BorderRadius.all(
+                        const Radius.elliptical(30, 25))),
                 child: ListTile(
                   trailing: ElevatedButton(
                     onPressed: _pressedButton,
@@ -74,7 +79,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                     "Rover ${roverList[index]}",
                     textAlign: TextAlign.left,
                     textScaleFactor: 3,
-                    textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: true),
+                    textHeightBehavior: const TextHeightBehavior(
+                        applyHeightToFirstAscent: true),
                   ),
                 ));
           },

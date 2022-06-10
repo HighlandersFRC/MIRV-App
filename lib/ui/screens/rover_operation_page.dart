@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:js_util';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/rover_metrics_page.dart';
 
 class RoverOperationPage extends StatefulWidget {
   final String roverID;
@@ -31,6 +31,13 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
     setState(() {
       roverMetrics = roverMetricsTemp;
     });
+  }
+
+  _goMetrics() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoverMetricsPage()),
+    );
   }
 
   @override
@@ -67,7 +74,7 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
       body: Column(
         children: [
           Container(
-            height: 200,
+            height: 100,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Color.fromARGB(255, 220, 220, 220),
@@ -78,6 +85,14 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
             child: Text(
               "Video Here",
               textScaleFactor: 1.7,
+            ),
+          ),
+          Container(
+            height: 100,
+            alignment: Alignment.center,
+            child: TextButton(
+              onPressed: _goMetrics,
+              child: Text("RoverMetrics"),
             ),
           ),
           Text("$roverMetrics"),

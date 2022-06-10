@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/models/rover_status_type.dart';
+import 'package:test/ui/screens/rover_metrics_page.dart';
 
 part 'rover_metrics.freezed.dart';
 part 'rover_metrics.g.dart';
