@@ -13,7 +13,7 @@ class RoverMetricsPage extends StatefulWidget {
 
 class _RoverMetricsPageState extends State<RoverMetricsPage> {
   Future<http.Response> fetchAlbum() {
-    return http.get(Uri.parse('http://localhost:8000/rovers/rover1'));
+    return http.get(Uri.parse('https://mirvapi.azurewebsites.net/rovers/rover1'));
   }
 
   @override
