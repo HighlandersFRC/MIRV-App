@@ -43,10 +43,11 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
   @override
   void initState() {
     super.initState();
-    _updateMetrics();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
-      _updateMetrics();
-    });
+    //_updateMetrics();
+    //timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
+    // _updateMetrics();
+//});
+    _mirvApi.startPeriodicMetricUpdates();
   }
 
   @override
@@ -95,7 +96,11 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
               child: Text("RoverMetrics"),
             ),
           ),
-          Text("$roverMetrics"),
+          StreamBuilder<RoverMetrics>(
+              stream: _mirvApi.periodicMetricUpdates,
+              builder: (context, snapshot) {
+                return Text("$snapshot");
+              }),
           Text("x: $_x, y: $_y"),
           Joystick(
             mode: _joystickMode,
