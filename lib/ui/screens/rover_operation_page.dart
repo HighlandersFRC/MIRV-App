@@ -28,15 +28,19 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
 
   _updateMetrics() async {
     var roverMetricsTemp = await _mirvApi.getRoverMetrics(widget.roverID);
-    setState(() {
-      roverMetrics = roverMetricsTemp;
-    });
+    setState(
+      () {
+        roverMetrics = roverMetricsTemp;
+      },
+    );
   }
 
   _goMetrics() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RoverMetricsPage()),
+      MaterialPageRoute(
+        builder: (context) => RoverMetricsPage(),
+      ),
     );
   }
 
@@ -44,9 +48,12 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
   void initState() {
     super.initState();
     _updateMetrics();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
-      _updateMetrics();
-    });
+    timer = Timer.periodic(
+      Duration(seconds: 5),
+      (Timer t) {
+        _updateMetrics();
+      },
+    );
   }
 
   @override
