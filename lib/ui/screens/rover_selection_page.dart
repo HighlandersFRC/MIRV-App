@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/google_map.dart';
+import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
 
 class RoverSelectionPage extends StatefulWidget {
@@ -92,7 +93,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        RoverMap()),
+                        MapPage()),
               );
           }),
           child: const Icon(Icons.map),
