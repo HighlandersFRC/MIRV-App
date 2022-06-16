@@ -8,9 +8,9 @@ class MapPage extends StatefulWidget {
 }
 class _MapPageState extends State<MapPage> {
   Location location = new Location();
-  bool? _serviceEnabled;
-  PermissionStatus? _permissionGranted;
-  LocationData? _locationData;
+  
+  
+  //LocationData? _locationData;
 
   @override
   void initState() {
@@ -19,21 +19,21 @@ class _MapPageState extends State<MapPage> {
   }
 
 void _checkLocationPermission() async {
-  _serviceEnabled = await location.serviceEnabled();
+  bool _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
     _serviceEnabled = await location.requestService();
     if (!_serviceEnabled) {
       return;
     }
   }
-  _permissionGranted = await location.hasPermission();
+  PermissionStatus _permissionGranted = await location.hasPermission();
   if (_permissionGranted == PermissionStatus.denied){
     _permissionGranted = await location.requestPermission();
     if (_permissionGranted != PermissionStatus.granted){
       return;
     }
   }
-  _locationData = await location.getLocation();
+  //String elvis = true ? 'true' : 'false';
 }
 
   @override
@@ -46,8 +46,8 @@ void _checkLocationPermission() async {
         backgroundColor: Colors.grey[900],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _locationData != null ? Navigator.push(
-          context, MaterialPageRoute(builder: (context) => GooMap(location))) : null,
+        onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => GooMap(location))),
         backgroundColor: Colors.orange,
         label: Row(
           children: <Widget>[
