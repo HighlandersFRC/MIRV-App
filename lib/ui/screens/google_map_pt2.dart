@@ -49,8 +49,8 @@ LocationData? _locationData;
     super.initState();
 
    // _locationData = widget.location;
-    widget.location.onLocationChanged.listen((event) { if (event.latitude == null|| event.longitude == null) return;
-      _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng (event.latitude!, event.longitude!), zoom: 16)));});
+    // widget.location.onLocationChanged.listen((event) { if (event.latitude == null|| event.longitude == null) return;
+    //   _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng (event.latitude!, event.longitude!), zoom: 16)));});
     
   // widget.location.onLocationChanged.listen((even) { if (event.latitude == null || event.longitude == null) return;
   //       _googleMapController?.animateCamera(ZoomUpdate.newzoom(CameraPosition(target: (event.zoom))))})
@@ -148,28 +148,28 @@ LocationData? _locationData;
             ),
             mapType: MapType.hybrid,
             onMapCreated: _onMapCreated,
-            markers: markers,
-            circles: _circles,
-            polygons: _polygons,
-            myLocationEnabled: true,
-            onTap: (point) {
-              if (_isPolygon) {
-                setState(() {
-                  polygonLatLngs.add(point);
-                  _setPolygon();
-                });
-              } else if (_isMarker) {
-                setState(() {
-                  markers.clear();
-                  _setMarkers(point);
-                });
-              } else if (_isCircle) {
-                setState(() {
-                  _circles.clear();
-                  _setCircles(point);
-                });
-              }
-            },
+            // markers: markers,
+            // circles: _circles,
+            // polygons: _polygons,
+            // myLocationEnabled: true,
+            // onTap: (point) {
+            //   if (_isPolygon) {
+            //     setState(() {
+            //       polygonLatLngs.add(point);
+            //       _setPolygon();
+            //     });
+            //   } else if (_isMarker) {
+            //     setState(() {
+            //       markers.clear();
+            //       _setMarkers(point);
+            //     });
+            //   } else if (_isCircle) {
+            //     setState(() {
+            //       _circles.clear();
+            //       _setCircles(point);
+            //     });
+            //   }
+            // },
           ),
           Align(
             alignment: Alignment.bottomCenter,
