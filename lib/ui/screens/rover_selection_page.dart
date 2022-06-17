@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
+import 'package:test/ui/screens/rover_status_page.dart';
 
 class RoverSelectionPage extends StatefulWidget {
   const RoverSelectionPage({Key? key}) : super(key: key);
@@ -23,6 +24,15 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     );
   }
 
+  void _testButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusPage(),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -32,9 +42,9 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
-        foregroundColor: Color.fromARGB(255, 0, 0, 0),
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
           "Rover Selection",
           textScaleFactor: 2,
@@ -52,6 +62,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             ),
           ),
         ],
+        leading: ElevatedButton(
+            onPressed: _testButton, child: Icon(Icons.info_sharp)),
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
@@ -67,13 +79,13 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
           return Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 220, 220, 220),
+              color: const Color.fromARGB(255, 220, 220, 220),
               border: Border.all(
                 width: 10,
-                color: Color.fromARGB(255, 250, 250, 250),
+                color: const Color.fromARGB(255, 250, 250, 250),
               ),
               borderRadius: const BorderRadius.all(
-                const Radius.elliptical(30, 25),
+                Radius.elliptical(30, 25),
               ),
             ),
             child: ListTile(

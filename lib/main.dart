@@ -8,8 +8,6 @@ void main() {
   );
 }
 
-// jacob wasn't here
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -24,8 +22,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// zoya was here
-//hailey was not here but jacob was here too
-//hailey
-

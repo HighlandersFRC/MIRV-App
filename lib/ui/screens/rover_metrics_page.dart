@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:test/main.dart';
+import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +25,7 @@ class _RoverMetricsPageState extends State<RoverMetricsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Rover Metrics"),
+        title: const Text("Rover Metrics"),
       ),
     );
   }
@@ -49,13 +53,13 @@ class MetricDataTable extends StatelessWidget {
         DataRow(
           cells: <DataCell>[
             DataCell(Text('state')),
-            DataCell(Text('bruh bruh')),
+            DataCell(Text("test")),
           ],
         ),
         DataRow(
           cells: <DataCell>[
             DataCell(Text('status')),
-            DataCell(Text('bruh')),
+            DataCell(Text('')),
           ],
         ),
         DataRow(
