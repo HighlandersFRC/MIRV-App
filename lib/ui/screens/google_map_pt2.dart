@@ -58,6 +58,7 @@ LocationData? _locationData;
   void initState(){
     super.initState();
     setCustomMarker();
+   
   
     
     setState(() {
@@ -65,15 +66,15 @@ LocationData? _locationData;
     _polygons.add(Polygon(
       polygonId: PolygonId(polygonIdVal),
       points: <LatLng> [ 
-             LatLng(40.47388727274254, -104.96984034776688),
+             LatLng(40.47395664499516, -104.96979609131813),
 
-            LatLng(40.473854626951805, -104.9698108434677),
+            LatLng(40.4738780911155, -104.96969819068909),
 
-            LatLng(40.473989290736334, -104.96960431337357),
+            LatLng(40.47413619637505, -104.96932670474051),
 
-            LatLng(40.47401173467415, -104.96965259313583),
+            LatLng(40.47420760872223, -104.9694299697876),
 
-            LatLng(40.47388727274254, -104.96984034776688),
+            LatLng(40.47395664499516, -104.96979609131813),
 
 
 ],
@@ -162,7 +163,12 @@ LocationData? _locationData;
     );
   }
 
+    Location location = new Location();
+  
+  
+  //LocationData? _locationData;
 
+ 
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -171,6 +177,7 @@ LocationData? _locationData;
         centerTitle: true,
         backgroundColor: Colors.grey[900],
       ),
+      
       floatingActionButton: 
         polygonLatLngs.length > 0 && _isPolygon ?_fabPolygon() : null,
       body: Stack(
@@ -302,10 +309,10 @@ LocationData? _locationData;
     setState(() { 
       markers.add(
         Marker( //add first marker
-        markerId: MarkerId('Marker Title First '),
-        position:  LatLng(40.47389594427804, -104.96977128088474), //position of marker        
+        markerId: MarkerId('First Pi-Lit'),
+        position:  LatLng(40.47390053509049, -104.96968746185303), //position of marker        
         infoWindow: InfoWindow( //popup info 
-          title: 'Marker Title First ',
+          title: 'First Pi-Lit',
           snippet: 'My Custom Subtitle',
         ),
         icon: mapMarker,
@@ -313,10 +320,10 @@ LocationData? _locationData;
 
       markers.add(
         Marker( //add second marker
-        markerId: MarkerId('Marker Title Second '),
-        position: LatLng(40.473914052480914, -104.96976356953382), //position of marker
+        markerId: MarkerId('Second Pi-Lit'),
+        position: LatLng(40.47412089371936, -104.9695385992527), //position of marker
         infoWindow: InfoWindow( //popup info 
-          title: 'Marker Title Second ',
+          title: 'Second Pi-Lit ',
           snippet: 'My Custom Subtitle',
         ),
         icon: mapMarker, //Icon for Marker
@@ -324,10 +331,10 @@ LocationData? _locationData;
 
       markers.add(
         Marker( //add third marker
-        markerId: MarkerId('Marker Title Third '),
-        position: LatLng(40.473932925813926, -104.96975854039192), //position of marker
+        markerId: MarkerId('Third Pi-Lit '),
+        position: LatLng(40.47397500822654, -104.96963515877724), //position of marker
         infoWindow: InfoWindow( //popup info 
-          title: 'Marker Title Third ',
+          title: 'Third Pi-Lit ',
           snippet: 'My Custom Subtitle',
         ),
         icon: mapMarker, //Icon for Marker
@@ -335,10 +342,10 @@ LocationData? _locationData;
     
       markers.add(
         Marker( //add third marker
-        markerId: MarkerId('Marker Title Third '),
-        position: LatLng(40.473881151657984, -104.96977999806404,), //position of marker
+        markerId: MarkerId('Fourth Pi-Lit'),
+        position: LatLng(40.47404948127994, -104.96958553791046), //position of marker
         infoWindow: InfoWindow( //popup info 
-          title: 'Marker Title Third ',
+          title: 'Fourth Pi-Lit',
           snippet: 'My Custom Subtitle',
         ),
         icon: mapMarker, //Icon for Marker
