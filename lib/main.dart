@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
+import 'package:test/ui/screens/home_page.dart';
 
 void main() {
-  runApp(const GetMaterialApp(home: MyApp()));
+  runApp(
+    const GetMaterialApp(home: MyApp()),
+  );
 }
-
-// jacob was here
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -18,14 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RoverSelectionPage(),
+      home: HomePage(),
     );
   }
 }
-
-
-
-// zoya was here
-//hailey was not here but jacob was here too
-//hailey
-
