@@ -58,6 +58,8 @@ LocationData? _locationData;
   void initState(){
     super.initState();
     setCustomMarker();
+    _checkLocationPermission();
+    
    
   
     
@@ -134,6 +136,24 @@ LocationData? _locationData;
         );
     });
   }
+
+void _checkLocationPermission() async {
+  bool _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+    if (!_serviceEnabled) {
+      return;
+    }
+  }
+  PermissionStatus _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.denied){
+    _permissionGranted = await location.requestPermission();
+    if (_permissionGranted != PermissionStatus.granted){
+      return;
+    }
+  }
+  //String elvis = true ? 'true' : 'false';
+}
 
 
   void _onMapCreated(GoogleMapController controller) {

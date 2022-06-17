@@ -8,6 +8,7 @@ import 'package:test/ui/screens/google_map.dart';
 import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
+import 'package:test/ui/screens/google_map_pt2.dart';
 
 class RoverSelectionPage extends StatefulWidget {
   const RoverSelectionPage({Key? key}) : super(key: key);
@@ -90,7 +91,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         onPressed: (() {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MapPage()),
+            MaterialPageRoute(builder: (context) => GooMap()),
           );
         }),
         child: const Icon(Icons.map),
