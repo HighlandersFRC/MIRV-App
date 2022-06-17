@@ -47,13 +47,7 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
   @override
   void initState() {
     super.initState();
-    _updateMetrics();
-    timer = Timer.periodic(
-      const Duration(seconds: 5),
-      (Timer t) {
-        _updateMetrics();
-      },
-    );
+    _mirvApi.startPeriodicMetricUpdates();
   }
 
   @override
@@ -73,7 +67,6 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
       appBar: AppBar(
         title: Text(
           'Rover Control ${widget.roverID}',
-          textScaleFactor: 2,
         ),
         backgroundColor: Colors.blue,
         foregroundColor: const Color.fromARGB(255, 30, 0, 0),
@@ -85,12 +78,10 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 220, 220, 220),
-                border: Border.all(
-                    width: 50, color: const Color.fromARGB(255, 250, 250, 250)),
+                border: Border.all(width: 50, color: const Color.fromARGB(255, 250, 250, 250)),
                 borderRadius: const BorderRadius.all(Radius.circular(70))),
             child: const Text(
               "Video Here",
-              textScaleFactor: 1.7,
             ),
           ),
           Container(
@@ -101,8 +92,14 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
               child: const Text("RoverMetrics"),
             ),
           ),
-          Text("$roverMetrics"),
+          StreamBuilder<RoverMetrics>(
+              stream: _mirvApi.periodicMetricUpdates,
+              builder: (context, snapshot) {
+                return Text("$snapshot");
+              }),
+          SizedBox(height: 10),
           Text("x: $_x, y: $_y"),
+          SizedBox(height: 10),
           Joystick(
             mode: _joystickMode,
             listener: (details) {
