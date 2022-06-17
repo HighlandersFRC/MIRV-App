@@ -4,6 +4,8 @@ import 'package:test/models/rover_state_type.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/google_map.dart';
+import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 
@@ -84,6 +86,15 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         actions: <Widget>[IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45))],
         leading: ElevatedButton(onPressed: _testButton, child: Icon(Icons.info_sharp)),
       ), //appbar
+      floatingActionButton: FloatingActionButton(
+        onPressed: (() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MapPage()),
+          );
+        }),
+        child: const Icon(Icons.map),
+      ),
       body: Obx(
         () => ListView.builder(
           itemCount: roverList.length,
