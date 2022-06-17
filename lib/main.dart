@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
+import 'package:test/ui/screens/home_page.dart';
 
 void main() {
   runApp(const GetMaterialApp(home: MyApp()));
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RoverSelectionPage(),
+      home: HomePage(),
     );
   }
 }

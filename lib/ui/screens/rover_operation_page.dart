@@ -67,7 +67,6 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
       appBar: AppBar(
         title: Text(
           'Rover Control ${widget.roverID}',
-          textScaleFactor: 2,
         ),
         backgroundColor: Colors.blue,
         foregroundColor: Color.fromARGB(255, 30, 0, 0),
@@ -78,14 +77,13 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
             height: 100,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 220, 220, 220),
+                color: Color.fromARGB(255, 90, 88, 88),
                 border: Border.all(
                     width: 50, color: Color.fromARGB(255, 250, 250, 250)),
                 borderRadius:
                     const BorderRadius.all(const Radius.circular(70))),
             child: Text(
               "Video Here",
-              textScaleFactor: 1.7,
             ),
           ),
           Container(
@@ -101,7 +99,9 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
               builder: (context, snapshot) {
                 return Text("$snapshot");
               }),
+          SizedBox(height: 10),
           Text("x: $_x, y: $_y"),
+          SizedBox(height: 10),
           Joystick(
             mode: _joystickMode,
             listener: (details) {
