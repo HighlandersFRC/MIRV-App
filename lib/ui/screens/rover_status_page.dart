@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'dart:math';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
@@ -25,57 +26,40 @@ class HealthContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 70),
-      child: Text(
-        name,
-        textAlign: TextAlign.center,
-        textScaleFactor: 5,
-      ),
       decoration: BoxDecoration(
+        backgroundBlendMode: BlendMode.colorBurn,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade600,
             spreadRadius: 1,
-            blurRadius: 25,
+            blurRadius: 20,
             offset: const Offset(-15, 15),
           ),
           const BoxShadow(
-              color: Colors.white,
-              offset: Offset(55, -55),
-              blurRadius: 15,
-              spreadRadius: 1),
+              color: Color.fromARGB(255, 250, 250, 250),
+              offset: Offset(10, -10),
+              blurRadius: 55,
+              spreadRadius: 5),
         ],
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.center,
+          end: Alignment.bottomLeft,
           colors: [
-            roverHealthType.colorBack,
-            roverHealthType.colorBack,
-            roverHealthType.colorBack,
-            roverHealthType.colorBack,
+            roverHealthType.color4,
+            roverHealthType.color3,
+            roverHealthType.color2,
+            roverHealthType.color1,
           ],
         ),
-        //ervuneiruvnaseruv
-        color: roverHealthType.colorBack,
-        border: Border(
-            top: BorderSide(
-              width: 40,
-              color: roverHealthType.colors,
-            ),
-            left: BorderSide(
-              width: 40,
-              color: roverHealthType.colors,
-            ),
-            bottom: BorderSide(
-              width: 40,
-              color: roverHealthType.colors,
-            ),
-            right: BorderSide(
-              width: 40,
-              color: roverHealthType.colors,
-            )),
         borderRadius: const BorderRadius.all(
-          Radius.elliptical(200, 100),
+          Radius.elliptical(100, 55),
         ),
+      ),
+      child: Text(
+        name,
+        style: GoogleFonts.play(),
+        textAlign: TextAlign.center,
+        textScaleFactor: 2,
       ),
     );
   }
@@ -102,7 +86,7 @@ class _StatusPageState extends State<StatusPage> {
     super.initState();
     _updateMetrics();
     timer = Timer.periodic(
-      const Duration(seconds: 5),
+      const Duration(seconds: 2),
       (Timer t) {
         _updateMetrics();
       },
@@ -126,7 +110,7 @@ class _StatusPageState extends State<StatusPage> {
         padding: const EdgeInsets.all(20),
         crossAxisSpacing: 100,
         mainAxisSpacing: 100,
-        crossAxisCount: 3,
+        crossAxisCount: 5,
         children: <Widget>[
           HealthContainer(
               roverHealthType: roverMetrics.health.sensors, name: "sensors"),
