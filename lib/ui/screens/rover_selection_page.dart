@@ -5,6 +5,7 @@ import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
+import 'package:test/ui/screens/rover_status_page.dart';
 
 class RoverSelectionPage extends StatefulWidget {
   const RoverSelectionPage({Key? key}) : super(key: key);
@@ -56,6 +57,15 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
+  void _testButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusPage(),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -71,11 +81,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         title: const Text(
           "Rover Selection",
         ),
-        actions: <Widget>[
-          IconButton(
-              onPressed: _refreshRoversList,
-              icon: const Icon(Icons.refresh_rounded, size: 45))
-        ],
+        actions: <Widget>[IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45))],
+        leading: ElevatedButton(onPressed: _testButton, child: Icon(Icons.info_sharp)),
       ), //appbar
       body: Obx(
         () => ListView.builder(
@@ -90,16 +97,13 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => RoverOperationPage(
-                            roverID: roverList[index].roverId)),
+                    MaterialPageRoute(builder: (context) => RoverOperationPage(roverID: roverList[index].roverId)),
                   );
                 },
                 title: Text(
                   "Rover ${roverList[index].roverId}",
                 ),
-                subtitle: Text(
-                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                subtitle: Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

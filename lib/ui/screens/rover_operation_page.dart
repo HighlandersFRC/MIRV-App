@@ -28,25 +28,25 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
 
   _updateMetrics() async {
     var roverMetricsTemp = await _mirvApi.getRoverMetrics(widget.roverID);
-    setState(() {
-      roverMetrics = roverMetricsTemp;
-    });
+    setState(
+      () {
+        roverMetrics = roverMetricsTemp;
+      },
+    );
   }
 
   _goMetrics() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RoverMetricsPage()),
+      MaterialPageRoute(
+        builder: (context) => RoverMetricsPage(),
+      ),
     );
   }
 
   @override
   void initState() {
     super.initState();
-    //_updateMetrics();
-    //timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
-    // _updateMetrics();
-//});
     _mirvApi.startPeriodicMetricUpdates();
   }
 
@@ -63,13 +63,13 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
     }
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: Text(
           'Rover Control ${widget.roverID}',
         ),
         backgroundColor: Colors.blue,
-        foregroundColor: Color.fromARGB(255, 30, 0, 0),
+        foregroundColor: const Color.fromARGB(255, 30, 0, 0),
       ),
       body: Column(
         children: [
@@ -77,12 +77,10 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
             height: 100,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 90, 88, 88),
-                border: Border.all(
-                    width: 50, color: Color.fromARGB(255, 250, 250, 250)),
-                borderRadius:
-                    const BorderRadius.all(const Radius.circular(70))),
-            child: Text(
+                color: const Color.fromARGB(255, 220, 220, 220),
+                border: Border.all(width: 50, color: const Color.fromARGB(255, 250, 250, 250)),
+                borderRadius: const BorderRadius.all(Radius.circular(70))),
+            child: const Text(
               "Video Here",
             ),
           ),
@@ -91,7 +89,7 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
             alignment: Alignment.center,
             child: TextButton(
               onPressed: _goMetrics,
-              child: Text("RoverMetrics"),
+              child: const Text("RoverMetrics"),
             ),
           ),
           StreamBuilder<RoverMetrics>(
