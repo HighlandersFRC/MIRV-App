@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
@@ -20,6 +21,8 @@ class RoverSelectionPage extends StatefulWidget {
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   MirvApi mirvApi = MirvApi();
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+
+  List<RoverLocation> rovers = [];
   void _refreshRoversList() async {
     roverList.value = await mirvApi.getRovers();
   }
@@ -84,14 +87,19 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         title: const Text(
           "Rover Selection",
         ),
-        actions: <Widget>[IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45))],
-        leading: ElevatedButton(onPressed: _testButton, child: Icon(Icons.info_sharp)),
+        actions: <Widget>[
+          IconButton(
+              onPressed: _refreshRoversList,
+              icon: const Icon(Icons.refresh_rounded, size: 45))
+        ],
+        leading: ElevatedButton(
+            onPressed: _testButton, child: Icon(Icons.info_sharp)),
       ), //appbar
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GooMap()),
+            MaterialPageRoute(builder: (context) => RoverSelectionMap (this.rovers)),
           );
         }),
         child: const Icon(Icons.map),
@@ -109,13 +117,16 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RoverOperationPage(roverID: roverList[index].roverId)),
+                    MaterialPageRoute(
+                        builder: (context) => RoverOperationPage(
+                            roverID: roverList[index].roverId)),
                   );
                 },
                 title: Text(
                   "Rover ${roverList[index].roverId}",
                 ),
-                subtitle: Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                subtitle: Text(
+                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
