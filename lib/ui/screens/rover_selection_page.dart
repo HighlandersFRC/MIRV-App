@@ -8,6 +8,37 @@ import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 
+class SelectedRoverController extends GetxController {
+  Rx<String?> selectedRoverId = Rx<String?>(null);
+
+  setSelectedRoverId(String? roverId) {
+    selectedRoverId.value = roverId;
+  }
+
+  verifyRoverId(List<RoverSummary> rovers) {
+    if (rovers
+        .where((element) => element.roverId == selectedRoverId.value)
+        .isEmpty) selectedRoverId.value = null;
+  }
+
+  Color roverTileColor(
+    String roverId,
+    RoverStatusType value,
+  ) {
+    if (selectedRoverId.value == roverId) {
+      return Colors.blue;
+    } else {
+      switch (value) {
+        case RoverStatusType.available:
+          return Colors.white;
+
+        case RoverStatusType.unavailable:
+          return Colors.grey;
+      }
+    }
+  }
+}
+
 class RoverSelectionPage extends StatefulWidget {
   const RoverSelectionPage({Key? key}) : super(key: key);
 
@@ -16,11 +47,15 @@ class RoverSelectionPage extends StatefulWidget {
 }
 
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
+  final selectedRoverController = Get.put(SelectedRoverController());
   MirvApi mirvApi = MirvApi();
   Location location = new Location();
+  int? groupValue = 0;
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+
   void _refreshRoversList() async {
     roverList.value = await mirvApi.getRovers();
+    selectedRoverController.verifyRoverId(roverList);
   }
 
   double roverListWidth = 300;
@@ -51,16 +86,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
-  Icon _getStatusIcon(RoverStatusType value) {
-    switch (value) {
-      case RoverStatusType.available:
-        return Icon(Icons.lock_open_rounded);
-
-      case RoverStatusType.unavailable:
-        return Icon(Icons.lock_rounded);
-    }
-  }
-
   void _testButton() {
     Navigator.push(
       context,
@@ -73,6 +98,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   void initState() {
     super.initState();
+    _refreshRoversList();
     void _checkLocationPermission() async {
       bool _serviceEnabled = await location.serviceEnabled();
       if (!_serviceEnabled) {
@@ -92,9 +118,27 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
+  // showConnectedButtom() {
+  //   if (selectedRoverController.selectedRoverId.value != null) {
+  //     return ElevatedButton(
+  //       child: Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           Icon(Icons.link_rounded),
+  //           Text(' Connect'),
+  //         ],
+  //       ),
+  //       onPressed: () {
+  //         print('click');
+  //       },
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    _refreshRoversList();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
@@ -109,57 +153,67 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         ],
         leading: ElevatedButton(
             onPressed: _testButton, child: Icon(Icons.info_sharp)),
-      ), //appbar
+      ),
       body: Row(
         children: [
           SizedBox(
             width: roverListWidth,
             child: Column(
               children: [
-                Container(
-                  height: 600,
-                  child: Obx(
-                    () => ListView.builder(
-                      itemCount: roverList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 1,
-                            horizontal: 4,
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RoverOperationPage(
-                                        roverID: roverList[index].roverId)),
-                              );
-                            },
-                            title: Text(
-                              "Rover ${roverList[index].roverId}",
+                FractionallySizedBox(
+                  child: AspectRatio(
+                    aspectRatio: .5,
+                    child: GetX<SelectedRoverController>(
+                      builder: (controller) => ListView.builder(
+                        itemCount: roverList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 1,
+                              horizontal: 4,
                             ),
-                            subtitle: Text(
-                                'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _getStatusIcon(roverList[index].status),
-                                _batteryIcon(roverList[index].battery,
-                                    alertLevel: 20),
-                              ],
+                            child: ListTile(
+                              tileColor: controller.roverTileColor(
+                                roverList[index].roverId,
+                                roverList[index].status,
+                              ),
+                              title: Text(
+                                "Rover ${roverList[index].roverId}",
+                              ),
+                              subtitle: Text(
+                                  'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                              onTap: () => controller.setSelectedRoverId(
+                                  (roverList[index].roverId).toString()),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _batteryIcon(roverList[index].battery,
+                                      alertLevel: 20),
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RoverOperationPage(
+                                                    roverID: roverList[index]
+                                                        .roverId)),
+                                      );
+                                    },
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-                ElevatedButton(
-                    child: Text('Connect'),
-                    onPressed: () {
-                      print('click');
-                    })
+                // Padding(
+                //   padding: const EdgeInsets.all(4.0),
+                //   child: showConnectedButtom(),)
               ],
             ),
           ),
