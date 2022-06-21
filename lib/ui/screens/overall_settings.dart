@@ -8,7 +8,6 @@ class SettingsPage extends StatelessWidget {
         title: Text(
           "settings",
         ),
-        leading: Icon(Icons.settings),
       ),
     );
   }

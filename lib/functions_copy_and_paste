@@ -1,0 +1,64 @@
+ 
+ 
+ 
+ goSelection() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoverSelectionPage()),
+    );
+  }
+
+
+
+  goOp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoverOpPage()),
+    );
+  }
+
+
+
+  goStatus() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => StatusPage(),
+      ),
+    );
+  }
+
+
+
+  goTrouble() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TroubleShootingPage()),
+    );
+  }
+
+
+  goHome() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
+
+
+  goSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SettingsPage()),
+    );
+  }
+
+
+
+  goInfo() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => InfoPage()),
+    );
+  }

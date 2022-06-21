@@ -25,14 +25,12 @@ class HealthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _statusPress() {
-      // ignore: avoid_print
-      print("bruh");
+    goTrouble() {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-      ); //navigator.push
-    } //_statusPress
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +69,7 @@ class HealthContainer extends StatelessWidget {
             ),
           ),
           child: ElevatedButton(
-            onPressed: _statusPress,
+            onPressed: goTrouble,
             style: ButtonStyle(
               shape: MaterialStateProperty.all(
                 const RoundedRectangleBorder(

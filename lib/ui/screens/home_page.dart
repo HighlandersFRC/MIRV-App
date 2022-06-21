@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:test/ui/screens/info_page.dart';
+import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -54,6 +56,18 @@ class HomePage extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => RoverSelectionPage(),
           ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SettingsPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InfoPage()),
         );
     }
   }
