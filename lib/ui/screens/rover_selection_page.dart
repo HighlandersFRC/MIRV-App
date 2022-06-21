@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_state_type.dart';
+import 'package:location/location.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/google_map.dart';
-import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
+import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
-import 'package:test/ui/screens/google_map_pt2.dart';
 
 class RoverSelectionPage extends StatefulWidget {
   const RoverSelectionPage({Key? key}) : super(key: key);
@@ -20,12 +20,15 @@ class RoverSelectionPage extends StatefulWidget {
 
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   MirvApi mirvApi = MirvApi();
+  Location location = new Location();
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
 
   List<RoverLocation> rovers = [];
   void _refreshRoversList() async {
     roverList.value = await mirvApi.getRovers();
   }
+
+  double roverListWidth = 300;
 
   Icon _batteryIcon(int batteryLevel, {int? alertLevel}) {
     double divisor = 100 / 7;
@@ -75,11 +78,28 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   void initState() {
     super.initState();
-    _refreshRoversList();
+    void _checkLocationPermission() async {
+      bool _serviceEnabled = await location.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+        if (!_serviceEnabled) {
+          return;
+        }
+      }
+      PermissionStatus _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+          return;
+        }
+      }
+      //String elvis = true ? 'true' : 'false';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _refreshRoversList();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
@@ -95,49 +115,69 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         leading: ElevatedButton(
             onPressed: _testButton, child: Icon(Icons.info_sharp)),
       ), //appbar
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => RoverSelectionMap (this.rovers)),
-          );
-        }),
-        child: const Icon(Icons.map),
-      ),
-      body: Obx(
-        () => ListView.builder(
-          itemCount: roverList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 1,
-                horizontal: 4,
-              ),
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RoverOperationPage(
-                            roverID: roverList[index].roverId)),
-                  );
-                },
-                title: Text(
-                  "Rover ${roverList[index].roverId}",
+      body: Row(
+        children: [
+          SizedBox(
+            width: roverListWidth,
+            child: Column(
+              children: [
+                Container(
+                  height: 600,
+                  child: Obx(
+                    () => ListView.builder(
+                      itemCount: roverList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 1,
+                            horizontal: 4,
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RoverOperationPage(
+                                        roverID: roverList[index].roverId)),
+                              );
+                            },
+                            title: Text(
+                              "Rover ${roverList[index].roverId}",
+                            ),
+                            subtitle: Text(
+                                'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _getStatusIcon(roverList[index].status),
+                                _batteryIcon(roverList[index].battery,
+                                    alertLevel: 20),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-                subtitle: Text(
-                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _getStatusIcon(roverList[index].status),
-                    _batteryIcon(roverList[index].battery, alertLevel: 20),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+                ElevatedButton(
+                    child: Text('Connect'),
+                    onPressed: () {
+                      print('click');
+                    })
+              ],
+            ),
+          ),
+          Container(
+            color: Colors.black,
+            width: 5,
+          ),
+          Expanded(
+              child: RoverSelectionMap(roverList.value
+                  .map((e) => RoverLocation(
+                      location: LatLng(40.4741, -104.9694), roverId: e.roverId))
+                  .toList()))
+        ],
       ),
     );
   }
