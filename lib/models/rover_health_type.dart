@@ -1,13 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 enum RoverHealthType { healthy, unhealthy, degraded, unavailable }
 
 extension RoverHealthTypeColor1 on RoverHealthType {
   Color get color1 {
-    var invalid1 = Color.fromARGB(215, 115, 115, 115);
-    var healthy1 = Color.fromARGB(215, 0, 125, 0);
-    var unhealthy1 = Color.fromARGB(215, 135, 145, 0);
-    var degraded1 = Color.fromARGB(215, 120, 0, 0);
+    var invalid1 = const Color.fromARGB(215, 115, 115, 115);
+    var healthy1 = const Color.fromARGB(215, 0, 125, 0);
+    var unhealthy1 = const Color.fromARGB(215, 135, 145, 0);
+    var degraded1 = const Color.fromARGB(215, 120, 0, 0);
 
     switch (this) {
       case RoverHealthType.healthy:
@@ -29,10 +31,10 @@ extension RoverHealthTypeColor1 on RoverHealthType {
 
 extension RoverHealthTypeColor2 on RoverHealthType {
   Color get color2 {
-    var invalid2 = Color.fromARGB(224, 160, 160, 160);
-    var healthy2 = Color.fromARGB(225, 0, 150, 0);
-    var unhealthy2 = Color.fromARGB(225, 170, 180, 0);
-    var degraded2 = Color.fromARGB(225, 150, 0, 0);
+    var invalid2 = const Color.fromARGB(224, 160, 160, 160);
+    var healthy2 = const Color.fromARGB(225, 0, 150, 0);
+    var unhealthy2 = const Color.fromARGB(225, 170, 180, 0);
+    var degraded2 = const Color.fromARGB(225, 150, 0, 0);
 
     switch (this) {
       case RoverHealthType.healthy:
@@ -54,10 +56,10 @@ extension RoverHealthTypeColor2 on RoverHealthType {
 
 extension RoverHealthTypeColor3 on RoverHealthType {
   Color get color3 {
-    var invalid3 = Color.fromARGB(235, 190, 190, 190);
-    var healthy3 = Color.fromARGB(235, 0, 190, 0);
-    var unhealthy3 = Color.fromARGB(235, 200, 200, 0);
-    var degraded3 = Color.fromARGB(235, 185, 0, 0);
+    var invalid3 = const Color.fromARGB(235, 190, 190, 190);
+    var healthy3 = const Color.fromARGB(235, 0, 190, 0);
+    var unhealthy3 = const Color.fromARGB(235, 200, 200, 0);
+    var degraded3 = const Color.fromARGB(235, 185, 0, 0);
 
     switch (this) {
       case RoverHealthType.healthy:
@@ -79,10 +81,10 @@ extension RoverHealthTypeColor3 on RoverHealthType {
 
 extension RoverHealthTypeColor4 on RoverHealthType {
   Color get color4 {
-    var invalid4 = Color.fromARGB(245, 215, 215, 215);
-    var healthy4 = Color.fromARGB(245, 0, 210, 0);
-    var unhealthy4 = Color.fromARGB(245, 220, 220, 0);
-    var degraded4 = Color.fromARGB(245, 220, 0, 0);
+    var invalid4 = const Color.fromARGB(245, 215, 215, 215);
+    var healthy4 = const Color.fromARGB(245, 0, 210, 0);
+    var unhealthy4 = const Color.fromARGB(245, 220, 220, 0);
+    var degraded4 = const Color.fromARGB(245, 220, 0, 0);
 
     switch (this) {
       case RoverHealthType.healthy:
@@ -98,6 +100,31 @@ extension RoverHealthTypeColor4 on RoverHealthType {
       default:
         print("Error: Invalid Health Type");
         return invalid4;
+    }
+  }
+}
+
+extension RoverHealthTypeColor5 on RoverHealthType {
+  Color get color5 {
+    var invalid5 = const Color.fromARGB(255, 215, 215, 215);
+    var healthy5 = const Color.fromARGB(255, 0, 255, 0);
+    var unhealthy5 = const Color.fromARGB(255, 255, 255, 0);
+    var degraded5 = const Color.fromARGB(255, 255, 0, 0);
+
+    switch (this) {
+      case RoverHealthType.healthy:
+        print("It's healthy");
+        return healthy5;
+      case RoverHealthType.unhealthy:
+        print("it's unhealthy");
+        return unhealthy5;
+      case RoverHealthType.degraded:
+        print("It's degraded");
+        return degraded5;
+      case RoverHealthType.unavailable:
+      default:
+        print("Error: Invalid Health Type");
+        return invalid5;
     }
   }
 }
