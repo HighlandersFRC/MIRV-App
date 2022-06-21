@@ -1,11 +1,13 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:test/models/rover_location.dart';
 
 class RoverSelectionMap extends StatefulWidget {
-  final Location location;
-  RoverSelectionMap(this.location);
+  final List<RoverLocation> rovers;
+  RoverSelectionMap(this.rovers);
 
   @override
   _RoverSelectionMapState createState() => _RoverSelectionMapState();
@@ -25,6 +27,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   }
 
   LocationData? _locationData;
+  Location location = Location();
 
   Set<Marker> markers = HashSet<Marker>();
   Set<Polygon> _polygons = HashSet<Polygon>();
@@ -48,25 +51,35 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   void initState() {
     super.initState();
     setCustomMarker();
+    _checkLocationPermission();
 
     setState(() {
       final String polygonIdVal = 'polygon_id_polygon_1';
       _polygons.add(Polygon(
         polygonId: PolygonId(polygonIdVal),
         points: <LatLng>[
-          LatLng(40.47388727274254, -104.96984034776688),
-          LatLng(40.473854626951805, -104.9698108434677),
-          LatLng(40.473989290736334, -104.96960431337357),
-          LatLng(40.47401173467415, -104.96965259313583),
-          LatLng(40.47388727274254, -104.96984034776688),
+          LatLng(40.47395664499516, -104.96979609131813),
+          LatLng(40.4738780911155, -104.96969819068909),
+          LatLng(40.47413619637505, -104.96932670474051),
+          LatLng(40.47420760872223, -104.9694299697876),
+          LatLng(40.47395664499516, -104.96979609131813),
         ],
         strokeWidth: 2,
         strokeColor: Colors.yellow,
         fillColor: Colors.yellow.withOpacity(0.15),
       ));
     });
-    // widget.location.onLocationChanged.listen((event) { if (event.latitude == null || event.longitude == null) return;
-    //      _googleMapController?.animateCamera(ZoomUpdate.newzoom(CameraPosition(target: (event.zoom))))})
+
+    location.onLocationChanged.listen((event) {
+      if (event.latitude == null || event.longitude == null) return;
+      location.getLocation().then((value) => _locationData = value);
+      (_googleMapController?.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(event.latitude!, event.longitude!), zoom: zoom))));
+    });
+
+    // onTap: (Marker) {
+    //       _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng (40.47390053509049, -104.96968746185303), zoom: zoom)));};
   }
 
   void _setMarkerIcon() async {
@@ -114,6 +127,24 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     });
   }
 
+  void _checkLocationPermission() async {
+    bool _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+    PermissionStatus _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    //String elvis = true ? 'true' : 'false';
+  }
+
   void _onMapCreated(GoogleMapController controller) {
     _googleMapController = controller;
 
@@ -144,6 +175,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('MIRV Map'),
+          centerTitle: true,
+          backgroundColor: Colors.grey[900],
+        ),
         floatingActionButton:
             polygonLatLngs.length > 0 && _isPolygon ? _fabPolygon() : null,
         body: Stack(
@@ -279,62 +315,26 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     //markers to place on map
 
     setState(() {
-      markers.add(Marker(
-        //add first marker
-        markerId: MarkerId('Marker Title First '),
-        position:
-            LatLng(40.47389594427804, -104.96977128088474), //position of marker
-        infoWindow: InfoWindow(
-          //popup info
-          title: 'Marker Title First ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: mapMarker,
-      ));
-
-      markers.add(Marker(
-        //add second marker
-        markerId: MarkerId('Marker Title Second '),
-        position: LatLng(
-            40.473914052480914, -104.96976356953382), //position of marker
-        infoWindow: InfoWindow(
-          //popup info
-          title: 'Marker Title Second ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: mapMarker, //Icon for Marker
-      ));
-
-      markers.add(Marker(
-        //add third marker
-        markerId: MarkerId('Marker Title Third '),
-        position: LatLng(
-            40.473932925813926, -104.96975854039192), //position of marker
-        infoWindow: InfoWindow(
-          //popup info
-          title: 'Marker Title Third ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: mapMarker, //Icon for Marker
-      ));
-
-      markers.add(Marker(
-        //add third marker
-        markerId: MarkerId('Marker Title Third '),
-        position: LatLng(
-          40.473881151657984,
-          -104.96977999806404,
-        ), //position of marker
-        infoWindow: InfoWindow(
-          //popup info
-          title: 'Marker Title Third ',
-          snippet: 'My Custom Subtitle',
-        ),
-        icon: mapMarker, //Icon for Marker
-      ));
-      //add more markers here
+      markers = {
+        ...this.widget.rovers.map((rover) {
+          return Marker(
+              //add first marker
+              markerId: MarkerId(rover.roverId),
+              position: rover.location, //position of marker
+              infoWindow: InfoWindow(
+                //popup info
+                title: rover.roverId,
+                snippet: 'My Custom Subtitle',
+              ),
+              icon: mapMarker,
+              onTap: () {
+                _googleMapController?.animateCamera(
+                    CameraUpdate.newCameraPosition(CameraPosition(
+                        target: rover.location, zoom: this.zoom)));
+              });
+        })
+      };
     });
-
-    return markers;
+    return markers; //add more markers here
   }
 }
