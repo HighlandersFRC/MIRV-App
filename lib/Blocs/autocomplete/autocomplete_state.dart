@@ -1,6 +1,5 @@
 part of 'autocomplete_bloc.dart';
 
-
 abstract class AutocompleteState extends Equatable {
   const AutocompleteState();
 
@@ -11,7 +10,7 @@ abstract class AutocompleteState extends Equatable {
 class AutocompleteLoading extends AutocompleteState {}
 
 class AutocompleteLoaded extends AutocompleteState {
-  final List<PlaceAutocomplete> autocomplete;
+  final List<PlaceSearch> autocomplete;
 
   const AutocompleteLoaded({required this.autocomplete});
 

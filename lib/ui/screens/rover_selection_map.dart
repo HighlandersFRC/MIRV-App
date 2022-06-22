@@ -1,10 +1,13 @@
+import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:test/Repositories/Places/places_repository.dart';
 import 'package:test/models/rover_location.dart';
+import 'package:test/models/place.dart';
+import 'package:test/Blocs/autocomplete/application_bloc.dart';
+import 'package:provider/provider.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverLocation> rovers;
@@ -45,8 +48,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   int _markerIdCounter = 1;
 
   bool _isPolygon = true;
-  // bool _isMarker = false;
-  // bool _isCircle = false;
 
   @override
   void initState() {
@@ -78,29 +79,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           CameraPosition(
               target: LatLng(event.latitude!, event.longitude!), zoom: zoom))));
     });
-
-    // onTap: (Marker) {
-    //       _googleMapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng (40.47390053509049, -104.96968746185303), zoom: zoom)));};
   }
-
-  // void _setMarkerIcon() async {
-  //   _markerIcon = await BitmapDescriptor.fromAssetImage(
-  //       ImageConfiguration(), 'assets/images/pi_lit_icon.png');
-  // }
-
-  // void _setCircles(LatLng point) {
-  //   final String circleIdVal = 'circle_id_$_circleIdCounter';
-  //   _circleIdCounter++;
-  //   print(
-  //       'Circle | Latitude: ${point.latitude} Longitude: ${point.longitude} Radius: $radius');
-  //   _circles.add(Circle(
-  //       circleId: CircleId(circleIdVal),
-  //       center: point,
-  //       radius: radius,
-  //       fillColor: Colors.redAccent.withOpacity(0.5),
-  //       strokeWidth: 3,
-  //       strokeColor: Colors.redAccent));
-  // }
 
   void _setPolygon() {
     final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
@@ -112,21 +91,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       fillColor: Colors.yellow.withOpacity(0.15),
     ));
   }
-
-  // void _setMarkers(LatLng point) {
-  //   final String markerIdVal = 'marker_id_$_markerIdCounter';
-  //   _markerIdCounter++;
-  //   setState(() {
-  //     print(
-  //         'Marker | Latitude: ${point.latitude} Longitude: ${point.longitude}');
-  //     markers.add(
-  //       Marker(
-  //         markerId: MarkerId(markerIdVal),
-  //         position: point,
-  //       ),
-  //     );
-  //   });
-  // }
 
   void _checkLocationPermission() async {
     bool _serviceEnabled = await location.serviceEnabled();
@@ -143,48 +107,17 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         return;
       }
     }
-    //String elvis = true ? 'true' : 'false';
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _googleMapController = controller;
-
-    // setState(() {
-    //   markers.add(
-    //     Marker(
-    //       markerId: MarkerId('0'),
-    //       position: LatLng(-20.131886, -47.484488),
-    //       infoWindow: InfoWindow(title: 'Pi-Lit', snippet: "Number One"),
-    //     ),
-    //   );
-    // });
   }
-
-  // Widget _fabPolygon() {
-  //   return FloatingActionButton.extended(
-  //     onPressed: () {
-  //       setState(() {
-  //         polygonLatLngs.removeLast();
-  //       });
-  //     },
-  //     icon: Icon(Icons.undo),
-  //     label: Text('Undo point'),
-  //     backgroundColor: Colors.orange,
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text('MIRV Map'),
-        //   centerTitle: true,
-        //   backgroundColor: Colors.grey[900],
-        // ),
-        // floatingActionButton:
-        //     polygonLatLngs.length > 0 && _isPolygon ? _fabPolygon() : null,
         body: Stack(
-      children: <Widget>[
+      children: [
         GoogleMap(
           initialCameraPosition: CameraPosition(
             target: _cameraCenterLocation,
@@ -198,129 +131,18 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           circles: _circles,
           polygons: _polygons,
           myLocationEnabled: true,
-          // onTap: (point) {
-          //   if (_isPolygon) {
-          //     setState(() {
-          //       polygonLatLngs.add(point);
-          //       _setPolygon();
-          //     });
-          //   } else if (_isMarker) {
-          //     setState(() {
-          //       markers.clear();
-          //       _setMarkers(point);
-          //     });
-          //   } else if (_isCircle) {
-          //     setState(() {
-          //       _circles.clear();
-          //       _setCircles(point);
-          //     });
-          //   }
-          // },
         ),
-        // Align(
-        //   alignment: Alignment.bottomCenter,
-        //   child: Row(
-        //     // children: <Widget>[
-        //     //   ElevatedButton(
-        //     //       onPressed: () {
-        //     //         _isPolygon = true;
-        //     //         _isMarker = false;
-        //     //         _isCircle = false;
-        //     //         child:
-        //     //         const Icon(Icons.arrow_right_alt_rounded,
-        //     //             size: 50, color: Colors.black54);
-        //     //       },
-        //     //       child: Text(
-        //     //         'Polygon',
-        //     //         style: TextStyle(
-        //     //             fontWeight: FontWeight.bold, color: Colors.white),
-        //     //       )),
-        //     //   ElevatedButton(
-        //     //       onPressed: () {
-        //     //         _isPolygon = false;
-        //     //         _isMarker = true;
-        //     //         _isCircle = false;
-        //     //         child:
-        //     //         const Icon(Icons.arrow_right_alt_rounded,
-        //     //             size: 50, color: Colors.black54);
-        //     //       },
-        //     //       child: Text('Marker',
-        //     //           style: TextStyle(
-        //     //               fontWeight: FontWeight.bold,
-        //     //               color: Colors.white))),
-        //     //   ElevatedButton(
-        //     //       onPressed: () {
-        //     //         _isPolygon = false;
-        //     //         _isMarker = false;
-        //     //         _isCircle = true;
-        //     //         radius = 50;
-        //     //         child:
-        //     //         const Icon(Icons.arrow_right_alt_rounded,
-        //     //             size: 50, color: Colors.black54);
-        //     //         showDialog(
-        //     //             context: context,
-        //     //             builder: (_) => AlertDialog(
-        //     //                   backgroundColor: Colors.grey[900],
-        //     //                   title: Text(
-        //     //                     'Choose the radius (m)',
-        //     //                     style: TextStyle(
-        //     //                         fontWeight: FontWeight.bold,
-        //     //                         color: Colors.white),
-        //     //                   ),
-        //     //                   content: Padding(
-        //     //                       padding: EdgeInsets.all(8),
-        //     //                       child: Material(
-        //     //                         color: Colors.black,
-        //     //                         child: TextField(
-        //     //                           style: TextStyle(
-        //     //                               fontSize: 16,
-        //     //                               color: Colors.white),
-        //     //                           decoration: InputDecoration(
-        //     //                             icon: Icon(Icons.zoom_out_map),
-        //     //                             hintText: 'Ex: 100',
-        //     //                             suffixText: 'meters',
-        //     //                           ),
-        //     //                           keyboardType:
-        //     //                               TextInputType.numberWithOptions(),
-        //     //                           onChanged: (input) {
-        //     //                             setState(() {
-        //     //                               radius = double.parse(input);
-        //     //                             });
-        //     //                           },
-        //     //                         ),
-        //     //                       )),
-        //     //                   actions: <Widget>[
-        //     //                     TextButton(
-        //     //                         onPressed: () => Navigator.pop(context),
-        //     //                         child: Text(
-        //     //                           'Ok',
-        //     //                           style: TextStyle(
-        //     //                             fontWeight: FontWeight.bold,
-        //     //                           ),
-        //     //                         )),
-        //     //                   ],
-        //     //                 ));
-        //     //       },
-        //     //       child: Text('Circle',
-        //     //           style: TextStyle(
-        //     //               fontWeight: FontWeight.bold,
-        //     //               color: Colors.white)))
-        //     // ],
-        //   ),
-        // )
         Positioned(
           top: 40,
           left: 20,
           right: 20,
           child: LocationSearchBox(),
-        )
+        ),
       ],
     ));
   }
 
   Set<Marker> getMarkers() {
-    //markers to place on map
-
     setState(() {
       markers = {
         ...this.widget.rovers.map((rover) {
@@ -347,30 +169,33 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 }
 
 class LocationSearchBox extends StatelessWidget {
-  const LocationSearchBox({
+  ApplicationBloc applicationBloc = ApplicationBloc();
+  LocationSearchBox({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-          decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: 'Enter Your Location',
-        suffixIcon: Icon(Icons.search),
-        contentPadding: const EdgeInsets.only(left: 20, bottom: 5, right: 5),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          hintText: 'Enter Your Location',
+          suffixIcon: Icon(Icons.search),
+          contentPadding: const EdgeInsets.only(left: 20, bottom: 5, right: 5),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.white),
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      )),
+        onChanged: (value) => applicationBloc.searchPlaces(value),
+        onTap: () => applicationBloc.clearSelectedLocation(),
+      ),
     );
   }
 }

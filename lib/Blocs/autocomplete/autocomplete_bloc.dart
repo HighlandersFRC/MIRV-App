@@ -27,7 +27,7 @@ class AutocompleteBloc extends Bloc<AutocompleteEvent, AutocompleteState> {
       LoadAutocomplete event) async* {
     _placesSubscription?.cancel();
 
-    final List<PlaceAutocomplete> autocomplete =
+    final List<PlaceSearch> autocomplete =
         await _placesRepository.getAutocomplete(event.searchInput);
 
     yield AutocompleteLoaded(autocomplete: autocomplete);

@@ -7,14 +7,14 @@ class PlacesRepository extends BasePlacesRepository {
   final String key = 'AIzaSyDnVF4wZWvY3vq3vz1Ogv2Vib3_qEy02pM';
   final String types = 'geocode';
 
-  Future<List<PlaceAutocomplete>> getAutocomplete(String searchInput) async {
-    final String url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$searchInput&types=$types&key=$key';
-  
-  var response = await http.get(Uri.parse(url));
-  var json = convert.jsonDecode(response.body);
-  var results = json['predictions'] as List;
+  Future<List<PlaceSearch>> getAutocomplete(String searchInput) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$searchInput&types=$types&key=$key';
 
-  return results.map((place) => PlaceAutocomplete.fromJson(place)).toList();
-  
+    var response = await http.get(Uri.parse(url));
+    var json = convert.jsonDecode(response.body);
+    var results = json['predictions'] as List;
+
+    return results.map((place) => PlaceSearch.fromJson(place)).toList();
   }
 }
