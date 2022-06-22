@@ -8,9 +8,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
-        foregroundColor: Color.fromARGB(255, 0, 0, 0),
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
           "MIRV App Home",
         ),
@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
       child: ListTile(
           leading: Icon(icon),
           title: Text(text),
-          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
           onTap: onClicked),
     );
   }
@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
       case 0:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => RoverSelectionPage(),
+            builder: (context) => const RoverSelectionPage(),
           ),
         );
         break;
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InfoPage()),
+          MaterialPageRoute(builder: (context) => const InfoPage()),
         );
     }
   }
