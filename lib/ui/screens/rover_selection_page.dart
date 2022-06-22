@@ -117,7 +117,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             child: Column(
               children: [
                 FractionallySizedBox(
-                  heightFactor: 0.25,
                   child: AspectRatio(
                     aspectRatio: .25,
                     child: Obx(
