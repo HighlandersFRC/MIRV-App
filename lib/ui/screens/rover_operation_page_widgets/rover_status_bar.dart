@@ -53,7 +53,7 @@ class RoverStatusBar extends StatelessWidget {
   Icon _healthIcon(
       {required RoverHealthType roverHealthType,
       required IconData healthIconChoice}) {
-    return Icon(healthIconChoice, color: roverHealthType.colors);
+    return Icon(healthIconChoice, color: roverHealthType.color3);
   }
 
   @override

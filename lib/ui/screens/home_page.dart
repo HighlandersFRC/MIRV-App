@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:test/ui/screens/info_page.dart';
+import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
-        foregroundColor: Color.fromARGB(255, 0, 0, 0),
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
           "MIRV App Home",
         ),
@@ -42,7 +44,7 @@ class HomePage extends StatelessWidget {
       child: ListTile(
           leading: Icon(icon),
           title: Text(text),
-          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
           onTap: onClicked),
     );
   }
@@ -52,17 +54,20 @@ class HomePage extends StatelessWidget {
       case 0:
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => RoverSelectionPage(),
+            builder: (context) => const RoverSelectionPage(),
           ),
         );
         break;
       case 1:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => RoverOperationPage(
-              roverID: 'test',
-            ),
-          ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SettingsPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const InfoPage()),
         );
     }
   }

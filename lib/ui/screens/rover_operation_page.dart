@@ -6,11 +6,11 @@ import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_metrics_page.dart';
-import 'package:test/ui/screens/rover_status_bar.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 
 class RoverOperationPage extends StatefulWidget {
   final String roverID;
-  RoverOperationPage({Key? key, required this.roverID}) : super(key: key);
+  const RoverOperationPage({Key? key, required this.roverID}) : super(key: key);
 
   @override
   State<RoverOperationPage> createState() => _RoverOperationPageState();
@@ -20,13 +20,13 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
   double _x = 0;
   double _y = 0;
   var step = 10.0;
-  JoystickMode _joystickMode = JoystickMode.all;
+  final JoystickMode _joystickMode = JoystickMode.all;
 
-  MirvApi _mirvApi = MirvApi();
+  final MirvApi _mirvApi = MirvApi();
 
   Timer? timer;
 
-  RoverMetrics roverMetrics = RoverMetrics();
+  RoverMetrics roverMetrics = const RoverMetrics();
 
   _updateMetrics() async {
     var roverMetricsTemp = await _mirvApi.getRoverMetrics(widget.roverID);
@@ -41,7 +41,7 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RoverMetricsPage(),
+        builder: (context) => const RoverMetricsPage(),
       ),
     );
   }
@@ -110,9 +110,9 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
               builder: (context, snapshot) {
                 return Text("$snapshot");
               }),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text("x: $_x, y: $_y"),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Joystick(
             mode: _joystickMode,
             listener: (details) {
