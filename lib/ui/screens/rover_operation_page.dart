@@ -6,7 +6,7 @@ import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_metrics_page.dart';
-import 'package:test/ui/screens/rover_status_bar.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 
 class RoverOperationPage extends StatefulWidget {
   final String roverID;
