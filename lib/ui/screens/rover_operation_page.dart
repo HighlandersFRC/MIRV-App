@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_metrics_page.dart';
+import 'package:test/ui/screens/rover_status_bar.dart';
 
 class RoverOperationPage extends StatefulWidget {
   final String roverID;
@@ -68,6 +70,16 @@ class _RoverOperationPageState extends State<RoverOperationPage> {
         title: Text(
           'Rover Control ${widget.roverID}',
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<RoverMetrics>(
+                stream: _mirvApi.periodicMetricUpdates,
+                builder: (context, snapshot) {
+                  return RoverStatusBar(roverMetrics: snapshot.data);
+                }),
+          )
+        ],
         backgroundColor: Colors.blue,
         foregroundColor: const Color.fromARGB(255, 30, 0, 0),
       ),
