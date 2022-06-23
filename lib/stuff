@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_joystick/flutter_joystick.dart';
-=======
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
->>>>>>> 48ac12848245b7f57f1a4a724e0d648792c23a2b
 
 void main() {
   runApp(const GetMaterialApp(home: MyApp()));
@@ -20,7 +17,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-<<<<<<< HEAD
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -167,9 +163,6 @@ class RoverPage extends StatelessWidget {
           ],
         ),
       ),
-=======
-      home: const RoverSelectionPage(),
->>>>>>> 48ac12848245b7f57f1a4a724e0d648792c23a2b
     );
   }
 }

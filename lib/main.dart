@@ -16,14 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ApplicationBloc(),
-    );
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    );
+        create: (context) => ApplicationBloc(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          home: HomePage(),
+        ));
   }
 }
