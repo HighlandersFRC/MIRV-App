@@ -1,5 +1,5 @@
 // ignore_for_file: avoid_print
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -112,6 +112,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
     print("Emergency stop hasnt been coded yet, go screw yourself");
   }
 
+  doNothing() {
+    print("he he he ha!");
+  }
+
   @override
   Widget build(BuildContext context) {
     double _x = 0;
@@ -131,16 +135,39 @@ class _RoverOpPageState extends State<RoverOpPage> {
           style: TextStyle(color: Colors.black),
           textScaleFactor: 1.75,
         ),
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: Icon(Icons.menu_rounded),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: goStatus,
+            icon: _batteryIcon(bLevel, alertLevel: 20),
+            label: const Text(
+              "Status",
+              textScaleFactor: 2.5,
+            ),
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.elliptical(10, 7),
+                  ),
+                ),
+              ), //shape
+              fixedSize: MaterialStateProperty.all(
+                const Size(200, 300),
+              ), //size
+              overlayColor: MaterialStateProperty.all(Colors.amber),
+              alignment: Alignment.centerLeft,
+              shadowColor: MaterialStateProperty.all(
+                const Color.fromARGB(100, 0, 0, 0),
+              ), //overlay color
+              backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(0, 128, 123, 123),
+              ), //background color
+              foregroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 0, 0, 0),
+              ), //foreground color
+            ),
+          ),
+        ],
         /*  actions: <Widget>[
           ElevatedButton.icon(
             onPressed: goStatus,
@@ -266,152 +293,271 @@ class _RoverOpPageState extends State<RoverOpPage> {
           ],
         ),
       ),
-      endDrawer: Drawer(
-        child: Container(
-          color: Color.fromARGB(255, 158, 182, 193),
-          child: Center(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 158, 182, 193),
-                  ),
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Icon(
-                      Icons.drive_eta_sharp,
-                      size: 100,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                  title: SizedBox(
-                    height: 50,
-                    width: 1,
-                    child: ElevatedButton(
-                      onPressed: goTrouble,
-                      child: const Text(
-                        "Command",
-                        textWidthBasis: TextWidthBasis.longestLine,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Color.fromARGB(150, 0, 0, 0),
-                            fontSize: 15,
-                            fontStyle: FontStyle.italic),
+      body: Row(
+        children: [
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: SizedBox(
+              width: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 175,
+                    child: ElevatedButton.icon(
+                      onPressed: doNothing,
+                      label: const Text(
+                        " Manual Control",
+                        textScaleFactor: 1.5,
+                      ),
+                      icon: const Icon(
+                        CupertinoIcons.antenna_radiowaves_left_right,
+                        size: 60,
                       ),
                       style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: 175,
+                    child: ElevatedButton.icon(
+                      onPressed: doNothing,
+                      label: const Text(
+                        "Map",
+                        textScaleFactor: 2.5,
+                      ),
+                      icon: const Icon(
+                        Icons.map,
+                        size: 60,
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 550,
+                    child: ListView(
+                      children: [
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: doNothing,
+                            child: Text(
+                              "Command",
+                              textScaleFactor: 2,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              color: Colors.amber,
+              width: 800,
+              height: 450,
+              child: ElevatedButton(
+                onPressed: doNothing,
+                child: Text("video"),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Color.fromARGB(255, 194, 194, 194),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 250,
+                  height: 50,
+                  child: ElevatedButton.icon(
+                      onPressed: doNothing,
+                      label: Text("Commands"),
+                      icon: Icon(
+                        Icons.list_alt,
+                      )),
+                ),
+                SizedBox(
+                  height: 20,
+                  width: 250,
+                ),
+                SizedBox(
+                  height: 125,
+                  width: 250,
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    primary: false,
+                    padding: const EdgeInsets.all(1),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 250,
+                        child: ElevatedButton(
+                          onPressed: doNothing,
+                          child: Text("enable"),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromARGB(255, 132, 219, 110))),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 250,
+                        child: ElevatedButton(
+                          onPressed: doNothing,
+                          child: Text("disable"),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromARGB(255, 255, 81, 81))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                  width: 250,
+                ),
+                SizedBox(
+                  child: Joystick(
+                    mode: _joystickMode,
+                    listener: (details) {
+                      setState(
+                        () {
+                          _x = details.x;
+                          _y = details.y;
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                  width: 100,
+                ),
+                SizedBox(
+                  height: 250,
+                  width: 250,
+                  child: ElevatedButton.icon(
+                    onPressed: eStop,
+                    label: const Text("E-STOP"),
+                    icon: const Icon(Icons.warning_amber_rounded),
+                    style: ButtonStyle(
                         animationDuration: Duration(seconds: 10),
                         overlayColor:
                             MaterialStateProperty.all(Colors.yellowAccent),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(0),
                             side: BorderSide(
-                                color: Color.fromARGB(255, 180, 180, 180),
-                                width: 1),
+                                color: Color.fromARGB(255, 250, 250, 250),
+                                width: 10),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(255, 255, 255, 255),
-                        ),
-                      ),
-                    ),
+                        shadowColor: MaterialStateProperty.all(
+                            Color.fromARGB(0, 0, 0, 0))),
                   ),
-                ),
+                )
               ],
             ),
           ),
-        ),
-      ),
-      body: Align(
-        alignment: Alignment.bottomRight,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              height: 70,
-              width: 250,
-              child: ElevatedButton.icon(
-                onPressed: goStatus,
-                icon: _batteryIcon(bLevel, alertLevel: 20),
-                label: const Text(
-                  "Status",
-                  textScaleFactor: 2.5,
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.elliptical(10, 7),
-                      ),
-                    ),
-                  ), //shape
-                  fixedSize: MaterialStateProperty.all(
-                    const Size(200, 300),
-                  ), //size
-                  overlayColor: MaterialStateProperty.all(Colors.amber),
-                  alignment: Alignment.centerLeft,
-                  shadowColor: MaterialStateProperty.all(
-                    const Color.fromARGB(100, 0, 0, 0),
-                  ), //overlay color
-                  backgroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(0, 128, 123, 123),
-                  ), //background color
-                  foregroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 0, 0, 0),
-                  ), //foreground color
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 70,
-              width: 250,
-            ),
-            SizedBox(
-              child: Joystick(
-                mode: _joystickMode,
-                listener: (details) {
-                  setState(() {
-                    _x = details.x;
-                    _y = details.y;
-                  });
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 50,
-              width: 100,
-            ),
-            SizedBox(
-              height: 300,
-              width: 250,
-              child: ElevatedButton.icon(
-                onPressed: eStop,
-                label: const Text("E-STOP"),
-                icon: const Icon(Icons.warning_amber_rounded),
-                style: ButtonStyle(
-                    animationDuration: Duration(seconds: 10),
-                    overlayColor:
-                        MaterialStateProperty.all(Colors.yellowAccent),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0),
-                        side: BorderSide(
-                            color: Color.fromARGB(255, 250, 250, 250),
-                            width: 10),
-                      ),
-                    ),
-                    shadowColor:
-                        MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
-              ),
-            )
-          ],
-        ),
+        ],
       ),
     );
   }

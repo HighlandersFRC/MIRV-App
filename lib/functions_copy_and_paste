@@ -62,3 +62,7 @@
       MaterialPageRoute(builder: (context) => InfoPage()),
     );
   }
+
+  doNothing() {
+    print("he he he ha!");
+  }
