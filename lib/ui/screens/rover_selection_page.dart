@@ -13,7 +13,8 @@ class SelectedRoverController extends GetxController {
   var isConnectButtonEnabled = false.obs;
 
   SelectedRoverController() {
-    selectedRoverId.listen((roverId) => isConnectButtonEnabled.value = (roverId != ""));
+    selectedRoverId
+        .listen((roverId) => isConnectButtonEnabled.value = (roverId != ""));
   }
 
   setSelectedRoverId(String roverId) {
@@ -21,7 +22,9 @@ class SelectedRoverController extends GetxController {
   }
 
   verifyRoverId(List<RoverSummary> rovers) {
-    if (rovers.where((element) => element.roverId == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
+    if (rovers
+        .where((element) => element.roverId == selectedRoverId.value)
+        .isEmpty) selectedRoverId.value = "";
   }
 
   Color roverTileColor(
@@ -107,18 +110,24 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         title: const Text(
           "Rover Selection",
         ),
-        actions: <Widget>[IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45))],
-        leading: ElevatedButton(onPressed: _infoButtonPressed, child: const Icon(Icons.info_sharp)),
+        actions: <Widget>[
+          IconButton(
+              onPressed: _refreshRoversList,
+              icon: const Icon(Icons.refresh_rounded, size: 45))
+        ],
+        leading: ElevatedButton(
+            onPressed: _infoButtonPressed, child: const Icon(Icons.info_sharp)),
       ),
       body: Row(
         children: [
           SizedBox(
             width: roverListWidth,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 FractionallySizedBox(
                   child: AspectRatio(
-                    aspectRatio: .25,
+                    aspectRatio: .5,
                     child: Obx(
                       () => ListView.builder(
                         itemCount: roverList.length,
@@ -130,30 +139,39 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                             ),
                             child: Obx(
                               () => ListTile(
-                                tileColor: selectedRoverController.roverTileColor(
+                                tileColor:
+                                    selectedRoverController.roverTileColor(
                                   roverList[index].roverId,
                                   roverList[index].status,
                                 ),
                                 title: Text(
                                   "Rover ${roverList[index].roverId}",
                                 ),
-                                subtitle: Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                                subtitle: Text(
+                                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
                                 onTap: () {
-                                  if (roverList[index].status == RoverStatusType.available) {
-                                    selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
+                                  if (roverList[index].status ==
+                                      RoverStatusType.available) {
+                                    selectedRoverController.setSelectedRoverId(
+                                        (roverList[index].roverId).toString());
                                   }
                                 },
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    _batteryIcon(roverList[index].battery, alertLevel: 20),
+                                    _batteryIcon(roverList[index].battery,
+                                        alertLevel: 20),
                                     IconButton(
-                                      icon: const Icon(Icons.arrow_forward_ios_rounded),
+                                      icon: const Icon(
+                                          Icons.arrow_forward_ios_rounded),
                                       onPressed: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => RoverOperationPage(roverID: roverList[index].roverId)),
+                                              builder: (context) =>
+                                                  RoverOperationPage(
+                                                      roverID: roverList[index]
+                                                          .roverId)),
                                         );
                                       },
                                     )
@@ -172,12 +190,16 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                     child: ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
-                      onPressed: selectedRoverController.isConnectButtonEnabled.value
-                          ? () {
-                              print('click');
-                            }
-                          : null,
+                              selectedRoverController
+                                      .isConnectButtonEnabled.value
+                                  ? Colors.blue
+                                  : Colors.grey)),
+                      onPressed:
+                          selectedRoverController.isConnectButtonEnabled.value
+                              ? () {
+                                  print('click');
+                                }
+                              : null,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
