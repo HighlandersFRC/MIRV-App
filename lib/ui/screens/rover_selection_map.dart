@@ -151,7 +151,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                       controller: _locationController,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                        hintText: 'Search Location',
+                        hintText: 'Search By City',
                         suffixIcon: Icon(Icons.search),
                       ),
                       onChanged: (value) => applicationBloc.searchPlaces(value),
@@ -177,16 +177,15 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                           // markers: Set<Marker>.of(applicationBloc.markers),
                         ),
                       ),
-                      if (applicationBloc.searchResults != null &&
-                          applicationBloc.searchResults.length != 0)
+                      if (applicationBloc.searchResults != [] &&
+                          applicationBloc.searchResults.isNotEmpty)
                         Container(
-                            height: 300.0,
+                            height: 600.0,
                             width: double.infinity,
                             decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(.6),
+                                color: Colors.black.withOpacity(0.6),
                                 backgroundBlendMode: BlendMode.darken)),
-                      if (applicationBloc.searchResults != null &&
-                          applicationBloc.searchResults.length != 0)
+                      if (applicationBloc.searchResults != [])
                         Container(
                           height: 300.0,
                           child: ListView.builder(
