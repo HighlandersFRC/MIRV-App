@@ -51,22 +51,39 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   int _markerIdCounter = 1;
 
   bool _isPolygon = true;
+  void _checkLocationPermission() async {
+    bool _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+    PermissionStatus _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     setCustomMarker();
     _checkLocationPermission();
+
     final applicationBloc =
         Provider.of<ApplicationBloc>(context, listen: false);
-    // locationSubscription =
-    //     applicationBloc.selectedLocation.stream.listen((place) {
-    //   if (place != null) {
-    //     _locationController.text = place.name;
-    //     _goToPlace(place);
-    //   } else
-    //     _locationController.text = "";
-    // });
+    locationSubscription =
+        applicationBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        _locationController.text = place.name;
+        _goToPlace(place);
+      } else
+        _locationController.text = "";
+    });
 
     applicationBloc.bounds.stream.listen((bounds) async {
       final GoogleMapController controller = await _mapController.future;
@@ -90,14 +107,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         fillColor: Colors.yellow.withOpacity(0.15),
       ));
     });
-
-    // location.onLocationChanged.listen((event) {
-    //   if (event.latitude == null || event.longitude == null) return;
-    //   location.getLocation().then((value) => _locationData = value);
-    //   (_googleMapController?.animateCamera(CameraUpdate.newCameraPosition(
-    //       CameraPosition(
-    //           target: LatLng(event.latitude!, event.longitude!), zoom: zoom))));
-    // });
   }
 
   @override
@@ -120,23 +129,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       strokeColor: Colors.yellow,
       fillColor: Colors.yellow.withOpacity(0.15),
     ));
-  }
-
-  void _checkLocationPermission() async {
-    bool _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-    PermissionStatus _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -179,18 +171,22 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                                 applicationBloc.currentLocation!.longitude),
                             zoom: 14,
                           ),
+                          onMapCreated: (GoogleMapController controller) {
+                            _mapController.complete(controller);
+                          },
                           // markers: Set<Marker>.of(applicationBloc.markers),
                         ),
                       ),
-                      // if (applicationBloc.searchResults != null &&
-                      //     applicationBloc.searchResults.length != 0)
-                      Container(
-                          height: 300.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(.6),
-                              backgroundBlendMode: BlendMode.darken)),
-                      if (applicationBloc.searchResults != null)
+                      if (applicationBloc.searchResults != null &&
+                          applicationBloc.searchResults.length != 0)
+                        Container(
+                            height: 300.0,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(.6),
+                                backgroundBlendMode: BlendMode.darken)),
+                      if (applicationBloc.searchResults != null &&
+                          applicationBloc.searchResults.length != 0)
                         Container(
                           height: 300.0,
                           child: ListView.builder(
