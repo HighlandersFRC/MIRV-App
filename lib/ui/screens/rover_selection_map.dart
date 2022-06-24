@@ -117,8 +117,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     ));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
@@ -127,30 +125,34 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : ListView(
+            : Column(
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TypeAheadField(
-                          textFieldConfiguration: TextFieldConfiguration(
-                              autofocus: true,
-                              style: DefaultTextStyle.of(context)
-                                  .style
-                                  .copyWith(fontStyle: FontStyle.italic),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder())),
-                          suggestionsCallback: (pattern) async {
-                            return await applicationBloc.searchPlaces(pattern);
-                          },
-                          itemBuilder: (context, PlaceSearch suggestion) {
-                            return ListTile(
-                              title: Text(suggestion.description),
-                            );
-                          },
-                          onSuggestionSelected: (PlaceSearch suggestion) {
-                            applicationBloc
-                                .setSelectedLocation(suggestion.placeId);
-                          })),
+                  Container(
+                    height: 70,
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TypeAheadField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                                autofocus: true,
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontStyle: FontStyle.italic),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder())),
+                            suggestionsCallback: (pattern) async {
+                              return await applicationBloc
+                                  .searchPlaces(pattern);
+                            },
+                            itemBuilder: (context, PlaceSearch suggestion) {
+                              return ListTile(
+                                title: Text(suggestion.description),
+                              );
+                            },
+                            onSuggestionSelected: (PlaceSearch suggestion) {
+                              applicationBloc
+                                  .setSelectedLocation(suggestion.placeId);
+                            })),
+                  ),
                   Container(
                     height: 600.0,
                     child: GoogleMap(
