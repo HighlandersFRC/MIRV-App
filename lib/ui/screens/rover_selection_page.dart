@@ -106,6 +106,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    _refreshRoversList();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
@@ -178,12 +179,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       icon: const Icon(
                                           Icons.arrow_forward_ios_rounded),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RoverOpPage()),
-                                        );
+                                        NavigationRoutes.goOp(context);
                                       },
                                     )
                                   ],

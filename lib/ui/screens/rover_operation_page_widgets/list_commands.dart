@@ -36,18 +36,4 @@ class CommandList extends StatelessWidget {
               )
             : null);
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: ListView.builder(
-  //       itemBuilder: (context, index) {
-  //         return ListTile(
-  //           title: Text($roverCommands[index].name),
-  //           onTap: roverCommands[index].action,
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 }

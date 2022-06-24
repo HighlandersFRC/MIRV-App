@@ -11,43 +11,45 @@ class _ToggleDisableState extends State<ToggleDisable> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red[100],
-      child: ToggleButtons(
-        fillColor: Colors.green[700],
-        color: Colors.black,
-        selectedColor: Colors.black,
-        renderBorder: false,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('enable'),
+    return FittedBox(
+        fit: BoxFit.fill,
+        child: Container(
+          color: Colors.red[100],
+          child: ToggleButtons(
+            fillColor: Colors.green[700],
+            color: Colors.black,
+            selectedColor: Colors.black,
+            renderBorder: false,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('enable'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('disable'),
+              )
+            ],
+            isSelected: selected,
+            onPressed: (int newIndex) {
+              setState(() {
+                for (int index = 0; index < selected.length; index++) {
+                  if (index == newIndex) {
+                    selected[index] = true;
+                  } else {
+                    selected[index] = false;
+                  }
+                }
+                if (selected[0] == true) {
+                  print('enable');
+                }
+                if (selected[1] == true) {
+                  print('disable');
+                }
+              });
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('disable'),
-          )
-        ],
-        isSelected: selected,
-        onPressed: (int newIndex) {
-          setState(() {
-            for (int index = 0; index < selected.length; index++) {
-              if (index == newIndex) {
-                selected[index] = true;
-              } else {
-                selected[index] = false;
-              }
-            }
-            if (selected[0] == true) {
-              print('enable');
-            }
-            if (selected[1] == true) {
-              print('disable');
-            }
-          });
-        },
-      ),
-    );
+        ));
   }
 
   // roverStateMessage(index) {

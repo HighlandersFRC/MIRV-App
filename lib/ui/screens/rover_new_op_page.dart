@@ -1,27 +1,20 @@
-// ignore_for_file: avoid_print
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:test/models/rover_status_type.dart';
+import 'package:test/models/rover_metrics.dart';
 import 'package:test/ui/screens/home_page.dart';
 import 'package:test/ui/screens/info_page.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:test/ui/screens/troubleshoot_page.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/models/rover_state_type.dart';
-import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/google_map.dart';
-import 'package:test/ui/screens/google_map_v2.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-
-///I was lazy and just copy and pasted imports from homepage lol
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -32,43 +25,21 @@ class RoverOpPage extends StatefulWidget {
 
 class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  final MirvApi _mirvApi = MirvApi();
 
-  var bLevel = 21;
+  RoverMetrics roverMetrics = const RoverMetrics();
+  Timer? timer;
 
-  Icon _batteryIcon(int batteryLevel, {int? alertLevel}) {
-    double divisor = 100 / 7;
-    int result = (batteryLevel / divisor).ceil();
-    if (alertLevel != null && batteryLevel < alertLevel) {
-      return const Icon(Icons.battery_alert_rounded);
-    }
-    switch (result) {
-      case 0:
-        return const Icon(Icons.battery_0_bar_rounded);
-      case 1:
-        return const Icon(Icons.battery_1_bar_rounded);
-      case 2:
-        return const Icon(Icons.battery_2_bar_rounded);
-      case 3:
-        return const Icon(Icons.battery_3_bar_rounded);
-      case 4:
-        return const Icon(Icons.battery_4_bar_rounded);
-      case 5:
-        return const Icon(Icons.battery_5_bar_rounded);
-      case 6:
-        return const Icon(Icons.battery_6_bar_rounded);
-      default:
-        return const Icon(Icons.battery_full_rounded);
-    }
+  @override
+  void initState() {
+    super.initState();
+    _mirvApi.startPeriodicMetricUpdates();
   }
 
-  Icon _getStatusIcon(RoverStatusType value) {
-    switch (value) {
-      case RoverStatusType.available:
-        return const Icon(Icons.lock_open_rounded);
-
-      case RoverStatusType.unavailable:
-        return const Icon(Icons.lock_rounded);
-    }
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   goSelection() {
@@ -124,51 +95,59 @@ class _RoverOpPageState extends State<RoverOpPage> {
     final JoystickMode _joystickMode = JoystickMode.all;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Color.fromARGB(255, 0, 0, 0),
-          size: 40,
-        ),
-        shadowColor: const Color.fromARGB(0, 0, 0, 0),
-        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-        title: Text(
-          "Rover Manual Control",
-          style: TextStyle(color: Colors.black),
-          textScaleFactor: 1.75,
-        ),
-        actions: [
-          ElevatedButton.icon(
-            onPressed: goStatus,
-            icon: _batteryIcon(bLevel, alertLevel: 20),
-            label: const Text(
-              "Status",
-              textScaleFactor: 2.5,
-            ),
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(10, 7),
-                  ),
-                ),
-              ), //shape
-              fixedSize: MaterialStateProperty.all(
-                const Size(200, 300),
-              ), //size
-              overlayColor: MaterialStateProperty.all(Colors.amber),
-              alignment: Alignment.centerLeft,
-              shadowColor: MaterialStateProperty.all(
-                const Color.fromARGB(100, 0, 0, 0),
-              ), //overlay color
-              backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 128, 123, 123),
-              ), //background color
-              foregroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 0, 0, 0),
-              ), //foreground color
-            ),
+          iconTheme: const IconThemeData(
+            color: Color.fromARGB(255, 0, 0, 0),
+            size: 40,
           ),
-        ],
-        /*  actions: <Widget>[
+          shadowColor: const Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          title: Text(
+            "Rover Manual Control",
+            style: TextStyle(color: Colors.black),
+            textScaleFactor: 1.75,
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: StreamBuilder<RoverMetrics>(
+                  stream: _mirvApi.periodicMetricUpdates,
+                  builder: (context, snapshot) {
+                    return RoverStatusBar(roverMetrics: snapshot.data);
+                  }),
+            ),
+            ElevatedButton(
+              onPressed: goStatus,
+              child: const Text(
+                "Status",
+                textScaleFactor: 2.5,
+              ),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.elliptical(10, 7),
+                    ),
+                  ),
+                ), //shape
+                fixedSize: MaterialStateProperty.all(
+                  const Size(200, 300),
+                ), //size
+                overlayColor: MaterialStateProperty.all(Colors.amber),
+                alignment: Alignment.centerLeft,
+                shadowColor: MaterialStateProperty.all(
+                  const Color.fromARGB(100, 0, 0, 0),
+                ), //overlay color
+                backgroundColor: MaterialStateProperty.all(
+                  const Color.fromARGB(0, 128, 123, 123),
+                ), //background color
+                foregroundColor: MaterialStateProperty.all(
+                  const Color.fromARGB(255, 0, 0, 0),
+                ), //foreground color
+              ),
+            ),
+          ]),
+
+      /*  actions: <Widget>[
           ElevatedButton.icon(
             onPressed: goStatus,
             icon: _batteryIcon(bLevel, alertLevel: 20),
@@ -201,7 +180,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
             ),
           ),
         ], */
-      ),
+      //),
       drawer: Drawer(
         backgroundColor: const Color.fromARGB(255, 245, 245, 245),
         child: ListView(
@@ -293,6 +272,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           ],
         ),
       ),
+      endDrawer: CommandList(roverMetrics: roverMetrics),
       body: Row(
         children: [
           Align(
@@ -320,7 +300,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Container(
                     width: 175,
@@ -340,15 +320,15 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   SizedBox(
                     width: 250,
-                    height: 550,
+                    height: 500,
                     child: ListView(
                       children: [
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -362,7 +342,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           height: 20,
                         ),
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -376,7 +356,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           height: 20,
                         ),
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -390,7 +370,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           height: 20,
                         ),
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -404,7 +384,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           height: 20,
                         ),
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -418,7 +398,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           height: 20,
                         ),
                         Container(
-                          height: 60,
+                          height: 55,
                           child: ElevatedButton(
                             onPressed: doNothing,
                             child: Text(
@@ -427,9 +407,6 @@ class _RoverOpPageState extends State<RoverOpPage> {
                             ),
                             style: ButtonStyle(),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
                         ),
                       ],
                     ),
@@ -464,7 +441,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   width: 250,
                   height: 50,
                   child: ElevatedButton.icon(
-                      onPressed: doNothing,
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
                       label: Text("Commands"),
                       icon: Icon(
                         Icons.list_alt,
@@ -474,41 +453,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 20,
                   width: 250,
                 ),
-                SizedBox(
-                  height: 125,
-                  width: 250,
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    primary: false,
-                    padding: const EdgeInsets.all(1),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: doNothing,
-                          child: Text("enable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 132, 219, 110))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: doNothing,
-                          child: Text("disable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 255, 81, 81))),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 100, width: 225, child: ToggleDisable()),
                 SizedBox(
                   height: 20,
                   width: 250,
@@ -539,6 +484,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     icon: const Icon(Icons.warning_amber_rounded),
                     style: ButtonStyle(
                         animationDuration: Duration(seconds: 10),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.red[700]),
                         overlayColor:
                             MaterialStateProperty.all(Colors.yellowAccent),
                         shape:
