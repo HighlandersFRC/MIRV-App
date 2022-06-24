@@ -12,12 +12,12 @@ import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 
 class SelectedRoverController extends GetxController {
-  var selectedRoverId = "".obs;
-  var isConnectButtonEnabled = false.obs;
+  Rx<String> selectedRoverId = "".obs;
+  Rx<bool> isConnectButtonEnabled = false.obs;
 
   SelectedRoverController() {
-    selectedRoverId
-        .listen((roverId) => isConnectButtonEnabled.value = (roverId != ""));
+    selectedRoverId.listen((selectedroverId) =>
+        isConnectButtonEnabled.value = (selectedroverId != ""));
   }
 
   setSelectedRoverId(String roverId) {
@@ -194,25 +194,27 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              selectedRoverController
-                                      .isConnectButtonEnabled.value
-                                  ? Colors.blue
-                                  : Colors.grey)),
-                      onPressed:
-                          selectedRoverController.isConnectButtonEnabled.value
-                              ? () {
-                                  print('click');
-                                }
-                              : null,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.link_rounded),
-                          Text(' Connect'),
-                        ],
+                    child: Obx(
+                      () => ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                selectedRoverController
+                                        .isConnectButtonEnabled.value
+                                    ? Colors.blue
+                                    : Colors.grey)),
+                        onPressed:
+                            selectedRoverController.isConnectButtonEnabled.value
+                                ? () {
+                                    print('click');
+                                  }
+                                : null,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.link_rounded),
+                            Text(' Connect'),
+                          ],
+                        ),
                       ),
                     )),
               ],

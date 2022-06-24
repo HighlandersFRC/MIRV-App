@@ -28,8 +28,6 @@ class _RoverOpPageState extends State<RoverOpPage> {
   final MirvApi _mirvApi = MirvApi();
 
   RoverMetrics roverMetrics = const RoverMetrics();
-  Timer? timer;
-
   @override
   void initState() {
     super.initState();
@@ -38,8 +36,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
+    _mirvApi.stopPeriodicMetricUpdates();
   }
 
   goSelection() {
@@ -323,94 +321,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: 250,
-                    height: 500,
-                    child: ListView(
-                      children: [
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: doNothing,
-                            child: Text(
-                              "Command",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                      width: 250,
+                      height: 500,
+                      child: CommandList(
+                        roverMetrics: roverMetrics,
+                      ))
                 ],
               ),
             ),
@@ -440,14 +355,16 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 SizedBox(
                   width: 250,
                   height: 50,
-                  child: ElevatedButton.icon(
-                      onPressed: () {
-                        Scaffold.of(context).openEndDrawer();
-                      },
-                      label: Text("Commands"),
-                      icon: Icon(
-                        Icons.list_alt,
-                      )),
+                  child: Builder(builder: (context) {
+                    return ElevatedButton.icon(
+                        onPressed: () {
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                        label: Text("Commands"),
+                        icon: Icon(
+                          Icons.list_alt,
+                        ));
+                  }),
                 ),
                 SizedBox(
                   height: 20,

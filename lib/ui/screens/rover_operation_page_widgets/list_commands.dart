@@ -11,7 +11,6 @@ class CommandList extends StatelessWidget {
   List<String> _stateListCommands(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disabled:
-        print('disable');
         return <String>['testa', 'test1a', 'test2a'];
       case RoverStateType.docked:
         return <String>['testb', 'test1b', 'test2b'];
@@ -30,8 +29,10 @@ class CommandList extends StatelessWidget {
                 itemCount: _stateListCommands(roverMetrics!.state).length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                      title:
-                          Text(_stateListCommands(roverMetrics!.state)[index]));
+                      title: ElevatedButton(
+                    child: Text(_stateListCommands(roverMetrics!.state)[index]),
+                    onPressed: () {},
+                  ));
                 },
               )
             : null);
