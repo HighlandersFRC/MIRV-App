@@ -7,6 +7,8 @@ import 'package:test/models/rover_location.dart';
 import 'package:test/models/place.dart';
 import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:test/models/searchbox_places.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverLocation> rovers;
@@ -31,7 +33,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   LocationData? _locationData;
   Location location = Location();
-  Completer<GoogleMapController> _mapController = Completer();
+  GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
   final _locationController = TextEditingController();
@@ -43,7 +45,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   double radius = 10.0;
 
   BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
-  GoogleMapController? _googleMapController;
   double zoom = 16.0;
 
   int _polygonIdCounter = 1;
@@ -51,28 +52,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   int _markerIdCounter = 1;
 
   bool _isPolygon = true;
-  void _checkLocationPermission() async {
-    bool _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-    PermissionStatus _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-  }
 
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-    _checkLocationPermission();
 
     final applicationBloc =
         Provider.of<ApplicationBloc>(context, listen: false);
@@ -86,8 +70,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     });
 
     applicationBloc.bounds.stream.listen((bounds) async {
-      final GoogleMapController controller = await _mapController.future;
-      controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+      if (_mapController != null) {
+        final GoogleMapController controller = _mapController!;
+        controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+      }
     });
     super.initState();
 
@@ -131,9 +117,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     ));
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _googleMapController = controller;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -146,73 +130,50 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
             : ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: _locationController,
-                      textCapitalization: TextCapitalization.words,
-                      decoration: InputDecoration(
-                        hintText: 'Search By City',
-                        suffixIcon: Icon(Icons.search),
-                      ),
-                      onChanged: (value) => applicationBloc.searchPlaces(value),
-                      onTap: () => applicationBloc.clearSelectedLocation(),
-                    ),
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        height: 600.0,
-                        child: GoogleMap(
-                          mapType: MapType.hybrid,
-                          myLocationEnabled: true,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                                applicationBloc.currentLocation!.latitude,
-                                applicationBloc.currentLocation!.longitude),
-                            zoom: 14,
-                          ),
-                          onMapCreated: (GoogleMapController controller) {
-                            _mapController.complete(controller);
+                      padding: const EdgeInsets.all(8.0),
+                      child: TypeAheadField(
+                          textFieldConfiguration: TextFieldConfiguration(
+                              autofocus: true,
+                              style: DefaultTextStyle.of(context)
+                                  .style
+                                  .copyWith(fontStyle: FontStyle.italic),
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder())),
+                          suggestionsCallback: (pattern) async {
+                            return await applicationBloc.searchPlaces(pattern);
                           },
-                          // markers: Set<Marker>.of(applicationBloc.markers),
-                        ),
+                          itemBuilder: (context, PlaceSearch suggestion) {
+                            return ListTile(
+                              title: Text(suggestion.description),
+                            );
+                          },
+                          onSuggestionSelected: (PlaceSearch suggestion) {
+                            applicationBloc
+                                .setSelectedLocation(suggestion.placeId);
+                          })),
+                  Container(
+                    height: 600.0,
+                    child: GoogleMap(
+                      mapType: MapType.hybrid,
+                      myLocationEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                            applicationBloc.currentLocation!.latitude,
+                            applicationBloc.currentLocation!.longitude),
+                        zoom: 14,
                       ),
-                      if (applicationBloc.searchResults != [] &&
-                          applicationBloc.searchResults.isNotEmpty)
-                        Container(
-                            height: 600.0,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                backgroundBlendMode: BlendMode.darken)),
-                      if (applicationBloc.searchResults != [])
-                        Container(
-                          height: 300.0,
-                          child: ListView.builder(
-                              itemCount: applicationBloc.searchResults.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(
-                                    applicationBloc
-                                        .searchResults[index].description,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  onTap: () {
-                                    applicationBloc.setSelectedLocation(
-                                        applicationBloc
-                                            .searchResults[index].placeId);
-                                  },
-                                );
-                              }),
-                        )
-                    ],
+                      onMapCreated: (GoogleMapController controller) {
+                        _mapController = controller;
+                      },
+                      // markers: Set<Marker>.of(applicationBloc.markers),
+                    ),
                   ),
                 ],
               ));
   }
 
   Future<void> _goToPlace(Place place) async {
-    final GoogleMapController controller = await _mapController.future;
+    final GoogleMapController controller = _mapController!;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(

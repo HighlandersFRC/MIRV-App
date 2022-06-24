@@ -34,9 +34,16 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  searchPlaces(String searchTerm) async {
+  // Future<List<String>> searchPlaces(String searchTerm) async{
+  //   searchResults = await placesService.getAutocomplete(searchTerm);
+  //   return (searchResults).map((e) => e.description).toList();
+    
+  // }
+
+  Future<List<PlaceSearch>> searchPlaces(String searchTerm) async{
     searchResults = await placesService.getAutocomplete(searchTerm);
-    notifyListeners();
+    return searchResults;
+    
   }
 
   setSelectedLocation(String placeId) async {
