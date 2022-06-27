@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_print
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/ui/screens/home_page.dart';
 import 'package:test/ui/screens/info_page.dart';
@@ -20,6 +23,7 @@ import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:http/http.dart' as http;
 
 ///I was lazy and just copy and pasted imports from homepage lol
 
@@ -32,6 +36,178 @@ class RoverOpPage extends StatefulWidget {
 
 class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  RTCPeerConnection? _peerConnection;
+  final _localRenderer = RTCVideoRenderer();
+
+  MediaStream? _localStream;
+
+  RTCDataChannelInit? _dataChannelDict;
+  RTCDataChannel? _dataChannel;
+  String transformType = "none";
+  var messageBoxController = TextEditingController();
+
+  // MediaStream? _localStream;
+  bool _inCalling = false;
+
+  DateTime? _timeStart;
+
+  bool _loading = false;
+
+  final Map<String, dynamic> offerSdpConstraints = {
+    "mandatory": {
+      "OfferToReceiveAudio": true,
+      "OfferToReceiveVideo": true,
+    },
+    "optional": [],
+  };
+
+  final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
+
+  void _onTrack(RTCTrackEvent event) {
+    print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
+    if (event.track.kind == "video") {
+      print("HERE");
+      _localRenderer.srcObject = event.streams[0];
+    }
+  }
+
+  void _onDataChannelState(RTCDataChannelState? state) {
+    switch (state) {
+      case RTCDataChannelState.RTCDataChannelClosed:
+        print("Camera Closed!!!!!!!");
+        break;
+      case RTCDataChannelState.RTCDataChannelOpen:
+        print("Camera Opened!!!!!!!");
+        break;
+      default:
+        print("Data Channel State: $state");
+    }
+  }
+
+  Future<bool> _waitForGatheringComplete(_) async {
+    print("WAITING FOR GATHERING COMPLETE");
+    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+      return true;
+    } else {
+      await Future.delayed(Duration(seconds: 1));
+      return await _waitForGatheringComplete(_);
+    }
+  }
+
+  void _toggleCamera() async {
+    if (_localStream == null) throw Exception('Stream is not initialized');
+
+    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
+    await Helper.switchCamera(videoTrack);
+  }
+
+  Future<void> _negotiateRemoteConnection() async {
+    return _peerConnection!
+        .createOffer(offerOptions)
+        .then((offer) {
+          return _peerConnection!.setLocalDescription(offer);
+        })
+        .then(_waitForGatheringComplete)
+        .then((_) async {
+          var des = await _peerConnection!.getLocalDescription();
+          var headers = {
+            'Content-Type': 'application/json',
+          };
+          var request = http.Request(
+            'POST',
+            Uri.parse('http://192.168.1.5:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
+          );
+          request.body = json.encode(
+            {
+              "sdp": des!.sdp,
+              "type": des.type,
+              "video_transform": transformType,
+            },
+          );
+          request.headers.addAll(headers);
+
+          http.StreamedResponse response = await request.send();
+
+          String data = "";
+          print(response);
+          if (response.statusCode == 200) {
+            data = await response.stream.bytesToString();
+            var dataMap = json.decode(data);
+            print(dataMap);
+            await _peerConnection!.setRemoteDescription(
+              RTCSessionDescription(
+                dataMap["sdp"],
+                dataMap["type"],
+              ),
+            );
+          } else {
+            print(response.reasonPhrase);
+          }
+        });
+  }
+
+  Future<void> _makeCall() async {
+    setState(() {
+      _loading = true;
+    });
+    var configuration = <String, dynamic>{
+      'sdpSemantics': 'unified-plan',
+    };
+
+    //* Create Peer Connection
+    if (_peerConnection != null) return;
+    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+
+    _peerConnection!.onTrack = _onTrack;
+
+    //* Create Data Channel
+    _dataChannelDict = RTCDataChannelInit();
+    _dataChannelDict!.ordered = true;
+    _dataChannel = await _peerConnection!.createDataChannel(
+      "chat",
+      _dataChannelDict!,
+    );
+    _dataChannel!.onDataChannelState = _onDataChannelState;
+
+    try {
+      print("NEGOTIATE");
+      await _negotiateRemoteConnection();
+    } catch (e) {
+      print(e.toString());
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _inCalling = true;
+      _loading = false;
+    });
+  }
+
+  Future<void> _stopCall() async {
+    try {
+      await _dataChannel?.close();
+      await _peerConnection?.close();
+      _peerConnection = null;
+      _localRenderer.srcObject = null;
+    } catch (e) {
+      print(e.toString());
+    }
+    setState(() {
+      _inCalling = false;
+    });
+  }
+
+  Future<void> initLocalRenderers() async {
+    await _localRenderer.initialize();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    initLocalRenderers();
+    _makeCall();
+  }
 
   var bLevel = 21;
 
@@ -227,10 +403,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Selection",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -241,10 +414,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Status",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -255,10 +425,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Troubleshooting",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -269,10 +436,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go Home",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -283,10 +447,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Info",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -305,7 +466,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   Container(
                     width: 175,
                     child: ElevatedButton.icon(
-                      onPressed: doNothing,
+                      onPressed: () {
+                        if (_dataChannel != null) {
+                          String messageText = "Start Manual Control";
+                          _dataChannel!.send(RTCDataChannelMessage(messageText));
+                        }
+                      },
                       label: const Text(
                         " Manual Control",
                         textScaleFactor: 1.5,
@@ -314,9 +480,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         CupertinoIcons.antenna_radiowaves_left_right,
                         size: 60,
                       ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
                     ),
                   ),
                   SizedBox(
@@ -334,9 +498,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Icons.map,
                         size: 60,
                       ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
                     ),
                   ),
                   SizedBox(
@@ -444,13 +606,48 @@ class _RoverOpPageState extends State<RoverOpPage> {
               color: Colors.amber,
               width: 800,
               height: 450,
-              child: ElevatedButton(
-                onPressed: doNothing,
-                child: Text("video"),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 194, 194, 194),
-                  ),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black,
+                        child: _loading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 4,
+                                ),
+                              )
+                            : Container(),
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: RTCVideoView(
+                        _localRenderer,
+                        // mirror: true,
+                      ),
+                    ),
+                    _inCalling
+                        ? Align(
+                            alignment: Alignment.bottomRight,
+                            child: InkWell(
+                              onTap: _toggleCamera,
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                color: Colors.black26,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.cameraswitch,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
             ),
@@ -490,9 +687,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         child: ElevatedButton(
                           onPressed: doNothing,
                           child: Text("enable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 132, 219, 110))),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 132, 219, 110))),
                         ),
                       ),
                       SizedBox(
@@ -501,9 +696,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         child: ElevatedButton(
                           onPressed: doNothing,
                           child: Text("disable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 255, 81, 81))),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 81, 81))),
                         ),
                       ),
                     ],
@@ -539,19 +732,14 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     icon: const Icon(Icons.warning_amber_rounded),
                     style: ButtonStyle(
                         animationDuration: Duration(seconds: 10),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.yellowAccent),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        overlayColor: MaterialStateProperty.all(Colors.yellowAccent),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
-                            side: BorderSide(
-                                color: Color.fromARGB(255, 250, 250, 250),
-                                width: 10),
+                            side: BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
                           ),
                         ),
-                        shadowColor: MaterialStateProperty.all(
-                            Color.fromARGB(0, 0, 0, 0))),
+                        shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
                   ),
                 )
               ],
