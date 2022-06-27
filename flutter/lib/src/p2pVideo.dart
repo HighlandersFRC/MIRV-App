@@ -32,16 +32,14 @@ class _P2PVideoState extends State<P2PVideo> {
   bool _loading = false;
 
   final Map<String, dynamic> offerSdpConstraints = {
-      "mandatory": {
-        "OfferToReceiveAudio": true,
-        "OfferToReceiveVideo": true,
-      },
-      "optional": [],
-    };
+    "mandatory": {
+      "OfferToReceiveAudio": true,
+      "OfferToReceiveVideo": true,
+    },
+    "optional": [],
+  };
 
-  final Map<String, dynamic> offerOptions = {
-      "offerToReceiveVideo": true
-    };
+  final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
 
   void _onTrack(RTCTrackEvent event) {
     print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
@@ -66,8 +64,7 @@ class _P2PVideoState extends State<P2PVideo> {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -78,9 +75,7 @@ class _P2PVideoState extends State<P2PVideo> {
   void _toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -98,8 +93,7 @@ class _P2PVideoState extends State<P2PVideo> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse(
-                'http://localhost:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('http://localhost:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode(
             {
@@ -140,10 +134,7 @@ class _P2PVideoState extends State<P2PVideo> {
 
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection = await createPeerConnection(
-      configuration,
-      offerSdpConstraints
-    );
+    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
 
@@ -155,7 +146,6 @@ class _P2PVideoState extends State<P2PVideo> {
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
-    
 
     try {
       print("NEGOTIATE");
@@ -194,6 +184,7 @@ class _P2PVideoState extends State<P2PVideo> {
     super.initState();
 
     initLocalRenderers();
+    _makeCall();
   }
 
   @override
@@ -275,11 +266,11 @@ class _P2PVideoState extends State<P2PVideo> {
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                     ),
                     onPressed: () {
-                      if (_dataChannel != null){
+                      print(_dataChannel);
+                      if (_dataChannel != null) {
                         String messageText = messageBoxController.text;
-                        _dataChannel!.send(RTCDataChannelMessage(messageText)); 
+                        _dataChannel!.send(RTCDataChannelMessage(messageText));
                       }
-                      
                     },
                     child: Text('Send'),
                   ),
@@ -300,8 +291,7 @@ class _P2PVideoState extends State<P2PVideo> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: _loading
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
