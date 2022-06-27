@@ -26,7 +26,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+        ImageConfiguration(), 'assets/images/rover_icon.png');
 
     getMarkers();
   }
@@ -95,7 +95,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     });
     void _setMarkerIcon() async {
       _markerIcon = await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+          ImageConfiguration(), 'assets/images/rover_icon.png');
     }
 
     void _onMapCreated(GoogleMapController controller) {
@@ -110,6 +110,16 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         );
       });
     }
+     void _setPolygon() {
+    final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
+    _polygons.add(Polygon(
+      polygonId: PolygonId(polygonIdVal),
+      points: polygonLatLngs,
+      strokeWidth: 2,
+      strokeColor: Colors.yellow,
+      fillColor: Colors.yellow.withOpacity(0.15),
+    ));
+  }
   }
 
   @override
@@ -182,6 +192,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                         zoom: 14,
                       ),
                       markers: getMarkers(),
+                       polygons: _polygons,
                       onMapCreated: (GoogleMapController controller) {
                         _mapController = controller;
                       },
