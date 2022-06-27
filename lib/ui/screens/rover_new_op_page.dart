@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_metrics.dart';
+import 'package:test/models/rover_state_type.dart';
 import 'package:test/ui/screens/home_page.dart';
 import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
@@ -27,7 +28,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
   final MirvApi _mirvApi = MirvApi();
 
-  RoverMetrics roverMetrics = const RoverMetrics();
+  RoverMetrics roverMetrics = RoverMetrics();
   @override
   void initState() {
     super.initState();
@@ -83,6 +84,60 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   doNothing() {
     print("he he he ha!");
+  }
+
+  _robotModeButton(RoverStateType roverState) {
+    switch (roverState) {
+      case RoverStateType.disabled:
+        return ElevatedButton.icon(
+          onPressed: doNothing,
+          label: const Text(
+            " Manual Control",
+            textScaleFactor: 1.5,
+          ),
+          icon: const Icon(
+            CupertinoIcons.antenna_radiowaves_left_right,
+            size: 60,
+          ),
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+        );
+      case RoverStateType.docked:
+        return ElevatedButton.icon(
+          onPressed: doNothing,
+          label: const Text(
+            " Manual Control",
+            textScaleFactor: 1.5,
+          ),
+          icon: const Icon(
+            CupertinoIcons.antenna_radiowaves_left_right,
+            size: 60,
+          ),
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+        );
+
+      case RoverStateType.remoteOperation:
+        return ElevatedButton(
+          onPressed: doNothing,
+          child: Row(children: [
+            Icon(
+              Icons.smart_toy_outlined,
+              size: 55,
+            ),
+            Text(
+              " Autonomous \n Control",
+            ),
+          ]),
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+        );
+      case RoverStateType.eStop:
+        return null;
+    }
   }
 
   @override
@@ -270,7 +325,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
           ],
         ),
       ),
-      endDrawer: CommandList(roverMetrics: roverMetrics),
+      endDrawer: Drawer(
+        child: StreamBuilder<RoverMetrics>(
+            stream: _mirvApi.periodicMetricUpdates,
+            builder: (context, snapshot) {
+              return CommandList(roverMetrics: roverMetrics);
+            }),
+      ),
       body: Row(
         children: [
           Align(
@@ -281,22 +342,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 175,
-                    child: ElevatedButton.icon(
-                      onPressed: doNothing,
-                      label: const Text(
-                        " Manual Control",
-                        textScaleFactor: 1.5,
-                      ),
-                      icon: const Icon(
-                        CupertinoIcons.antenna_radiowaves_left_right,
-                        size: 60,
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
-                    ),
-                  ),
+                      width: 175, child: _robotModeButton(roverMetrics.state)),
                   SizedBox(
                     height: 15,
                   ),
@@ -321,11 +367,14 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     height: 20,
                   ),
                   SizedBox(
-                      width: 250,
-                      height: 500,
-                      child: CommandList(
-                        roverMetrics: roverMetrics,
-                      ))
+                    width: 250,
+                    height: 500,
+                    child: StreamBuilder<RoverMetrics>(
+                        stream: _mirvApi.periodicMetricUpdates,
+                        builder: (context, snapshot) {
+                          return CommandList(roverMetrics: roverMetrics);
+                        }),
+                  )
                 ],
               ),
             ),
@@ -357,8 +406,16 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 50,
                   child: Builder(builder: (context) {
                     return ElevatedButton.icon(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                roverMetrics.state ==
+                                        RoverStateType.remoteOperation
+                                    ? Colors.blue
+                                    : Colors.grey)),
                         onPressed: () {
-                          Scaffold.of(context).openEndDrawer();
+                          roverMetrics.state == RoverStateType.remoteOperation
+                              ? Scaffold.of(context).openEndDrawer()
+                              : null;
                         },
                         label: Text("Commands"),
                         icon: Icon(
@@ -370,24 +427,34 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 20,
                   width: 250,
                 ),
-                SizedBox(height: 100, width: 225, child: ToggleDisable()),
+                SizedBox(
+                  height: 100,
+                  width: 225,
+                  child: StreamBuilder<RoverMetrics>(
+                      stream: _mirvApi.periodicMetricUpdates,
+                      builder: (context, snapshot) {
+                        return ToggleDisable(roverMetrics: roverMetrics);
+                      }),
+                ),
                 SizedBox(
                   height: 20,
                   width: 250,
                 ),
                 SizedBox(
-                  child: Joystick(
-                    mode: _joystickMode,
-                    listener: (details) {
-                      setState(
-                        () {
-                          _x = details.x;
-                          _y = details.y;
-                        },
-                      );
-                    },
-                  ),
-                ),
+                    child:
+                        (roverMetrics.state == RoverStateType.remoteOperation)
+                            ? Joystick(
+                                mode: _joystickMode,
+                                listener: (details) {
+                                  setState(
+                                    () {
+                                      _x = details.x;
+                                      _y = details.y;
+                                    },
+                                  );
+                                },
+                              )
+                            : null),
                 const SizedBox(
                   height: 20,
                   width: 100,

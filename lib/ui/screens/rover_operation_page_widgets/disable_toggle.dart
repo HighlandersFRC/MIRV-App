@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:test/models/rover_metrics.dart';
+import 'package:test/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
-  const ToggleDisable({Key? key}) : super(key: key);
+  final RoverMetrics roverMetrics;
+  const ToggleDisable({
+    Key? key,
+    required this.roverMetrics,
+  }) : super(key: key);
+
   @override
   State<ToggleDisable> createState() => _ToggleDisableState();
 }
 
 class _ToggleDisableState extends State<ToggleDisable> {
-  List<bool> selected = [false, true];
+  List<bool> selected = [true, false];
+
+  _selected() {
+    widget.roverMetrics.state == RoverStateType.disabled
+        ? selected = [false, true]
+        : null;
+  }
 
   @override
   Widget build(BuildContext context) {
+    _selected();
     return FittedBox(
         fit: BoxFit.fill,
         child: Container(
@@ -51,14 +65,4 @@ class _ToggleDisableState extends State<ToggleDisable> {
           ),
         ));
   }
-
-  // roverStateMessage(index) {
-  //   switch (selected) {
-  //     case selected[index] == true:
-  //   }
-
-  //   if (selected[1] == true) {
-  //     print('enable');
-  //   }
-  // }
 }

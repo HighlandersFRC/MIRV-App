@@ -8,14 +8,14 @@ class CommandList extends StatelessWidget {
 
 //RxList<RoverCommands> roverCommands = <RoverCommands>[].obs;
 
-  List<String> _stateListCommands(RoverStateType roverState) {
+  _stateListCommands(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disabled:
-        return <String>['testa', 'test1a', 'test2a'];
+        return <String>[];
       case RoverStateType.docked:
-        return <String>['testb', 'test1b', 'test2b'];
+        return <String>['Undock'];
       case RoverStateType.eStop:
-        return <String>['testc', 'test1c', 'test2c']; //hexagon?
+        return <String>[]; //hexagon?
       case RoverStateType.remoteOperation:
         return <String>['testd', 'test1d', 'test2d'];
     }
