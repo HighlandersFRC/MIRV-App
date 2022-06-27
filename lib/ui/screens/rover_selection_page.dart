@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:location/location.dart';
@@ -173,10 +175,13 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             width: 5,
           ),
           Expanded(
-              child: RoverSelectionMap(roverList.value
-                  .map((e) => RoverLocation(
-                      location: LatLng(40.4741, -104.9694), roverId: e.roverId))
-                  .toList()))
+              child: ChangeNotifierProvider(
+            create: (context) => ApplicationBloc(),
+            child: RoverSelectionMap(roverList.value
+                .map((e) => RoverLocation(
+                    location: LatLng(40.4741, -104.9694), roverId: e.roverId))
+                .toList()),
+          ))
         ],
       ),
     );
