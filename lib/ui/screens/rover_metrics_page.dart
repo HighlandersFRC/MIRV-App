@@ -34,8 +34,8 @@ class _RoverMetricsPageState extends State<RoverMetricsPage> {
 class MetricDataTable extends StatelessWidget {
   MetricDataTable(RoverMetrics roverMetrics, {Key? key}) : super(key: key);
 
-  MirvApi _mirvApi = MirvApi();
-  RoverMetrics roverMetrics = RoverMetrics();
+  final MirvApi _mirvApi = MirvApi();
+  RoverMetrics roverMetrics = const RoverMetrics();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class MetricDataTable extends StatelessWidget {
           label: Text('rover 1'),
         ),
       ],
-      rows: <DataRow>[
+      rows: const <DataRow>[
         DataRow(
           cells: <DataCell>[
             DataCell(Text('state')),
