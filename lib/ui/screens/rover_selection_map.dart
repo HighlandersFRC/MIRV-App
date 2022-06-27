@@ -28,7 +28,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/rover_icon.png');
 
-    getMarkers();
   }
 
   LocationData? _locationData;
@@ -98,28 +97,17 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           ImageConfiguration(), 'assets/images/rover_icon.png');
     }
 
-    void _onMapCreated(GoogleMapController controller) {
-      _mapController = controller;
-      setState(() {
-        markers.add(
-          Marker(
-            markerId: MarkerId('0'),
-            position: LatLng(40.47409240012248, -104.96951248978753),
-            infoWindow: InfoWindow(title: 'Pi-Lit', snippet: "Number One"),
-          ),
-        );
-      });
+    
+    void _setPolygon() {
+      final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
+      _polygons.add(Polygon(
+        polygonId: PolygonId(polygonIdVal),
+        points: polygonLatLngs,
+        strokeWidth: 2,
+        strokeColor: Colors.yellow,
+        fillColor: Colors.yellow.withOpacity(0.15),
+      ));
     }
-     void _setPolygon() {
-    final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
-    _polygons.add(Polygon(
-      polygonId: PolygonId(polygonIdVal),
-      points: polygonLatLngs,
-      strokeWidth: 2,
-      strokeColor: Colors.yellow,
-      fillColor: Colors.yellow.withOpacity(0.15),
-    ));
-  }
   }
 
   @override
@@ -192,7 +180,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                         zoom: 14,
                       ),
                       markers: getMarkers(),
-                       polygons: _polygons,
+                      polygons: _polygons,
                       onMapCreated: (GoogleMapController controller) {
                         _mapController = controller;
                       },
@@ -230,9 +218,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                 snippet: 'My Custom Subtitle',
               ),
               icon: mapMarker,
-              onTap: () {
+              onTap: () async {
                 _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(target: rover.location, zoom: this.zoom)));
+                    CameraPosition(
+                        target: rover.location,
+                        zoom: await _mapController!.getZoomLevel())));
               });
           //add more markers here
         })
