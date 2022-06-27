@@ -14,55 +14,53 @@ class ToggleDisable extends StatefulWidget {
 }
 
 class _ToggleDisableState extends State<ToggleDisable> {
-  List<bool> selected = [true, false];
+  bool enable = true;
 
-  _selected() {
-    widget.roverMetrics.state == RoverStateType.disabled
-        ? selected = [false, true]
-        : null;
+  _enableState(RoverStateType roverState) {
+    switch (roverState) {
+      case RoverStateType.disabled:
+        enable = false;
+        break;
+      default:
+        return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _selected();
+    _enableState(widget.roverMetrics.state);
     return FittedBox(
-        fit: BoxFit.fill,
-        child: Container(
-          color: Colors.red[100],
-          child: ToggleButtons(
-            fillColor: Colors.green[700],
-            color: Colors.black,
-            selectedColor: Colors.black,
-            renderBorder: false,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('enable'),
+      fit: BoxFit.fill,
+      child: Row(
+        children: [
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: enable == true
+                    ? MaterialStateProperty.all(Colors.green)
+                    : MaterialStateProperty.all(Colors.red),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('disable'),
-              )
-            ],
-            isSelected: selected,
-            onPressed: (int newIndex) {
-              setState(() {
-                for (int index = 0; index < selected.length; index++) {
-                  if (index == newIndex) {
-                    selected[index] = true;
-                  } else {
-                    selected[index] = false;
-                  }
-                }
-                if (selected[0] == true) {
-                  print('enable');
-                }
-                if (selected[1] == true) {
-                  print('disable');
-                }
-              });
-            },
-          ),
-        ));
+              onPressed: () {
+                // TODO: implement enable massage
+                setState(() {
+                  enable = true;
+                });
+              },
+              child: Text('Enable')),
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: enable == true
+                    ? MaterialStateProperty.all(Colors.red)
+                    : MaterialStateProperty.all(Colors.green),
+              ),
+              onPressed: () {
+                // TODO: implement disable massage
+                setState(() {
+                  enable = false;
+                });
+              },
+              child: Text('Disable'))
+        ],
+      ),
+    );
   }
 }

@@ -78,34 +78,17 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
   }
 
+// TODO: implement e-stop method
   eStop() {
-    print("Emergency stop hasnt been coded yet, go screw yourself");
-  }
-
-  doNothing() {
-    print("he he he ha!");
+    throw UnimplementedError('E-stop is not implemented');
   }
 
   _robotModeButton(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disabled:
-        return ElevatedButton.icon(
-          onPressed: doNothing,
-          label: const Text(
-            " Manual Control",
-            textScaleFactor: 1.5,
-          ),
-          icon: const Icon(
-            CupertinoIcons.antenna_radiowaves_left_right,
-            size: 60,
-          ),
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-        );
       case RoverStateType.docked:
         return ElevatedButton.icon(
-          onPressed: doNothing,
+          onPressed: null,
           label: const Text(
             " Manual Control",
             textScaleFactor: 1.5,
@@ -121,7 +104,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
       case RoverStateType.remoteOperation:
         return ElevatedButton(
-          onPressed: doNothing,
+          onPressed: null,
           child: Row(children: [
             Icon(
               Icons.smart_toy_outlined,
@@ -349,7 +332,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   Container(
                     width: 175,
                     child: ElevatedButton.icon(
-                      onPressed: doNothing,
+                      onPressed: null,
                       label: const Text(
                         "Map",
                         textScaleFactor: 2.5,
@@ -386,7 +369,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
               width: 800,
               height: 450,
               child: ElevatedButton(
-                onPressed: doNothing,
+                onPressed: null,
                 child: Text("video"),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
