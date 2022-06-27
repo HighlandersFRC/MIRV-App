@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:test/Blocs/autocomplete/application_bloc.dart';
+import 'package:test/models/rover_location.dart';
+import 'package:test/models/rover_state_type.dart';
 import 'package:location/location.dart';
 import 'package:test/functions_copy_and_paste.dart';
 import 'package:test/models/rover_status_type.dart';
@@ -122,15 +127,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             onPressed: () => NavigationRoutes.goStatus,
             child: const Icon(Icons.info_sharp)),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MapPage()),
-          );
-        }),
-        child: const Icon(Icons.map),
-      ),
+
       body: Row(
         children: [
           SizedBox(
@@ -226,7 +223,14 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             color: Colors.black,
             width: 5,
           ),
-          Expanded(child: RoverSelectionMap(location))
+          Expanded(
+              child: ChangeNotifierProvider(
+            create: (context) => ApplicationBloc(),
+            child: RoverSelectionMap(roverList.value
+                .map((e) => RoverLocation(
+                    location: LatLng(40.4741, -104.9694), roverId: e.roverId))
+                .toList()),
+          ))
         ],
       ),
     );
