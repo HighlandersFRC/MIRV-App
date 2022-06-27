@@ -21,14 +21,14 @@ class RoverSelectionMap extends StatefulWidget {
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
   // LatLng _cameraCenterLocation =
   //     new LatLng(40.47382939771208, -104.96933444375819);
-
+  Set<Marker> markers = new Set();
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/pi_lit_icon.png');
 
-    //getMarkers();
+    getMarkers();
   }
 
   LocationData? _locationData;
@@ -38,7 +38,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   late StreamSubscription boundsSubscription;
   final _locationController = TextEditingController();
 
-  Set<Marker> markers = HashSet<Marker>();
+  // Set<Marker> markers = HashSet<Marker>();
   Set<Polygon> _polygons = HashSet<Polygon>();
   Set<Circle> _circles = HashSet<Circle>();
   List<LatLng> polygonLatLngs = <LatLng>[];
@@ -93,6 +93,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         fillColor: Colors.yellow.withOpacity(0.15),
       ));
     });
+    void _setMarkerIcon() async {
+      _markerIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+    }
+
+    void _onMapCreated(GoogleMapController controller) {
+      _mapController = controller;
+      setState(() {
+        markers.add(
+          Marker(
+            markerId: MarkerId('0'),
+            position: LatLng(40.47409240012248, -104.96951248978753),
+            infoWindow: InfoWindow(title: 'Pi-Lit', snippet: "Number One"),
+          ),
+        );
+      });
+    }
   }
 
   @override
@@ -164,6 +181,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                             applicationBloc.currentLocation!.longitude),
                         zoom: 14,
                       ),
+                      markers: getMarkers(),
                       onMapCreated: (GoogleMapController controller) {
                         _mapController = controller;
                       },
@@ -184,5 +202,31 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
             zoom: 14.0),
       ),
     );
+  }
+
+  Set<Marker> getMarkers() {
+    //markers to place on map
+    setState(() {
+      markers = {
+        ...this.widget.rovers.map((rover) {
+          return Marker(
+              //add first marker
+              markerId: MarkerId(rover.roverId),
+              position: rover.location, //position of marker
+              infoWindow: InfoWindow(
+                //popup info
+                title: rover.roverId,
+                snippet: 'My Custom Subtitle',
+              ),
+              icon: mapMarker,
+              onTap: () {
+                _mapController?.animateCamera(CameraUpdate.newCameraPosition(
+                    CameraPosition(target: rover.location, zoom: this.zoom)));
+              });
+          //add more markers here
+        })
+      };
+    });
+    return markers;
   }
 }
