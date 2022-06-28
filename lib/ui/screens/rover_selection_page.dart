@@ -226,10 +226,12 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Expanded(
               child: ChangeNotifierProvider(
             create: (context) => ApplicationBloc(),
-            child: RoverSelectionMap(roverList.value
-                .map((e) => RoverLocation(
-                    location: LatLng(40.4741, -104.9694), roverId: e.roverId))
-                .toList()),
+            child: Obx(() =>
+              RoverSelectionMap(roverList.value
+                  .map((e) => RoverLocation(
+                      location: LatLng(40.47406602779067, -104.9695711745099), roverId: e.roverId))
+                  .toList()),
+            ),
           ))
         ],
       ),

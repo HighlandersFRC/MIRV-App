@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:test/models/searchbox_places.dart';
 
+
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverLocation> rovers;
   RoverSelectionMap(this.rovers);
