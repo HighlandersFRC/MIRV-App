@@ -60,19 +60,19 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             setState(() {
               mapController = controller;
             });
-            this.widget.locationStream.stream.listen((location) => mapController
+            this.widget.locationStream.stream.listen((location) async => mapController
                 ?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                    target: LatLng(location.latitude, location.longitude)))));
+                    target: LatLng(location.latitude, location.longitude), zoom: await mapController!.getZoomLevel()))));
           },
         ),
         Align(
           alignment: Alignment.bottomLeft,
           child: ElevatedButton(
-            onPressed: () {
-              (location) => mapController?.animateCamera(
+            onPressed: ()  async =>
+             mapController?.animateCamera(
                   CameraUpdate.newCameraPosition(CameraPosition(
-                      target: LatLng(location.latitude, location.longitude))));
-            },
+                      target: LatLng(widget.locationStream.value.latitude, widget.locationStream.value.longitude) , zoom: await mapController!.getZoomLevel()))),
+            
             child: const Icon(Icons.map),
           ),
         ),
@@ -90,7 +90,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
           position: piLit.location, //position of marker
           infoWindow: InfoWindow(
             //popup info
-            title: piLit.roverId,
+            title: 'piLit.roverId',
             snippet: 'My Custom Subtitle',
           ),
           icon: mapMarker,
