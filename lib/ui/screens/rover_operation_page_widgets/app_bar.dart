@@ -23,7 +23,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: Color.fromARGB(255, 0, 0, 0),
         size: 40,
       ),
-      leading: IconButton(
+      leadingWidth: 200,
+      leading: ElevatedButton(
         onPressed: () => showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -46,14 +47,21 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               );
             }),
-        icon: Icon(Icons.wifi_tethering_off_outlined, color: Colors.red),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Text('Disconnect'),
+          Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
+        ]),
       ),
       foregroundColor: Colors.black,
       shadowColor: const Color.fromARGB(0, 0, 0, 0),
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-      title: const Text(
-        "Rover Manual Control",
-      ),
+      title: StreamBuilder<RoverMetrics>(
+          stream: mirvApi.periodicMetricUpdates,
+          builder: (context, snapshot) {
+            return Text(snapshot.data != null
+                ? '${snapshot.data!.state}'
+                : 'Waiting on data');
+          }),
       actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),
