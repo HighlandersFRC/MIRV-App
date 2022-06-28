@@ -79,7 +79,7 @@ class RoverStatusBar extends StatelessWidget {
               //lidar
               _healthIcon(
                   roverHealthType: roverMetrics!.health.drivetrain,
-                  healthIconChoice: Icons.camera), //camera
+                  healthIconChoice: Icons.camera_alt), //camera
               _healthIcon(
                   roverHealthType: roverMetrics!.health.intake,
                   healthIconChoice: Icons.rotate_90_degrees_ccw), //imu

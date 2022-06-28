@@ -8,15 +8,14 @@ class CommandList extends StatelessWidget {
 
 //RxList<RoverCommands> roverCommands = <RoverCommands>[].obs;
 
-  List<String> _stateListCommands(RoverStateType roverState) {
+  _stateListCommands(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disabled:
-        print('disable');
-        return <String>['testa', 'test1a', 'test2a'];
+        return <String>[];
       case RoverStateType.docked:
-        return <String>['testb', 'test1b', 'test2b'];
+        return <String>['Undock'];
       case RoverStateType.eStop:
-        return <String>['testc', 'test1c', 'test2c']; //hexagon?
+        return <String>[]; //hexagon?
       case RoverStateType.remoteOperation:
         return <String>['testd', 'test1d', 'test2d'];
     }
@@ -30,24 +29,12 @@ class CommandList extends StatelessWidget {
                 itemCount: _stateListCommands(roverMetrics!.state).length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                      title:
-                          Text(_stateListCommands(roverMetrics!.state)[index]));
+                      title: ElevatedButton(
+                    child: Text(_stateListCommands(roverMetrics!.state)[index]),
+                    onPressed: () {},
+                  ));
                 },
               )
             : null);
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: ListView.builder(
-  //       itemBuilder: (context, index) {
-  //         return ListTile(
-  //           title: Text($roverCommands[index].name),
-  //           onTap: roverCommands[index].action,
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 }

@@ -12,17 +12,16 @@ import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 
 class SelectedRoverController extends GetxController {
-  var selectedRoverId = "".obs;
-  var isConnectButtonEnabled = false.obs;
+  Rx<String> selectedRoverId = "".obs;
+  Rx<bool> isConnectButtonEnabled = false.obs;
 
   SelectedRoverController() {
-    selectedRoverId
-        .listen((roverId) => isConnectButtonEnabled.value = (roverId != ""));
+    selectedRoverId.listen((selectedroverId) =>
+        isConnectButtonEnabled.value = (selectedroverId != ""));
   }
 
   setSelectedRoverId(String roverId) {
@@ -111,6 +110,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    _refreshRoversList();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
@@ -175,12 +175,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       icon: const Icon(
                                           Icons.arrow_forward_ios_rounded),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RoverOpPage()),
-                                        );
+                                        NavigationRoutes.goOp(context);
                                       },
                                     )
                                   ],
@@ -195,25 +190,27 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              selectedRoverController
-                                      .isConnectButtonEnabled.value
-                                  ? Colors.blue
-                                  : Colors.grey)),
-                      onPressed:
-                          selectedRoverController.isConnectButtonEnabled.value
-                              ? () {
-                                  print('click');
-                                }
-                              : null,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.link_rounded),
-                          Text(' Connect'),
-                        ],
+                    child: Obx(
+                      () => ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                selectedRoverController
+                                        .isConnectButtonEnabled.value
+                                    ? Colors.blue
+                                    : Colors.grey)),
+                        onPressed:
+                            selectedRoverController.isConnectButtonEnabled.value
+                                ? () {
+                                    print('click');
+                                  }
+                                : null,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.link_rounded),
+                            Text(' Connect'),
+                          ],
+                        ),
                       ),
                     )),
               ],

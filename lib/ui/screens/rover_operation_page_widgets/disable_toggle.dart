@@ -1,62 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:test/models/rover_metrics.dart';
+import 'package:test/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
-  const ToggleDisable({Key? key}) : super(key: key);
+  final RoverMetrics roverMetrics;
+  const ToggleDisable({
+    Key? key,
+    required this.roverMetrics,
+  }) : super(key: key);
+
   @override
   State<ToggleDisable> createState() => _ToggleDisableState();
 }
 
 class _ToggleDisableState extends State<ToggleDisable> {
-  List<bool> selected = [false, true];
+  bool enable = true;
+
+  _enableState(RoverStateType roverState) {
+    switch (roverState) {
+      case RoverStateType.disabled:
+        enable = false;
+        break;
+      default:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red[100],
-      child: ToggleButtons(
-        fillColor: Colors.green[700],
-        color: Colors.black,
-        selectedColor: Colors.black,
-        renderBorder: false,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('enable'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('disable'),
-          )
+    _enableState(widget.roverMetrics.state);
+    return FittedBox(
+      fit: BoxFit.fill,
+      child: Row(
+        children: [
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: enable == true
+                    ? MaterialStateProperty.all(Colors.green)
+                    : MaterialStateProperty.all(Colors.red),
+              ),
+              onPressed: () {
+                // TODO: implement enable massage
+                setState(() {
+                  enable = true;
+                });
+              },
+              child: Text('Enable')),
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: enable == true
+                    ? MaterialStateProperty.all(Colors.red)
+                    : MaterialStateProperty.all(Colors.green),
+              ),
+              onPressed: () {
+                // TODO: implement disable massage
+                setState(() {
+                  enable = false;
+                });
+              },
+              child: Text('Disable'))
         ],
-        isSelected: selected,
-        onPressed: (int newIndex) {
-          setState(() {
-            for (int index = 0; index < selected.length; index++) {
-              if (index == newIndex) {
-                selected[index] = true;
-              } else {
-                selected[index] = false;
-              }
-            }
-            if (selected[0] == true) {
-              print('enable');
-            }
-            if (selected[1] == true) {
-              print('disable');
-            }
-          });
-        },
       ),
     );
   }
-
-  // roverStateMessage(index) {
-  //   switch (selected) {
-  //     case selected[index] == true:
-  //   }
-
-  //   if (selected[1] == true) {
-  //     print('enable');
-  //   }
-  // }
 }

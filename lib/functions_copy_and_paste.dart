@@ -58,8 +58,4 @@ class NavigationRoutes {
       MaterialPageRoute(builder: (context) => InfoPage()),
     );
   }
-
-  static doNothing(BuildContext context) {
-    print("he he he ha!");
-  }
 }
