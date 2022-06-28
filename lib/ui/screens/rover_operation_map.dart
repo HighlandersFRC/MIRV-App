@@ -27,8 +27,11 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
   void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
+    var tempMapMarker = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+    setState(() {
+      mapMarker = tempMapMarker;
+    });
   }
 
   @override
@@ -51,7 +54,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             target: showLocation,
             zoom: 15.0,
           ),
-          markers: getMarkers(),
+          markers: getMarkers(mapMarker),
           mapType: MapType.hybrid,
           onMapCreated: (controller) {
             setState(() {
@@ -77,31 +80,30 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     );
   }
 
-  Set<Marker> getMarkers() {
+  Set<Marker> getMarkers(mapMarker) {
     //markers to place on map
-    setState(() {
-      markers = {
-        ...this.widget.piLitMarkers.map((piLit) {
-          return Marker(
-              //add first marker
-              markerId: MarkerId(piLit.roverId),
-              position: piLit.location, //position of marker
-              infoWindow: InfoWindow(
-                //popup info
-                title: piLit.roverId,
-                snippet: 'My Custom Subtitle',
-              ),
-              icon: mapMarker,
-              onTap: () async {
-                mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: piLit.location,
-                        zoom: await mapController!.getZoomLevel())));
-              });
-          //add more markers here
-        })
-      };
-    });
+    var markers = {
+      ...this.widget.piLitMarkers.map((piLit) {
+        return Marker(
+          //add first marker
+          markerId: MarkerId(piLit.roverId),
+          position: piLit.location, //position of marker
+          infoWindow: InfoWindow(
+            //popup info
+            title: piLit.roverId,
+            snippet: 'My Custom Subtitle',
+          ),
+          icon: mapMarker,
+          // onTap: () async {
+          //   mapController?.animateCamera(CameraUpdate.newCameraPosition(
+          //       CameraPosition(
+          //           target: piLit.location,
+          //           zoom: await mapController!.getZoomLevel())));
+          // }
+        );
+        //add more markers here
+      })
+    };
     return markers;
   }
 }
