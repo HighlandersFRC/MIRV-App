@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:test/functions_copy_and_paste.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
@@ -94,15 +92,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
-  void _infoButtonPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const StatusPage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
@@ -119,17 +108,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               icon: const Icon(Icons.refresh_rounded, size: 45))
         ],
         leading: ElevatedButton(
-            onPressed: () => NavigationRoutes.goStatus,
+            onPressed: () {
+              Get.to(StatusPage());
+            },
             child: const Icon(Icons.info_sharp)),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MapPage()),
-          );
-        }),
-        child: const Icon(Icons.map),
       ),
       body: Row(
         children: [
@@ -178,7 +160,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       icon: const Icon(
                                           Icons.arrow_forward_ios_rounded),
                                       onPressed: () {
-                                        NavigationRoutes.goOp(context);
+                                        Get.to(RoverOpPage());
                                       },
                                     )
                                   ],

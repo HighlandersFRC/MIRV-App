@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/functions_copy_and_paste.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
@@ -14,15 +14,6 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    goStatus() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const StatusPage(),
-        ),
-      );
-    }
-
     return AppBar(
       iconTheme: const IconThemeData(
         color: Color.fromARGB(255, 0, 0, 0),
@@ -44,7 +35,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               }),
         ),
         ElevatedButton(
-          onPressed: goStatus,
+          onPressed: () {
+            Get.to(StatusPage());
+          },
           style: ButtonStyle(
               overlayColor: MaterialStateProperty.all(Colors.amber),
               backgroundColor: MaterialStateProperty.all(Colors.blue[700])),

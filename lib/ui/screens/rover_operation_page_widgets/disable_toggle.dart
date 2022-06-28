@@ -41,6 +41,9 @@ class _ToggleDisableState extends State<ToggleDisable> {
               ),
               onPressed: () {
                 // TODO: implement enable massage
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Sending signal"),
+                ));
                 setState(() {
                   enable = true;
                 });

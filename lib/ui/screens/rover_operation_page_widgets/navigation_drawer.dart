@@ -4,49 +4,13 @@ import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:test/ui/screens/troubleshoot_page.dart';
+import 'package:get/get.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    goSelection() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const RoverSelectionPage()),
-      );
-    }
-
-    goStatus() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const StatusPage(),
-        ),
-      );
-    }
-
-    goTrouble() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-      );
-    }
-
-    goHome() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    }
-
-    goInfo() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const InfoPage()),
-      );
-    }
-
     return Container(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -66,7 +30,9 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: TextButton(
-              onPressed: goSelection,
+              onPressed: () {
+                Get.to(RoverSelectionPage());
+              },
               child: const Text(
                 "Go To Selection",
                 textWidthBasis: TextWidthBasis.longestLine,
@@ -80,7 +46,9 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: TextButton(
-              onPressed: goStatus,
+              onPressed: () {
+                Get.to(StatusPage());
+              },
               child: const Text(
                 "Go To Status",
                 textWidthBasis: TextWidthBasis.longestLine,
@@ -94,7 +62,9 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: TextButton(
-              onPressed: goTrouble,
+              onPressed: () {
+                Get.to(TroubleShootingPage());
+              },
               child: const Text(
                 "Go To Troubleshooting",
                 textWidthBasis: TextWidthBasis.longestLine,
@@ -108,7 +78,9 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: TextButton(
-              onPressed: goHome,
+              onPressed: () {
+                Get.to(HomePage());
+              },
               child: const Text(
                 "Go Home",
                 textWidthBasis: TextWidthBasis.longestLine,
@@ -122,7 +94,9 @@ class NavigationDrawer extends StatelessWidget {
           ),
           ListTile(
             title: TextButton(
-              onPressed: goInfo,
+              onPressed: () {
+                Get.to(InfoPage());
+              },
               child: const Text(
                 "Go To Info",
                 textWidthBasis: TextWidthBasis.longestLine,
