@@ -1,21 +1,15 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
-import 'package:test/ui/screens/home_page.dart';
-import 'package:test/ui/screens/info_page.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/navigation_drawer.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
-import 'package:test/ui/screens/troubleshoot_page.dart';
 import 'package:get/get.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:flutter_joystick/flutter_joystick.dart';
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -28,7 +22,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
   final MirvApi _mirvApi = MirvApi();
 
-  RoverMetrics roverMetrics = RoverMetrics();
+  RoverMetrics roverMetrics = const RoverMetrics();
   @override
   void initState() {
     super.initState();
@@ -41,273 +35,14 @@ class _RoverOpPageState extends State<RoverOpPage> {
     _mirvApi.stopPeriodicMetricUpdates();
   }
 
-  goSelection() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RoverSelectionPage()),
-    );
-  }
-
-  goStatus() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const StatusPage(),
-      ),
-    );
-  }
-
-  goTrouble() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-    );
-  }
-
-  goHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
-  }
-
-  goInfo() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const InfoPage()),
-    );
-  }
-
-// TODO: implement e-stop method
-  eStop() {
-    throw UnimplementedError('E-stop is not implemented');
-  }
-
-  _robotModeButton(RoverStateType roverState) {
-    switch (roverState) {
-      case RoverStateType.disabled:
-      case RoverStateType.docked:
-        return ElevatedButton.icon(
-          onPressed: null,
-          label: const Text(
-            " Manual Control",
-            textScaleFactor: 1.5,
-          ),
-          icon: const Icon(
-            CupertinoIcons.antenna_radiowaves_left_right,
-            size: 60,
-          ),
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-        );
-
-      case RoverStateType.remoteOperation:
-        return ElevatedButton(
-          onPressed: null,
-          child: Row(children: [
-            Icon(
-              Icons.smart_toy_outlined,
-              size: 55,
-            ),
-            Text(
-              " Autonomous \n Control",
-            ),
-          ]),
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-        );
-      case RoverStateType.eStop:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    double _x = 0;
-    double _y = 0;
-    var step = 10.0;
-    final JoystickMode _joystickMode = JoystickMode.all;
     return Scaffold(
-      appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Color.fromARGB(255, 0, 0, 0),
-            size: 40,
-          ),
-          shadowColor: const Color.fromARGB(0, 0, 0, 0),
-          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-          title: Text(
-            "Rover Manual Control",
-            style: TextStyle(color: Colors.black),
-            textScaleFactor: 1.75,
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder<RoverMetrics>(
-                  stream: _mirvApi.periodicMetricUpdates,
-                  builder: (context, snapshot) {
-                    return RoverStatusBar(roverMetrics: snapshot.data);
-                  }),
-            ),
-            ElevatedButton(
-              onPressed: goStatus,
-              child: const Text(
-                "Status",
-                textScaleFactor: 2.5,
-              ),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.elliptical(10, 7),
-                    ),
-                  ),
-                ), //shape
-                fixedSize: MaterialStateProperty.all(
-                  const Size(200, 300),
-                ), //size
-                overlayColor: MaterialStateProperty.all(Colors.amber),
-                alignment: Alignment.centerLeft,
-                shadowColor: MaterialStateProperty.all(
-                  const Color.fromARGB(100, 0, 0, 0),
-                ), //overlay color
-                backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(0, 128, 123, 123),
-                ), //background color
-                foregroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 0, 0, 0),
-                ), //foreground color
-              ),
-            ),
-          ]),
-
-      /*  actions: <Widget>[
-          ElevatedButton.icon(
-            onPressed: goStatus,
-            icon: _batteryIcon(bLevel, alertLevel: 20),
-            label: const Text(
-              "Status",
-              textScaleFactor: 2.5,
-            ),
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(2, 1),
-                  ),
-                ),
-              ), //shape
-              fixedSize: MaterialStateProperty.all(
-                const Size(200, 300),
-              ), //size
-              overlayColor: MaterialStateProperty.all(Colors.amber),
-              alignment: Alignment.centerLeft,
-              shadowColor: MaterialStateProperty.all(
-                const Color.fromARGB(100, 0, 0, 0),
-              ), //overlay color
-              backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 128, 123, 123),
-              ), //background color
-              foregroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 0, 0, 0),
-              ), //foreground color
-            ),
-          ),
-        ], */
-      //),
-      drawer: Drawer(
-        backgroundColor: const Color.fromARGB(255, 245, 245, 245),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 158, 182, 193),
-              ),
-              child: SizedBox(
-                height: 100,
-                width: 100,
-                child: Icon(
-                  Icons.drive_eta_sharp,
-                  size: 100,
-                ),
-              ),
-            ),
-            ListTile(
-              title: TextButton(
-                onPressed: goSelection,
-                child: const Text(
-                  "Go To Selection",
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            ListTile(
-              title: TextButton(
-                onPressed: goStatus,
-                child: const Text(
-                  "Go To Status",
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            ListTile(
-              title: TextButton(
-                onPressed: goTrouble,
-                child: const Text(
-                  "Go To Troubleshooting",
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            ListTile(
-              title: TextButton(
-                onPressed: goHome,
-                child: const Text(
-                  "Go Home",
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            ListTile(
-              title: TextButton(
-                onPressed: goInfo,
-                child: const Text(
-                  "Go To Info",
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Color.fromARGB(150, 0, 0, 0),
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-          ],
-        ),
+      appBar: OpPgAppBar(
+        mirvApi: _mirvApi,
       ),
+      //
+      drawer: const Drawer(child: NavigationDrawer()),
       endDrawer: Drawer(
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
@@ -320,47 +55,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
           Align(
             alignment: Alignment.bottomLeft,
             child: SizedBox(
-              width: 200,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      width: 175, child: _robotModeButton(roverMetrics.state)),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: 175,
-                    child: ElevatedButton.icon(
-                      onPressed: null,
-                      label: const Text(
-                        "Map",
-                        textScaleFactor: 2.5,
-                      ),
-                      icon: const Icon(
-                        Icons.map,
-                        size: 60,
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 250,
-                    height: 500,
-                    child: StreamBuilder<RoverMetrics>(
-                        stream: _mirvApi.periodicMetricUpdates,
-                        builder: (context, snapshot) {
-                          return CommandList(roverMetrics: roverMetrics);
-                        }),
-                  )
-                ],
-              ),
-            ),
+                width: 200,
+                child: LeftSideButtons(
+                  mirvApi: _mirvApi,
+                  roverMetrics: roverMetrics,
+                )),
           ),
           Align(
             alignment: Alignment.center,
@@ -370,107 +69,18 @@ class _RoverOpPageState extends State<RoverOpPage> {
               height: 450,
               child: ElevatedButton(
                 onPressed: null,
-                child: Text("video"),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
-                    Color.fromARGB(255, 194, 194, 194),
+                    const Color.fromARGB(255, 194, 194, 194),
                   ),
                 ),
+                child: const Text("video"),
               ),
             ),
           ),
           Align(
-            alignment: Alignment.bottomRight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Builder(builder: (context) {
-                    return ElevatedButton.icon(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                roverMetrics.state ==
-                                        RoverStateType.remoteOperation
-                                    ? Colors.blue
-                                    : Colors.grey)),
-                        onPressed: () {
-                          roverMetrics.state == RoverStateType.remoteOperation
-                              ? Scaffold.of(context).openEndDrawer()
-                              : null;
-                        },
-                        label: Text("Commands"),
-                        icon: Icon(
-                          Icons.list_alt,
-                        ));
-                  }),
-                ),
-                SizedBox(
-                  height: 20,
-                  width: 250,
-                ),
-                SizedBox(
-                  height: 100,
-                  width: 225,
-                  child: StreamBuilder<RoverMetrics>(
-                      stream: _mirvApi.periodicMetricUpdates,
-                      builder: (context, snapshot) {
-                        return ToggleDisable(roverMetrics: roverMetrics);
-                      }),
-                ),
-                SizedBox(
-                  height: 20,
-                  width: 250,
-                ),
-                SizedBox(
-                    child:
-                        (roverMetrics.state == RoverStateType.remoteOperation)
-                            ? Joystick(
-                                mode: _joystickMode,
-                                listener: (details) {
-                                  setState(
-                                    () {
-                                      _x = details.x;
-                                      _y = details.y;
-                                    },
-                                  );
-                                },
-                              )
-                            : null),
-                const SizedBox(
-                  height: 20,
-                  width: 100,
-                ),
-                SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: ElevatedButton.icon(
-                    onPressed: eStop,
-                    label: const Text("E-STOP"),
-                    icon: const Icon(Icons.warning_amber_rounded),
-                    style: ButtonStyle(
-                        animationDuration: Duration(seconds: 10),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.red[700]),
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.yellowAccent),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                            side: BorderSide(
-                                color: Color.fromARGB(255, 250, 250, 250),
-                                width: 10),
-                          ),
-                        ),
-                        shadowColor: MaterialStateProperty.all(
-                            Color.fromARGB(0, 0, 0, 0))),
-                  ),
-                )
-              ],
-            ),
-          ),
+              alignment: Alignment.bottomRight,
+              child: RightSideButtons(roverMetrics: roverMetrics)),
         ],
       ),
     );

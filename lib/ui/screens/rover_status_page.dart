@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/troubleshoot_page.dart';
 
 class StatusPage extends StatefulWidget {

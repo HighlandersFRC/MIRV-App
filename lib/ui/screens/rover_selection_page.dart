@@ -7,7 +7,6 @@ import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 
