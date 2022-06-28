@@ -7,7 +7,6 @@ import 'package:test/models/rover_location.dart';
 import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_operation_map.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {

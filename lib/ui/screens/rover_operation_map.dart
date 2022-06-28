@@ -43,10 +43,10 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Rover 1"),
-        backgroundColor: Colors.deepOrangeAccent,
-      ),
+      // appBar: AppBar(
+      //   title: Text("Rover 1"),
+      //   backgroundColor: Colors.deepOrangeAccent,
+      // ),
       body: Stack(children: <Widget>[
         GoogleMap(
           zoomGesturesEnabled: true,
@@ -90,7 +90,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
           position: piLit.location, //position of marker
           infoWindow: InfoWindow(
             //popup info
-            title: 'piLit.roverId',
+            title: piLit.roverId,
             snippet: 'My Custom Subtitle',
           ),
           icon: mapMarker,
