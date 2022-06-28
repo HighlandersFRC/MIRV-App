@@ -49,7 +49,7 @@ async def offer(request):
     params = await request.json()
     print("Received Params")
     print(params)
-    offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
+    offer = RTCSessionDescription(sdp=params["offer"]["sdp"], type=params["offer"]["type"])
 
     pc = RTCPeerConnection()
     pc.addTrack(FlagVideoStreamTrack())
@@ -65,7 +65,7 @@ async def offer(request):
 
     @pc.on("connectionstatechange")
     async def on_connectionstatechange():
-        log_info("Connection state is %s", pc.connectionState)
+        #log_info("Connection state is %s", pc.connectionState)
         if pc.connectionState == "failed":
             await pc.close()
             pcs.discard(pc)
@@ -85,7 +85,7 @@ async def offer(request):
     return web.Response(
         content_type="application/json",
         text=json.dumps(
-            {"sdp": pc.localDescription.sdp, "type": pc.localDescription.type}
+            {"answer": json.dumps({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type})}
         ),
     )
 

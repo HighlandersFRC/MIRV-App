@@ -50,6 +50,7 @@ class _P2PVideoState extends State<P2PVideo> {
   }
 
   void _onDataChannelState(RTCDataChannelState? state) {
+    print("State ${state}");
     switch (state) {
       case RTCDataChannelState.RTCDataChannelClosed:
         print("Camera Closed!!!!!!!");
@@ -93,32 +94,37 @@ class _P2PVideoState extends State<P2PVideo> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('http://localhost:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('http://localhost:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            //Uri.parse('http://localhost:8080/offer')
           );
           request.body = json.encode(
             {
-              "sdp": des!.sdp,
-              "type": des.type,
-              "video_transform": transformType,
-            },
+              "connection_id": "string",
+              "rover_id": "rover_6",
+              "offer": {
+                "sdp": des!.sdp,
+                "type": des.type,
+                "video_transform": transformType,
+              }
+            }
+            
           );
           request.headers.addAll(headers);
-
           http.StreamedResponse response = await request.send();
-
           String data = "";
-          print(response);
           if (response.statusCode == 200) {
             data = await response.stream.bytesToString();
+            print(data);
             var dataMap = json.decode(data);
-            print(dataMap);
+            var answerMap = json.decode(dataMap["answer"]);
             await _peerConnection!.setRemoteDescription(
               RTCSessionDescription(
-                dataMap["sdp"],
-                dataMap["type"],
+                answerMap["sdp"],
+                answerMap["type"],
               ),
             );
           } else {
+            print("Unable to Connect");
             print(response.reasonPhrase);
           }
         });
@@ -151,6 +157,7 @@ class _P2PVideoState extends State<P2PVideo> {
       print("NEGOTIATE");
       await _negotiateRemoteConnection();
     } catch (e) {
+      print("Failure in Negotiation");
       print(e.toString());
     }
     if (!mounted) return;
@@ -184,7 +191,7 @@ class _P2PVideoState extends State<P2PVideo> {
     super.initState();
 
     initLocalRenderers();
-    _makeCall();
+    //_makeCall();
   }
 
   @override
@@ -266,7 +273,7 @@ class _P2PVideoState extends State<P2PVideo> {
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                     ),
                     onPressed: () {
-                      print(_dataChannel);
+                      //print(_dataChannel);
                       if (_dataChannel != null) {
                         String messageText = messageBoxController.text;
                         _dataChannel!.send(RTCDataChannelMessage(messageText));
