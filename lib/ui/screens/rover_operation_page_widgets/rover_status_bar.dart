@@ -50,9 +50,18 @@ class RoverStatusBar extends StatelessWidget {
     }
   }
 
-  Icon _healthIcon(
+  _healthIcon(
       {required RoverHealthType roverHealthType,
       required IconData healthIconChoice}) {
+    switch (roverHealthType) {
+      case RoverHealthType.degraded:
+        return Icon(healthIconChoice, color: Colors.red);
+      case RoverHealthType.unhealthy:
+        return Icon(healthIconChoice, color: Colors.yellow);
+      default:
+        return Visibility(visible: false, child: Icon(healthIconChoice));
+    }
+
     return Icon(healthIconChoice, color: roverHealthType.color3);
   }
 
@@ -79,7 +88,7 @@ class RoverStatusBar extends StatelessWidget {
               //lidar
               _healthIcon(
                   roverHealthType: roverMetrics!.health.drivetrain,
-                  healthIconChoice: Icons.camera), //camera
+                  healthIconChoice: Icons.camera_alt), //camera
               _healthIcon(
                   roverHealthType: roverMetrics!.health.intake,
                   healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
