@@ -48,7 +48,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   // MediaStream? _localStream;
   bool _inCalling = false;
-
+  bool isWorking = true;
   DateTime? _timeStart;
 
   bool _loading = false;
@@ -119,15 +119,17 @@ class _RoverOpPageState extends State<RoverOpPage> {
           var request = http.Request(
             'POST',
             Uri.parse(
-                'http://192.168.1.5:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
+                'http://172.250.250.95:8080/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
-          request.body = json.encode(
-            {
+          request.body = json.encode({
+            "connection_id": "string",
+            "rover_id": "rover_6",
+            "offer": {
               "sdp": des!.sdp,
               "type": des.type,
               "video_transform": transformType,
-            },
-          );
+            }
+          });
           request.headers.addAll(headers);
 
           http.StreamedResponse response = await request.send();
@@ -144,8 +146,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 dataMap["type"],
               ),
             );
+            isWorking = true;
           } else {
             print(response.reasonPhrase);
+            isWorking = false;
+            print(
+                "------------------------------------------------------------- \n Uh Oh! something went wrong and you couldn't connect to the rover! \n ------------------------------------------------------------");
           }
         });
   }
@@ -157,14 +163,14 @@ class _RoverOpPageState extends State<RoverOpPage> {
     var configuration = <String, dynamic>{
       'sdpSemantics': 'unified-plan',
     };
-
+    print("print stament 11111111111111");
     //* Create Peer Connection
     if (_peerConnection != null) return;
     _peerConnection =
         await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
-
+    print("2222222222222222222");
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
@@ -173,7 +179,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
-
+    print("3333333333333333333");
     try {
       print("NEGOTIATE");
       await _negotiateRemoteConnection();
@@ -181,14 +187,16 @@ class _RoverOpPageState extends State<RoverOpPage> {
       print(e.toString());
     }
     if (!mounted) return;
-
+    print("44444444444444444444444");
     setState(() {
       _inCalling = true;
       _loading = false;
     });
+    print("55555555555555555");
   }
 
   Future<void> _stopCall() async {
+    print("stop1111stop111stop1111stop111");
     try {
       await _dataChannel?.close();
       await _peerConnection?.close();
@@ -252,6 +260,14 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
+  String getButtonText() {
+    if (isWorking == true) {
+      return "Connect To Rover";
+    } else {
+      return "Unable to connect";
+    }
+  }
+
   goSelection() {
     Navigator.push(
       context,
@@ -289,16 +305,17 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
   }
 
-  eStop() {
-    print("Emergency stop hasnt been coded yet, go screw yourself");
-  }
-
   doNothing() {
     print("he he he ha!");
   }
 
   sendCommandToRover(String command) {
     print("Sending $command to rover");
+  }
+
+  roverConnect() {
+    print("you have pressed the connection button");
+    _makeCall();
   }
 
   @override
@@ -353,39 +370,6 @@ class _RoverOpPageState extends State<RoverOpPage> {
             ),
           ),
         ],
-        /*  actions: <Widget>[
-          ElevatedButton.icon(
-            onPressed: goStatus,
-            icon: _batteryIcon(bLevel, alertLevel: 20),
-            label: const Text(
-              "Status",
-              textScaleFactor: 2.5,
-            ),
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(2, 1),
-                  ),
-                ),
-              ), //shape
-              fixedSize: MaterialStateProperty.all(
-                const Size(200, 300),
-              ), //size
-              overlayColor: MaterialStateProperty.all(Colors.amber),
-              alignment: Alignment.centerLeft,
-              shadowColor: MaterialStateProperty.all(
-                const Color.fromARGB(100, 0, 0, 0),
-              ), //overlay color
-              backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 128, 123, 123),
-              ), //background color
-              foregroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 0, 0, 0),
-              ), //foreground color
-            ),
-          ),
-        ], */
       ),
       drawer: Drawer(
         backgroundColor: const Color.fromARGB(255, 245, 245, 245),
@@ -597,9 +581,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: sendCommandToRover("extraCommand1"),
+                            onPressed: sendCommandToRover("enable"),
                             child: Text(
-                              "Extra Command 1",
+                              "Enable",
                               textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
@@ -611,9 +595,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: sendCommandToRover("extraCommand1"),
+                            onPressed: sendCommandToRover("disable"),
                             child: Text(
-                              "Extra Command 2",
+                              "Disable",
                               textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
@@ -690,49 +674,26 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   width: 250,
                   height: 50,
                   child: ElevatedButton.icon(
-                      onPressed: doNothing,
-                      label: Text("Commands Menu"),
-                      icon: Icon(
-                        Icons.list_alt,
-                      )),
+                    onPressed: roverConnect,
+                    label: Text(getButtonText()),
+                    icon: Icon(
+                      Icons.wifi_calling_3,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 20,
                   width: 250,
                 ),
                 SizedBox(
-                  height: 125,
-                  width: 250,
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    primary: false,
-                    padding: const EdgeInsets.all(1),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: sendCommandToRover("enable"),
-                          child: Text("Enable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 132, 219, 110))),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: sendCommandToRover("disable"),
-                          child: Text("Disable"),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 255, 81, 81))),
-                        ),
-                      ),
-                    ],
+                  height: 150,
+                  width: 225,
+                  child: ElevatedButton(
+                    onPressed: _stopCall,
+                    child: Text("Stop call"),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromARGB(225, 255, 94, 0))),
                   ),
                 ),
                 SizedBox(

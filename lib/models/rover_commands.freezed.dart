@@ -20,7 +20,8 @@ RoverCommands _$RoverCommandsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoverCommands {
-  String get buttonInput => throw _privateConstructorUsedError;
+  RoverCommandType get commandType => throw _privateConstructorUsedError;
+  dynamic get commandParameters => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ abstract class $RoverCommandsCopyWith<$Res> {
   factory $RoverCommandsCopyWith(
           RoverCommands value, $Res Function(RoverCommands) then) =
       _$RoverCommandsCopyWithImpl<$Res>;
-  $Res call({String buttonInput});
+  $Res call({RoverCommandType commandType, dynamic commandParameters});
 }
 
 /// @nodoc
@@ -47,13 +48,18 @@ class _$RoverCommandsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? buttonInput = freezed,
+    Object? commandType = freezed,
+    Object? commandParameters = freezed,
   }) {
     return _then(_value.copyWith(
-      buttonInput: buttonInput == freezed
-          ? _value.buttonInput
-          : buttonInput // ignore: cast_nullable_to_non_nullable
-              as String,
+      commandType: commandType == freezed
+          ? _value.commandType
+          : commandType // ignore: cast_nullable_to_non_nullable
+              as RoverCommandType,
+      commandParameters: commandParameters == freezed
+          ? _value.commandParameters
+          : commandParameters // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -65,7 +71,7 @@ abstract class _$$_RoverCommandsCopyWith<$Res>
           _$_RoverCommands value, $Res Function(_$_RoverCommands) then) =
       __$$_RoverCommandsCopyWithImpl<$Res>;
   @override
-  $Res call({String buttonInput});
+  $Res call({RoverCommandType commandType, dynamic commandParameters});
 }
 
 /// @nodoc
@@ -81,13 +87,18 @@ class __$$_RoverCommandsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? buttonInput = freezed,
+    Object? commandType = freezed,
+    Object? commandParameters = freezed,
   }) {
     return _then(_$_RoverCommands(
-      buttonInput: buttonInput == freezed
-          ? _value.buttonInput
-          : buttonInput // ignore: cast_nullable_to_non_nullable
-              as String,
+      commandType: commandType == freezed
+          ? _value.commandType
+          : commandType // ignore: cast_nullable_to_non_nullable
+              as RoverCommandType,
+      commandParameters: commandParameters == freezed
+          ? _value.commandParameters
+          : commandParameters // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -95,17 +106,21 @@ class __$$_RoverCommandsCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_RoverCommands implements _RoverCommands {
-  const _$_RoverCommands({required this.buttonInput});
+  const _$_RoverCommands(
+      {required this.commandType, this.commandParameters = ""});
 
   factory _$_RoverCommands.fromJson(Map<String, dynamic> json) =>
       _$$_RoverCommandsFromJson(json);
 
   @override
-  final String buttonInput;
+  final RoverCommandType commandType;
+  @override
+  @JsonKey()
+  final dynamic commandParameters;
 
   @override
   String toString() {
-    return 'RoverCommands(buttonInput: $buttonInput)';
+    return 'RoverCommands(commandType: $commandType, commandParameters: $commandParameters)';
   }
 
   @override
@@ -114,13 +129,17 @@ class _$_RoverCommands implements _RoverCommands {
         (other.runtimeType == runtimeType &&
             other is _$_RoverCommands &&
             const DeepCollectionEquality()
-                .equals(other.buttonInput, buttonInput));
+                .equals(other.commandType, commandType) &&
+            const DeepCollectionEquality()
+                .equals(other.commandParameters, commandParameters));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(buttonInput));
+      runtimeType,
+      const DeepCollectionEquality().hash(commandType),
+      const DeepCollectionEquality().hash(commandParameters));
 
   @JsonKey(ignore: true)
   @override
@@ -134,14 +153,17 @@ class _$_RoverCommands implements _RoverCommands {
 }
 
 abstract class _RoverCommands implements RoverCommands {
-  const factory _RoverCommands({required final String buttonInput}) =
-      _$_RoverCommands;
+  const factory _RoverCommands(
+      {required final RoverCommandType commandType,
+      final dynamic commandParameters}) = _$_RoverCommands;
 
   factory _RoverCommands.fromJson(Map<String, dynamic> json) =
       _$_RoverCommands.fromJson;
 
   @override
-  String get buttonInput => throw _privateConstructorUsedError;
+  RoverCommandType get commandType => throw _privateConstructorUsedError;
+  @override
+  dynamic get commandParameters => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverCommandsCopyWith<_$_RoverCommands> get copyWith =>
