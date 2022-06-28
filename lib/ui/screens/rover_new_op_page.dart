@@ -5,8 +5,6 @@ import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.d
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/navigation_drawer.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:get/get.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
@@ -40,14 +38,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
     return Scaffold(
       appBar: OpPgAppBar(
         mirvApi: _mirvApi,
+        roverMetrics: roverMetrics,
       ),
-      //
-      drawer: const Drawer(child: NavigationDrawer()),
       endDrawer: Drawer(
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
             builder: (context, snapshot) {
-              return CommandList(roverMetrics: roverMetrics);
+              return CommandList(roverMetrics: snapshot.data);
             }),
       ),
       body: Row(
@@ -63,19 +60,30 @@ class _RoverOpPageState extends State<RoverOpPage> {
           ),
           Align(
             alignment: Alignment.center,
-            child: Container(
-              color: Colors.amber,
-              width: 800,
-              height: 450,
-              child: ElevatedButton(
-                onPressed: null,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 194, 194, 194),
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.amber,
+                  width: 800,
+                  height: 450,
+                  child: ElevatedButton(
+                    onPressed: null,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 194, 194, 194),
+                      ),
+                    ),
+                    child: const Text("video"),
                   ),
                 ),
-                child: const Text("video"),
-              ),
+                StreamBuilder<RoverMetrics>(
+                    stream: _mirvApi.periodicMetricUpdates,
+                    builder: (context, snapshot) {
+                      return Text(snapshot.data != null
+                          ? '${snapshot.data!.telemetry}'
+                          : 'Waiting on data');
+                    }),
+              ],
             ),
           ),
           Align(

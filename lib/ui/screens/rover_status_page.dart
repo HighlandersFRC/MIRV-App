@@ -23,13 +23,6 @@ class HealthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    goTrouble() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

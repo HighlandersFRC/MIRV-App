@@ -94,7 +94,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.mirvApi.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return CommandList(roverMetrics: widget.roverMetrics);
+                return CommandList(roverMetrics: snapshot.data);
               }),
         )
       ],

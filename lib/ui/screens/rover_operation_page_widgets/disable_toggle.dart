@@ -3,7 +3,7 @@ import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
-  final RoverMetrics roverMetrics;
+  final RoverMetrics? roverMetrics;
   const ToggleDisable({
     Key? key,
     required this.roverMetrics,
@@ -28,42 +28,21 @@ class _ToggleDisableState extends State<ToggleDisable> {
 
   @override
   Widget build(BuildContext context) {
-    _enableState(widget.roverMetrics.state);
+    _enableState(widget.roverMetrics != null
+        ? widget.roverMetrics!.state
+        : RoverStateType.eStop);
     return FittedBox(
       fit: BoxFit.fill,
-      child: Row(
-        children: [
-          ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: enable == true
-                    ? MaterialStateProperty.all(Colors.green)
-                    : MaterialStateProperty.all(Colors.red),
-              ),
-              onPressed: () {
-                // TODO: implement enable massage
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Sending signal"),
-                ));
-                setState(() {
-                  enable = true;
-                });
-              },
-              child: Text('Enable')),
-          ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: enable == true
-                    ? MaterialStateProperty.all(Colors.red)
-                    : MaterialStateProperty.all(Colors.green),
-              ),
-              onPressed: () {
-                // TODO: implement disable massage
-                setState(() {
-                  enable = false;
-                });
-              },
-              child: Text('Disable'))
-        ],
-      ),
+      child: ElevatedButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Sending signal"),
+            ));
+            setState(() {
+              enable = true;
+            });
+          },
+          child: enable == true ? const Text('Disable') : const Text('Enable')),
     );
   }
 }

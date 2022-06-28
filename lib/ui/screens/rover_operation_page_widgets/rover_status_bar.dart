@@ -50,9 +50,18 @@ class RoverStatusBar extends StatelessWidget {
     }
   }
 
-  Icon _healthIcon(
+  _healthIcon(
       {required RoverHealthType roverHealthType,
       required IconData healthIconChoice}) {
+    switch (roverHealthType) {
+      case RoverHealthType.degraded:
+        return Icon(healthIconChoice, color: Colors.red);
+      case RoverHealthType.unhealthy:
+        return Icon(healthIconChoice, color: Colors.yellow);
+      default:
+        return Visibility(visible: false, child: Icon(healthIconChoice));
+    }
+
     return Icon(healthIconChoice, color: roverHealthType.color3);
   }
 

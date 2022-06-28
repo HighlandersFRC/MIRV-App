@@ -107,11 +107,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               onPressed: _refreshRoversList,
               icon: const Icon(Icons.refresh_rounded, size: 45))
         ],
-        leading: ElevatedButton(
-            onPressed: () {
-              Get.to(StatusPage());
-            },
-            child: const Icon(Icons.info_sharp)),
       ),
       body: Row(
         children: [

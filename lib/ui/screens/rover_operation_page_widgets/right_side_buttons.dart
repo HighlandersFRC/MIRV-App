@@ -63,7 +63,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: _mirvApi.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(roverMetrics: widget.roverMetrics);
+                return ToggleDisable(roverMetrics: snapshot.data);
               }),
         ),
         SizedBox(
