@@ -86,7 +86,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState ==
+        RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -97,7 +98,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
   void _toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!
+        .getVideoTracks()
+        .firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -115,7 +118,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('http://192.168.1.5:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse(
+                'http://192.168.1.5:8080/offer'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode(
             {
@@ -156,7 +160,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+    _peerConnection =
+        await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
 
@@ -292,6 +297,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
     print("he he he ha!");
   }
 
+  sendCommandToRover(String command) {
+    print("Sending $command to rover");
+  }
+
   @override
   Widget build(BuildContext context) {
     double _x = 0;
@@ -403,7 +412,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Selection",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -414,7 +426,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Status",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -425,7 +440,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Troubleshooting",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -436,7 +454,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go Home",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -447,7 +468,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   "Go To Info",
                   textWidthBasis: TextWidthBasis.longestLine,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Color.fromARGB(150, 0, 0, 0), fontSize: 15, fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      color: Color.fromARGB(150, 0, 0, 0),
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ),
@@ -469,7 +493,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
                       onPressed: () {
                         if (_dataChannel != null) {
                           String messageText = "Start Manual Control";
-                          _dataChannel!.send(RTCDataChannelMessage(messageText));
+                          _dataChannel!
+                              .send(RTCDataChannelMessage(messageText));
                         }
                       },
                       label: const Text(
@@ -480,7 +505,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         CupertinoIcons.antenna_radiowaves_left_right,
                         size: 60,
                       ),
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
                     ),
                   ),
                   SizedBox(
@@ -498,7 +525,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Icons.map,
                         size: 60,
                       ),
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
                     ),
                   ),
                   SizedBox(
@@ -512,9 +541,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("deploy"),
                             child: Text(
-                              "Command",
+                              "Deploy",
                               textScaleFactor: 2,
                             ),
                             style: ButtonStyle(),
@@ -526,9 +555,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("dock"),
                             child: Text(
-                              "Command",
+                              "Dock",
                               textScaleFactor: 2,
                             ),
                             style: ButtonStyle(),
@@ -540,10 +569,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("deployPiLits"),
                             child: Text(
-                              "Command",
-                              textScaleFactor: 2,
+                              "Deploy Pi-Lits",
+                              textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
                           ),
@@ -554,10 +583,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("retrievePiLits"),
                             child: Text(
-                              "Command",
-                              textScaleFactor: 2,
+                              "Retrieve Pi-Lits",
+                              textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
                           ),
@@ -568,10 +597,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("extraCommand1"),
                             child: Text(
-                              "Command",
-                              textScaleFactor: 2,
+                              "Extra Command 1",
+                              textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
                           ),
@@ -582,10 +611,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: doNothing,
+                            onPressed: sendCommandToRover("extraCommand1"),
                             child: Text(
-                              "Command",
-                              textScaleFactor: 2,
+                              "Extra Command 2",
+                              textScaleFactor: 1.75,
                             ),
                             style: ButtonStyle(),
                           ),
@@ -662,7 +691,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 50,
                   child: ElevatedButton.icon(
                       onPressed: doNothing,
-                      label: Text("Commands"),
+                      label: Text("Commands Menu"),
                       icon: Icon(
                         Icons.list_alt,
                       )),
@@ -685,18 +714,22 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         height: 50,
                         width: 250,
                         child: ElevatedButton(
-                          onPressed: doNothing,
-                          child: Text("enable"),
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 132, 219, 110))),
+                          onPressed: sendCommandToRover("enable"),
+                          child: Text("Enable"),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromARGB(255, 132, 219, 110))),
                         ),
                       ),
                       SizedBox(
                         height: 50,
                         width: 250,
                         child: ElevatedButton(
-                          onPressed: doNothing,
-                          child: Text("disable"),
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 81, 81))),
+                          onPressed: sendCommandToRover("disable"),
+                          child: Text("Disable"),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromARGB(255, 255, 81, 81))),
                         ),
                       ),
                     ],
@@ -727,19 +760,24 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 250,
                   width: 250,
                   child: ElevatedButton.icon(
-                    onPressed: eStop,
+                    onPressed: sendCommandToRover("eStop"),
                     label: const Text("E-STOP"),
                     icon: const Icon(Icons.warning_amber_rounded),
                     style: ButtonStyle(
                         animationDuration: Duration(seconds: 10),
-                        overlayColor: MaterialStateProperty.all(Colors.yellowAccent),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.yellowAccent),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
-                            side: BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                            side: BorderSide(
+                                color: Color.fromARGB(255, 250, 250, 250),
+                                width: 10),
                           ),
                         ),
-                        shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
+                        shadowColor: MaterialStateProperty.all(
+                            Color.fromARGB(0, 0, 0, 0))),
                   ),
                 )
               ],

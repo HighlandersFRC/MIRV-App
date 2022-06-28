@@ -99,7 +99,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const StatusPage(),
+        builder: (context) => const RoverOpPage(),
       ),
     );
   }
@@ -119,8 +119,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               icon: const Icon(Icons.refresh_rounded, size: 45))
         ],
         leading: ElevatedButton(
-            onPressed: () => NavigationRoutes.goStatus,
-            child: const Icon(Icons.info_sharp)),
+            onPressed: _infoButtonPressed, child: const Icon(Icons.info_sharp)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
