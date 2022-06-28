@@ -151,13 +151,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                   children: [
                                     _batteryIcon(roverList[index].battery,
                                         alertLevel: 20),
-                                    IconButton(
-                                      icon: const Icon(
-                                          Icons.arrow_forward_ios_rounded),
-                                      onPressed: () {
-                                        Get.to(RoverOpPage());
-                                      },
-                                    )
                                   ],
                                 ),
                               ),
@@ -181,7 +174,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         onPressed:
                             selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
-                                    print('click');
+                                    Get.to(RoverOpPage());
                                   }
                                 : null,
                         child: Row(
