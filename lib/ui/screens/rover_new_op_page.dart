@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
+import 'package:test/ui/screens/map_video_display.dart';
 import 'package:test/ui/screens/rover_operation_map.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
@@ -15,6 +16,10 @@ import 'package:get/get.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 
+class MapSelectionController extends GetxController {
+  Rx<bool> showMap = false.obs;
+}
+
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
 
@@ -25,7 +30,7 @@ class RoverOpPage extends StatefulWidget {
 class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverSummary> roverList = <RoverSummary>[].obs;
   final MirvApi _mirvApi = MirvApi();
-  
+  final mapSelectionController = Get.put(MapSelectionController());
 
   RoverMetrics roverMetrics = const RoverMetrics();
   @override
@@ -61,48 +66,18 @@ class _RoverOpPageState extends State<RoverOpPage> {
             alignment: Alignment.bottomLeft,
             child: SizedBox(
                 width: 200,
-                child: LeftSideButtons(
-                  mirvApi: _mirvApi,
-                  roverMetrics: roverMetrics,
+                child: Obx(
+                  () => LeftSideButtons(
+                    mirvApi: _mirvApi,
+                    roverMetrics: roverMetrics,
+                    mapSelectionController: mapSelectionController,
+                  ),
                 )),
           ),
           Align(
             alignment: Alignment.center,
-            child: Container(
-              color: Colors.amber,
-              width: 800,
-              height: 450,
-              child: false ? ElevatedButton(
-                onPressed: null,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 194, 194, 194),
-                  ),
-                ),
-                child: const Text("video"),
-              ):
-               RoverOperationMap(
-                    locationStream: BehaviorSubject<LatLng>.seeded(
-                        new LatLng(40.474019558671344, -104.96957447379826)),
-                    piLitMarkers: [
-                      RoverLocation(
-                          roverId: 'piLit1',
-                          location: new LatLng(
-                              40.47399235127373, -104.96957682073116)),
-                      RoverLocation(
-                          roverId: 'piLit2',
-                          location: new LatLng(
-                              40.474025762131475, -104.9695798382163)),
-                      RoverLocation(
-                          roverId: 'piLit3',
-                          location: new LatLng(
-                              40.47405381703737, -104.96958520263433)),
-                      RoverLocation(
-                          roverId: 'piLit4',
-                          location: new LatLng(
-                              40.47408365724258, -104.96959090232849))
-                    ])
-            ),
+            child: Obx(() => OperationMapVideo(
+                showMap: mapSelectionController.showMap.value)),
           ),
           Align(
               alignment: Alignment.bottomRight,

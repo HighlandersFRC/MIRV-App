@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rxdart/subjects.dart';
-import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_operation_map.dart';
+import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
   final MirvApi mirvApi;
+  final MapSelectionController mapSelectionController;
 
- 
   const LeftSideButtons(
-      {Key? key, required this.roverMetrics, required this.mirvApi})
+      {Key? key,
+      required this.roverMetrics,
+      required this.mirvApi,
+      required this.mapSelectionController})
       : super(key: key);
 
   @override
@@ -76,32 +76,25 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
         SizedBox(
           height: 15,
         ),
-        // ToggleButtons(
-        //   children: <Widget>[
-        //     Icon(Icons.map),
-        //   ],
-        //   onPressed: null
-        // ),
-        // Container(
-        //   width: 175,
-        //   child: ElevatedButton.icon(
-        //     onPressed: showOverlay,
-        //     label: const Text(
-        //       "Map",
-        //       textScaleFactor: 2.5,
-        //     ),
-        //     icon: const Icon(
-        //       Icons.map,
-        //       size: 60,
-        //     ),
-        //     style: ButtonStyle(
-        //         backgroundColor:
-        //             MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: 20,
-        // ),
+        Container(
+          width: 175,
+          child: ElevatedButton.icon(
+            onPressed: () {
+               widget.mapSelectionController.showMap.value = true;
+            },
+            label: const Text(
+              "Map",
+              textScaleFactor: 2.5,
+            ),
+            icon: const Icon(
+              Icons.map,
+              size: 60,
+            ),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+          ),
+        ),
         SizedBox(
           width: 250,
           height: 500,
@@ -114,8 +107,4 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
       ],
     );
   }
-
-
-
-   
 }
