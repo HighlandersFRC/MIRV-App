@@ -10,8 +10,6 @@ import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.d
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/navigation_drawer.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:get/get.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
@@ -66,14 +64,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
     return Scaffold(
       appBar: OpPgAppBar(
         mirvApi: _mirvApi,
+        roverMetrics: roverMetrics,
       ),
-      //
-      drawer: const Drawer(child: NavigationDrawer()),
       endDrawer: Drawer(
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
             builder: (context, snapshot) {
-              return CommandList(roverMetrics: roverMetrics);
+              return CommandList(roverMetrics: snapshot.data);
             }),
       ),
       body: Row(

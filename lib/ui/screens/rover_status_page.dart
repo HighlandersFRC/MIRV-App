@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_health_type.dart';
@@ -22,13 +23,6 @@ class HealthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    goTrouble() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -66,7 +60,9 @@ class HealthContainer extends StatelessWidget {
             ),
           ),
           child: ElevatedButton(
-            onPressed: goTrouble,
+            onPressed: () {
+              Get.to(TroubleShootingPage());
+            },
             style: ButtonStyle(
               shape: MaterialStateProperty.all(
                 const RoundedRectangleBorder(

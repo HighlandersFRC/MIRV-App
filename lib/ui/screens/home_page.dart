@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -57,23 +58,13 @@ class HomePage extends StatelessWidget {
   selectedItem(context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const RoverSelectionPage(),
-          ),
-        );
+        Get.to(RoverSelectionPage());
         break;
       case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SettingsPage()),
-        );
+        Get.to(SettingsPage());
         break;
       case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const InfoPage()),
-        );
+        Get.to(InfoPage());
     }
   }
 }

@@ -6,11 +6,9 @@ import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:location/location.dart';
-import 'package:test/functions_copy_and_paste.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/google_map_v2.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
@@ -99,15 +97,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
-  void _infoButtonPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const StatusPage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
@@ -123,11 +112,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               onPressed: _refreshRoversList,
               icon: const Icon(Icons.refresh_rounded, size: 45))
         ],
-        leading: ElevatedButton(
-            onPressed: () => NavigationRoutes.goStatus,
-            child: const Icon(Icons.info_sharp)),
       ),
-
       body: Row(
         children: [
           SizedBox(
@@ -171,13 +156,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                   children: [
                                     _batteryIcon(roverList[index].battery,
                                         alertLevel: 20),
-                                    IconButton(
-                                      icon: const Icon(
-                                          Icons.arrow_forward_ios_rounded),
-                                      onPressed: () {
-                                        NavigationRoutes.goOp(context);
-                                      },
-                                    )
                                   ],
                                 ),
                               ),
@@ -201,7 +179,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         onPressed:
                             selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
-                                    print('click');
+                                    Get.to(RoverOpPage());
                                   }
                                 : null,
                         child: Row(
