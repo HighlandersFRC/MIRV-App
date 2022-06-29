@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:test/models/pi_lit.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
@@ -12,8 +13,8 @@ class OperationMapVideo extends StatelessWidget {
       : super(key: key);
   final bool showMap;
   final BehaviorSubject<LatLng> locationStream;
-   final List<RoverLocation> piLitMarkers;
-    final MirvApi _mirvApi = MirvApi();
+  final List<PiLit> piLitMarkers;
+  final MirvApi _mirvApi = MirvApi();
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class OperationMapVideo extends StatelessWidget {
                   ),
                 ),
                 child: const Text("video"),
+                
               ),
               ),
                 StreamBuilder<RoverMetrics>(

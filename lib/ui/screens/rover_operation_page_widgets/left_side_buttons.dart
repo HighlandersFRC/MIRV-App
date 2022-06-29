@@ -77,8 +77,8 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
         SizedBox(
           height: 15,
         ),
-        Obx(() =>
-          Container(
+        Obx(
+          () => Container(
               width: 175,
               child: !widget.mapSelectionController.showMap.value
                   ? ElevatedButton.icon(
@@ -103,10 +103,10 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                       },
                       label: const Text(
                         "Video",
-                        textScaleFactor: 2.5,
+                        textScaleFactor: 2.0,
                       ),
                       icon: const Icon(
-                        Icons.map,
+                        Icons.video_camera_back,
                         size: 60,
                       ),
                       style: ButtonStyle(

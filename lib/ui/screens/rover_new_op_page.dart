@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:test/models/pi_lit.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/ui/screens/map_video_display.dart';
+import 'package:test/ui/screens/operation_map_video.dart';
 import 'package:test/ui/screens/rover_operation_map.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
@@ -31,18 +32,22 @@ class _RoverOpPageState extends State<RoverOpPage> {
   final mapSelectionController = Get.put(MapSelectionController());
   final BehaviorSubject<LatLng> locationStream = BehaviorSubject<LatLng>.seeded(
       new LatLng(40.474019558671344, -104.96957447379826));
-  final List<RoverLocation> piLitMarkers = [
-    RoverLocation(
-        roverId: 'piLit1',
+  final List<PiLit> piLitMarkers = [
+    PiLit(
+        id: 'piLit1',
+        description: 'Pi-lit device',
         location: new LatLng(40.47399235127373, -104.96957682073116)),
-    RoverLocation(
-        roverId: 'piLit2',
+    PiLit(
+        id: 'piLit2',
+        description: 'Pi-lit device',
         location: new LatLng(40.474025762131475, -104.9695798382163)),
-    RoverLocation(
-        roverId: 'piLit3',
+    PiLit(
+        id: 'piLit3',
+        description: 'Pi-lit device',
         location: new LatLng(40.47405381703737, -104.96958520263433)),
-    RoverLocation(
-        roverId: 'piLit4',
+    PiLit(
+        id: 'piLit4',
+        description: 'Pi-lit device',
         location: new LatLng(40.47408365724258, -104.96959090232849))
   ];
 
