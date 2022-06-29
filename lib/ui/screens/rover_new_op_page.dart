@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/ui/screens/home_page.dart';
@@ -12,20 +10,10 @@ import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:test/ui/screens/troubleshoot_page.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:test/models/rover_state_type.dart';
-import 'package:test/models/rover_status_type.dart';
+import 'package:get/get.dart' as get_pkg;
 import 'package:test/models/rover_summary.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/google_map.dart';
-import 'package:test/ui/screens/google_map_v2.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:http/http.dart' as http;
-
-///I was lazy and just copy and pasted imports from homepage lol
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -35,7 +23,7 @@ class RoverOpPage extends StatefulWidget {
 }
 
 class _RoverOpPageState extends State<RoverOpPage> {
-  RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  get_pkg.RxList<RoverSummary> roverList = <RoverSummary>[].obs;
   RTCPeerConnection? _peerConnection;
   final _localRenderer = RTCVideoRenderer();
 
@@ -50,7 +38,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
   bool _inCalling = false;
   bool isWorking = true;
   DateTime? _timeStart;
-
+  double prevX = 0;
+  double prevY = 0;
   bool _loading = false;
 
   final Map<String, dynamic> offerSdpConstraints = {
@@ -119,7 +108,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           var request = http.Request(
             'POST',
             Uri.parse(
-                'http://172.250.250.95:8080/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+                'http://107.21.6.219:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -135,18 +124,17 @@ class _RoverOpPageState extends State<RoverOpPage> {
           http.StreamedResponse response = await request.send();
 
           String data = "";
-          print(response);
           if (response.statusCode == 200) {
             data = await response.stream.bytesToString();
+            print(data);
             var dataMap = json.decode(data);
-            print(dataMap);
+            var answerMap = json.decode(dataMap["answer"]);
             await _peerConnection!.setRemoteDescription(
               RTCSessionDescription(
-                dataMap["sdp"],
-                dataMap["type"],
+                answerMap["sdp"],
+                answerMap["type"],
               ),
             );
-            isWorking = true;
           } else {
             print(response.reasonPhrase);
             isWorking = false;
@@ -162,6 +150,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
     });
     var configuration = <String, dynamic>{
       'sdpSemantics': 'unified-plan',
+      "iceServers": [
+        {"url": "stun:stun.l.google.com:19302"},
+      ]
     };
     print("print stament 11111111111111");
     //* Create Peer Connection
@@ -180,7 +171,23 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
     print("3333333333333333333");
+    final mediaConstraints = <String, dynamic>{
+      'audio': false,
+      'video': {
+        // 'facingMode': 'user',
+        'facingMode': 'environment',
+        'optional': [],
+      }
+    };
     try {
+      var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+      // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
+      _localStream = stream;
+      // _localRenderer.srcObject = _localStream;
+
+      stream.getTracks().forEach((element) {
+        _peerConnection!.addTrack(element, stream);
+      });
       print("NEGOTIATE");
       await _negotiateRemoteConnection();
     } catch (e) {
@@ -260,11 +267,27 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
-  String getButtonText() {
+  String getConnectButtonText() {
     if (isWorking == true) {
       return "Connect To Rover";
     } else {
       return "Unable to connect";
+    }
+  }
+
+  Icon getConnectButtonIcon() {
+    if (isWorking == true) {
+      return Icon(Icons.wifi_calling_3);
+    } else {
+      return Icon(Icons.error_outline);
+    }
+  }
+
+  Color getConnectButtonColor() {
+    if (isWorking == true) {
+      return Colors.green;
+    } else {
+      return Colors.red;
     }
   }
 
@@ -303,6 +326,17 @@ class _RoverOpPageState extends State<RoverOpPage> {
       context,
       MaterialPageRoute(builder: (context) => const InfoPage()),
     );
+  }
+
+  sendJoystick(double _x, double _y) {
+    print("$_x   $_y");
+    if (_dataChannel != null) {
+      String messageText = json.encode({
+        "joystick_x": _x,
+        "joystick_y": _y,
+      });
+      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    }
   }
 
   doNothing() {
@@ -675,10 +709,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 50,
                   child: ElevatedButton.icon(
                     onPressed: roverConnect,
-                    label: Text(getButtonText()),
-                    icon: Icon(
-                      Icons.wifi_calling_3,
-                    ),
+                    label: Text(getConnectButtonText()),
+                    icon: getConnectButtonIcon(),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(getConnectButtonColor())),
                   ),
                 ),
                 SizedBox(
@@ -692,8 +727,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     onPressed: _stopCall,
                     child: Text("Stop call"),
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Color.fromARGB(225, 255, 94, 0))),
+                        backgroundColor:
+                            MaterialStateProperty.all(getConnectButtonColor())),
                   ),
                 ),
                 SizedBox(
@@ -710,6 +745,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                           _y = details.y;
                         },
                       );
+                      sendJoystick(_x, _y);
                     },
                   ),
                 ),
