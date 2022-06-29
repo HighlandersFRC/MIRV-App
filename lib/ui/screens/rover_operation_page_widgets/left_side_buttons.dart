@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/services/mirv_api.dart';
@@ -76,24 +77,42 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
         SizedBox(
           height: 15,
         ),
-        Container(
-          width: 175,
-          child: ElevatedButton.icon(
-            onPressed: () {
-               widget.mapSelectionController.showMap.value = true;
-            },
-            label: const Text(
-              "Map",
-              textScaleFactor: 2.5,
-            ),
-            icon: const Icon(
-              Icons.map,
-              size: 60,
-            ),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-          ),
+        Obx(() =>
+          Container(
+              width: 175,
+              child: !widget.mapSelectionController.showMap.value
+                  ? ElevatedButton.icon(
+                      onPressed: () {
+                        widget.mapSelectionController.showMap.value = true;
+                      },
+                      label: const Text(
+                        "Map",
+                        textScaleFactor: 2.5,
+                      ),
+                      icon: const Icon(
+                        Icons.map,
+                        size: 60,
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () {
+                        widget.mapSelectionController.showMap.value = false;
+                      },
+                      label: const Text(
+                        "Video",
+                        textScaleFactor: 2.5,
+                      ),
+                      icon: const Icon(
+                        Icons.map,
+                        size: 60,
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    )),
         ),
         SizedBox(
           width: 250,
