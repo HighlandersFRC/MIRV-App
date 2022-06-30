@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:test/models/rover_location.dart';
+import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:location/location.dart';
 import 'package:test/models/rover_status_type.dart';
@@ -18,18 +19,15 @@ class SelectedRoverController extends GetxController {
   Rx<bool> isConnectButtonEnabled = false.obs;
 
   SelectedRoverController() {
-    selectedRoverId.listen((selectedroverId) =>
-        isConnectButtonEnabled.value = (selectedroverId != ""));
+    selectedRoverId.listen((selectedroverId) => isConnectButtonEnabled.value = (selectedroverId != ""));
   }
 
   setSelectedRoverId(String roverId) {
     selectedRoverId.value = roverId;
   }
 
-  verifyRoverId(List<RoverSummary> rovers) {
-    if (rovers
-        .where((element) => element.roverId == selectedRoverId.value)
-        .isEmpty) selectedRoverId.value = "";
+  verifyRoverId(List<RoverMetrics> rovers) {
+    if (rovers.where((element) => element.roverId == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
   }
 
   Color roverTileColor(
@@ -62,7 +60,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   MirvApi mirvApi = MirvApi();
   Location location = Location();
   int? groupValue = 0;
-  RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
 
   void _refreshRoversList() async {
     roverList.value = await mirvApi.getRovers();
@@ -107,11 +105,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         title: const Text(
           "Rover Selection",
         ),
-        actions: <Widget>[
-          IconButton(
-              onPressed: _refreshRoversList,
-              icon: const Icon(Icons.refresh_rounded, size: 45))
-        ],
+        actions: <Widget>[IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45))],
       ),
       body: Row(
         children: [
@@ -134,28 +128,23 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                             ),
                             child: Obx(
                               () => ListTile(
-                                tileColor:
-                                    selectedRoverController.roverTileColor(
+                                tileColor: selectedRoverController.roverTileColor(
                                   roverList[index].roverId,
                                   roverList[index].status,
                                 ),
                                 title: Text(
                                   "Rover ${roverList[index].roverId}",
                                 ),
-                                subtitle: Text(
-                                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                                subtitle: Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
                                 onTap: () {
-                                  if (roverList[index].status ==
-                                      RoverStatusType.available) {
-                                    selectedRoverController.setSelectedRoverId(
-                                        (roverList[index].roverId).toString());
+                                  if (roverList[index].status == RoverStatusType.available) {
+                                    selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
                                   }
                                 },
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    _batteryIcon(roverList[index].battery,
-                                        alertLevel: 20),
+                                    _batteryIcon(roverList[index].battery, alertLevel: 20),
                                   ],
                                 ),
                               ),
@@ -172,16 +161,12 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                       () => ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                selectedRoverController
-                                        .isConnectButtonEnabled.value
-                                    ? Colors.blue
-                                    : Colors.grey)),
-                        onPressed:
-                            selectedRoverController.isConnectButtonEnabled.value
-                                ? () {
-                                    Get.to(RoverOpPage());
-                                  }
-                                : null,
+                                selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
+                        onPressed: selectedRoverController.isConnectButtonEnabled.value
+                            ? () {
+                                Get.to(RoverOpPage());
+                              }
+                            : null,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
@@ -201,10 +186,9 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Expanded(
               child: ChangeNotifierProvider(
             create: (context) => ApplicationBloc(),
-            child: Obx(() =>
-              RoverSelectionMap(roverList.value
-                  .map((e) => RoverLocation(
-                      location: LatLng(40.47406602779067, -104.9695711745099), roverId: e.roverId))
+            child: Obx(
+              () => RoverSelectionMap(roverList.value
+                  .map((e) => RoverLocation(location: LatLng(40.47406602779067, -104.9695711745099), roverId: e.roverId))
                   .toList()),
             ),
           ))
