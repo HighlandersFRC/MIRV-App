@@ -7,7 +7,6 @@ import 'package:location/location.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/place.dart';
 import 'package:test/Blocs/autocomplete/application_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_metrics.dart';
@@ -15,11 +14,10 @@ import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/searchbox_places.dart';
 
 class RoverSelectionMap extends StatefulWidget {
-final List<RoverMetrics> roverMetrics;
-final Rx<String> selectedRoverId;
+  final List<RoverMetrics> roverMetrics;
+  final Rx<String> selectedRoverId;
 
   RoverSelectionMap(this.roverMetrics, this.selectedRoverId);
-
 
   @override
   _RoverSelectionMapState createState() => _RoverSelectionMapState();
@@ -61,8 +59,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     super.initState();
     setCustomMarker();
 
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
+    final applicationBloc = ApplicationBloc();
+
     locationSubscription =
         applicationBloc.selectedLocation.stream.listen((place) {
       if (place != null) {
@@ -112,17 +110,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     }
 
-    this.widget.selectedRoverId.listen((roverId) {this.widget.roverMetrics.forEach((element) async { if (element.roverId == roverId) { _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
-                        zoom: await _mapController!.getZoomLevel())));}}); 
+    this.widget.selectedRoverId.listen((roverId) {
+      this.widget.roverMetrics.forEach((element) async {
+        if (element.roverId == roverId) {
+          _mapController?.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  target: LatLng(element.telemetry.location.lat,
+                      element.telemetry.location.long),
+                  zoom: await _mapController!.getZoomLevel())));
+        }
+      });
     });
   }
 
   @override
   void dispose() {
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
+    final applicationBloc = ApplicationBloc();
+
     applicationBloc.dispose();
     _locationController.dispose();
     locationSubscription.cancel();
@@ -143,7 +147,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   @override
   Widget build(BuildContext context) {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final applicationBloc = ApplicationBloc();
+
     return Scaffold(
         body: (applicationBloc.currentLocation == null)
             ? Center(
@@ -174,8 +179,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                           },
                           onSuggestionSelected: (PlaceSearch suggestion) {
                             applicationBloc
-                                .setSelectedLocation(suggestion.placeId); 
-                                                         },
+                                .setSelectedLocation(suggestion.placeId);
+                          },
                         )),
                   ),
                   Container(
@@ -221,7 +226,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           return Marker(
               //add first marker
               markerId: MarkerId('rover_1'),
-              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long), //position of marker
+              position: LatLng(rover.telemetry.location.lat,
+                  rover.telemetry.location.long), //position of marker
               infoWindow: InfoWindow(
                 //popup info
                 title: 'rover_1',
@@ -231,7 +237,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               onTap: () async {
                 _mapController?.animateCamera(CameraUpdate.newCameraPosition(
                     CameraPosition(
-                        target: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
+                        target: LatLng(rover.telemetry.location.lat,
+                            rover.telemetry.location.long),
                         zoom: await _mapController!.getZoomLevel())));
               });
           //add more markers here

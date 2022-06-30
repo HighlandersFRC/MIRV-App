@@ -27,7 +27,7 @@ class RoverOpPage extends StatefulWidget {
 }
 
 class _RoverOpPageState extends State<RoverOpPage> {
-  RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   final MirvApi _mirvApi = MirvApi();
   final mapSelectionController = Get.put(MapSelectionController());
   final BehaviorSubject<LatLng> locationStream = BehaviorSubject<LatLng>.seeded(
