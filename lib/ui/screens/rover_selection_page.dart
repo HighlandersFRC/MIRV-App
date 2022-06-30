@@ -103,14 +103,16 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
-        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
         title: const Text(
           "Rover Selection",
         ),
         actions: <Widget>[
-          IconButton(
-              onPressed: _refreshRoversList,
-              icon: const Icon(Icons.refresh_rounded, size: 45))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: IconButton(
+                onPressed: _refreshRoversList,
+                icon: const Icon(Icons.refresh_rounded, size: 45)),
+          )
         ],
       ),
       body: Row(
@@ -123,45 +125,50 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                 FractionallySizedBox(
                   child: AspectRatio(
                     aspectRatio: .5,
-                    child: Obx(
-                      () => ListView.builder(
-                        itemCount: roverList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 1,
-                              horizontal: 4,
-                            ),
-                            child: Obx(
-                              () => ListTile(
-                                tileColor:
-                                    selectedRoverController.roverTileColor(
-                                  roverList[index].roverId,
-                                  roverList[index].status,
-                                ),
-                                title: Text(
-                                  "Rover ${roverList[index].roverId}",
-                                ),
-                                subtitle: Text(
-                                    'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
-                                onTap: () {
-                                  if (roverList[index].status ==
-                                      RoverStatusType.available) {
-                                    selectedRoverController.setSelectedRoverId(
-                                        (roverList[index].roverId).toString());
-                                  }
-                                },
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    _batteryIcon(roverList[index].battery,
-                                        alertLevel: 20),
-                                  ],
+                    child: RefreshIndicator(
+                      onRefresh: () => Future(_refreshRoversList),
+                      child: Obx(
+                        () => ListView.builder(
+                          itemCount: roverList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 1,
+                                horizontal: 4,
+                              ),
+                              child: Obx(
+                                () => ListTile(
+                                  tileColor:
+                                      selectedRoverController.roverTileColor(
+                                    roverList[index].roverId,
+                                    roverList[index].status,
+                                  ),
+                                  title: Text(
+                                    "Rover ${roverList[index].roverId}",
+                                  ),
+                                  subtitle: Text(
+                                      'Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                                  onTap: () {
+                                    if (roverList[index].status ==
+                                        RoverStatusType.available) {
+                                      selectedRoverController
+                                          .setSelectedRoverId(
+                                              (roverList[index].roverId)
+                                                  .toString());
+                                    }
+                                  },
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      _batteryIcon(roverList[index].battery,
+                                          alertLevel: 20),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

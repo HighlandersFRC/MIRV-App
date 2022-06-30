@@ -19,71 +19,86 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: const IconThemeData(
-        color: Color.fromARGB(255, 0, 0, 0),
-        size: 40,
-      ),
-      leadingWidth: 200,
-      leading: ElevatedButton(
-        onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Disconnect?'),
-                content: Text(
-                    'Would  you like to discconect from ${roverMetrics.roverId}'),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () {
-                        //TODO: disconnect WebRTC
-                        Get.offAll(HomePage());
-                      },
-                      child: Text('Yes')),
-                  TextButton(
+        iconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 0, 0, 0),
+          size: 40,
+        ),
+        leadingWidth: 200,
+        leading: ElevatedButton(
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Disconnect?'),
+                  content: Text(
+                      'Would  you like to discconect from ${roverMetrics.roverId}'),
+                  actions: <Widget>[
+                    TextButton(
+                        onPressed: () {
+                          //TODO: disconnect WebRTC
+
+                          Navigator.pop(context);
+                          Get.offAll(HomePage());
+                        },
+                        child: Text('Yes')),
+                    TextButton(
+                        onPressed: () {
+                          return Navigator.pop(context);
+                        },
+                        child: Text('No'))
+                  ],
+                );
+              }),
+          child: Row(mainAxisSize: MainAxisSize.min, children: [
+            Text('Disconnect'),
+            Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
+          ]),
+        ),
+        foregroundColor: Colors.black,
+        shadowColor: const Color.fromRGBO(0, 0, 0, 0),
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        title: StreamBuilder<RoverMetrics>(
+            stream: mirvApi.periodicMetricUpdates,
+            builder: (context, snapshot) {
+              return Text(snapshot.data != null
+                  ? '${snapshot.data!.state}'
+                  : 'Waiting on data');
+            }),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: StreamBuilder<RoverMetrics>(
+                stream: mirvApi.periodicMetricUpdates,
+                builder: (context, snapshot) {
+                  return RoverStatusBar(roverMetrics: snapshot.data);
+                }),
+          ),
+          ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: AspectRatio(
+                      aspectRatio: 1.5, child: Container(child: StatusPage())),
+                  actions: [
+                    TextButton(
                       onPressed: () {
                         return Navigator.pop(context);
                       },
-                      child: Text('No'))
-                ],
-              );
-            }),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Text('Disconnect'),
-          Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
-        ]),
-      ),
-      foregroundColor: Colors.black,
-      shadowColor: const Color.fromARGB(0, 0, 0, 0),
-      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-      title: StreamBuilder<RoverMetrics>(
-          stream: mirvApi.periodicMetricUpdates,
-          builder: (context, snapshot) {
-            return Text(snapshot.data != null
-                ? '${snapshot.data!.state}'
-                : 'Waiting on data');
-          }),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder<RoverMetrics>(
-              stream: mirvApi.periodicMetricUpdates,
-              builder: (context, snapshot) {
-                return RoverStatusBar(roverMetrics: snapshot.data);
-              }),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            Get.to(StatusPage());
-          },
-          style: ButtonStyle(
-              overlayColor: MaterialStateProperty.all(Colors.amber),
-              backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
-          child: const Text(
-            " Status ",
-            textScaleFactor: 2.5,
-          ),
-        ),
-      ],
-    );
+                      child: Text('Close'),
+                    )
+                  ],
+                );
+              },
+            ),
+            style: ButtonStyle(
+                overlayColor: MaterialStateProperty.all(Colors.amber),
+                backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+            child: const Text(
+              " Status ",
+              textScaleFactor: 2.5,
+            ),
+          )
+        ]);
   }
 }

@@ -8,6 +8,7 @@ import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.
 import 'package:get/get.dart';
 import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/telemetry_data_table.dart';
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -79,9 +80,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 StreamBuilder<RoverMetrics>(
                     stream: _mirvApi.periodicMetricUpdates,
                     builder: (context, snapshot) {
-                      return Text(snapshot.data != null
-                          ? '${snapshot.data!.telemetry}'
-                          : 'Waiting on data');
+                      return Container(
+                          child: snapshot.data != null
+                              ? TelemeteryDataTable(
+                                  roverMetrics: snapshot.data!.telemetry)
+                              : Text('Waiting on data'));
                     }),
               ],
             ),
