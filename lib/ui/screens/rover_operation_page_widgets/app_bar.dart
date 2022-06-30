@@ -26,33 +26,30 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         leadingWidth: 200,
         leading: ElevatedButton(
-          onPressed: () {
-            Get.offAll(HomePage());
-          },
-          //  () => showDialog(
-          //     context: context,
-          //     builder: (BuildContext context) {
-          //       return AlertDialog(
-          //         title: const Text('Disconnect?'),
-          //         content: Text(
-          //             'Would  you like to discconect from ${roverMetrics.roverId}'),
-          //         actions: <Widget>[
-          //           TextButton(
-          //               onPressed: () {
-          //                 //TODO: disconnect WebRTC
+          onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Disconnect?'),
+                  content: Text(
+                      'Would  you like to discconect from ${roverMetrics.roverId}'),
+                  actions: <Widget>[
+                    TextButton(
+                        onPressed: () {
+                          //TODO: disconnect WebRTC
 
-          //                 Navigator.pop(context);
-          //                 Get.offAll(HomePage());
-          //               },
-          //               child: Text('Yes')),
-          //           TextButton(
-          //               onPressed: () {
-          //                 return Navigator.pop(context);
-          //               },
-          //               child: Text('No'))
-          //         ],
-          //       );
-          //     }),
+                          Navigator.pop(context);
+                          Get.offAll(HomePage());
+                        },
+                        child: Text('Yes')),
+                    TextButton(
+                        onPressed: () {
+                          return Navigator.pop(context);
+                        },
+                        child: Text('No'))
+                  ],
+                );
+              }),
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Text('Disconnect'),
             Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
@@ -78,24 +75,23 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 }),
           ),
           ElevatedButton(
-            onPressed: () {},
-            // onPressed: () => showDialog(
-            //   context: context,
-            //   builder: (BuildContext context) {
-            //     return AlertDialog(
-            //       content: AspectRatio(
-            //           aspectRatio: 1.5, child: Container(child: StatusPage())),
-            //       actions: [
-            //         TextButton(
-            //           onPressed: () {
-            //             return Navigator.pop(context);
-            //           },
-            //           child: Text('Close'),
-            //         )
-            //       ],
-            //     );
-            //   },
-            // ),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: AspectRatio(
+                      aspectRatio: 1.5, child: Container(child: StatusPage())),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        return Navigator.pop(context);
+                      },
+                      child: Text('Close'),
+                    )
+                  ],
+                );
+              },
+            ),
             style: ButtonStyle(
                 overlayColor: MaterialStateProperty.all(Colors.amber),
                 backgroundColor: MaterialStateProperty.all(Colors.blue[700])),

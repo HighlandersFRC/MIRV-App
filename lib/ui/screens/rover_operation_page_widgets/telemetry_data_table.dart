@@ -17,7 +17,7 @@ class TelemeteryDataTable extends StatelessWidget {
           ], rows: [
             DataRow(cells: [
               DataCell(Text('${roverMetrics.location.long}')),
-              DataCell(Text('${roverMetrics.location.long}')),
+              DataCell(Text('${roverMetrics.location.lat}')),
               DataCell(Text('${roverMetrics.heading}')),
               DataCell(Text('${roverMetrics.speed}')),
             ]),

@@ -5,8 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/place.dart';
-import 'package:test/Blocs/autocomplete/application_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:test/models/searchbox_places.dart';
 
@@ -56,23 +54,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     super.initState();
     setCustomMarker();
 
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
-    locationSubscription =
-        applicationBloc.selectedLocation.stream.listen((place) {
-      if (place != null) {
-        _locationController.text = place.name;
-        _goToPlace(place);
-      } else
-        _locationController.text = "";
-    });
+    // final applicationBloc =
+    //     Provider.of<ApplicationBloc>(context, listen: false);
+    // locationSubscription =
+    //     applicationBloc.selectedLocation.stream.listen((place) {
+    //   if (place != null) {
+    //     _locationController.text = place.name;
+    //     _goToPlace(place);
+    //   } else
+    //     _locationController.text = "";
+    // });
 
-    applicationBloc.bounds.stream.listen((bounds) async {
-      if (_mapController != null) {
-        final GoogleMapController controller = _mapController!;
-        controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
-      }
-    });
+    // applicationBloc.bounds.stream.listen((bounds) async {
+    //   if (_mapController != null) {
+    //     final GoogleMapController controller = _mapController!;
+    //     controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
+    //   }
+    // });
     super.initState();
 
     setState(() {
@@ -111,12 +109,12 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   @override
   void dispose() {
     final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
-    applicationBloc.dispose();
-    _locationController.dispose();
-    locationSubscription.cancel();
-    boundsSubscription.cancel();
-    super.dispose();
+        //     Provider.of<ApplicationBloc>(context, listen: false);
+        // applicationBloc.dispose();
+        // _locationController.dispose();
+        // locationSubscription.cancel();
+        // boundsSubscription.cancel();
+        super.dispose();
   }
 
   void _setPolygon() {
@@ -132,61 +130,58 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   @override
   Widget build(BuildContext context) {
-    final applicationBloc = Provider.of<ApplicationBloc>(context);
+    // final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Scaffold(
-        body: (applicationBloc.currentLocation == null)
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                children: [
-                  Container(
-                    height: 60,
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TypeAheadField(
-                            textFieldConfiguration: TextFieldConfiguration(
-                                autofocus: false,
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .copyWith(fontStyle: FontStyle.italic),
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder())),
-                            suggestionsCallback: (pattern) async {
-                              return await applicationBloc
-                                  .searchPlaces(pattern);
-                            },
-                            itemBuilder: (context, PlaceSearch suggestion) {
-                              return ListTile(
-                                title: Text(suggestion.description),
-                              );
-                            },
-                            onSuggestionSelected: (PlaceSearch suggestion) {
-                              applicationBloc
-                                  .setSelectedLocation(suggestion.placeId);
-                            })),
-                  ),
-                  Container(
-                    height: 600.0,
-                    child: GoogleMap(
-                      mapType: MapType.hybrid,
-                      myLocationEnabled: true,
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(
-                            applicationBloc.currentLocation!.latitude,
-                            applicationBloc.currentLocation!.longitude),
-                        zoom: 14,
-                      ),
-                      markers: getMarkers(),
-                      polygons: _polygons,
-                      onMapCreated: (GoogleMapController controller) {
-                        _mapController = controller;
-                      },
-                      // markers: Set<Marker>.of(applicationBloc.markers),
-                    ),
-                  ),
-                ],
-              ));
+      body:
+          //  (applicationBloc.currentLocation == null)
+          //     ? Center(
+          //         child: CircularProgressIndicator(),
+          //       )
+          //     :
+
+          // Container(
+          //   height: 60,
+          //   child: Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: TypeAheadField(
+          //           textFieldConfiguration: TextFieldConfiguration(
+          //               autofocus: false,
+          //               style: DefaultTextStyle.of(context)
+          //                   .style
+          //                   .copyWith(fontStyle: FontStyle.italic),
+          //               decoration: InputDecoration(
+          //                   border: OutlineInputBorder())),
+          //           suggestionsCallback: (pattern) async {
+          //             return await applicationBloc
+          //                 .searchPlaces(pattern);
+          //           },
+          //           itemBuilder: (context, PlaceSearch suggestion) {
+          //             return ListTile(
+          //               title: Text(suggestion.description),
+          //             );
+          //           },
+          //           onSuggestionSelected: (PlaceSearch suggestion) {
+          //             applicationBloc
+          //                 .setSelectedLocation(suggestion.placeId);
+          //           })),
+          // ),
+          Container(
+        child: GoogleMap(
+          mapType: MapType.hybrid,
+          myLocationEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(40.5, -105),
+            zoom: 14,
+          ),
+          markers: getMarkers(),
+          polygons: _polygons,
+          onMapCreated: (GoogleMapController controller) {
+            _mapController = controller;
+          },
+          // markers: Set<Marker>.of(applicationBloc.markers),
+        ),
+      ),
+    );
   }
 
   Future<void> _goToPlace(Place place) async {
