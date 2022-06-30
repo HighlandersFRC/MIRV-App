@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
+import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:test/ui/screens/home_page.dart';
 
 void main() {
@@ -13,12 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // title: 'Flutter Demo',
-      // theme: ThemeData(
-      //   primarySwatch: Colors.red,
-      // ),
-      home: HomePage(),
-    );
+    return ChangeNotifierProvider(
+        create: (context) => ApplicationBloc(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          home: HomePage(),
+        ));
   }
 }

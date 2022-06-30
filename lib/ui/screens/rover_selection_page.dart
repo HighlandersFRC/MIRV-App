@@ -202,12 +202,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Expanded(
               child: ChangeNotifierProvider(
                   create: (context) => ApplicationBloc(),
-                  child: ChangeNotifierProvider(
-                      create: (context) => ApplicationBloc(),
-                      child: Obx(
-                        () => RoverSelectionMap(roverList.value,
-                            selectedRoverController.selectedRoverId),
-                      ))))
+                  child: Obx(
+                    () => RoverSelectionMap(roverList.value,
+                        selectedRoverController.selectedRoverId),
+                  )))
         ],
       ),
     );
