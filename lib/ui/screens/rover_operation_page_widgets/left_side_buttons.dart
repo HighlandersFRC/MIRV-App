@@ -1,16 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
   final MirvApi mirvApi;
+  final MapSelectionController mapSelectionController;
 
   const LeftSideButtons(
-      {Key? key, required this.roverMetrics, required this.mirvApi})
+      {Key? key,
+      required this.roverMetrics,
+      required this.mirvApi,
+      required this.mapSelectionController})
       : super(key: key);
 
   @override
@@ -18,6 +24,9 @@ class LeftSideButtons extends StatefulWidget {
 }
 
 class _LeftSideButtonsState extends State<LeftSideButtons> {
+  OverlayEntry? entry;
+  late List<bool> isSelected;
+
   _robotModeButton(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disabled:
@@ -68,25 +77,42 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
         SizedBox(
           height: 15,
         ),
-        Container(
-          width: 175,
-          child: ElevatedButton.icon(
-            onPressed: null,
-            label: const Text(
-              "Map",
-              textScaleFactor: 2.5,
-            ),
-            icon: const Icon(
-              Icons.map,
-              size: 60,
-            ),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
-          ),
-        ),
-        SizedBox(
-          height: 20,
+        Obx(
+          () => Container(
+              width: 175,
+              child: !widget.mapSelectionController.showMap.value
+                  ? ElevatedButton.icon(
+                      onPressed: () {
+                        widget.mapSelectionController.showMap.value = true;
+                      },
+                      label: const Text(
+                        "Map",
+                        textScaleFactor: 2.5,
+                      ),
+                      icon: const Icon(
+                        Icons.map,
+                        size: 60,
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () {
+                        widget.mapSelectionController.showMap.value = false;
+                      },
+                      label: const Text(
+                        "Video",
+                        textScaleFactor: 2.0,
+                      ),
+                      icon: const Icon(
+                        Icons.video_camera_back,
+                        size: 60,
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 98, 7, 255))),
+                    )),
         ),
         SizedBox(
           width: 250,
