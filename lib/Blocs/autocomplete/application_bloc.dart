@@ -9,8 +9,6 @@ import 'package:test/models/place.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
-// import 'package:test/models/geometry.dart';
-// import 'package:test/models/location.dart';
 
 class ApplicationBloc with ChangeNotifier {
   final geoLocatorService = GeolocatorService();
@@ -34,12 +32,6 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<List<String>> searchPlaces(String searchTerm) async{
-  //   searchResults = await placesService.getAutocomplete(searchTerm);
-  //   return (searchResults).map((e) => e.description).toList();
-    
-  // }
-
   Future<List<PlaceSearch>> searchPlaces(String searchTerm) async{
     searchResults = await placesService.getAutocomplete(searchTerm);
     return searchResults;
@@ -54,6 +46,7 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
+ 
   clearSelectedLocation() {
     selectedLocation.add(null);
     selectedLocationStatic = null;

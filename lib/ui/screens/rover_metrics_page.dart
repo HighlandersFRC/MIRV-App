@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/services/mirv_api.dart';
 
 class RoverMetricsPage extends StatefulWidget {
-  const RoverMetricsPage({Key? key}) : super(key: key);
+   const RoverMetricsPage({Key? key}) : super(key: key);
 
   @override
   State<RoverMetricsPage> createState() => _RoverMetricsPageState();

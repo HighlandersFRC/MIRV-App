@@ -8,7 +8,7 @@ class PlacesService {
 
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     var url =
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=address&key=$key';
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&key=$key';
     var response = await http.get(Uri.parse(url));
     var json = convert.jsonDecode(response.body);
     print(response.body);

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:test/models/rover_location.dart';
@@ -8,27 +9,29 @@ import 'package:test/models/place.dart';
 import 'package:test/Blocs/autocomplete/application_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:test/models/rover_metrics.dart';
+import 'package:test/models/rover_metrics.dart';
+import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/searchbox_places.dart';
 
-
 class RoverSelectionMap extends StatefulWidget {
-  final List<RoverLocation> rovers;
-  RoverSelectionMap(this.rovers);
+final List<RoverMetrics> roverMetrics;
+final Rx<String> selectedRoverId;
+
+  RoverSelectionMap(this.roverMetrics, this.selectedRoverId);
+
 
   @override
   _RoverSelectionMapState createState() => _RoverSelectionMapState();
 }
 
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
-  // LatLng _cameraCenterLocation =
-  //     new LatLng(40.47382939771208, -104.96933444375819);
   Set<Marker> markers = new Set();
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/rover_icon.png');
-
   }
 
   LocationData? _locationData;
@@ -38,11 +41,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   late StreamSubscription boundsSubscription;
   final _locationController = TextEditingController();
 
-  // Set<Marker> markers = HashSet<Marker>();
   Set<Polygon> _polygons = HashSet<Polygon>();
   Set<Circle> _circles = HashSet<Circle>();
   List<LatLng> polygonLatLngs = <LatLng>[];
   double radius = 10.0;
+  StreamController<Place?> selectedLocation = StreamController<Place?>();
 
   BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
   double zoom = 16.0;
@@ -98,7 +101,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           ImageConfiguration(), 'assets/images/rover_icon.png');
     }
 
-    
     void _setPolygon() {
       final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
       _polygons.add(Polygon(
@@ -109,6 +111,12 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         fillColor: Colors.yellow.withOpacity(0.15),
       ));
     }
+
+    this.widget.selectedRoverId.listen((roverId) {this.widget.roverMetrics.forEach((element) async { if (element.roverId == roverId) { _mapController?.animateCamera(CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                        target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
+                        zoom: await _mapController!.getZoomLevel())));}}); 
+    });
   }
 
   @override
@@ -148,26 +156,27 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TypeAheadField(
-                            textFieldConfiguration: TextFieldConfiguration(
-                                autofocus: true,
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .copyWith(fontStyle: FontStyle.italic),
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder())),
-                            suggestionsCallback: (pattern) async {
-                              return await applicationBloc
-                                  .searchPlaces(pattern);
-                            },
-                            itemBuilder: (context, PlaceSearch suggestion) {
-                              return ListTile(
-                                title: Text(suggestion.description),
-                              );
-                            },
-                            onSuggestionSelected: (PlaceSearch suggestion) {
-                              applicationBloc
-                                  .setSelectedLocation(suggestion.placeId);
-                            })),
+                          textFieldConfiguration: TextFieldConfiguration(
+                            autofocus: true,
+                            style: DefaultTextStyle.of(context)
+                                .style
+                                .copyWith(fontStyle: FontStyle.italic),
+                            decoration:
+                                InputDecoration(border: OutlineInputBorder()),
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            return await applicationBloc.searchPlaces(pattern);
+                          },
+                          itemBuilder: (context, PlaceSearch suggestion) {
+                            return ListTile(
+                              title: Text(suggestion.description),
+                            );
+                          },
+                          onSuggestionSelected: (PlaceSearch suggestion) {
+                            applicationBloc
+                                .setSelectedLocation(suggestion.placeId); 
+                                                         },
+                        )),
                   ),
                   Container(
                     height: 600.0,
@@ -208,21 +217,21 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     //markers to place on map
     setState(() {
       markers = {
-        ...this.widget.rovers.map((rover) {
+        ...this.widget.roverMetrics.map((rover) {
           return Marker(
               //add first marker
-              markerId: MarkerId(rover.roverId),
-              position: rover.location, //position of marker
+              markerId: MarkerId('rover_1'),
+              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long), //position of marker
               infoWindow: InfoWindow(
                 //popup info
-                title: rover.roverId,
+                title: 'rover_1',
                 snippet: 'My Custom Subtitle',
               ),
               icon: mapMarker,
               onTap: () async {
                 _mapController?.animateCamera(CameraUpdate.newCameraPosition(
                     CameraPosition(
-                        target: rover.location,
+                        target: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
                         zoom: await _mapController!.getZoomLevel())));
               });
           //add more markers here
