@@ -27,7 +27,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/rover_icon.png');
-
   }
 
   LocationData? _locationData;
@@ -97,7 +96,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           ImageConfiguration(), 'assets/images/rover_icon.png');
     }
 
-    
     void _setPolygon() {
       final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
       _polygons.add(Polygon(
@@ -143,12 +141,12 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
             : Column(
                 children: [
                   Container(
-                    height: 70,
+                    height: 60,
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TypeAheadField(
                             textFieldConfiguration: TextFieldConfiguration(
-                                autofocus: true,
+                                autofocus: false,
                                 style: DefaultTextStyle.of(context)
                                     .style
                                     .copyWith(fontStyle: FontStyle.italic),

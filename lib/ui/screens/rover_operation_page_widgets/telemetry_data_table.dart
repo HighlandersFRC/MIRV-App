@@ -10,9 +10,9 @@ class TelemeteryDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return roverMetrics != null
         ? DataTable(columns: [
-            DataColumn(label: Text('longitude')),
-            DataColumn(label: Text('latitude')),
-            DataColumn(label: Text('heading')),
+            DataColumn(label: Text('Longitude')),
+            DataColumn(label: Text('Latitude')),
+            DataColumn(label: Text('Heading')),
             DataColumn(label: Text('Speed')),
           ], rows: [
             DataRow(cells: [
