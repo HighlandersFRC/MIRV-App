@@ -1,9 +1,12 @@
 // ignore_for_file: avoid_print
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:observable/observable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/ui/screens/home_page.dart';
 import 'package:test/ui/screens/info_page.dart';
@@ -14,6 +17,14 @@ import 'package:get/get.dart' as get_pkg;
 import 'package:test/models/rover_summary.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:http/http.dart' as http;
+
+class JoystickValue extends Observable {
+  final double x;
+  final double y;
+  final DateTime ts;
+
+  JoystickValue(this.x, this.y, this.ts);
+}
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -41,6 +52,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
   double prevX = 0;
   double prevY = 0;
   bool _loading = false;
+  DateTime lastSendTime = DateTime.now();
+
+  Timer? timerJoy;
+
+  final joystickStream = BehaviorSubject<List<double>>();
+
+  final joystickPublish = <JoystickValue>[].obs;
 
   final Map<String, dynamic> offerSdpConstraints = {
     "mandatory": {
@@ -108,7 +126,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           var request = http.Request(
             'POST',
             Uri.parse(
-                'http://107.21.6.219:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+                'http://44.202.152.178:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -221,12 +239,40 @@ class _RoverOpPageState extends State<RoverOpPage> {
     await _localRenderer.initialize();
   }
 
+  Timer? timer;
+  startJoystickUpdates() {
+    timer = Timer.periodic(Duration(milliseconds: 110), (Timer t) => doNothing);
+  }
+
   @override
   void initState() {
     super.initState();
 
     initLocalRenderers();
     _makeCall();
+    startJoystickUpdates();
+    joystickPublish.value = ([JoystickValue(0, 0, DateTime.now())]);
+    timerJoy = Timer.periodic(
+      Duration(milliseconds: 115),
+      (Timer t) {
+        JoystickValue joyVal = joystickPublish.value[0];
+        DateTime currentTime = DateTime.now();
+        DateTime prevMessTime = joyVal.ts;
+        if (currentTime
+            .subtract(Duration(milliseconds: 110))
+            .isBefore(prevMessTime)) {
+          joystickStream.add([joyVal.x, joyVal.y]);
+        } else {
+          joystickStream.add([0.0, 0.0]);
+        }
+      },
+    );
+
+    joystickStream.listen(
+      (value) {
+        sendJoystick(value[0], value[1]);
+      },
+    );
   }
 
   var bLevel = 21;
@@ -328,12 +374,27 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
   }
 
-  sendJoystick(double _x, double _y) {
-    print("$_x   $_y");
+  sendJoystick(double x, double y) {
+    print(".                                    .");
+    print("------------------------- \n $x   $y \n-------------------------");
+    print(".                                    .");
     if (_dataChannel != null) {
       String messageText = json.encode({
-        "joystick_x": _x,
-        "joystick_y": _y,
+        "joystick_x": x,
+        "joystick_y": y,
+      });
+      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    }
+  }
+
+  sendCommand(String command, String typeCommand) {
+    print(".                                    .");
+    print(
+        "------------------------- \n $typeCommand: $command \n-------------------------");
+    print(".                                    .");
+    if (_dataChannel != null) {
+      String messageText = json.encode({
+        "$typeCommand": command,
       });
       _dataChannel!.send(RTCDataChannelMessage(messageText));
     }
@@ -341,10 +402,6 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   doNothing() {
     print("he he he ha!");
-  }
-
-  sendCommandToRover(String command) {
-    print("Sending $command to rover");
   }
 
   roverConnect() {
@@ -388,7 +445,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 ),
               ), //shape
               fixedSize: MaterialStateProperty.all(
-                const Size(200, 300),
+                Size(200, 300),
               ), //size
               overlayColor: MaterialStateProperty.all(Colors.amber),
               alignment: Alignment.centerLeft,
@@ -559,82 +616,97 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         Container(
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: sendCommandToRover("deploy"),
-                            child: Text(
-                              "Deploy",
-                              textScaleFactor: 2,
-                            ),
+                            onPressed: () => sendCommand("disable", "intake"),
                             style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: sendCommandToRover("dock"),
-                            child: Text(
-                              "Dock",
-                              textScaleFactor: 2,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: sendCommandToRover("deployPiLits"),
-                            child: Text(
-                              "Deploy Pi-Lits",
-                              textScaleFactor: 1.75,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: sendCommandToRover("retrievePiLits"),
-                            child: Text(
-                              "Retrieve Pi-Lits",
-                              textScaleFactor: 1.75,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: sendCommandToRover("enable"),
-                            child: Text(
-                              "Enable",
-                              textScaleFactor: 1.75,
-                            ),
-                            style: ButtonStyle(),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: sendCommandToRover("disable"),
                             child: Text(
                               "Disable",
                               textScaleFactor: 1.75,
                             ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () => sendCommand("reset", "intake"),
+                            child: Text(
+                              "Reset",
+                              textScaleFactor: 1.75,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () => sendCommand("intake", "intake"),
                             style: ButtonStyle(),
+                            child: Text(
+                              "Intake",
+                              textScaleFactor: 1.75,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () => sendCommand("store", "intake"),
+                            style: ButtonStyle(),
+                            child: Text(
+                              "Store",
+                              textScaleFactor: 1.75,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () => sendCommand("deposit", "intake"),
+                            style: ButtonStyle(),
+                            child: Text(
+                              "Deposit",
+                              textScaleFactor: 1.75,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                sendCommand("switch_left", "intake"),
+                            style: ButtonStyle(),
+                            child: Text(
+                              "Switch Left",
+                              textScaleFactor: 1.75,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 60,
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                sendCommand("switch_right", "intake"),
+                            style: ButtonStyle(),
+                            child: Text(
+                              "Switch Right",
+                              textScaleFactor: 1.75,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -725,10 +797,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   width: 225,
                   child: ElevatedButton(
                     onPressed: _stopCall,
-                    child: Text("Stop call"),
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(getConnectButtonColor())),
+                    child: Text("Stop call"),
                   ),
                 ),
                 SizedBox(
@@ -746,6 +818,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
                         },
                       );
                       sendJoystick(_x, _y);
+                      lastSendTime = DateTime.now();
+                      joystickPublish.value = ([
+                        JoystickValue(details.x, details.y, DateTime.now())
+                      ]);
                     },
                   ),
                 ),
@@ -757,7 +833,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   height: 250,
                   width: 250,
                   child: ElevatedButton.icon(
-                    onPressed: sendCommandToRover("eStop"),
+                    onPressed: () => sendCommand("eStop", "general"),
                     label: const Text("E-STOP"),
                     icon: const Icon(Icons.warning_amber_rounded),
                     style: ButtonStyle(
