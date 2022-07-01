@@ -10,9 +10,9 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
     _$_RoverMetrics(
       roverId: json['roverId'] as String? ?? "unknown",
       state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
-          RoverStateType.disabled,
+          RoverStateType.remoteOperation,
       status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
-          RoverStatusType.unavailable,
+          RoverStatusType.available,
       battery: json['battery'] as int? ?? -1,
       health: json['health'] == null
           ? const RoverMetricHealth()

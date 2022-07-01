@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:math';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_health_type.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_operation_page.dart';
 import 'package:test/ui/screens/troubleshoot_page.dart';
 
 class StatusPage extends StatefulWidget {
@@ -25,13 +23,6 @@ class HealthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    goTrouble() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TroubleShootingPage()),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -69,7 +60,9 @@ class HealthContainer extends StatelessWidget {
             ),
           ),
           child: ElevatedButton(
-            onPressed: goTrouble,
+            onPressed: () {
+              Get.to(TroubleShootingPage());
+            },
             style: ButtonStyle(
               shape: MaterialStateProperty.all(
                 const RoundedRectangleBorder(
@@ -141,16 +134,12 @@ class _StatusPageState extends State<StatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Rover Status"),
-      ),
-      body: GridView.count(
-        primary: false,
+    return Container(
+      child: GridView.count(
         padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 100,
+        crossAxisSpacing: 50,
         mainAxisSpacing: 100,
-        crossAxisCount: 5,
+        crossAxisCount: 4,
         children: <Widget>[
           HealthContainer(
               roverHealthType: roverMetrics.health.sensors, name: "sensors"),

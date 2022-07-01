@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:test/ui/screens/app_bar_theme.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
-import 'dart:async';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 
 class TroubleShootingPage extends StatefulWidget {
@@ -14,28 +12,20 @@ class TroubleShootingPage extends StatefulWidget {
 } //TroubleShotingPage
 
 class _TroubleShootingPageState extends State<TroubleShootingPage> {
-  goOp() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RoverOpPage()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    _goBack() {
-      print("bruh");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const StatusPage()),
-      ); //Navigator.push
-    } //_goBack
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("fix it yourself"),
+        foregroundColor: AppBarColor.foregroundColor,
+        shadowColor: AppBarColor.shadowColor,
+        backgroundColor: AppBarColor.backgroundColor,
+        title: const Text("Trouble Shooting"),
         actions: [
-          ElevatedButton(onPressed: goOp, child: const Icon(Icons.drive_eta))
+          ElevatedButton(
+              onPressed: () {
+                Get.to(RoverOpPage());
+              },
+              child: const Icon(Icons.drive_eta))
         ],
       ),
       body: Column(
@@ -44,19 +34,18 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
             width: 2000,
             height: 720,
             child: ElevatedButton(
-              onPressed: _goBack,
+              onPressed: () {
+                Get.to(StatusPage());
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                     const Color.fromARGB(255, 0, 255, 17)),
               ),
-              child: Text("go back",
-                  textScaleFactor: 20,
-                  style: GoogleFonts.butcherman(
-                      color: const Color.fromARGB(255, 141, 9, 0))),
+              child: Text("go back", textScaleFactor: 20),
             ),
           ),
-        ], // children
+        ],
       ),
     );
-  } // build widget
-}// _TroubleShootingPageState
+  }
+}

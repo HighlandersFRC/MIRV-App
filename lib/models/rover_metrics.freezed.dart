@@ -187,8 +187,8 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
 class _$_RoverMetrics implements _RoverMetrics {
   const _$_RoverMetrics(
       {this.roverId = "unknown",
-      this.state = RoverStateType.disabled,
-      this.status = RoverStatusType.unavailable,
+      this.state = RoverStateType.remoteOperation,
+      this.status = RoverStatusType.available,
       this.battery = -1,
       this.health = const RoverMetricHealth(),
       this.telemetry = const RoverMetricTelemetry()});
