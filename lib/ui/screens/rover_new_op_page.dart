@@ -90,6 +90,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
+  void _onDataChannelMessage(message) {
+    print(message.text);
+  }
+
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
     if (_peerConnection!.iceGatheringState ==
@@ -187,6 +191,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
+    _dataChannel!.onMessage = _onDataChannelMessage;
     print("3333333333333333333");
     final mediaConstraints = <String, dynamic>{
       'audio': false,
