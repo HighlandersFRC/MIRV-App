@@ -33,7 +33,6 @@ class RoverOpPage extends StatefulWidget {
 }
 
 class _RoverOpPageState extends State<RoverOpPage> {
-  get_pkg.RxList<RoverSummary> roverList = <RoverSummary>[].obs;
   final MirvApi _mirvApi = MirvApi();
   RTCPeerConnection? _peerConnection;
   final _localRenderer = RTCVideoRenderer();
@@ -333,7 +332,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 child: LeftSideButtons(
                     mirvApi: _mirvApi,
                     roverMetrics: roverMetrics,
-                    dataChannel: _dataChannel!,
+                    dataChannel: _dataChannel,
                     sendCommand: sendCommand)),
           ),
           Align(

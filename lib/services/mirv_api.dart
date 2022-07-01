@@ -23,31 +23,34 @@ class MirvApi {
   }
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
-    var response = await http
-        .get(Uri.parse("https://mirvapi.azurewebsites.net/rovers/$roverID"));
-    String lol =
-        '{"roverId":"rover1","state":"docked","status":"available","battery":22,"health":{"electronics":"healthy","drivetrain":"unavailable","intake":"healthy","sensors":"healthy","garage":"degraded","power":"unavailable","general":"degraded"},"telemetry":{"location":{"long":-104.969454,"lat":40.474101},"heading":149.68,"speed":12.62}}';
+    // var response = await http
+    //     .get(Uri.parse("https://mirvapi.azurewebsites.net/rovers/$roverID"));
+    // String lol =
+    //     '{"roverId":"rover1","state":"docked","status":"available","battery":22,"health":{"electronics":"healthy","drivetrain":"unavailable","intake":"healthy","sensors":"healthy","garage":"degraded","power":"unavailable","general":"degraded"},"telemetry":{"location":{"long":-104.969454,"lat":40.474101},"heading":149.68,"speed":12.62}}';
 
-    var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
-    return roverMetrics;
+    // var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
+    // return roverMetrics;
+    return Future<RoverMetrics>.value(RoverMetrics());
   }
 
   Future<List<RoverSummary>> getRovers() async {
-    List<RoverSummary> rovers;
-    var response =
-        await http.get(Uri.parse("https://mirvapi.azurewebsites.net/rovers"));
-    rovers = (json.decode(response.body) as List)
-        .map((i) => RoverSummary.fromJson(i))
-        .toList()
-        .obs;
-    return rovers;
+    // List<RoverSummary> rovers;
+    // var response =
+    //     await http.get(Uri.parse("https://mirvapi.azurewebsites.net/rovers"));
+    // rovers = (json.decode(response.body) as List)
+    //     .map((i) => RoverSummary.fromJson(i))
+    //     .toList()
+    //     .obs;
+    // return rovers;
+    return Future<List<RoverSummary>>.value([RoverSummary()]);
   }
 
   startPeriodicMetricUpdates() {
-    timer = Timer.periodic(
-        Duration(seconds: 5),
-        (Timer t) => getRoverMetrics('roverID')
-            .then((value) => periodicMetricUpdates.add(value)));
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) {
+      periodicMetricUpdates.add(RoverMetrics());
+      // getRoverMetrics('roverID')
+      //   .then((value) => periodicMetricUpdates.add(value))
+    });
   }
 
   stopPeriodicMetricUpdates() {

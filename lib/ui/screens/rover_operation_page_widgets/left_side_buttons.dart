@@ -9,7 +9,7 @@ import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart'
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
   final MirvApi mirvApi;
-  final RTCDataChannel dataChannel;
+  final RTCDataChannel? dataChannel;
   final Function(String, String) sendCommand;
   const LeftSideButtons(
       {Key? key,
@@ -32,7 +32,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
           onPressed: () {
             if (widget.dataChannel != null) {
               String messageText = "Start Manual Control";
-              widget.dataChannel.send(RTCDataChannelMessage(messageText));
+              widget.dataChannel!.send(RTCDataChannelMessage(messageText));
             }
           },
           label: const Text(

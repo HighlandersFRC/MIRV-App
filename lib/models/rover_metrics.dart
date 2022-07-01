@@ -12,9 +12,9 @@ class RoverMetrics with _$RoverMetrics {
   const factory RoverMetrics(
       {@Default("unknown")
           String roverId,
-      @Default(RoverStateType.disabled)
+      @Default(RoverStateType.remoteOperation)
           RoverStateType state, //RoverStateType
-      @Default(RoverStatusType.unavailable)
+      @Default(RoverStatusType.available)
           RoverStatusType status, //RoverStatusType
       @Default(-1)
           int battery,
