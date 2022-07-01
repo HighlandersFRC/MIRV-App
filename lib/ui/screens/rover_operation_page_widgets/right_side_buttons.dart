@@ -19,7 +19,7 @@ class RightSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
   final Function() roverConnect;
   final Function() stopCall;
-  final RxList joystickPublish;
+  final RxList<JoystickValue> joystickPublish;
 
   final Function(String, String) sendCommand;
   @override
