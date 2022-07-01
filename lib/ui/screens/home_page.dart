@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
