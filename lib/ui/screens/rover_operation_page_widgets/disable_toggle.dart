@@ -4,9 +4,11 @@ import 'package:test/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
   final RoverMetrics? roverMetrics;
+  final Function(String, String) sendCommand;
   const ToggleDisable({
     Key? key,
     required this.roverMetrics,
+    required this.sendCommand,
   }) : super(key: key);
 
   @override
@@ -28,16 +30,17 @@ class _ToggleDisableState extends State<ToggleDisable> {
 
   @override
   Widget build(BuildContext context) {
-    _enableState(widget.roverMetrics != null
-        ? widget.roverMetrics!.state
-        : RoverStateType.eStop);
+    // _enableState(widget.roverMetrics != null
+    //     ? widget.roverMetrics!.state
+    //     : RoverStateType.eStop);
     return ElevatedButton(
         onPressed: () {
+          widget.sendCommand("disable", "intake");
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Sending signal"),
           ));
           setState(() {
-            enable = true;
+            enable = !enable;
           });
         },
         child: enable == true

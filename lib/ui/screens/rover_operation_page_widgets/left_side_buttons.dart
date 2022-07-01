@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:test/services/mirv_api.dart';
@@ -8,9 +9,14 @@ import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart'
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
   final MirvApi mirvApi;
-
+  final RTCDataChannel dataChannel;
+  final Function(String, String) sendCommand;
   const LeftSideButtons(
-      {Key? key, required this.roverMetrics, required this.mirvApi})
+      {Key? key,
+      required this.roverMetrics,
+      required this.mirvApi,
+      required this.dataChannel,
+      required this.sendCommand})
       : super(key: key);
 
   @override
@@ -23,7 +29,12 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
       case RoverStateType.disabled:
       case RoverStateType.docked:
         return ElevatedButton.icon(
-          onPressed: null,
+          onPressed: () {
+            if (widget.dataChannel != null) {
+              String messageText = "Start Manual Control";
+              widget.dataChannel.send(RTCDataChannelMessage(messageText));
+            }
+          },
           label: const Text(
             " Manual Control",
             textScaleFactor: 1.5,
@@ -94,7 +105,10 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.mirvApi.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return CommandList(roverMetrics: snapshot.data);
+                return CommandList(
+                  roverMetrics: snapshot.data,
+                  sendCommand: widget.sendCommand,
+                );
               }),
         )
       ],
