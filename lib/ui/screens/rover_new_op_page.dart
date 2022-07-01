@@ -403,9 +403,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
           Align(
               alignment: Alignment.bottomRight,
               child: RightSideButtons(
-                  roverMetrics: roverMetrics,
-                  joystickPublish: joystickPublish,
-                  sendCommand: sendCommand)),
+                roverMetrics: roverMetrics,
+                joystickPublish: joystickPublish,
+                sendCommand: sendCommand,
+                roverConnect: roverConnect,
+                stopCall: _stopCall,
+              )),
         ],
       ),
     );

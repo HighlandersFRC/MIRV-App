@@ -12,13 +12,13 @@ class RightSideButtons extends StatefulWidget {
       {Key? key,
       required this.roverMetrics,
       required this.sendCommand,
-      this.roverConnect,
-      this.stopCall,
+      required this.roverConnect,
+      required this.stopCall,
       required this.joystickPublish})
       : super(key: key);
   final RoverMetrics roverMetrics;
-  final dynamic roverConnect;
-  final dynamic stopCall;
+  final Function() roverConnect;
+  final Function() stopCall;
   final RxList joystickPublish;
 
   final Function(String, String) sendCommand;
@@ -60,7 +60,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-          height: 150,
+          height: 40,
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
@@ -89,7 +89,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-            child: (widget.roverMetrics.state == RoverStateType.remoteOperation)
+            child: (RoverStateType.remoteOperation ==
+                    RoverStateType.remoteOperation)
                 ? Joystick(
                     mode: _joystickMode,
                     listener: (details) {
@@ -110,7 +111,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 100,
         ),
         SizedBox(
-          height: 250,
+          height: 100,
           width: 250,
           child: ElevatedButton.icon(
             onPressed: () => widget.sendCommand("eStop", "general"),
