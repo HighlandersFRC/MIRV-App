@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:test/Blocs/autocomplete/application_bloc.dart';
+import 'package:test/Blocs/autocomplete/search_bar.dart';
+import 'package:test/models/place.dart';
 import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 import 'package:location/location.dart';
 import 'package:test/models/rover_status_type.dart';
 import 'package:test/models/rover_summary.dart';
+import 'package:test/models/searchbox_places.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
@@ -17,6 +20,7 @@ import 'package:test/ui/screens/rover_status_page.dart';
 class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
+  Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedroverId) =>
@@ -200,12 +204,20 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             width: 5,
           ),
           Expanded(
-              child: ChangeNotifierProvider(
-                  create: (context) => ApplicationBloc(),
-                  child: Obx(
-                    () => RoverSelectionMap(roverList.value,
-                        selectedRoverController.selectedRoverId),
-                  )))
+              child: Stack(
+            children: [
+              Container(
+                child: RoverSelectionMap(
+                    roverList.value,
+                    selectedRoverController.selectedRoverId,
+                    selectedRoverController),
+              ),
+              Container(
+                  height: 70,
+                  child: SearchBar(
+                      selectedRoverController: selectedRoverController))
+            ],
+          ))
         ],
       ),
     );
