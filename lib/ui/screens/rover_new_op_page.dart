@@ -6,6 +6,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:observable/observable.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:test/models/rover_metrics.dart';
+import 'package:test/services/gamepad_controller.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
@@ -36,6 +37,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   final MirvApi _mirvApi = MirvApi();
   RTCPeerConnection? _peerConnection;
   final _localRenderer = RTCVideoRenderer();
+  GamepadController gamepadController = GamepadController();
 
   MediaStream? _localStream;
 
@@ -92,8 +94,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -104,9 +105,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   void _toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -124,8 +123,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse(
-                'http://44.202.152.178:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('http://:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -174,8 +172,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     print("print stament 11111111111111");
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
+    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
     print("2222222222222222222");
@@ -252,15 +249,18 @@ class _RoverOpPageState extends State<RoverOpPage> {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
+        if (currentTime.subtract(Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
         }
       },
     );
+    gamepadController.setJoystickListener();
+    gamepadController.axisStream.listen((cmd) {
+      // sendJoystick(cmd.command.x, cmd.command.y);
+      joystickPublish.value = [JoystickValue(cmd.command.x, cmd.command.y, DateTime.now())];
+    });
 
     joystickStream.listen(
       (value) {
@@ -284,8 +284,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   sendCommand(String command, String typeCommand) {
     print(".                                    .");
-    print(
-        "------------------------- \n $typeCommand: $command \n-------------------------");
+    print("------------------------- \n $typeCommand: $command \n-------------------------");
     print(".                                    .");
     if (_dataChannel != null) {
       String messageText = json.encode({
@@ -319,8 +318,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
             builder: (context, snapshot) {
-              return CommandList(
-                  roverMetrics: snapshot.data, sendCommand: sendCommand);
+              return CommandList(roverMetrics: snapshot.data, sendCommand: sendCommand);
             }),
       ),
       body: Row(
@@ -330,10 +328,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
             child: SizedBox(
                 width: 200,
                 child: LeftSideButtons(
-                    mirvApi: _mirvApi,
-                    roverMetrics: roverMetrics,
-                    dataChannel: _dataChannel,
-                    sendCommand: sendCommand)),
+                    mirvApi: _mirvApi, roverMetrics: roverMetrics, dataChannel: _dataChannel, sendCommand: sendCommand)),
           ),
           Align(
             alignment: Alignment.center,
@@ -393,8 +388,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     builder: (context, snapshot) {
                       return Container(
                           child: snapshot.data != null
-                              ? TelemeteryDataTable(
-                                  roverMetrics: snapshot.data!.telemetry)
+                              ? TelemeteryDataTable(roverMetrics: snapshot.data!.telemetry)
                               : Text('Waiting on data'));
                     }),
               ],

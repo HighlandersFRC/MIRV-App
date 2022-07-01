@@ -14,8 +14,7 @@ class MirvApi {
   String thirdRover = "three";
   String _authToken = "auth token";
 
-  BehaviorSubject<RoverMetrics> periodicMetricUpdates =
-      new BehaviorSubject<RoverMetrics>();
+  BehaviorSubject<RoverMetrics> periodicMetricUpdates = new BehaviorSubject<RoverMetrics>();
 
   String getAuthToken() {
     _authToken = "new auth token";
@@ -23,8 +22,7 @@ class MirvApi {
   }
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
-    var response =
-        await http.get(Uri.parse("http://44.202.152.178:8000/rovers/$roverID"));
+    var response = await http.get(Uri.parse("http://mirvapi.azurewebsites.net/rovers/$roverID"));
     String lol =
         '{"roverId":"rover1","state":"docked","status":"available","battery":22,"health":{"electronics":"healthy","drivetrain":"unavailable","intake":"healthy","sensors":"healthy","garage":"degraded","power":"unavailable","general":"degraded"},"telemetry":{"location":{"long":-104.969454,"lat":40.474101},"heading":149.68,"speed":12.62}}';
 
@@ -34,12 +32,8 @@ class MirvApi {
 
   Future<List<RoverSummary>> getRovers() async {
     List<RoverSummary> rovers;
-    var response =
-        await http.get(Uri.parse("http://44.202.152.178:8000/rovers"));
-    rovers = (json.decode(response.body) as List)
-        .map((i) => RoverSummary.fromJson(i))
-        .toList()
-        .obs;
+    var response = await http.get(Uri.parse("http://mirvapi.azurewebsites.net/rovers"));
+    rovers = (json.decode(response.body) as List).map((i) => RoverSummary.fromJson(i)).toList().obs;
     return rovers;
   }
 
