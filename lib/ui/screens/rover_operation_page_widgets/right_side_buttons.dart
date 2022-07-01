@@ -14,12 +14,14 @@ class RightSideButtons extends StatefulWidget {
       required this.sendCommand,
       required this.roverConnect,
       required this.stopCall,
-      required this.joystickPublish})
+      required this.joystickPublish,
+      required this.useGamepad})
       : super(key: key);
   final RoverMetrics roverMetrics;
   final Function() roverConnect;
   final Function() stopCall;
   final RxList<JoystickValue> joystickPublish;
+  final Rx<bool> useGamepad;
 
   final Function(String, String) sendCommand;
   @override
@@ -45,14 +47,13 @@ class _RightSideButtonsState extends State<RightSideButtons> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          width: 250,
           height: 50,
+          width: 250,
           child: ElevatedButton.icon(
             onPressed: widget.roverConnect,
             label: Text('Connect To Rover'),
             icon: Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           ),
         ),
         SizedBox(
@@ -64,8 +65,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
             child: Text("Stop call"),
           ),
         ),
@@ -74,14 +74,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-          height: 100,
-          width: 225,
           child: StreamBuilder<RoverMetrics>(
               stream: _mirvApi.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand);
+                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
               }),
         ),
         SizedBox(
@@ -89,8 +85,15 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-            child: (RoverStateType.remoteOperation ==
-                    RoverStateType.remoteOperation)
+            child: Obx(
+          () => Switch(
+              value: widget.useGamepad.value,
+              onChanged: (val) {
+                widget.useGamepad.value = !widget.useGamepad.value;
+              }),
+        )),
+        SizedBox(
+            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
                 ? Joystick(
                     mode: _joystickMode,
                     listener: (details) {
@@ -100,9 +103,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                           _y = details.y;
                         },
                       );
-                      widget.joystickPublish.value = ([
-                        JoystickValue(details.x, details.y, DateTime.now())
-                      ]);
+                      widget.joystickPublish.value = ([JoystickValue(details.x, details.y, DateTime.now())]);
                     },
                   )
                 : null),
@@ -124,12 +125,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(
-                        color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                    side: BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
                   ),
                 ),
-                shadowColor:
-                    MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
+                shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
           ),
         )
       ],

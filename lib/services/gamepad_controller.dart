@@ -12,8 +12,10 @@ class GamepadController {
 
   final StreamController<GamepadCommand> _commandStreamController = StreamController<GamepadCommand>.broadcast();
   Stream<GamepadCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
-  Stream<GamepadCommand> get axisStream =>
-      _commandStreamController.stream.asBroadcastStream().where((cmd) => cmd.type == GamepadCommandType.axis);
+  Stream<GamepadAxisCommand> get axisStream => _commandStreamController.stream
+      .asBroadcastStream()
+      .where((cmd) => cmd.type == GamepadCommandType.axis)
+      .map((cmd) => cmd.command as GamepadAxisCommand);
 
   // Joysticks
   // {androidType: AXIS, sourceInput: STICK_RIGHT, x: 1.0, y: 0.0}
@@ -63,7 +65,7 @@ class GamepadController {
         GamepadCommand command = GamepadCommand(
             command: GamepadAxisCommand(
               x: double.parse(eventParameters['x']),
-              y: double.parse(eventParameters['x']),
+              y: -double.parse(eventParameters['y']),
               type: getAxisType(eventParameters['sourceInput']),
             ),
             type: GamepadCommandType.axis);

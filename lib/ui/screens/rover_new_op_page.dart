@@ -38,6 +38,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   RTCPeerConnection? _peerConnection;
   final _localRenderer = RTCVideoRenderer();
   GamepadController gamepadController = GamepadController();
+  get_pkg.Rx<bool> useGamepad = false.obs;
 
   MediaStream? _localStream;
 
@@ -244,7 +245,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     _makeCall();
     joystickPublish.value = ([JoystickValue(0, 0, DateTime.now())]);
     timerJoy = Timer.periodic(
-      Duration(milliseconds: 115),
+      Duration(milliseconds: 110),
       (Timer t) {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
@@ -258,13 +259,16 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
     gamepadController.setJoystickListener();
     gamepadController.axisStream.listen((cmd) {
-      // sendJoystick(cmd.command.x, cmd.command.y);
-      joystickPublish.value = [JoystickValue(cmd.command.x, cmd.command.y, DateTime.now())];
+      if (useGamepad.value) {
+        sendJoystick(cmd.x, cmd.y);
+      }
     });
 
     joystickStream.listen(
       (value) {
-        sendJoystick(value[0], value[1]);
+        if (!useGamepad.value) {
+          sendJoystick(value[0], value[1]);
+        }
       },
     );
   }
@@ -402,6 +406,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 sendCommand: sendCommand,
                 roverConnect: roverConnect,
                 stopCall: _stopCall,
+                useGamepad: useGamepad,
               )),
         ],
       ),
