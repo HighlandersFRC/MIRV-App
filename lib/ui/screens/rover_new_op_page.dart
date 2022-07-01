@@ -124,7 +124,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('http://:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('http://44.202.152.178:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
