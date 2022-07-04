@@ -5,17 +5,59 @@ import 'package:rxdart/subjects.dart';
 import 'package:test/models/gamepad/gamepad_axis_type.dart';
 import 'package:test/models/gamepad/gamepad_command_type.dart';
 import 'package:test/models/gamepad/gamepad_event_types.dart';
+import 'package:test/models/rover_control/rover_command.dart';
+import 'package:test/models/rover_control/rover_command_type.dart';
 
 class GamepadController {
   static const eventChannel = EventChannel('com.example.test/gamepad_channel');
   late StreamSubscription _eventChannel;
+  Timer? controllerTimer;
+  final RoverDriveControlType driveType;
 
   final StreamController<GamepadCommand> _commandStreamController = StreamController<GamepadCommand>.broadcast();
   Stream<GamepadCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
-  Stream<GamepadAxisCommand> get axisStream => _commandStreamController.stream
+  Stream<GamepadAxisCommand> get axisStreamLeft => _commandStreamController.stream
       .asBroadcastStream()
-      .where((cmd) => cmd.type == GamepadCommandType.axis)
+      .where((cmd) => cmd.type == GamepadCommandType.axis && cmd.command.type == GamepadAxisType.left)
       .map((cmd) => cmd.command as GamepadAxisCommand);
+  Stream<GamepadAxisCommand> get axisStreamRight => _commandStreamController.stream
+      .asBroadcastStream()
+      .where((cmd) => cmd.type == GamepadCommandType.axis && cmd.command.type == GamepadAxisType.right)
+      .map((cmd) => cmd.command as GamepadAxisCommand);
+
+  final StreamController<DrivetrainRoverCommand> _drivetrainCommandStreamController =
+      StreamController<DrivetrainRoverCommand>.broadcast();
+  Stream<DrivetrainRoverCommand> get drivetrainCommandStream => _drivetrainCommandStreamController.stream.asBroadcastStream();
+
+  GamepadController({this.driveType = RoverDriveControlType.arcade}) {
+    controllerTimer = Timer.periodic(
+      Duration(milliseconds: 100),
+      (Timer t) async {
+        var latestLeft = await axisStreamLeft.last;
+        var latestRight = await axisStreamRight.last;
+
+        _drivetrainCommandStreamController.add(_getJoystickCommandOutput(driveType, latestLeft, latestRight));
+      },
+    );
+  }
+
+  dispose() {
+    controllerTimer?.cancel();
+  }
+
+  DrivetrainRoverCommand _getJoystickCommandOutput(
+      RoverDriveControlType driveType, GamepadAxisCommand leftStick, GamepadAxisCommand rightStick) {
+    switch (driveType) {
+      case RoverDriveControlType.arcade:
+        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, rightStick.x, leftStick.y);
+      case RoverDriveControlType.single:
+        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.x, leftStick.y);
+      case RoverDriveControlType.tank:
+        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+      default:
+        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+    }
+  }
 
   // Joysticks
   // {androidType: AXIS, sourceInput: STICK_RIGHT, x: 1.0, y: 0.0}
@@ -62,13 +104,17 @@ class GamepadController {
         print('BUTTON: $eventParameters');
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.axis) {
         print('AXIS: $eventParameters');
-        GamepadCommand command = GamepadCommand(
-            command: GamepadAxisCommand(
-              x: double.parse(eventParameters['x']),
-              y: -double.parse(eventParameters['y']),
-              type: getAxisType(eventParameters['sourceInput']),
-            ),
-            type: GamepadCommandType.axis);
+        var axisType = getAxisType(eventParameters['sourceInput']);
+        GamepadAxisCommand axisCommand = GamepadAxisCommand(
+            x: double.parse(eventParameters['x']), y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
+
+        if (axisType == GamepadAxisType.left) {
+          axisCommand = GamepadAxisCommand(x: 0.0, y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
+        } else {
+          axisCommand = GamepadAxisCommand(x: double.parse(eventParameters['x']), y: 0.0, type: axisType, ts: DateTime.now());
+        }
+
+        GamepadCommand command = GamepadCommand(command: axisCommand, type: GamepadCommandType.axis);
         _commandStreamController.add(command);
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.dpad) {
         print('DPAD: $eventParameters');

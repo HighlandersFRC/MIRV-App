@@ -57,8 +57,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
   DateTime lastSendTime = DateTime.now();
 
   Timer? timerJoy;
+  Timer? timerGamepad;
 
   final joystickStream = BehaviorSubject<List<double>>();
+  final gamepadStream = BehaviorSubject<List<double>>();
 
   final joystickPublish = <JoystickValue>[].obs;
 
@@ -124,7 +126,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('http://44.202.152.178:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('http://172.250.250.213:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -258,9 +260,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
       },
     );
     gamepadController.setJoystickListener();
-    gamepadController.axisStream.listen((cmd) {
+    gamepadController.drivetrainCommandStream.listen((value) {
       if (useGamepad.value) {
-        sendJoystick(cmd.x, cmd.y);
+        sendJoystick(value.x, value.y);
       }
     });
 
@@ -340,7 +342,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
               children: [
                 Container(
                   color: Colors.amber,
-                  width: 800,
+                  width: 200,
                   height: 450,
                   child: AspectRatio(
                     aspectRatio: 1,

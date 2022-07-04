@@ -23,6 +23,7 @@ mixin _$GamepadAxisCommand {
   GamepadAxisType get type => throw _privateConstructorUsedError;
   double get x => throw _privateConstructorUsedError; //RoverStateType
   double get y => throw _privateConstructorUsedError;
+  DateTime get ts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $GamepadAxisCommandCopyWith<$Res> {
   factory $GamepadAxisCommandCopyWith(
           GamepadAxisCommand value, $Res Function(GamepadAxisCommand) then) =
       _$GamepadAxisCommandCopyWithImpl<$Res>;
-  $Res call({GamepadAxisType type, double x, double y});
+  $Res call({GamepadAxisType type, double x, double y, DateTime ts});
 }
 
 /// @nodoc
@@ -52,6 +53,7 @@ class _$GamepadAxisCommandCopyWithImpl<$Res>
     Object? type = freezed,
     Object? x = freezed,
     Object? y = freezed,
+    Object? ts = freezed,
   }) {
     return _then(_value.copyWith(
       type: type == freezed
@@ -66,6 +68,10 @@ class _$GamepadAxisCommandCopyWithImpl<$Res>
           ? _value.y
           : y // ignore: cast_nullable_to_non_nullable
               as double,
+      ts: ts == freezed
+          ? _value.ts
+          : ts // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -77,7 +83,7 @@ abstract class _$$_GamepadAxisCommandCopyWith<$Res>
           $Res Function(_$_GamepadAxisCommand) then) =
       __$$_GamepadAxisCommandCopyWithImpl<$Res>;
   @override
-  $Res call({GamepadAxisType type, double x, double y});
+  $Res call({GamepadAxisType type, double x, double y, DateTime ts});
 }
 
 /// @nodoc
@@ -96,6 +102,7 @@ class __$$_GamepadAxisCommandCopyWithImpl<$Res>
     Object? type = freezed,
     Object? x = freezed,
     Object? y = freezed,
+    Object? ts = freezed,
   }) {
     return _then(_$_GamepadAxisCommand(
       type: type == freezed
@@ -110,6 +117,10 @@ class __$$_GamepadAxisCommandCopyWithImpl<$Res>
           ? _value.y
           : y // ignore: cast_nullable_to_non_nullable
               as double,
+      ts: ts == freezed
+          ? _value.ts
+          : ts // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -118,7 +129,7 @@ class __$$_GamepadAxisCommandCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_GamepadAxisCommand implements _GamepadAxisCommand {
   const _$_GamepadAxisCommand(
-      {required this.type, required this.x, required this.y});
+      {required this.type, required this.x, required this.y, required this.ts});
 
   factory _$_GamepadAxisCommand.fromJson(Map<String, dynamic> json) =>
       _$$_GamepadAxisCommandFromJson(json);
@@ -130,10 +141,12 @@ class _$_GamepadAxisCommand implements _GamepadAxisCommand {
 //RoverStateType
   @override
   final double y;
+  @override
+  final DateTime ts;
 
   @override
   String toString() {
-    return 'GamepadAxisCommand(type: $type, x: $x, y: $y)';
+    return 'GamepadAxisCommand(type: $type, x: $x, y: $y, ts: $ts)';
   }
 
   @override
@@ -143,7 +156,8 @@ class _$_GamepadAxisCommand implements _GamepadAxisCommand {
             other is _$_GamepadAxisCommand &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.x, x) &&
-            const DeepCollectionEquality().equals(other.y, y));
+            const DeepCollectionEquality().equals(other.y, y) &&
+            const DeepCollectionEquality().equals(other.ts, ts));
   }
 
   @JsonKey(ignore: true)
@@ -152,7 +166,8 @@ class _$_GamepadAxisCommand implements _GamepadAxisCommand {
       runtimeType,
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(x),
-      const DeepCollectionEquality().hash(y));
+      const DeepCollectionEquality().hash(y),
+      const DeepCollectionEquality().hash(ts));
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +185,8 @@ abstract class _GamepadAxisCommand implements GamepadAxisCommand {
   const factory _GamepadAxisCommand(
       {required final GamepadAxisType type,
       required final double x,
-      required final double y}) = _$_GamepadAxisCommand;
+      required final double y,
+      required final DateTime ts}) = _$_GamepadAxisCommand;
 
   factory _GamepadAxisCommand.fromJson(Map<String, dynamic> json) =
       _$_GamepadAxisCommand.fromJson;
@@ -181,6 +197,8 @@ abstract class _GamepadAxisCommand implements GamepadAxisCommand {
   double get x => throw _privateConstructorUsedError;
   @override //RoverStateType
   double get y => throw _privateConstructorUsedError;
+  @override
+  DateTime get ts => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_GamepadAxisCommandCopyWith<_$_GamepadAxisCommand> get copyWith =>

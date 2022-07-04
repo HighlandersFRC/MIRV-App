@@ -12,6 +12,7 @@ _$_GamepadAxisCommand _$$_GamepadAxisCommandFromJson(
       type: $enumDecode(_$GamepadAxisTypeEnumMap, json['type']),
       x: (json['x'] as num).toDouble(),
       y: (json['y'] as num).toDouble(),
+      ts: DateTime.parse(json['ts'] as String),
     );
 
 Map<String, dynamic> _$$_GamepadAxisCommandToJson(
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$_GamepadAxisCommandToJson(
       'type': _$GamepadAxisTypeEnumMap[instance.type],
       'x': instance.x,
       'y': instance.y,
+      'ts': instance.ts.toIso8601String(),
     };
 
 const _$GamepadAxisTypeEnumMap = {
