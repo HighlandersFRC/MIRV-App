@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/models/gamepad/gamepad_axis_type.dart';
 import 'package:test/models/gamepad/gamepad_command_type.dart';
 import 'package:test/models/gamepad/gamepad_event_types.dart';
@@ -14,31 +14,35 @@ class GamepadController {
   Timer? controllerTimer;
   final RoverDriveControlType driveType;
 
+  late Stream<DrivetrainRoverCommand> drivetrainCommandStream;
+
   final StreamController<GamepadCommand> _commandStreamController = StreamController<GamepadCommand>.broadcast();
   Stream<GamepadCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
-  Stream<GamepadAxisCommand> get axisStreamLeft => _commandStreamController.stream
-      .asBroadcastStream()
+  Stream<GamepadAxisCommand> get axisStreamLeft => commandStream
       .where((cmd) => cmd.type == GamepadCommandType.axis && cmd.command.type == GamepadAxisType.left)
       .map((cmd) => cmd.command as GamepadAxisCommand);
-  Stream<GamepadAxisCommand> get axisStreamRight => _commandStreamController.stream
-      .asBroadcastStream()
+  Stream<GamepadAxisCommand> get axisStreamRight => commandStream
       .where((cmd) => cmd.type == GamepadCommandType.axis && cmd.command.type == GamepadAxisType.right)
       .map((cmd) => cmd.command as GamepadAxisCommand);
 
-  final StreamController<DrivetrainRoverCommand> _drivetrainCommandStreamController =
-      StreamController<DrivetrainRoverCommand>.broadcast();
-  Stream<DrivetrainRoverCommand> get drivetrainCommandStream => _drivetrainCommandStreamController.stream.asBroadcastStream();
+  // final StreamController<DrivetrainRoverCommand> _drivetrainCommandStreamController =
+  //     StreamController<DrivetrainRoverCommand>.broadcast();
+  // Stream<DrivetrainRoverCommand> get drivetrainCommandStream => _drivetrainCommandStreamController.stream.asBroadcastStream();
 
   GamepadController({this.driveType = RoverDriveControlType.arcade}) {
-    controllerTimer = Timer.periodic(
-      Duration(milliseconds: 100),
-      (Timer t) async {
-        var latestLeft = await axisStreamLeft.last;
-        var latestRight = await axisStreamRight.last;
+    drivetrainCommandStream = Rx.combineLatest2(axisStreamLeft, axisStreamRight,
+        (GamepadAxisCommand left, GamepadAxisCommand right) => _getJoystickCommandOutput(driveType, left, right));
 
-        _drivetrainCommandStreamController.add(_getJoystickCommandOutput(driveType, latestLeft, latestRight));
-      },
-    );
+    // controllerTimer = Timer.periodic(
+    //   Duration(milliseconds: 100),
+    //   (Timer t) async {
+    //     var temp = await commandStream.last;
+    //     var latestLeft = await axisStreamLeft.last;
+    //     var latestRight = await axisStreamRight.last;
+
+    //     _drivetrainCommandStreamController.add(_getJoystickCommandOutput(driveType, latestLeft, latestRight));
+    //   },
+    // );
   }
 
   dispose() {
@@ -105,14 +109,9 @@ class GamepadController {
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.axis) {
         print('AXIS: $eventParameters');
         var axisType = getAxisType(eventParameters['sourceInput']);
-        GamepadAxisCommand axisCommand = GamepadAxisCommand(
-            x: double.parse(eventParameters['x']), y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
 
-        if (axisType == GamepadAxisType.left) {
-          axisCommand = GamepadAxisCommand(x: 0.0, y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
-        } else {
-          axisCommand = GamepadAxisCommand(x: double.parse(eventParameters['x']), y: 0.0, type: axisType, ts: DateTime.now());
-        }
+        var axisCommand = GamepadAxisCommand(
+            x: double.parse(eventParameters['x']), y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
 
         GamepadCommand command = GamepadCommand(command: axisCommand, type: GamepadCommandType.axis);
         _commandStreamController.add(command);
