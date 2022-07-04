@@ -54,8 +54,7 @@ class GamepadAxisCommand with _$GamepadAxisCommand {
   const factory GamepadAxisCommand(
       {required GamepadAxisType type,
       required double x, //RoverStateType
-      required double y,
-      required DateTime ts}) = _GamepadAxisCommand;
+      required double y}) = _GamepadAxisCommand;
 
   factory GamepadAxisCommand.fromJson(Map<String, dynamic> json) => _$GamepadAxisCommandFromJson(json);
 }

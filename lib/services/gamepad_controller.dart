@@ -33,6 +33,8 @@ class GamepadController {
     drivetrainCommandStream = Rx.combineLatest2(axisStreamLeft, axisStreamRight,
         (GamepadAxisCommand left, GamepadAxisCommand right) => _getJoystickCommandOutput(driveType, left, right));
 
+    _initializeStreams();
+
     // controllerTimer = Timer.periodic(
     //   Duration(milliseconds: 100),
     //   (Timer t) async {
@@ -43,6 +45,13 @@ class GamepadController {
     //     _drivetrainCommandStreamController.add(_getJoystickCommandOutput(driveType, latestLeft, latestRight));
     //   },
     // );
+  }
+
+  _initializeStreams() {
+    _commandStreamController.add(
+        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
+    _commandStreamController.add(
+        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
   }
 
   dispose() {
@@ -110,8 +119,8 @@ class GamepadController {
         print('AXIS: $eventParameters');
         var axisType = getAxisType(eventParameters['sourceInput']);
 
-        var axisCommand = GamepadAxisCommand(
-            x: double.parse(eventParameters['x']), y: double.parse(eventParameters['y']), type: axisType, ts: DateTime.now());
+        var axisCommand =
+            GamepadAxisCommand(x: double.parse(eventParameters['x']), y: double.parse(eventParameters['y']), type: axisType);
 
         GamepadCommand command = GamepadCommand(command: axisCommand, type: GamepadCommandType.axis);
         _commandStreamController.add(command);
