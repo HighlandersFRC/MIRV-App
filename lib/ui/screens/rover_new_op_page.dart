@@ -175,14 +175,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
         {"url": "stun:stun.l.google.com:19302"},
       ]
     };
-    print("print stament 11111111111111");
     //* Create Peer Connection
     if (_peerConnection != null) return;
     _peerConnection =
         await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
-    print("2222222222222222222");
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
@@ -192,7 +190,6 @@ class _RoverOpPageState extends State<RoverOpPage> {
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
     _dataChannel!.onMessage = _onDataChannelMessage;
-    print("3333333333333333333");
     final mediaConstraints = <String, dynamic>{
       'audio': false,
       'video': {
@@ -216,12 +213,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
       print(e.toString());
     }
     if (!mounted) return;
-    print("44444444444444444444444");
     setState(() {
       _inCalling = true;
       _loading = false;
     });
-    print("55555555555555555");
   }
 
   Future<void> _stopCall() async {
