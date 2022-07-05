@@ -8,14 +8,14 @@ import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart'
 
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
-  final MirvApi mirvApi;
-  final RTCDataChannel? dataChannel;
+  final dynamic periodicMetricUpdates;
+  final Function(String) sendGeneralCommand;
   final Function(String, String) sendCommand;
   const LeftSideButtons(
       {Key? key,
       required this.roverMetrics,
-      required this.mirvApi,
-      required this.dataChannel,
+      required this.sendGeneralCommand,
+      required this.periodicMetricUpdates,
       required this.sendCommand})
       : super(key: key);
 
@@ -30,10 +30,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
       case RoverStateType.docked:
         return ElevatedButton.icon(
           onPressed: () {
-            if (widget.dataChannel != null) {
-              String messageText = "Start Manual Control";
-              widget.dataChannel!.send(RTCDataChannelMessage(messageText));
-            }
+            widget.sendGeneralCommand('Start Manual Control');
           },
           label: const Text(
             " Manual Control",
@@ -103,12 +100,11 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
           width: 250,
           height: 500,
           child: StreamBuilder<RoverMetrics>(
-              stream: widget.mirvApi.periodicMetricUpdates,
+              stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
                 return CommandList(
-                  roverMetrics: snapshot.data,
-                  sendCommand: widget.sendCommand,
-                );
+                    roverMetrics: snapshot.data,
+                    sendCommand: widget.sendCommand);
               }),
         )
       ],

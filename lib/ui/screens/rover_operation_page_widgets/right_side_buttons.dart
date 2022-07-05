@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as get_pkg;
+import 'package:rxdart/rxdart.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:test/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
-  RightSideButtons(
-      {Key? key,
-      required this.roverMetrics,
-      required this.sendCommand,
-      required this.roverConnect,
-      required this.stopCall,
-      required this.joystickPublish})
-      : super(key: key);
+  RightSideButtons({
+    Key? key,
+    required this.roverMetrics,
+    required this.sendCommand,
+    required this.makeCall,
+    required this.stopCall,
+    required this.joystickPublish,
+    required this.periodicMetricUpdates,
+    required this.startJoystickUpdates,
+  }) : super(key: key);
   final RoverMetrics roverMetrics;
-  final Function() roverConnect;
   final Function() stopCall;
-  final RxList<JoystickValue> joystickPublish;
-
+  final Function() makeCall;
   final Function(String, String) sendCommand;
+  final get_pkg.RxList<JoystickValue> joystickPublish;
+  final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
+  final Function() startJoystickUpdates;
+
   @override
   State<RightSideButtons> createState() => _RightSideButtonsState();
 }
 
 class _RightSideButtonsState extends State<RightSideButtons> {
-  final MirvApi _mirvApi = MirvApi();
-
 // TODO: implement e-stop method
   eStop() {
     throw UnimplementedError('E-stop is not implemented');
@@ -48,7 +50,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
           height: 50,
           child: ElevatedButton.icon(
-            onPressed: widget.roverConnect,
+            onPressed: widget.makeCall,
             label: Text('Connect To Rover'),
             icon: Icon(Icons.wifi_calling_3),
             style: ButtonStyle(
@@ -77,7 +79,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           height: 100,
           width: 225,
           child: StreamBuilder<RoverMetrics>(
-              stream: _mirvApi.periodicMetricUpdates,
+              stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
                 return ToggleDisable(
                     roverMetrics: snapshot.data,
@@ -89,6 +91,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
+            //hard coded
             child: (RoverStateType.remoteOperation ==
                     RoverStateType.remoteOperation)
                 ? Joystick(
