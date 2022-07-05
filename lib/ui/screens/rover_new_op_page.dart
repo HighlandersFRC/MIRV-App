@@ -90,9 +90,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
-  void _onDataChannelMessage(message) {
-    print(message.text);
-  }
+  
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
@@ -114,6 +112,24 @@ class _RoverOpPageState extends State<RoverOpPage> {
     await Helper.switchCamera(videoTrack);
   }
 
+
+  // This Data Channel function receives data send on the rover created data channels
+  void _onDataChannel(RTCDataChannel dataChannel) {
+    // or alternatively:
+    dataChannel.messageStream.listen((message) {
+      if (message.type == MessageType.text) {
+        print(message.text);
+      } else {
+        // do something with message.binary
+      }
+    });
+  }
+
+  // This Data Channel Function receives data sent on the data channel created by the flutter app
+  void _onDataChannelMessage(message) {
+    print(message.text);
+  }
+
   Future<void> _negotiateRemoteConnection() async {
     return _peerConnection!
         .createOffer(offerOptions)
@@ -129,7 +145,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           var request = http.Request(
             'POST',
             Uri.parse(
-                'http://44.202.152.178:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+                'http://127.0.0.1:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -181,11 +197,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
         await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
+    _peerConnection!.onDataChannel = _onDataChannel;
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
     _dataChannel = await _peerConnection!.createDataChannel(
-      "chat",
+      "RoverStatus",
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
