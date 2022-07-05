@@ -130,7 +130,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('http://172.250.250.213:8000/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('https://mirvcloudapi.azurewebsites.net/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
