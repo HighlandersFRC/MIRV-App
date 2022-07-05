@@ -95,11 +95,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
-  
-
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState ==
+        RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -110,10 +109,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
   void _toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!
+        .getVideoTracks()
+        .firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
-
 
   // This Data Channel function receives data send on the rover created data channels
   void _onDataChannel(RTCDataChannel dataChannel) {
@@ -146,7 +146,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('https://mirvcloudapi.azurewebsites.net/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse(
+                'https://mirvcloudapi.azurewebsites.net/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -194,7 +195,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
     };
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+    _peerConnection =
+        await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
     _peerConnection!.onDataChannel = _onDataChannel;
@@ -243,6 +245,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
       await _peerConnection?.close();
       _peerConnection = null;
       _localRenderer.srcObject = null;
+      _dataChannel = null;
     } catch (e) {
       print(e.toString());
     }
@@ -269,7 +272,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(Duration(milliseconds: 110)).isBefore(prevMessTime)) {
+        if (currentTime
+            .subtract(Duration(milliseconds: 110))
+            .isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
@@ -293,27 +298,39 @@ class _RoverOpPageState extends State<RoverOpPage> {
   }
 
   sendJoystick(double x, double y) {
-    print(".                                    .");
-    print("------------------------- \n $x   $y \n-------------------------");
-    print(".                                    .");
-    if (_dataChannel != null) {
-      String messageText = json.encode({
-        "joystick_x": x,
-        "joystick_y": y,
-      });
-      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    if (_peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
+      if (_dataChannel != null) {
+        print(".                                    .");
+        print(
+            "------------------------- \n $x   $y \n-------------------------");
+        print(".                                    .");
+        if (_dataChannel != null) {
+          String messageText = json.encode({
+            "joystick_x": x,
+            "joystick_y": y,
+          });
+          _dataChannel!.send(RTCDataChannelMessage(messageText));
+        }
+      }
     }
   }
 
   sendCommand(String command, String typeCommand) {
-    print(".                                    .");
-    print("------------------------- \n $typeCommand: $command \n-------------------------");
-    print(".                                    .");
-    if (_dataChannel != null) {
-      String messageText = json.encode({
-        "$typeCommand": command,
-      });
-      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    if (_peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
+      print(".                                    .");
+      print(
+          "------------------------- \n $typeCommand: $command \n-------------------------");
+      print(".                                    .");
+      if (_dataChannel != null) {
+        String messageText = json.encode({
+          "$typeCommand": command,
+        });
+        _dataChannel!.send(RTCDataChannelMessage(messageText));
+      }
     }
   }
 
@@ -341,7 +358,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
             builder: (context, snapshot) {
-              return CommandList(roverMetrics: snapshot.data, sendCommand: sendCommand);
+              return CommandList(
+                  roverMetrics: snapshot.data, sendCommand: sendCommand);
             }),
       ),
       body: Row(
@@ -351,7 +369,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
             child: SizedBox(
                 width: 200,
                 child: LeftSideButtons(
-                    mirvApi: _mirvApi, roverMetrics: roverMetrics, dataChannel: _dataChannel, sendCommand: sendCommand)),
+                    mirvApi: _mirvApi,
+                    roverMetrics: roverMetrics,
+                    dataChannel: _dataChannel,
+                    sendCommand: sendCommand)),
           ),
           Align(
             alignment: Alignment.center,
@@ -411,7 +432,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     builder: (context, snapshot) {
                       return Container(
                           child: snapshot.data != null
-                              ? TelemeteryDataTable(roverMetrics: snapshot.data!.telemetry)
+                              ? TelemeteryDataTable(
+                                  roverMetrics: snapshot.data!.telemetry)
                               : Text('Waiting on data'));
                     }),
               ],
