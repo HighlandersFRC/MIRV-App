@@ -6,22 +6,20 @@ part of 'gamepad_command_type.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_GamepadAxisCommand _$$_GamepadAxisCommandFromJson(
+_$__GamepadAxisCommand _$$__GamepadAxisCommandFromJson(
         Map<String, dynamic> json) =>
-    _$_GamepadAxisCommand(
+    _$__GamepadAxisCommand(
       type: $enumDecode(_$GamepadAxisTypeEnumMap, json['type']),
       x: (json['x'] as num).toDouble(),
       y: (json['y'] as num).toDouble(),
-      ts: DateTime.parse(json['ts'] as String),
     );
 
-Map<String, dynamic> _$$_GamepadAxisCommandToJson(
-        _$_GamepadAxisCommand instance) =>
+Map<String, dynamic> _$$__GamepadAxisCommandToJson(
+        _$__GamepadAxisCommand instance) =>
     <String, dynamic>{
       'type': _$GamepadAxisTypeEnumMap[instance.type],
       'x': instance.x,
       'y': instance.y,
-      'ts': instance.ts.toIso8601String(),
     };
 
 const _$GamepadAxisTypeEnumMap = {
