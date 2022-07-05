@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
+  Position? currentLocation;
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedroverId) =>

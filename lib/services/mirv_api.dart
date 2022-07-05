@@ -32,7 +32,7 @@ class MirvApi {
 
   Future<List<RoverMetrics>> getRovers() async {
     List<RoverMetrics> rovers;
-    var response = await http.get(Uri.parse("https://mirvapi.azurewebsites.net/rovers"));
+    var response = await http.get(Uri.parse('https://mirvcloudapi.azurewebsites.net'));
     rovers = (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList().obs;
     return rovers;
   }
