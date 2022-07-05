@@ -95,9 +95,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     }
   }
 
-  void _onDataChannelMessage(message) {
-    print(message.text);
-  }
+  
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
@@ -114,6 +112,24 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
     final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
+  }
+
+
+  // This Data Channel function receives data send on the rover created data channels
+  void _onDataChannel(RTCDataChannel dataChannel) {
+    // or alternatively:
+    dataChannel.messageStream.listen((message) {
+      if (message.type == MessageType.text) {
+        print(message.text);
+      } else {
+        // do something with message.binary
+      }
+    });
+  }
+
+  // This Data Channel Function receives data sent on the data channel created by the flutter app
+  void _onDataChannelMessage(message) {
+    print(message.text);
   }
 
   Future<void> _negotiateRemoteConnection() async {
@@ -176,23 +192,21 @@ class _RoverOpPageState extends State<RoverOpPage> {
         {"url": "stun:stun.l.google.com:19302"},
       ]
     };
-    print("print stament 11111111111111");
     //* Create Peer Connection
     if (_peerConnection != null) return;
     _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
-    print("2222222222222222222");
+    _peerConnection!.onDataChannel = _onDataChannel;
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
     _dataChannel = await _peerConnection!.createDataChannel(
-      "chat",
+      "RoverStatus",
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
     _dataChannel!.onMessage = _onDataChannelMessage;
-    print("3333333333333333333");
     final mediaConstraints = <String, dynamic>{
       'audio': false,
       'video': {
@@ -216,12 +230,10 @@ class _RoverOpPageState extends State<RoverOpPage> {
       print(e.toString());
     }
     if (!mounted) return;
-    print("44444444444444444444444");
     setState(() {
       _inCalling = true;
       _loading = false;
     });
-    print("55555555555555555");
   }
 
   Future<void> _stopCall() async {
