@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
@@ -9,10 +10,15 @@ import 'package:test/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar(
-      {Key? key, required this.mirvApi, required this.roverMetrics})
+      {Key? key,
+      required this.periodicMetricUpdates,
+      required this.roverMetrics,
+      required this.stopCall})
       : super(key: key);
-  final MirvApi mirvApi;
+
+  final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
   final RoverMetrics roverMetrics;
+  final Function() stopCall;
 
   @override
   Size get preferredSize => Size.fromHeight(60.0);
@@ -36,8 +42,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                   actions: <Widget>[
                     TextButton(
                         onPressed: () {
-                          //TODO: disconnect WebRTC
-
+                          stopCall();
                           Navigator.pop(context);
                           Get.offAll(HomePage());
                         },
@@ -59,7 +64,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         shadowColor: AppBarColor.shadowColor,
         backgroundColor: AppBarColor.backgroundColor,
         title: StreamBuilder<RoverMetrics>(
-            stream: mirvApi.periodicMetricUpdates,
+            stream: periodicMetricUpdates,
             builder: (context, snapshot) {
               return Text(snapshot.data != null
                   ? '${snapshot.data!.state}'
@@ -69,7 +74,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<RoverMetrics>(
-                stream: mirvApi.periodicMetricUpdates,
+                stream: periodicMetricUpdates.stream,
                 builder: (context, snapshot) {
                   return RoverStatusBar(roverMetrics: snapshot.data);
                 }),

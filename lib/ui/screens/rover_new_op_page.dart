@@ -1,30 +1,15 @@
-import 'dart:convert';
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:observable/observable.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/services/gamepad_controller.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
+import 'package:test/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/navigation_drawer.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
-import 'package:get/get.dart' as get_pkg;
-import 'package:http/http.dart' as http;
-import 'package:test/models/rover_summary.dart';
+
 import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/telemetry_data_table.dart';
-
-class JoystickValue extends Observable {
-  final double x;
-  final double y;
-  final DateTime ts;
-
-  JoystickValue(this.x, this.y, this.ts);
-}
+import 'package:test/ui/screens/webrtc_connection.dart';
 
 class RoverOpPage extends StatefulWidget {
   const RoverOpPage({Key? key}) : super(key: key);
@@ -35,311 +20,17 @@ class RoverOpPage extends StatefulWidget {
 
 class _RoverOpPageState extends State<RoverOpPage> {
   final MirvApi _mirvApi = MirvApi();
-  RTCPeerConnection? _peerConnection;
-  final _localRenderer = RTCVideoRenderer();
-  GamepadController gamepadController = GamepadController();
-  get_pkg.Rx<bool> useGamepad = false.obs;
-
-  MediaStream? _localStream;
-
-  RTCDataChannelInit? _dataChannelDict;
-  RTCDataChannel? _dataChannel;
-  String transformType = "none";
-  var messageBoxController = TextEditingController();
-
-  // MediaStream? _localStream;
-  bool _inCalling = false;
-  bool isWorking = true;
-  DateTime? _timeStart;
-  double prevX = 0;
-  double prevY = 0;
-  bool _loading = false;
-  DateTime lastSendTime = DateTime.now();
-
-  Timer? timerJoy;
-  Timer? timerGamepad;
-
-  final joystickStream = BehaviorSubject<List<double>>();
-  final gamepadStream = BehaviorSubject<List<double>>();
-
-  final joystickPublish = <JoystickValue>[].obs;
-
-  final Map<String, dynamic> offerSdpConstraints = {
-    "mandatory": {
-      "OfferToReceiveAudio": true,
-      "OfferToReceiveVideo": true,
-    },
-    "optional": [],
-  };
-
-  final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
-
-  void _onTrack(RTCTrackEvent event) {
-    print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
-    if (event.track.kind == "video") {
-      print("HERE");
-      _localRenderer.srcObject = event.streams[0];
-    }
-  }
-
-  void _onDataChannelState(RTCDataChannelState? state) {
-    switch (state) {
-      case RTCDataChannelState.RTCDataChannelClosed:
-        print("Camera Closed!!!!!!!");
-        break;
-      case RTCDataChannelState.RTCDataChannelOpen:
-        print("Camera Opened!!!!!!!");
-        break;
-      default:
-        print("Data Channel State: $state");
-    }
-  }
-
-  Future<bool> _waitForGatheringComplete(_) async {
-    print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
-      return true;
-    } else {
-      await Future.delayed(Duration(seconds: 1));
-      return await _waitForGatheringComplete(_);
-    }
-  }
-
-  void _toggleCamera() async {
-    if (_localStream == null) throw Exception('Stream is not initialized');
-
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
-    await Helper.switchCamera(videoTrack);
-  }
-
-  // This Data Channel function receives data send on the rover created data channels
-  void _onDataChannel(RTCDataChannel dataChannel) {
-    // or alternatively:
-    dataChannel.messageStream.listen((message) {
-      if (message.type == MessageType.text) {
-        print(message.text);
-      } else {
-        // do something with message.binary
-      }
-    });
-  }
-
-  // This Data Channel Function receives data sent on the data channel created by the flutter app
-  void _onDataChannelMessage(message) {
-    print(message.text);
-  }
-
-  Future<void> _negotiateRemoteConnection() async {
-    return _peerConnection!
-        .createOffer(offerOptions)
-        .then((offer) {
-          return _peerConnection!.setLocalDescription(offer);
-        })
-        .then(_waitForGatheringComplete)
-        .then((_) async {
-          var des = await _peerConnection!.getLocalDescription();
-          var headers = {
-            'Content-Type': 'application/json',
-          };
-          var request = http.Request(
-            'POST',
-            Uri.parse(
-                'https://mirvcloudapi.azurewebsites.net/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
-          );
-          request.body = json.encode({
-            "connection_id": "string",
-            "rover_id": "rover_6",
-            "offer": {
-              "sdp": des!.sdp,
-              "type": des.type,
-              "video_transform": transformType,
-            }
-          });
-          request.headers.addAll(headers);
-
-          http.StreamedResponse response = await request.send();
-
-          String data = "";
-          if (response.statusCode == 200) {
-            data = await response.stream.bytesToString();
-            print(data);
-            var dataMap = json.decode(data);
-            var answerMap = json.decode(dataMap["answer"]);
-            await _peerConnection!.setRemoteDescription(
-              RTCSessionDescription(
-                answerMap["sdp"],
-                answerMap["type"],
-              ),
-            );
-          } else {
-            print(response.reasonPhrase);
-            isWorking = false;
-            print(
-                "------------------------------------------------------------- \n Uh Oh! something went wrong and you couldn't connect to the rover! \n ------------------------------------------------------------");
-          }
-        });
-  }
-
-  Future<void> _makeCall() async {
-    setState(() {
-      _loading = true;
-    });
-    var configuration = <String, dynamic>{
-      'sdpSemantics': 'unified-plan',
-      "iceServers": [
-        {"url": "stun:stun.l.google.com:19302"},
-      ]
-    };
-    //* Create Peer Connection
-    if (_peerConnection != null) return;
-    _peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
-
-    _peerConnection!.onTrack = _onTrack;
-    _peerConnection!.onDataChannel = _onDataChannel;
-    //* Create Data Channel
-    _dataChannelDict = RTCDataChannelInit();
-    _dataChannelDict!.ordered = true;
-    _dataChannel = await _peerConnection!.createDataChannel(
-      "RoverStatus",
-      _dataChannelDict!,
-    );
-    _dataChannel!.onDataChannelState = _onDataChannelState;
-    _dataChannel!.onMessage = _onDataChannelMessage;
-    final mediaConstraints = <String, dynamic>{
-      'audio': false,
-      'video': {
-        // 'facingMode': 'user',
-        'facingMode': 'environment',
-        'optional': [],
-      }
-    };
-    try {
-      var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-      // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
-      _localStream = stream;
-      // _localRenderer.srcObject = _localStream;
-
-      stream.getTracks().forEach((element) {
-        _peerConnection!.addTrack(element, stream);
-      });
-      print("NEGOTIATE");
-      await _negotiateRemoteConnection();
-    } catch (e) {
-      print(e.toString());
-    }
-    if (!mounted) return;
-    setState(() {
-      _inCalling = true;
-      _loading = false;
-    });
-  }
-
-  Future<void> _stopCall() async {
-    print("stop1111stop111stop1111stop111");
-    try {
-      await _dataChannel?.close();
-      await _peerConnection?.close();
-      _peerConnection = null;
-      _localRenderer.srcObject = null;
-      _dataChannel = null;
-    } catch (e) {
-      print(e.toString());
-    }
-    setState(() {
-      _inCalling = false;
-    });
-  }
-
-  Future<void> initLocalRenderers() async {
-    await _localRenderer.initialize();
-  }
+  final RoverMetrics roverMetrics = RoverMetrics();
+  final WebRTCConnection webRTCConnection = WebRTCConnection();
+  Rx<bool> useGamepad = false.obs;
 
   @override
   void initState() {
     super.initState();
-
     _mirvApi.startPeriodicMetricUpdates();
-    initLocalRenderers();
-    _makeCall();
-    joystickPublish.value = ([JoystickValue(0, 0, DateTime.now())]);
-    timerJoy = Timer.periodic(
-      Duration(milliseconds: 110),
-      (Timer t) {
-        JoystickValue joyVal = joystickPublish.value[0];
-        DateTime currentTime = DateTime.now();
-        DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
-          joystickStream.add([joyVal.x, joyVal.y]);
-        } else {
-          joystickStream.add([0.0, 0.0]);
-        }
-      },
-    );
-    gamepadController.setJoystickListener();
-    gamepadController.drivetrainCommandStream.listen((value) {
-      if (useGamepad.value) {
-        sendJoystick(value.x, value.y);
-      }
-    });
-
-    joystickStream.listen(
-      (value) {
-        if (!useGamepad.value) {
-          sendJoystick(value[0], value[1]);
-        }
-      },
-    );
+    webRTCConnection.makeCall();
+    webRTCConnection.startJoystickUpdates();
   }
-
-  sendJoystick(double x, double y) {
-    if (_peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
-        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
-      if (_dataChannel != null) {
-        print(".                                    .");
-        print(
-            "------------------------- \n $x   $y \n-------------------------");
-        print(".                                    .");
-        if (_dataChannel != null) {
-          String messageText = json.encode({
-            "joystick_x": x,
-            "joystick_y": y,
-          });
-          _dataChannel!.send(RTCDataChannelMessage(messageText));
-        }
-      }
-    }
-  }
-
-  sendCommand(String command, String typeCommand) {
-    if (_peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
-        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
-      print(".                                    .");
-      print(
-          "------------------------- \n $typeCommand: $command \n-------------------------");
-      print(".                                    .");
-      if (_dataChannel != null) {
-        String messageText = json.encode({
-          "$typeCommand": command,
-        });
-        _dataChannel!.send(RTCDataChannelMessage(messageText));
-      }
-    }
-  }
-
-  roverConnect() {
-    print("you have pressed the connection button");
-    _makeCall();
-  }
-
-  RoverMetrics roverMetrics = const RoverMetrics();
 
   @override
   void dispose() {
@@ -351,15 +42,18 @@ class _RoverOpPageState extends State<RoverOpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: OpPgAppBar(
-        mirvApi: _mirvApi,
+        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
         roverMetrics: roverMetrics,
+        stopCall: webRTCConnection.stopCall,
       ),
       endDrawer: Drawer(
         child: StreamBuilder<RoverMetrics>(
             stream: _mirvApi.periodicMetricUpdates,
             builder: (context, snapshot) {
               return CommandList(
-                  roverMetrics: snapshot.data, sendCommand: sendCommand);
+                roverMetrics: snapshot.data,
+                sendCommand: webRTCConnection.sendCommand,
+              );
             }),
       ),
       body: Row(
@@ -369,86 +63,27 @@ class _RoverOpPageState extends State<RoverOpPage> {
             child: SizedBox(
                 width: 200,
                 child: LeftSideButtons(
-                    mirvApi: _mirvApi,
                     roverMetrics: roverMetrics,
-                    dataChannel: _dataChannel,
-                    sendCommand: sendCommand)),
+                    sendGeneralCommand: webRTCConnection.sendGeneralCommand,
+                    periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                    sendCommand: webRTCConnection.sendCommand)),
           ),
           Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.amber,
-                  width: 200,
-                  height: 450,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Container(
-                            color: Colors.black,
-                            child: _loading
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 4,
-                                    ),
-                                  )
-                                : Container(),
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: RTCVideoView(
-                            _localRenderer,
-                            // mirror: true,
-                          ),
-                        ),
-                        _inCalling
-                            ? Align(
-                                alignment: Alignment.bottomRight,
-                                child: InkWell(
-                                  onTap: _toggleCamera,
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    color: Colors.black26,
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.cameraswitch,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                      ],
-                    ),
-                  ),
-                ),
-                StreamBuilder<RoverMetrics>(
-                    stream: _mirvApi.periodicMetricUpdates,
-                    builder: (context, snapshot) {
-                      return Container(
-                          child: snapshot.data != null
-                              ? TelemeteryDataTable(
-                                  roverMetrics: snapshot.data!.telemetry)
-                              : Text('Waiting on data'));
-                    }),
-              ],
-            ),
-          ),
+              alignment: Alignment.center,
+              child:
+                  CenterPanel(localRenderer: webRTCConnection.localRenderer)),
           Align(
               alignment: Alignment.bottomRight,
               child: RightSideButtons(
                 roverMetrics: roverMetrics,
-                joystickPublish: joystickPublish,
-                sendCommand: sendCommand,
-                roverConnect: roverConnect,
-                stopCall: _stopCall,
+                sendCommand: webRTCConnection.sendCommand,
+                makeCall: webRTCConnection.makeCall,
+                stopCall: webRTCConnection.stopCall,
+                joystickPublish: webRTCConnection.joystickPublish,
+                periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                startJoystickUpdates: webRTCConnection.startJoystickUpdates,
                 useGamepad: useGamepad,
-              )),
+              ))
         ],
       ),
     );

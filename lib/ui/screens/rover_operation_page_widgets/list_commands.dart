@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
+import 'package:test/ui/screens/webrtc_connection.dart';
 
 class CommandList extends StatelessWidget {
-  const CommandList(
-      {Key? key, required this.roverMetrics, required this.sendCommand})
-      : super(key: key);
+  const CommandList({
+    Key? key,
+    required this.roverMetrics,
+    required this.sendCommand,
+  }) : super(key: key);
   final RoverMetrics? roverMetrics;
   final Function(String, String) sendCommand;
-
-//RxList<RoverCommands> roverCommands = <RoverCommands>[].obs;
 
   List<String> _stateListCommands(RoverStateType roverState) {
     switch (roverState) {
@@ -34,6 +35,7 @@ class CommandList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //hard Coded state
     var commandList = _stateListCommands(RoverStateType.remoteOperation);
     return Container(
         child: roverMetrics != null
