@@ -63,9 +63,25 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     super.initState();
     setCustomMarker();
 
-widget.selectedRoverId.listen((p0) =>
-print(p0) 
-);
+    locationSubscription = selectedLocation.stream.listen((place) {
+      if (place != null) {
+        _locationController.text = place.name;
+        _goToPlace(place);
+      } else {
+        _locationController.text = "";
+      }
+    });
+
+    widget.selectedRoverController.searchSelect.listen((place) async {
+      if (_mapController != null && place != null) {
+        _mapController?.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: place.geometry.getLatLng(),
+                zoom: await _mapController!.getZoomLevel())));
+      }
+    });
+
+    widget.selectedRoverId.listen((p0) => print(p0));
 
     setState(() {
       final String polygonIdVal = 'polygon_id_polygon_1';
@@ -124,19 +140,18 @@ print(p0)
     ));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var firstRover = widget.roverMetrics.firstWhereOrNull((val) => true);
-    var lat = firstRover?.telemetry.location.lat??40.5;
-    var long = firstRover?.telemetry.location.long??-105;
+    var lat = firstRover?.telemetry.location.lat ?? 40.5;
+    var long = firstRover?.telemetry.location.long ?? -105;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: GoogleMap(
         mapType: MapType.hybrid,
         myLocationEnabled: true,
         initialCameraPosition: CameraPosition(
-          target: LatLng(lat,long),
+          target: LatLng(lat, long),
           zoom: 14,
         ),
         markers: getMarkers(),
@@ -145,6 +160,18 @@ print(p0)
           _mapController = controller;
         },
         // markers: Set<Marker>.of(applicationBloc.markers),
+      ),
+    );
+  }
+
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = _mapController!;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(
+                place.geometry.location.lat, place.geometry.location.lng),
+            zoom: 14.0),
       ),
     );
   }

@@ -28,7 +28,7 @@ class MarkerService {
         draggable: false,
         visible: (center) ? false : true,
         infoWindow: InfoWindow(
-            title: place.name, snippet: place.vicinity),
+            title: place.name,),
         position: LatLng(place.geometry.location.lat,
             place.geometry.location.lng)
     );

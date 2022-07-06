@@ -70,6 +70,7 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     setCurrentLocation();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Obx(() => ((currentLocation.value == null)
           ? Center(
               child: CircularProgressIndicator(),

@@ -106,6 +106,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   Widget build(BuildContext context) {
     _refreshRoversList();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         foregroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -206,23 +207,20 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Expanded(
               child: Column(
             children: [
-               Container(
+              Container(
                   height: 70,
                   child: SearchBar(
                       selectedRoverController: selectedRoverController)),
               Expanded(
-                child: Obx (() => (
-                  Container(
-                        
-                        child: RoverSelectionMap(
+                child: Obx(
+                  () => (Container(
+                    child: RoverSelectionMap(
                         roverList.value,
                         selectedRoverController.selectedRoverId,
                         selectedRoverController),
-                  )
+                  )),
                 ),
-              ),
               )
-             
             ],
           ))
         ],
