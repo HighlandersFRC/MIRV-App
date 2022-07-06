@@ -17,6 +17,8 @@ class MirvApi {
       // 'http://172.250.250.44:8000';
       'https://mirvcloudapi.azurewebsites.net';
 
+// http://172.250.250.213:8000
+
   BehaviorSubject<RoverMetrics> periodicMetricUpdates =
       new BehaviorSubject<RoverMetrics>();
 

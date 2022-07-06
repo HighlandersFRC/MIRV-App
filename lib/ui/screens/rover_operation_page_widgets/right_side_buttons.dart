@@ -8,21 +8,24 @@ import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:test/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
-  RightSideButtons({
-    Key? key,
-    required this.roverMetrics,
-    required this.sendCommand,
-    required this.makeCall,
-    required this.stopCall,
-    required this.joystickPublish,
-    required this.periodicMetricUpdates,
-    required this.startJoystickUpdates,
-  }) : super(key: key);
+  RightSideButtons(
+      {Key? key,
+      required this.roverMetrics,
+      required this.sendCommand,
+      required this.makeCall,
+      required this.stopCall,
+      required this.joystickPublish,
+      required this.periodicMetricUpdates,
+      required this.startJoystickUpdates,
+      required this.useGamepad})
+      : super(key: key);
   final RoverMetrics roverMetrics;
   final Function() stopCall;
   final Function() makeCall;
-  final Function(String, String) sendCommand;
   final get_pkg.RxList<JoystickValue> joystickPublish;
+  final get_pkg.Rx<bool> useGamepad;
+
+  final Function(String, String) sendCommand;
   final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
   final Function() startJoystickUpdates;
 
@@ -47,8 +50,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          width: 250,
           height: 50,
+          width: 250,
           child: ElevatedButton.icon(
             onPressed: widget.makeCall,
             label: Text('Connect To Rover'),
@@ -76,8 +79,6 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-          height: 100,
-          width: 225,
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
@@ -91,7 +92,14 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-            //hard coded
+            child: get_pkg.Obx(
+          () => Switch(
+              value: widget.useGamepad.value,
+              onChanged: (val) {
+                widget.useGamepad.value = !widget.useGamepad.value;
+              }),
+        )),
+        SizedBox(
             child: (RoverStateType.remoteOperation ==
                     RoverStateType.remoteOperation)
                 ? Joystick(

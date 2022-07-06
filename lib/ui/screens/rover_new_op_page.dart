@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
+import 'package:test/services/gamepad_controller.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
@@ -20,6 +22,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   final MirvApi _mirvApi = MirvApi();
   final RoverMetrics roverMetrics = RoverMetrics();
   final WebRTCConnection webRTCConnection = WebRTCConnection();
+  Rx<bool> useGamepad = false.obs;
 
   @override
   void initState() {
@@ -79,6 +82,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 joystickPublish: webRTCConnection.joystickPublish,
                 periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                 startJoystickUpdates: webRTCConnection.startJoystickUpdates,
+                useGamepad: useGamepad,
               ))
         ],
       ),
