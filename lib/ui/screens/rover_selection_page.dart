@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +21,6 @@ class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
-  Position? currentLocation;
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedroverId) =>
@@ -206,18 +204,25 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             width: 5,
           ),
           Expanded(
-              child: Stack(
+              child: Column(
             children: [
-              Container(
-                child: RoverSelectionMap(
-                    roverList.value,
-                    selectedRoverController.selectedRoverId,
-                    selectedRoverController),
-              ),
-              Container(
+               Container(
                   height: 70,
                   child: SearchBar(
-                      selectedRoverController: selectedRoverController))
+                      selectedRoverController: selectedRoverController)),
+              Expanded(
+                child: Obx (() => (
+                  Container(
+                        
+                        child: RoverSelectionMap(
+                        roverList.value,
+                        selectedRoverController.selectedRoverId,
+                        selectedRoverController),
+                  )
+                ),
+              ),
+              )
+             
             ],
           ))
         ],

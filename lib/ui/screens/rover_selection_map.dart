@@ -13,6 +13,7 @@ import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/searchbox_places.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
+import 'package:collection/collection.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;
@@ -62,25 +63,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     super.initState();
     setCustomMarker();
 
-    // locationSubscription =
-    //       widget.selectedRoverController.searchSelect.listen((place) {
-    //     if (place != null) {
-    //       _locationController.text = place.name;
-    //       _goToPlace(place);
-    //     } else
-    //       _locationController.text = "";
-    //   });
-
-    widget.selectedRoverController.searchSelect.listen((place) async {
-      if (_mapController != null && place != null) {
-        _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: place.geometry.getLatLng(),
-                zoom: await _mapController!.getZoomLevel())));
-      }
-    });
-
-    super.initState();
+widget.selectedRoverId.listen((p0) =>
+print(p0) 
+);
 
     setState(() {
       final String polygonIdVal = 'polygon_id_polygon_1';
@@ -139,14 +124,19 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     ));
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    var firstRover = widget.roverMetrics.firstWhereOrNull((val) => true);
+    var lat = firstRover?.telemetry.location.lat??40.5;
+    var long = firstRover?.telemetry.location.long??-105;
     return Scaffold(
       body: GoogleMap(
         mapType: MapType.hybrid,
         myLocationEnabled: true,
         initialCameraPosition: CameraPosition(
-          target: LatLng(40.5, -105),
+          target: LatLng(lat,long),
           zoom: 14,
         ),
         markers: getMarkers(),
@@ -159,18 +149,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     );
   }
 
-  Future<void> _goToPlace(Place place) async {
-    final GoogleMapController controller = _mapController!;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(
-                place.geometry.location.lat, place.geometry.location.lng),
-            zoom: 14.0),
-      ),
-    );
-  }
-
   Set<Marker> getMarkers() {
     //markers to place on map
     setState(() {
@@ -178,12 +156,12 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         ...this.widget.roverMetrics.map((rover) {
           return Marker(
               //add first marker
-              markerId: MarkerId('rover_1'),
+              markerId: MarkerId(rover.roverId),
               position: LatLng(rover.telemetry.location.lat,
                   rover.telemetry.location.long), //position of marker
               infoWindow: InfoWindow(
                 //popup info
-                title: 'rover_1',
+                title: rover.roverId,
                 snippet: 'My Custom Subtitle',
               ),
               icon: mapMarker,

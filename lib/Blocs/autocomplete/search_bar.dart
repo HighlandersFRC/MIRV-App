@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:test/models/place.dart';
 import 'package:test/models/searchbox_places.dart';
@@ -19,7 +23,7 @@ class SearchBar extends StatelessWidget {
   final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
 
-  Position getCurrentLocation;
+  Rx<Position?> currentLocation = Rx<Position?>(null);
   List<PlaceSearch> searchResults = [];
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
@@ -27,7 +31,7 @@ class SearchBar extends StatelessWidget {
   String? placeType;
 
   setCurrentLocation() async {
-    currentLocation = await geoLocatorService.getCurrentLocation();
+    currentLocation.value = await geoLocatorService.getCurrentLocation();
   }
 
   Future<List<PlaceSearch>> searchPlaces(String searchTerm) async {
@@ -64,39 +68,39 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setCurrentLocation();
     return Scaffold(
-      body:
-          // (currentLocation == null)
-          //     ?  const Center(
-          //         child: CircularProgressIndicator(),
-          //       )
-          //     :
-          Column(children: [
-        Container(
-          height: 70,
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TypeAheadField(
-                  textFieldConfiguration: TextFieldConfiguration(
-                    autofocus: true,
-                    style: DefaultTextStyle.of(context)
-                        .style
-                        .copyWith(fontStyle: FontStyle.italic),
-                    decoration: InputDecoration(border: OutlineInputBorder()),
-                  ),
-                  suggestionsCallback: (pattern) async {
-                    return await searchPlaces(pattern);
-                  },
-                  itemBuilder: (context, PlaceSearch suggestion) {
-                    return ListTile(
-                      title: Text(suggestion.description),
-                    );
-                  },
-                  onSuggestionSelected: (PlaceSearch suggestion) {
-                    setSelectedLocation(suggestion.placeId);
-                  })),
-        ),
-      ]),
+      body: Obx(() => ((currentLocation.value == null)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(children: [
+              Container(
+                height: 70,
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TypeAheadField(
+                        textFieldConfiguration: TextFieldConfiguration(
+                          autofocus: true,
+                          style: DefaultTextStyle.of(context)
+                              .style
+                              .copyWith(fontStyle: FontStyle.italic),
+                          decoration:
+                              InputDecoration(border: OutlineInputBorder()),
+                        ),
+                        suggestionsCallback: (pattern) async {
+                          return await searchPlaces(pattern);
+                        },
+                        itemBuilder: (context, PlaceSearch suggestion) {
+                          return ListTile(
+                            title: Text(suggestion.description),
+                          );
+                        },
+                        onSuggestionSelected: (PlaceSearch suggestion) {
+                          setSelectedLocation(suggestion.placeId);
+                        })),
+              ),
+            ]))),
     );
   }
 }
