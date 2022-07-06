@@ -103,7 +103,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
             child: Obx(() => CenterPanel(
                 localRenderer: webRTCConnection.localRenderer,
                 locationStream: locationStream,
-                periodicMetricUpdates: _mirvApi,
+                periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                 piLitMarkers: piLitMarkers,
                 showMap: mapSelectionController.showMap.value)),
           ),

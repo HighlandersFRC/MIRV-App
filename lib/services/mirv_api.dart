@@ -15,12 +15,9 @@ class MirvApi {
   String _authToken = "auth token";
   final String ipAdress =
       // 'http://172.250.250.44:8000';
-      'https://mirvcloudapi.azurewebsites.net';
+      'http://52.185.88.232:8080';
 
 // http://172.250.250.213:8000
-
-// http://172.250.250.213:8000
-  final String _endpoint = "https://mirvcloudapi.azurewebsites.net";
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates =
       new BehaviorSubject<RoverMetrics>();
@@ -32,9 +29,6 @@ class MirvApi {
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
     var response = await http.get(Uri.parse("$ipAdress/rovers/$roverID"));
-    String lol =
-        '{"roverId":"rover1","state":"docked","status":"available","battery":22,"health":{"electronics":"healthy","drivetrain":"unavailable","intake":"healthy","sensors":"healthy","garage":"degraded","power":"unavailable","general":"degraded"},"telemetry":{"location":{"long":-104.969454,"lat":40.474101},"heading":149.68,"speed":12.62}}';
-
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
