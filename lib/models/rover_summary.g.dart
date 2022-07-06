@@ -10,9 +10,9 @@ _$_RoverSummary _$$_RoverSummaryFromJson(Map<String, dynamic> json) =>
     _$_RoverSummary(
       roverId: json['roverId'] as String? ?? "unknown",
       state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
-          RoverStateType.disabled,
+          RoverStateType.remoteOperation,
       status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
-          RoverStatusType.unavailable,
+          RoverStatusType.available,
       battery: json['battery'] as int? ?? -1,
     );
 

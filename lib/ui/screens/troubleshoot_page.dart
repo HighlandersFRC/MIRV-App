@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test/ui/screens/app_bar_theme.dart';
 import 'package:test/ui/screens/rover_status_page.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 
@@ -15,6 +16,9 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: AppBarColor.foregroundColor,
+        shadowColor: AppBarColor.shadowColor,
+        backgroundColor: AppBarColor.backgroundColor,
         title: const Text("Trouble Shooting"),
         actions: [
           ElevatedButton(

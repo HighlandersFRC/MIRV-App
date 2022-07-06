@@ -18,7 +18,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       new LatLng(40.47382939771208, -104.96933444375819);
 
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
-  
+
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(), 'assets/images/pi_lit_icon.png');

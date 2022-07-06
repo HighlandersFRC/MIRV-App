@@ -139,8 +139,8 @@ class __$$_RoverSummaryCopyWithImpl<$Res>
 class _$_RoverSummary implements _RoverSummary {
   const _$_RoverSummary(
       {this.roverId = "unknown",
-      this.state = RoverStateType.disabled,
-      this.status = RoverStatusType.unavailable,
+      this.state = RoverStateType.remoteOperation,
+      this.status = RoverStatusType.available,
       this.battery = -1});
 
   factory _$_RoverSummary.fromJson(Map<String, dynamic> json) =>

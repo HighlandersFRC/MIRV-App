@@ -134,16 +134,12 @@ class _StatusPageState extends State<StatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Rover Status"),
-      ),
-      body: GridView.count(
-        primary: false,
+    return Container(
+      child: GridView.count(
         padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 100,
+        crossAxisSpacing: 50,
         mainAxisSpacing: 100,
-        crossAxisCount: 5,
+        crossAxisCount: 4,
         children: <Widget>[
           HealthContainer(
               roverHealthType: roverMetrics.health.sensors, name: "sensors"),

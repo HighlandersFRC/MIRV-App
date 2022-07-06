@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:get/get.dart' as get_pkg;
+import 'package:rxdart/rxdart.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
-import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:test/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
-  RightSideButtons({Key? key, required this.roverMetrics}) : super(key: key);
+  RightSideButtons(
+      {Key? key,
+      required this.roverMetrics,
+      required this.sendCommand,
+      required this.makeCall,
+      required this.stopCall,
+      required this.joystickPublish,
+      required this.periodicMetricUpdates,
+      required this.startJoystickUpdates,
+      required this.useGamepad})
+      : super(key: key);
   final RoverMetrics roverMetrics;
+  final Function() stopCall;
+  final Function() makeCall;
+  final get_pkg.RxList<JoystickValue> joystickPublish;
+  final get_pkg.Rx<bool> useGamepad;
+
+  final Function(String, String) sendCommand;
+  final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
+  final Function() startJoystickUpdates;
 
   @override
   State<RightSideButtons> createState() => _RightSideButtonsState();
 }
 
 class _RightSideButtonsState extends State<RightSideButtons> {
-  final MirvApi _mirvApi = MirvApi();
-
 // TODO: implement e-stop method
   eStop() {
     throw UnimplementedError('E-stop is not implemented');
@@ -32,38 +50,41 @@ class _RightSideButtonsState extends State<RightSideButtons> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          width: 250,
           height: 50,
-          child: Builder(builder: (context) {
-            return ElevatedButton.icon(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        widget.roverMetrics.state ==
-                                RoverStateType.remoteOperation
-                            ? Colors.blue
-                            : Colors.grey)),
-                onPressed: () {
-                  widget.roverMetrics.state == RoverStateType.remoteOperation
-                      ? Scaffold.of(context).openEndDrawer()
-                      : null;
-                },
-                label: Text("Commands"),
-                icon: Icon(
-                  Icons.list_alt,
-                ));
-          }),
+          width: 250,
+          child: ElevatedButton.icon(
+            onPressed: widget.makeCall,
+            label: Text('Connect To Rover'),
+            icon: Icon(Icons.wifi_calling_3),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
+          ),
         ),
         SizedBox(
           height: 20,
           width: 250,
         ),
         SizedBox(
-          height: 100,
+          height: 40,
           width: 225,
+          child: ElevatedButton(
+            onPressed: widget.stopCall,
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            child: Text("Stop call"),
+          ),
+        ),
+        SizedBox(
+          height: 20,
+          width: 250,
+        ),
+        SizedBox(
           child: StreamBuilder<RoverMetrics>(
-              stream: _mirvApi.periodicMetricUpdates,
+              stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(roverMetrics: snapshot.data);
+                return ToggleDisable(
+                    roverMetrics: snapshot.data,
+                    sendCommand: widget.sendCommand);
               }),
         ),
         SizedBox(
@@ -71,7 +92,16 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
         ),
         SizedBox(
-            child: (widget.roverMetrics.state == RoverStateType.remoteOperation)
+            child: get_pkg.Obx(
+          () => Switch(
+              value: widget.useGamepad.value,
+              onChanged: (val) {
+                widget.useGamepad.value = !widget.useGamepad.value;
+              }),
+        )),
+        SizedBox(
+            child: (RoverStateType.remoteOperation ==
+                    RoverStateType.remoteOperation)
                 ? Joystick(
                     mode: _joystickMode,
                     listener: (details) {
@@ -81,6 +111,9 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                           _y = details.y;
                         },
                       );
+                      widget.joystickPublish.value = ([
+                        JoystickValue(details.x, details.y, DateTime.now())
+                      ]);
                     },
                   )
                 : null),
@@ -89,10 +122,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 100,
         ),
         SizedBox(
-          height: 250,
+          height: 100,
           width: 250,
           child: ElevatedButton.icon(
-            onPressed: eStop,
+            onPressed: () => widget.sendCommand("eStop", "general"),
             label: const Text("E-STOP"),
             icon: const Icon(Icons.warning_amber_rounded),
             style: ButtonStyle(
