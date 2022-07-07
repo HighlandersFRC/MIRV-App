@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
-import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 
@@ -47,15 +45,14 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
             CupertinoIcons.antenna_radiowaves_left_right,
             size: 60,
           ),
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
         );
 
       case RoverStateType.remoteOperation:
         return ElevatedButton(
           onPressed: null,
-          child: Row(children: [
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
+          child: Row(children: const [
             Icon(
               Icons.smart_toy_outlined,
               size: 55,
@@ -64,9 +61,6 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
               " Autonomous \n Control",
             ),
           ]),
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(Color.fromARGB(255, 98, 7, 255))),
         );
       case RoverStateType.eStop:
         return null;
@@ -78,13 +72,12 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-            width: 175, child: _robotModeButton(widget.roverMetrics.state)),
-        SizedBox(
+        SizedBox(width: 175, child: _robotModeButton(widget.roverMetrics.state)),
+        const SizedBox(
           height: 15,
         ),
         Obx(
-          () => Container(
+          () => SizedBox(
               width: 175,
               child: !widget.mapSelectionController.showMap.value
                   ? ElevatedButton.icon(
@@ -99,9 +92,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                         Icons.map,
                         size: 60,
                       ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
                     )
                   : ElevatedButton.icon(
                       onPressed: () {
@@ -115,9 +106,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                         Icons.video_camera_back,
                         size: 60,
                       ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 98, 7, 255))),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
                     )),
         ),
         SizedBox(
@@ -126,9 +115,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return CommandList(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand);
+                return CommandList(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
               }),
         )
       ],

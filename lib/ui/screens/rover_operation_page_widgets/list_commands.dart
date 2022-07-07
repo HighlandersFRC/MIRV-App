@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
-import 'package:test/ui/screens/webrtc_connection.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({
@@ -21,15 +20,7 @@ class CommandList extends StatelessWidget {
       case RoverStateType.eStop:
         return <String>[]; //hexagon?
       case RoverStateType.remoteOperation:
-        return <String>[
-          'Disable',
-          'Reset',
-          'Intake',
-          'Store',
-          'Deposit',
-          'Switch Left',
-          'Switch Right'
-        ];
+        return <String>['Disable', 'Reset', 'Intake', 'Store', 'Deposit', 'Switch Left', 'Switch Right'];
     }
   }
 
@@ -46,9 +37,7 @@ class CommandList extends StatelessWidget {
                       title: ElevatedButton(
                     child: Text(commandList[index]),
                     onPressed: () {
-                      sendCommand(
-                          commandList[index].toLowerCase().replaceAll(' ', '_'),
-                          'intake');
+                      sendCommand(commandList[index].toLowerCase().replaceAll(' ', '_'), 'intake');
                     },
                   ));
                 },

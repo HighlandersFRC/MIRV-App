@@ -17,7 +17,7 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  BehaviorSubject<String> recievedCommands = new BehaviorSubject<String>();
+  BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? _peerConnection;
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
@@ -79,9 +79,7 @@ class WebRTCConnection {
   final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
 
   void _onTrack(RTCTrackEvent event) {
-    print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
     if (event.track.kind == "video") {
-      print("HERE");
       RTCVideoRenderer val = localRenderer.value;
       val.srcObject = event.streams[0];
       localRenderer.value = val;
@@ -112,7 +110,7 @@ class WebRTCConnection {
     }
   }
 
-  Future<void> _negotiateRemoteConnection() async {
+  Future<void> _negotiateRemoteConnection(String roverId) async {
     return _peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
@@ -130,7 +128,7 @@ class WebRTCConnection {
           );
           request.body = json.encode({
             "connection_id": "string",
-            "rover_id": "rover_7",
+            "rover_id": roverId,
             "offer": {
               "sdp": des!.sdp,
               "type": des.type,
@@ -163,7 +161,7 @@ class WebRTCConnection {
   }
 //public Commands
 
-  Future<void> makeCall() async {
+  Future<void> makeCall(String roverId) async {
     setStateInFunction(function: () {
       loading = true;
     });
@@ -203,15 +201,13 @@ class WebRTCConnection {
       stream.getTracks().forEach((element) {
         _peerConnection!.addTrack(element, stream);
       });
-      print("NEGOTIATE");
-      await _negotiateRemoteConnection();
+      await _negotiateRemoteConnection(roverId);
     } catch (e) {
       print(e.toString());
     }
   }
 
   Future<void> stopCall() async {
-    print("stop1111stop111stop1111stop111");
     try {
       await _dataChannel?.close();
       await _peerConnection?.close();
@@ -230,7 +226,7 @@ class WebRTCConnection {
   sendCommand(String command, String typeCommand) {
     if (_dataChannel != null) {
       String messageText = json.encode({
-        "$typeCommand": command,
+        typeCommand: command,
       });
       _dataChannel!.send(RTCDataChannelMessage(messageText));
     }
@@ -248,12 +244,12 @@ class WebRTCConnection {
     joystickPublish.value = ([JoystickValue(0, 0, DateTime.now())]);
 
     timerJoy = Timer.periodic(
-      Duration(milliseconds: 115),
+      const Duration(milliseconds: 115),
       (Timer t) {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(Duration(milliseconds: 110)).isBefore(prevMessTime)) {
+        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);

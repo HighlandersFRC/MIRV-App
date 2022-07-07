@@ -4,36 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:test/Blocs/autocomplete/search_bar.dart';
-import 'package:test/models/rover_location.dart';
 import 'package:test/models/place.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/searchbox_places.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
-import 'package:collection/collection.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;
   final Rx<String> selectedRoverId;
   final SelectedRoverController selectedRoverController;
 
-  RoverSelectionMap(
-      this.roverMetrics, this.selectedRoverId, this.selectedRoverController);
+  const RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController);
 
   @override
   _RoverSelectionMapState createState() => _RoverSelectionMapState();
 }
 
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
-  Set<Marker> markers = new Set();
+  Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), 'assets/images/rover_icon.png');
+    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
 
   LocationData? _locationData;
@@ -75,19 +66,17 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
         _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: place.geometry.getLatLng(),
-                zoom: await _mapController!.getZoomLevel())));
+            CameraPosition(target: place.geometry.getLatLng(), zoom: await _mapController!.getZoomLevel())));
       }
     });
 
     widget.selectedRoverId.listen((p0) => print(p0));
 
     setState(() {
-      final String polygonIdVal = 'polygon_id_polygon_1';
+      const String polygonIdVal = 'polygon_id_polygon_1';
       _polygons.add(Polygon(
-        polygonId: PolygonId(polygonIdVal),
-        points: <LatLng>[
+        polygonId: const PolygonId(polygonIdVal),
+        points: const <LatLng>[
           LatLng(40.47395664499516, -104.96979609131813),
           LatLng(40.4738780911155, -104.96969819068909),
           LatLng(40.47413619637505, -104.96932670474051),
@@ -100,8 +89,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
     void _setMarkerIcon() async {
-      _markerIcon = await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(), 'assets/images/rover_icon.png');
+      _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/images/rover_icon.png');
     }
 
     void _setPolygon() {
@@ -115,14 +103,12 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     }
 
-    this.widget.selectedRoverId.listen((roverId) {
-      this.widget.roverMetrics.forEach((element) async {
+    widget.selectedRoverId.listen((roverId) {
+      widget.roverMetrics.forEach((element) async {
         if (element.roverId == roverId) {
-          _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(element.telemetry.location.lat,
-                      element.telemetry.location.long),
-                  zoom: await _mapController!.getZoomLevel())));
+          _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+              target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
+              zoom: await _mapController!.getZoomLevel())));
         }
       });
     });
@@ -168,10 +154,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     final GoogleMapController controller = _mapController!;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(
-                place.geometry.location.lat, place.geometry.location.lng),
-            zoom: 14.0),
+        CameraPosition(target: LatLng(place.geometry.location.lat, place.geometry.location.lng), zoom: 14.0),
       ),
     );
   }
@@ -180,12 +163,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     //markers to place on map
     setState(() {
       markers = {
-        ...this.widget.roverMetrics.map((rover) {
+        ...widget.roverMetrics.map((rover) {
           return Marker(
               //add first marker
               markerId: MarkerId(rover.roverId),
-              position: LatLng(rover.telemetry.location.lat,
-                  rover.telemetry.location.long), //position of marker
+              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long), //position of marker
               infoWindow: InfoWindow(
                 //popup info
                 title: rover.roverId,
@@ -193,11 +175,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               ),
               icon: mapMarker,
               onTap: () async {
-                _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(rover.telemetry.location.lat,
-                            rover.telemetry.location.long),
-                        zoom: await _mapController!.getZoomLevel())));
+                _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                    target: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
+                    zoom: await _mapController!.getZoomLevel())));
               });
           //add more markers here
         })

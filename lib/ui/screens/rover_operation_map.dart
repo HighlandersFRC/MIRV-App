@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/models/pi_lit.dart';
-import 'package:test/models/rover_location.dart';
 import 'package:test/models/rover_metrics.dart';
 
 class RoverOperationMap extends StatefulWidget {
@@ -11,13 +9,8 @@ class RoverOperationMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;
 
   final List<PiLit> piLitMarkers;
-  List<Polygon>? lanes;
 
-  RoverOperationMap(
-      {Key? key,
-      required this.locationStream,
-      required this.piLitMarkers,
-      required this.roverMetrics})
+  const RoverOperationMap({Key? key, required this.locationStream, required this.piLitMarkers, required this.roverMetrics})
       : super(key: key);
 
   @override
@@ -25,14 +18,12 @@ class RoverOperationMap extends StatefulWidget {
 }
 
 class _RoverOperationMapState extends State<RoverOperationMap> {
-  static LatLng showLocation = LatLng(40.474019558671344, -104.9693540321517);
+  final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
-  Set<Marker> markers = new Set();
+  Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
   void setCustomMarker() async {
-    var tempMapMarker = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+    var tempMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
     setState(() {
       mapMarker = tempMapMarker;
     });
@@ -64,21 +55,17 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             setState(() {
               mapController = controller;
             });
-            this.widget.locationStream.stream.listen((location) async =>
-                mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(location.latitude, location.longitude),
-                        zoom: await mapController!.getZoomLevel()))));
+            widget.locationStream.stream.listen((location) async => mapController?.animateCamera(CameraUpdate.newCameraPosition(
+                CameraPosition(
+                    target: LatLng(location.latitude, location.longitude), zoom: await mapController!.getZoomLevel()))));
           },
         ),
         Align(
           alignment: Alignment.bottomLeft,
           child: ElevatedButton(
-            onPressed: () async => mapController?.animateCamera(
-                CameraUpdate.newCameraPosition(CameraPosition(
-                    target: LatLng(widget.locationStream.value.latitude,
-                        widget.locationStream.value.longitude),
-                    zoom: await mapController!.getZoomLevel()))),
+            onPressed: () async => mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                target: LatLng(widget.locationStream.value.latitude, widget.locationStream.value.longitude),
+                zoom: await mapController!.getZoomLevel()))),
             child: const Icon(Icons.map),
           ),
         ),
@@ -89,7 +76,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   Set<Marker> getMarkers(mapMarker) {
     //markers to place on map
     var markers = {
-      ...this.widget.piLitMarkers.map((piLit) {
+      ...widget.piLitMarkers.map((piLit) {
         return Marker(
           //add first marker
           markerId: MarkerId(piLit.id),
@@ -104,12 +91,11 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
 
         //add more markers here
       }),
-      ...this.widget.roverMetrics.map((rover) {
+      ...widget.roverMetrics.map((rover) {
         return Marker(
             //add first marker
             markerId: MarkerId(rover.roverId),
-            position: LatLng(rover.telemetry.location.lat,
-                rover.telemetry.location.long), //position of marker
+            position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long), //position of marker
             infoWindow: InfoWindow(
               //popup info
               title: rover.roverId,
@@ -117,11 +103,9 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             ),
             icon: mapMarker,
             onTap: () async {
-              mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                      target: LatLng(rover.telemetry.location.lat,
-                          rover.telemetry.location.long),
-                      zoom: await mapController!.getZoomLevel())));
+              mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                  target: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
+                  zoom: await mapController!.getZoomLevel())));
             });
       })
     };

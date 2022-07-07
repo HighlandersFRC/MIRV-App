@@ -33,7 +33,10 @@ class CenterPanel extends StatelessWidget {
           height: 450,
           child: showMap
               ? RoverOperationMap(
-                  locationStream: locationStream, piLitMarkers: piLitMarkers, roverMetrics: [],)
+                  locationStream: locationStream,
+                  piLitMarkers: piLitMarkers,
+                  roverMetrics: const [],
+                )
               : AspectRatio(
                   aspectRatio: 1,
                   child: Stack(
@@ -53,9 +56,8 @@ class CenterPanel extends StatelessWidget {
             builder: (context, snapshot) {
               return Container(
                   child: snapshot.data != null
-                      ? TelemeteryDataTable(
-                          roverMetrics: snapshot.data!.telemetry)
-                      : Text('Waiting on data'));
+                      ? TelemeteryDataTable(roverMetrics: snapshot.data!.telemetry)
+                      : const Text('Waiting on data'));
             }),
       ],
     );
