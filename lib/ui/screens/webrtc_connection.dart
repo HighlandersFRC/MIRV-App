@@ -22,14 +22,11 @@ class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
-  get_pkg.Rx<RTCDataChannelState?> _dataConnectionState =
-      get_pkg.Rx<RTCDataChannelState?>(null);
+  get_pkg.Rx<RTCDataChannelState?> _dataConnectionState = get_pkg.Rx<RTCDataChannelState?>(null);
 
-  get_pkg.Rx<RTCPeerConnectionState?> _peerChanelState =
-      get_pkg.Rx<RTCPeerConnectionState?>(null);
+  get_pkg.Rx<RTCPeerConnectionState?> _peerChanelState = get_pkg.Rx<RTCPeerConnectionState?>(null);
 
-  get_pkg.Rx<RTCVideoRenderer> localRenderer =
-      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -72,9 +69,7 @@ class WebRTCConnection {
   void toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -87,6 +82,23 @@ class WebRTCConnection {
   };
 
   final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
+
+  // This Data Channel function receives data send on the rover created data channels
+  void _onDataChannel(RTCDataChannel dataChannel) {
+    // or alternatively:
+    dataChannel.messageStream.listen((message) {
+      if (message.type == MessageType.text) {
+        print(message.text);
+      } else {
+        // do something with message.binary
+      }
+    });
+  }
+
+  // This Data Channel Function receives data sent on the data channel created by the flutter app
+  void _onDataChannelMessage(message) {
+    print(message.text);
+  }
 
   void _onTrack(RTCTrackEvent event) {
     if (event.track.kind == "video") {
@@ -112,8 +124,7 @@ class WebRTCConnection {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -135,8 +146,7 @@ class WebRTCConnection {
           };
           var request = http.Request(
             'POST',
-            Uri.parse(
-                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -301,15 +311,15 @@ class WebRTCConnection {
     };
     //* Create Peer Connection
     if (peerConnection != null) return;
-    peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
+    peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     peerConnection!.onTrack = _onTrack;
+    peerConnection!.onDataChannel = _onDataChannel;
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
     _dataChannel = await peerConnection!.createDataChannel(
-      "chat",
+      "RoverStatus",
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
@@ -353,8 +363,7 @@ class WebRTCConnection {
   }
 
   sendCommand(String command, String typeCommand) {
-    if (peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       String messageText = json.encode({
         "$typeCommand": command,
@@ -380,9 +389,7 @@ class WebRTCConnection {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(const Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
+        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
@@ -399,13 +406,11 @@ class WebRTCConnection {
   }
 
   sendJoystick(double x, double y) {
-    if (peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       if (_dataChannel != null) {
         print(".                                    .");
-        print(
-            "------------------------- \n $x   $y \n-------------------------");
+        print("------------------------- \n $x   $y \n-------------------------");
         print(".                                    .");
         if (_dataChannel != null) {
           String messageText = json.encode({
