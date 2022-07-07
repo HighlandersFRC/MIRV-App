@@ -88,9 +88,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         fillColor: Colors.yellow.withOpacity(0.15),
       ));
     });
-    void _setMarkerIcon() async {
-      _markerIcon = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'assets/images/rover_icon.png');
-    }
+    
 
     void _setPolygon() {
       final String polygonIdVal = 'polygon_id_$_polygonIdCounter';

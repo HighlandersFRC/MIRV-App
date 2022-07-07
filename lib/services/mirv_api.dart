@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class MirvApi {
   Timer? timer;
-  final String ipAdress = 'http://52.185.111.58:8080';
+  final String ipAdress = 'https://mirvcloudapi.azurewebsites.net';
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
 
