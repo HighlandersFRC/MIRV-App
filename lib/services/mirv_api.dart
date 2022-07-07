@@ -13,11 +13,7 @@ class MirvApi {
   String secondRover = "two";
   String thirdRover = "three";
   String _authToken = "auth token";
-  final String ipAdress =
-      // 'http://172.250.250.44:8000';
-      'http://52.185.88.232:8080';
-
-// http://172.250.250.213:8000
+  final String ipAdress = 'http://52.185.111.58:8080';
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = new BehaviorSubject<RoverMetrics>();
 
