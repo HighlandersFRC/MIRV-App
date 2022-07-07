@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get/get.dart' as get_pkg;
 import 'package:rxdart/rxdart.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
@@ -8,11 +9,17 @@ import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.da
 import 'package:test/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OpPgAppBar({Key? key, required this.periodicMetricUpdates, required this.roverMetrics, required this.stopCall})
+  const OpPgAppBar(
+      {Key? key,
+      required this.periodicMetricUpdates,
+      required this.roverMetrics,
+      required this.stopCall,
+      required this.peerConnectionState})
       : super(key: key);
 
   final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
   final RoverMetrics roverMetrics;
+  final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
   @override
@@ -32,13 +39,14 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Disconnect?'),
-                  content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
+                  content: Text(
+                      'Would  you like to discconect from ${roverMetrics.roverId}'),
                   actions: <Widget>[
                     TextButton(
                         onPressed: () {
                           stopCall();
                           Navigator.pop(context);
-                          Get.offAll(const HomePage());
+                          get_pkg.Get.offAll(const HomePage());
                         },
                         child: const Text('Yes')),
                     TextButton(
@@ -49,9 +57,10 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 );
               }),
-          child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
+          child: Row(mainAxisSize: MainAxisSize.min, children: const [
+            Text('Disconnect'),
+            Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
+          ]),
         ),
         foregroundColor: AppBarColor.foregroundColor,
         shadowColor: AppBarColor.shadowColor,
@@ -59,7 +68,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {
-              return Text(snapshot.data != null ? '${snapshot.data!.state}' : 'Waiting on data');
+              return Text(snapshot.data != null
+                  ? '${snapshot.data!.state}'
+                  : 'Waiting on data');
             }),
         actions: [
           Padding(
@@ -67,7 +78,10 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: StreamBuilder<RoverMetrics>(
                 stream: periodicMetricUpdates.stream,
                 builder: (context, snapshot) {
-                  return RoverStatusBar(roverMetrics: snapshot.data);
+                  return RoverStatusBar(
+                    roverMetrics: snapshot.data,
+                    peerConnectionState: peerConnectionState,
+                  );
                 }),
           ),
           ElevatedButton(
@@ -75,7 +89,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
+                  content:
+                      const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
                   actions: [
                     TextButton(
                       onPressed: () {

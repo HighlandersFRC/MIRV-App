@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:async';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
@@ -22,11 +21,14 @@ class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
-  get_pkg.Rx<RTCDataChannelState?> _dataConnectionState = get_pkg.Rx<RTCDataChannelState?>(null);
+  get_pkg.Rx<RTCDataChannelState?> dataChanelState =
+      get_pkg.Rx<RTCDataChannelState?>(null);
 
-  get_pkg.Rx<RTCPeerConnectionState?> _peerChanelState = get_pkg.Rx<RTCPeerConnectionState?>(null);
+  get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState =
+      get_pkg.Rx<RTCPeerConnectionState?>(null);
 
-  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  get_pkg.Rx<RTCVideoRenderer> localRenderer =
+      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -52,6 +54,10 @@ class WebRTCConnection {
 
   WebRTCConnection() {
     init();
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      print('peerConnectionState: ${peerConnection?.connectionState}');
+      peerConnectionState.value = peerConnection?.connectionState;
+    });
   }
 
   Future<void> init() async {
@@ -69,7 +75,9 @@ class WebRTCConnection {
   void toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!
+        .getVideoTracks()
+        .firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -124,7 +132,8 @@ class WebRTCConnection {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (peerConnection!.iceGatheringState ==
+        RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -146,7 +155,8 @@ class WebRTCConnection {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse(
+                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -182,7 +192,7 @@ class WebRTCConnection {
   }
 
 //public Commands
-//   notificationsFromWebRTC(context) {
+  notificationsFromWebRTC(roverId, context) {
 // // if (isWorking==false) {
 // //  return return showDialog(
 // //           barrierDismissible: false,
@@ -212,49 +222,54 @@ class WebRTCConnection {
 // //         );
 // // }
 
-//     switch (_peerConnectionState) {
-//       case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
-//       case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
-//       case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
-//         return showDialog(
-//           barrierDismissible: false,
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: const Text('Failed Connection'),
-//               content: Text(
-//                   'Would you like to try to reconnect or go to the home page?'),
-//               actions: <Widget>[
-//                 TextButton(
-//                     onPressed: () {
-//                       makeCall();
-//                       return Navigator.pop(context);
-//                     },
-//                     child: Text('reconnect?')),
-//                 TextButton(
-//                     onPressed: () {
-//                       stopCall();
-//                       Navigator.pop(context);
-//                       get_pkg.Get.offAll(HomePage());
-//                     },
-//                     child: Text('home page'))
-//               ],
-//             );
-//           },
-//         );
-//       case RTCPeerConnectionState.RTCPeerConnectionStateNew:
-//       case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//           content: Text("Connected"),
-//         ));
+    peerConnectionState.listen((cs) {
+      switch (cs) {
+        case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
+        case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
+        case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Failed Connection'),
+                content: Text(
+                    'Would you like to try to reconnect or go to the home page?'),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        makeCall(roverId);
+                        return Navigator.pop(context);
+                      },
+                      child: Text('reconnect?')),
+                  TextButton(
+                      onPressed: () {
+                        stopCall();
+                        Navigator.pop(context);
+                        get_pkg.Get.offAll(HomePage());
+                      },
+                      child: Text('home page'))
+                ],
+              );
+            },
+          );
+          break;
+        case RTCPeerConnectionState.RTCPeerConnectionStateNew:
+        case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Connected"),
+          ));
+          break;
 
-//       case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-//         return CircularProgressIndicator();
-//       case null:
-//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//           content: Text("null"),
-//         ));
-//     }
+        case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
+          CircularProgressIndicator();
+          break;
+        case null:
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("null"),
+          ));
+      }
+    });
 
 //     switch (_dataChanelState) {
 //       case RTCDataChannelState.RTCPeerConnectionStateFailed:
@@ -299,7 +314,7 @@ class WebRTCConnection {
 //           content: Text("null"),
 //         ));
 //     }
-//   }
+  }
 
   Future<void> makeCall(String roverId) async {
     loading.value = true;
@@ -311,7 +326,8 @@ class WebRTCConnection {
     };
     //* Create Peer Connection
     if (peerConnection != null) return;
-    peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+    peerConnection =
+        await createPeerConnection(configuration, offerSdpConstraints);
 
     peerConnection!.onTrack = _onTrack;
     peerConnection!.onDataChannel = _onDataChannel;
@@ -363,7 +379,8 @@ class WebRTCConnection {
   }
 
   sendCommand(String command, String typeCommand) {
-    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       String messageText = json.encode({
         "$typeCommand": command,
@@ -389,7 +406,9 @@ class WebRTCConnection {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
+        if (currentTime
+            .subtract(const Duration(milliseconds: 110))
+            .isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
@@ -406,11 +425,13 @@ class WebRTCConnection {
   }
 
   sendJoystick(double x, double y) {
-    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       if (_dataChannel != null) {
         print(".                                    .");
-        print("------------------------- \n $x   $y \n-------------------------");
+        print(
+            "------------------------- \n $x   $y \n-------------------------");
         print(".                                    .");
         if (_dataChannel != null) {
           String messageText = json.encode({

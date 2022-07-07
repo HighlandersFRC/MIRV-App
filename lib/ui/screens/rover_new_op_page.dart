@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:test/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
 
 import 'package:test/services/mirv_api.dart';
@@ -76,15 +75,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
-      print(
-          'peerConnectionState: ${webRTCConnection.peerConnection?.connectionState}');
-    });
+    webRTCConnection.notificationsFromWebRTC(widget.selectedRoverId, context);
     return Scaffold(
       appBar: OpPgAppBar(
         periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
         roverMetrics: roverMetrics,
         stopCall: webRTCConnection.stopCall,
+        peerConnectionState: webRTCConnection.peerConnectionState,
       ),
       body: Stack(
         children: [
@@ -124,6 +121,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   ))
             ],
           ),
+          Obx(() => webRTCConnection.loading.value
+              ? Expanded(
+                  child: Container(
+                      color: Color.fromRGBO(51, 53, 42, 42),
+                      child: Center(child: CircularProgressIndicator())))
+              : SizedBox.shrink())
         ],
       ),
     );
