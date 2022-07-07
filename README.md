@@ -59,3 +59,9 @@ cd startup_namer
 ```
 (Only specifying because the $ signs in the tutorial are confusing)
 Follow the tutorial, and after you are done, complete part 2
+
+## Freezed
+To build the freezed classes run the following command:
+```
+flutter pub run build_runner build --delete-conflicting-outputs
+```

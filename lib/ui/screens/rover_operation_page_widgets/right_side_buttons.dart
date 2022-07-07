@@ -8,7 +8,7 @@ import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:test/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
-  RightSideButtons(
+  const RightSideButtons(
       {Key? key,
       required this.roverMetrics,
       required this.sendCommand,
@@ -41,10 +41,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
 
   @override
   Widget build(BuildContext context) {
-    double _x = 0;
-    double _y = 0;
-    var step = 10.0;
-    final JoystickMode _joystickMode = JoystickMode.all;
+    const JoystickMode joystickMode = JoystickMode.all;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -54,13 +51,12 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
           child: ElevatedButton.icon(
             onPressed: widget.makeCall,
-            label: Text('Connect To Rover'),
-            icon: Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            label: const Text('Connect To Rover'),
+            icon: const Icon(Icons.wifi_calling_3),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
           width: 250,
         ),
@@ -69,12 +65,11 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
-            child: Text("Stop call"),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+            child: const Text("Stop call"),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
           width: 250,
         ),
@@ -82,12 +77,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand);
+                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
               }),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
           width: 250,
         ),
@@ -100,20 +93,11 @@ class _RightSideButtonsState extends State<RightSideButtons> {
               }),
         )),
         SizedBox(
-            child: (RoverStateType.remoteOperation ==
-                    RoverStateType.remoteOperation)
+            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
                 ? Joystick(
-                    mode: _joystickMode,
+                    mode: joystickMode,
                     listener: (details) {
-                      setState(
-                        () {
-                          _x = details.x;
-                          _y = details.y;
-                        },
-                      );
-                      widget.joystickPublish.value = ([
-                        JoystickValue(details.x, details.y, DateTime.now())
-                      ]);
+                      widget.joystickPublish.value = ([JoystickValue(details.x, details.y, DateTime.now())]);
                     },
                   )
                 : null),
@@ -129,18 +113,16 @@ class _RightSideButtonsState extends State<RightSideButtons> {
             label: const Text("E-STOP"),
             icon: const Icon(Icons.warning_amber_rounded),
             style: ButtonStyle(
-                animationDuration: Duration(seconds: 10),
+                animationDuration: const Duration(seconds: 10),
                 backgroundColor: MaterialStateProperty.all(Colors.red[700]),
                 overlayColor: MaterialStateProperty.all(Colors.yellowAccent),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(
-                        color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                    side: const BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
                   ),
                 ),
-                shadowColor:
-                    MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
+                shadowColor: MaterialStateProperty.all(const Color.fromARGB(0, 0, 0, 0))),
           ),
         )
       ],

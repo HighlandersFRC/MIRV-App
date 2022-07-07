@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -9,7 +11,7 @@ class SettingsPage extends StatelessWidget {
         foregroundColor: AppBarColor.foregroundColor,
         shadowColor: AppBarColor.shadowColor,
         backgroundColor: AppBarColor.backgroundColor,
-        title: Text(
+        title: const Text(
           "settings",
         ),
       ),

@@ -9,9 +9,6 @@ import 'package:test/models/place.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
-// import 'package:test/models/geometry.dart';
-// import 'package:test/models/location.dart';
-
 class ApplicationBloc with ChangeNotifier {
   final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
@@ -34,16 +31,9 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<List<String>> searchPlaces(String searchTerm) async{
-  //   searchResults = await placesService.getAutocomplete(searchTerm);
-  //   return (searchResults).map((e) => e.description).toList();
-    
-  // }
-
-  Future<List<PlaceSearch>> searchPlaces(String searchTerm) async{
+  Future<List<PlaceSearch>> searchPlaces(String searchTerm) async {
     searchResults = await placesService.getAutocomplete(searchTerm);
     return searchResults;
-    
   }
 
   setSelectedLocation(String placeId) async {
@@ -71,21 +61,18 @@ class ApplicationBloc with ChangeNotifier {
 
     if (placeType != null) {
       var places = await placesService.getPlaces(
-          selectedLocationStatic!.geometry.location.lat,
-          selectedLocationStatic!.geometry.location.lng,
-          placeType!);
+          selectedLocationStatic!.geometry.location.lat, selectedLocationStatic!.geometry.location.lng, placeType!);
       markers = [];
-      if (places.length > 0) {
+      if (places.isNotEmpty) {
         var newMarker = markerService.createMarkerFromPlace(places[0], false);
         markers.add(newMarker);
       }
 
-      var locationMarker =
-          markerService.createMarkerFromPlace(selectedLocationStatic!, true);
+      var locationMarker = markerService.createMarkerFromPlace(selectedLocationStatic!, true);
       markers.add(locationMarker);
 
-      var _bounds = markerService.bounds(Set<Marker>.of(markers));
-      bounds.add(_bounds!);
+      var markerBounds = markerService.bounds(Set<Marker>.of(markers));
+      bounds.add(markerBounds!);
 
       notifyListeners();
     }

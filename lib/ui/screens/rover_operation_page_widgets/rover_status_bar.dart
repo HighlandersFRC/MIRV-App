@@ -82,8 +82,6 @@ class RoverStatusBar extends StatelessWidget {
       default:
         return Visibility(visible: false, child: Icon(healthIconChoice));
     }
-
-    return Icon(healthIconChoice, color: roverHealthType.color3);
   }
 
   @override

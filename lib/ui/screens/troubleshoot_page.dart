@@ -23,7 +23,7 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                Get.to(RoverOpPage());
+                Get.to(const RoverOpPage("rover_1"));
               },
               child: const Icon(Icons.drive_eta))
         ],
@@ -35,13 +35,12 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
             height: 720,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(StatusPage());
+                Get.to(const StatusPage());
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 0, 255, 17)),
+                backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 255, 17)),
               ),
-              child: Text("go back", textScaleFactor: 20),
+              child: const Text("go back", textScaleFactor: 20),
             ),
           ),
         ],
