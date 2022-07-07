@@ -278,4 +278,16 @@ class WebRTCConnection {
       _dataChannel!.send(RTCDataChannelMessage(messageText));
     }
   }
+
+  requestData() {
+    if (_dataChannel != null) {
+      _dataChannel!.send(RTCDataChannelMessage("send_data"));
+    }
+  }
+
+  requestMarkers() {
+    if (_dataChannel != null) {
+      _dataChannel!.send(RTCDataChannelMessage("send_markers"));
+    }
+  }
 }

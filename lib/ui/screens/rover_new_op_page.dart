@@ -74,8 +74,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
               child: RightSideButtons(
                 roverMetrics: roverMetrics,
                 sendCommand: webRTCConnection.sendCommand,
-                makeCall: webRTCConnection.makeCall,
-                stopCall: webRTCConnection.stopCall,
+                makeCall: webRTCConnection.requestData,
+                stopCall: webRTCConnection.requestMarkers,
                 joystickPublish: webRTCConnection.joystickPublish,
                 periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                 startJoystickUpdates: webRTCConnection.startJoystickUpdates,
