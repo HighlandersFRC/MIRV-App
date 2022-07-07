@@ -192,7 +192,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Expanded(
               child: Column(
             children: [
-              SizedBox(height: 70, child: SearchBar(selectedRoverController: selectedRoverController)),
+              SizedBox(height: 70, child: MapSearchBar(selectedRoverController: selectedRoverController)),
               Expanded(
                 child: Obx(
                   () => (RoverSelectionMap(roverList.value, selectedRoverController.selectedRoverId, selectedRoverController)),

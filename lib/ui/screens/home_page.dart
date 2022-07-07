@@ -6,6 +6,8 @@ import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Settings'),
               leading: const Icon(Icons.settings),
               onTap: () {
-                Get.to(SettingsPage());
+                Get.to(const SettingsPage());
               }),
           ListTile(
               title: const Text('About'),

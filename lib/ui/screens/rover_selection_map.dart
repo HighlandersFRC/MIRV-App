@@ -13,10 +13,10 @@ class RoverSelectionMap extends StatefulWidget {
   final Rx<String> selectedRoverId;
   final SelectedRoverController selectedRoverController;
 
-  const RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController);
+  const RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
 
   @override
-  _RoverSelectionMapState createState() => _RoverSelectionMapState();
+  State<RoverSelectionMap> createState() => _RoverSelectionMapState();
 }
 
 class _RoverSelectionMapState extends State<RoverSelectionMap> {

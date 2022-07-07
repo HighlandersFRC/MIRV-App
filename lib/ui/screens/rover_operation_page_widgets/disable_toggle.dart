@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
   final RoverMetrics? roverMetrics;
@@ -18,15 +17,15 @@ class ToggleDisable extends StatefulWidget {
 class _ToggleDisableState extends State<ToggleDisable> {
   bool enable = true;
 
-  _enableState(RoverStateType roverState) {
-    switch (roverState) {
-      case RoverStateType.disabled:
-        enable = false;
-        break;
-      default:
-        return null;
-    }
-  }
+  // _enableState(RoverStateType roverState) {
+  //   switch (roverState) {
+  //     case RoverStateType.disabled:
+  //       enable = false;
+  //       break;
+  //     default:
+  //       return null;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

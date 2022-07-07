@@ -11,6 +11,7 @@ import 'package:test/services/geolocator_service.dart';
 import 'package:test/services/places_service.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
+// ignore: must_be_immutable
 class SearchBar extends StatelessWidget {
   final SelectedRoverController selectedRoverController;
 
@@ -52,11 +53,6 @@ class SearchBar extends StatelessWidget {
       placeType = value;
     } else {
       placeType = null;
-    }
-
-    if (placeType != null) {
-      var places = await placesService.getPlaces(
-          selectedLocationStatic!.geometry.location.lat, selectedLocationStatic!.geometry.location.lng, placeType!);
     }
   }
 

@@ -38,7 +38,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onPressed: () {
                           stopCall();
                           Navigator.pop(context);
-                          Get.offAll(HomePage());
+                          Get.offAll(const HomePage());
                         },
                         child: const Text('Yes')),
                     TextButton(
