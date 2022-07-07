@@ -195,6 +195,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
               SizedBox(height: 70, child: SearchBar(selectedRoverController: selectedRoverController)),
               Expanded(
                 child: Obx(
+                  // ignore: invalid_use_of_protected_member
                   () => (RoverSelectionMap(roverList.value, selectedRoverController.selectedRoverId, selectedRoverController)),
                 ),
               )

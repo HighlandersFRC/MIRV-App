@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum RoverSubsystemType { general, intake, drivetrain, conveyor, sensors }
 
 enum RoverCommandTypeGeneral { deploy, stow, enable, disable, e_stop, deploy_pi_lits, retrieve_pi_lits, enable_remote_operation }

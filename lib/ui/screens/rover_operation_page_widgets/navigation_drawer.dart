@@ -69,7 +69,7 @@ class NavigationDrawer extends StatelessWidget {
         ListTile(
           title: TextButton(
             onPressed: () {
-              Get.to(HomePage());
+              Get.to(const HomePage());
             },
             child: const Text(
               "Go Home",
