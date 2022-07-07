@@ -54,10 +54,9 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 250,
           child: ElevatedButton.icon(
             onPressed: widget.makeCall,
-            label: Text('Connect To Rover'),
+            label: Text('Request Rover Data'),
             icon: Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           ),
         ),
         SizedBox(
@@ -69,9 +68,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
-            child: Text("Stop call"),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+            child: Text("Request Marker Data"),
           ),
         ),
         SizedBox(
@@ -82,9 +80,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand);
+                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
               }),
         ),
         SizedBox(
@@ -100,8 +96,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
               }),
         )),
         SizedBox(
-            child: (RoverStateType.remoteOperation ==
-                    RoverStateType.remoteOperation)
+            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
                 ? Joystick(
                     mode: _joystickMode,
                     listener: (details) {
@@ -111,9 +106,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                           _y = details.y;
                         },
                       );
-                      widget.joystickPublish.value = ([
-                        JoystickValue(details.x, details.y, DateTime.now())
-                      ]);
+                      widget.joystickPublish.value = ([JoystickValue(details.x, details.y, DateTime.now())]);
                     },
                   )
                 : null),
@@ -135,12 +128,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
-                    side: BorderSide(
-                        color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                    side: BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
                   ),
                 ),
-                shadowColor:
-                    MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
+                shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0))),
           ),
         )
       ],
