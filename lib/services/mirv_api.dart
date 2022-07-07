@@ -13,14 +13,9 @@ class MirvApi {
   String secondRover = "two";
   String thirdRover = "three";
   String _authToken = "auth token";
-  final String ipAdress =
-      // 'http://172.250.250.44:8000';
-      'https://mirvcloudapi.azurewebsites.net';
+  final String ipAdress = 'http://52.185.111.58:8080';
 
-// http://172.250.250.213:8000
-
-  BehaviorSubject<RoverMetrics> periodicMetricUpdates =
-      new BehaviorSubject<RoverMetrics>();
+  BehaviorSubject<RoverMetrics> periodicMetricUpdates = new BehaviorSubject<RoverMetrics>();
 
   String getAuthToken() {
     _authToken = "new auth token";
@@ -39,10 +34,7 @@ class MirvApi {
   Future<List<RoverSummary>> getRovers() async {
     List<RoverSummary> rovers;
     var response = await http.get(Uri.parse("$ipAdress/rovers"));
-    rovers = (json.decode(response.body) as List)
-        .map((i) => RoverSummary.fromJson(i))
-        .toList()
-        .obs;
+    rovers = (json.decode(response.body) as List).map((i) => RoverSummary.fromJson(i)).toList().obs;
     return rovers;
   }
 
