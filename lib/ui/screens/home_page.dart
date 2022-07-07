@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:test/ui/screens/info_page.dart';
 import 'package:test/ui/screens/overall_settings.dart';
 import 'package:test/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         foregroundColor: AppBarColor.foregroundColor,
         shadowColor: AppBarColor.shadowColor,
@@ -22,22 +22,22 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-              title: Text('Rover Selection Page'),
-              leading: Icon(Icons.people),
+              title: const Text('Rover Selection Page'),
+              leading: const Icon(Icons.people),
               onTap: () {
-                Get.to(RoverSelectionPage());
+                Get.to(const RoverSelectionPage());
               }),
           ListTile(
-              title: Text('Settings'),
-              leading: Icon(Icons.settings),
+              title: const Text('Settings'),
+              leading: const Icon(Icons.settings),
               onTap: () {
-                Get.to(SettingsPage());
+                Get.to(const SettingsPage());
               }),
           ListTile(
-              title: Text('About'),
-              leading: Icon(Icons.info_outline_rounded),
+              title: const Text('About'),
+              leading: const Icon(Icons.info_outline_rounded),
               onTap: () {
-                Get.to(InfoPage());
+                Get.to(const InfoPage());
               })
         ],
       ),

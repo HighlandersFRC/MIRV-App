@@ -17,10 +17,11 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  BehaviorSubject<String> recievedCommands = new BehaviorSubject<String>();
+  BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? _peerConnection;
-  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  get_pkg.Rx<RTCVideoRenderer> localRenderer =
+      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -64,7 +65,9 @@ class WebRTCConnection {
   void toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!
+        .getVideoTracks()
+        .firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -96,9 +99,7 @@ class WebRTCConnection {
   }
 
   void _onTrack(RTCTrackEvent event) {
-    print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
     if (event.track.kind == "video") {
-      print("HERE");
       RTCVideoRenderer val = localRenderer.value;
       val.srcObject = event.streams[0];
       localRenderer.value = val;
@@ -121,7 +122,8 @@ class WebRTCConnection {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState ==
+        RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -129,7 +131,7 @@ class WebRTCConnection {
     }
   }
 
-  Future<void> _negotiateRemoteConnection() async {
+  Future<void> _negotiateRemoteConnection(String roverId) async {
     return _peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
@@ -143,7 +145,8 @@ class WebRTCConnection {
           };
           var request = http.Request(
             'POST',
-            Uri.parse('${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse(
+                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -180,7 +183,7 @@ class WebRTCConnection {
   }
 //public Commands
 
-  Future<void> makeCall() async {
+  Future<void> makeCall(String roverId) async {
     setStateInFunction(function: () {
       loading = true;
     });
@@ -192,7 +195,8 @@ class WebRTCConnection {
     };
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+    _peerConnection =
+        await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
     _peerConnection!.onDataChannel = _onDataChannel;
@@ -221,8 +225,7 @@ class WebRTCConnection {
       stream.getTracks().forEach((element) {
         _peerConnection!.addTrack(element, stream);
       });
-      print("NEGOTIATE");
-      await _negotiateRemoteConnection();
+      await _negotiateRemoteConnection(roverId);
     } catch (e) {
       print(e.toString());
     }
@@ -247,7 +250,7 @@ class WebRTCConnection {
   sendCommand(String command, String typeCommand) {
     if (_dataChannel != null) {
       String messageText = json.encode({
-        "$typeCommand": command,
+        typeCommand: command,
       });
       _dataChannel!.send(RTCDataChannelMessage(messageText));
     }
@@ -265,12 +268,14 @@ class WebRTCConnection {
     joystickPublish.value = ([JoystickValue(0, 0, DateTime.now())]);
 
     timerJoy = Timer.periodic(
-      Duration(milliseconds: 115),
+      const Duration(milliseconds: 115),
       (Timer t) {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(Duration(milliseconds: 110)).isBefore(prevMessTime)) {
+        if (currentTime
+            .subtract(const Duration(milliseconds: 110))
+            .isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:test/Blocs/autocomplete/application_bloc.dart';
-import 'package:test/models/rover_location.dart';
-import 'package:test/models/rover_state_type.dart';
+import 'package:test/Blocs/autocomplete/search_bar.dart';
+import 'package:test/models/place.dart';
+import 'package:test/models/rover_metrics.dart';
 import 'package:location/location.dart';
 import 'package:test/models/rover_status_type.dart';
-import 'package:test/models/rover_summary.dart';
 import 'package:test/services/mirv_api.dart';
 import 'package:test/ui/screens/rover_new_op_page.dart';
 import 'package:test/ui/screens/rover_selection_map.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
 
 class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
+  Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedroverId) =>
@@ -26,7 +23,7 @@ class SelectedRoverController extends GetxController {
     selectedRoverId.value = roverId;
   }
 
-  verifyRoverId(List<RoverSummary> rovers) {
+  verifyRoverId(List<RoverMetrics> rovers) {
     if (rovers
         .where((element) => element.roverId == selectedRoverId.value)
         .isEmpty) selectedRoverId.value = "";
@@ -62,7 +59,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   MirvApi mirvApi = MirvApi();
   Location location = Location();
   int? groupValue = 0;
-  RxList<RoverSummary> roverList = <RoverSummary>[].obs;
+  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
 
   void _refreshRoversList() async {
     roverList.value = await mirvApi.getRovers();
@@ -101,6 +98,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   Widget build(BuildContext context) {
     _refreshRoversList();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: const Text(
@@ -182,7 +180,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                           onPressed: selectedRoverController
                                   .isConnectButtonEnabled.value
                               ? () {
-                                  Get.to(RoverOpPage());
+                                  Get.to(RoverOpPage(selectedRoverController
+                                      .selectedRoverId.value));
                                 }
                               : null,
                           child: Row(
@@ -205,13 +204,23 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             width: 5,
           ),
           Expanded(
-            child: RoverSelectionMap(
-              roverList.value
-                  .map((e) => RoverLocation(
-                      location: LatLng(40.4741, -104.9694), roverId: e.roverId))
-                  .toList(),
-            ),
-          )
+              child: Column(
+            children: [
+              SizedBox(
+                  height: 70,
+                  child: SearchBar(
+                      selectedRoverController: selectedRoverController)),
+              Expanded(
+                child: Obx(
+                  // ignore: invalid_use_of_protected_member
+                  () => (RoverSelectionMap(
+                      roverList.value,
+                      selectedRoverController.selectedRoverId,
+                      selectedRoverController)),
+                ),
+              )
+            ],
+          ))
         ],
       ),
     );
