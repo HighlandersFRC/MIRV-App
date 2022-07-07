@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/models/rover_metrics.dart';
@@ -40,50 +42,54 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      print(
+          'peerConnectionState: ${webRTCConnection.peerConnection?.connectionState}');
+    });
     return Scaffold(
       appBar: OpPgAppBar(
         periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
         roverMetrics: roverMetrics,
         stopCall: webRTCConnection.stopCall,
       ),
-      endDrawer: Drawer(
-        child: StreamBuilder<RoverMetrics>(
-            stream: _mirvApi.periodicMetricUpdates,
-            builder: (context, snapshot) {
-              return CommandList(
-                roverMetrics: snapshot.data,
-                sendCommand: webRTCConnection.sendCommand,
-              );
-            }),
-      ),
-      body: Row(
+      body: Stack(
         children: [
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: SizedBox(
-                width: 200,
-                child: LeftSideButtons(
+          Row(
+            children: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: SizedBox(
+                    width: 200,
+                    child: LeftSideButtons(
+                        roverMetrics: roverMetrics,
+                        sendGeneralCommand: webRTCConnection.sendGeneralCommand,
+                        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                        sendCommand: webRTCConnection.sendCommand)),
+              ),
+              Align(
+                  alignment: Alignment.center,
+                  child: CenterPanel(
+                      localRenderer: webRTCConnection.localRenderer)),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: RightSideButtons(
                     roverMetrics: roverMetrics,
-                    sendGeneralCommand: webRTCConnection.sendGeneralCommand,
+                    sendCommand: webRTCConnection.sendCommand,
+                    makeCall: webRTCConnection.makeCall,
+                    stopCall: webRTCConnection.stopCall,
+                    joystickPublish: webRTCConnection.joystickPublish,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                    sendCommand: webRTCConnection.sendCommand)),
+                    startJoystickUpdates: webRTCConnection.startJoystickUpdates,
+                    useGamepad: useGamepad,
+                  ))
+            ],
           ),
-          Align(
-              alignment: Alignment.center,
-              child:
-                  CenterPanel(localRenderer: webRTCConnection.localRenderer)),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: RightSideButtons(
-                roverMetrics: roverMetrics,
-                sendCommand: webRTCConnection.sendCommand,
-                makeCall: webRTCConnection.makeCall,
-                stopCall: webRTCConnection.stopCall,
-                joystickPublish: webRTCConnection.joystickPublish,
-                periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                startJoystickUpdates: webRTCConnection.startJoystickUpdates,
-                useGamepad: useGamepad,
-              ))
+          Obx(() => webRTCConnection.loading.value
+              ? Expanded(
+                  child: Container(
+                      color: Color.fromRGBO(51, 53, 42, 42),
+                      child: Center(child: CircularProgressIndicator())))
+              : SizedBox.shrink())
         ],
       ),
     );

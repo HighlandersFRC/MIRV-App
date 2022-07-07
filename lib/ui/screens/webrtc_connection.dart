@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/home_page.dart';
 
 class JoystickValue extends Observable {
   final double x;
@@ -19,7 +21,13 @@ class JoystickValue extends Observable {
 class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = new BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
-  RTCPeerConnection? _peerConnection;
+  RTCPeerConnection? peerConnection;
+  get_pkg.Rx<RTCDataChannelState?> _dataConnectionState =
+      get_pkg.Rx<RTCDataChannelState?>(null);
+
+  get_pkg.Rx<RTCPeerConnectionState?> _peerChanelState =
+      get_pkg.Rx<RTCPeerConnectionState?>(null);
+
   final localRenderer = RTCVideoRenderer();
 
   MediaStream? _localStream;
@@ -31,11 +39,10 @@ class WebRTCConnection {
 
   // MediaStream? _localStream;
   bool inCalling = false;
-  bool isWorking = true;
   DateTime? _timeStart;
   double prevX = 0;
   double prevY = 0;
-  bool loading = false;
+  get_pkg.Rx<bool> loading = false.obs;
 
   DateTime lastSendTime = DateTime.now();
 
@@ -91,7 +98,7 @@ class WebRTCConnection {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
+    if (peerConnection!.iceGatheringState ==
         RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
@@ -101,14 +108,14 @@ class WebRTCConnection {
   }
 
   Future<void> _negotiateRemoteConnection() async {
-    return _peerConnection!
+    return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
-          return _peerConnection!.setLocalDescription(offer);
+          return peerConnection!.setLocalDescription(offer);
         })
         .then(_waitForGatheringComplete)
         .then((_) async {
-          var des = await _peerConnection!.getLocalDescription();
+          var des = await peerConnection!.getLocalDescription();
           var headers = {
             'Content-Type': 'application/json',
           };
@@ -133,29 +140,146 @@ class WebRTCConnection {
           String data = "";
           if (response.statusCode == 200) {
             data = await response.stream.bytesToString();
-            print(data);
+
             var dataMap = json.decode(data);
             var answerMap = json.decode(dataMap["answer"]);
-            await _peerConnection!.setRemoteDescription(
+            await peerConnection!.setRemoteDescription(
               RTCSessionDescription(
                 answerMap["sdp"],
                 answerMap["type"],
               ),
             );
+
+            loading.value = false;
           } else {
-            print(response.reasonPhrase);
-            isWorking = false;
-            print(
-                "------------------------------------------------------------- \n Uh Oh! something went wrong and you couldn't connect to the rover! \n ------------------------------------------------------------");
+            loading.value = false;
           }
         });
   }
+
 //public Commands
+//   notificationsFromWebRTC(context) {
+// // if (isWorking==false) {
+// //  return return showDialog(
+// //           barrierDismissible: false,
+// //           context: context,
+// //           builder: (BuildContext context) {
+// //             return AlertDialog(
+// //               title: const Text('Failed Connection'),
+// //               content: Text(
+// //                   'Would you like to try to reconnect or go to the home page?'),
+// //               actions: <Widget>[
+// //                 TextButton(
+// //                     onPressed: () {
+// //                       makeCall();
+// //                       return Navigator.pop(context);
+// //                     },
+// //                     child: Text('reconnect?')),
+// //                 TextButton(
+// //                     onPressed: () {
+// //                       stopCall();
+// //                       Navigator.pop(context);
+// //                       get_pkg.Get.offAll(HomePage());
+// //                     },
+// //                     child: Text('home page'))
+// //               ],
+// //             );
+// //           },
+// //         );
+// // }
+
+//     switch (_peerConnectionState) {
+//       case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
+//       case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
+//       case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+//         return showDialog(
+//           barrierDismissible: false,
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               title: const Text('Failed Connection'),
+//               content: Text(
+//                   'Would you like to try to reconnect or go to the home page?'),
+//               actions: <Widget>[
+//                 TextButton(
+//                     onPressed: () {
+//                       makeCall();
+//                       return Navigator.pop(context);
+//                     },
+//                     child: Text('reconnect?')),
+//                 TextButton(
+//                     onPressed: () {
+//                       stopCall();
+//                       Navigator.pop(context);
+//                       get_pkg.Get.offAll(HomePage());
+//                     },
+//                     child: Text('home page'))
+//               ],
+//             );
+//           },
+//         );
+//       case RTCPeerConnectionState.RTCPeerConnectionStateNew:
+//       case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
+//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text("Connected"),
+//         ));
+
+//       case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
+//         return CircularProgressIndicator();
+//       case null:
+//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text("null"),
+//         ));
+//     }
+
+//     switch (_dataChanelState) {
+//       case RTCDataChannelState.RTCPeerConnectionStateFailed:
+//       case RTCDataChannelState.RTCPeerConnectionStateClosed:
+//       case RTCDataChannelState.RTCPeerConnectionStateDisconnected:
+//         return showDialog(
+//           barrierDismissible: false,
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               title: const Text('Failed Connection'),
+//               content: Text(
+//                   'Would you like to try to reconnect or go to the home page?'),
+//               actions: <Widget>[
+//                 TextButton(
+//                     onPressed: () {
+//                       makeCall();
+//                       return Navigator.pop(context);
+//                     },
+//                     child: Text('reconnect?')),
+//                 TextButton(
+//                     onPressed: () {
+//                       stopCall();
+//                       Navigator.pop(context);
+//                       get_pkg.Get.offAll(HomePage());
+//                     },
+//                     child: Text('home page'))
+//               ],
+//             );
+//           },
+//         );
+//       case RTCDataChannelState.RTCPeerConnectionStateNew:
+//       case RTCDataChannelState.RTCPeerConnectionStateConnected:
+//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text("Connected"),
+//         ));
+
+//       case RTCDataChannelState.RTCPeerConnectionStateConnecting:
+//         return CircularProgressIndicator();
+//       case null:
+//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//           content: Text("null"),
+//         ));
+//     }
+//   }
 
   Future<void> makeCall() async {
-    setStateInFunction(function: () {
-      loading = true;
-    });
+    loading.value = true;
+
     var configuration = <String, dynamic>{
       'sdpSemantics': 'unified-plan',
       "iceServers": [
@@ -164,16 +288,16 @@ class WebRTCConnection {
     };
     print("print stament 11111111111111");
     //* Create Peer Connection
-    if (_peerConnection != null) return;
-    _peerConnection =
+    if (peerConnection != null) return;
+    peerConnection =
         await createPeerConnection(configuration, offerSdpConstraints);
 
-    _peerConnection!.onTrack = _onTrack;
+    peerConnection!.onTrack = _onTrack;
     print("2222222222222222222");
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
-    _dataChannel = await _peerConnection!.createDataChannel(
+    _dataChannel = await peerConnection!.createDataChannel(
       "chat",
       _dataChannelDict!,
     );
@@ -194,7 +318,7 @@ class WebRTCConnection {
       // _localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
-        _peerConnection!.addTrack(element, stream);
+        peerConnection!.addTrack(element, stream);
       });
       print("NEGOTIATE");
       await _negotiateRemoteConnection();
@@ -207,8 +331,8 @@ class WebRTCConnection {
     print("stop1111stop111stop1111stop111");
     try {
       await _dataChannel?.close();
-      await _peerConnection?.close();
-      _peerConnection = null;
+      await peerConnection?.close();
+      peerConnection = null;
       localRenderer.srcObject = null;
     } catch (e) {
       print(e.toString());
@@ -219,11 +343,19 @@ class WebRTCConnection {
   }
 
   sendCommand(String command, String typeCommand) {
-    if (_dataChannel != null) {
-      String messageText = json.encode({
-        "$typeCommand": command,
-      });
-      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    if (peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
+      print(".                                    .");
+      print(
+          "------------------------- \n $typeCommand: $command \n-------------------------");
+      print(".                                    .");
+      if (_dataChannel != null) {
+        String messageText = json.encode({
+          "$typeCommand": command,
+        });
+        _dataChannel!.send(RTCDataChannelMessage(messageText));
+      }
     }
   }
 
@@ -263,12 +395,22 @@ class WebRTCConnection {
   }
 
   sendJoystick(double x, double y) {
-    if (_dataChannel != null) {
-      String messageText = json.encode({
-        "joystick_x": x,
-        "joystick_y": y,
-      });
-      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    if (peerConnection?.connectionState ==
+            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
+      if (_dataChannel != null) {
+        print(".                                    .");
+        print(
+            "------------------------- \n $x   $y \n-------------------------");
+        print(".                                    .");
+        if (_dataChannel != null) {
+          String messageText = json.encode({
+            "joystick_x": x,
+            "joystick_y": y,
+          });
+          _dataChannel!.send(RTCDataChannelMessage(messageText));
+        }
+      }
     }
   }
 }

@@ -13,9 +13,9 @@ class MirvApi {
   String secondRover = "two";
   String thirdRover = "three";
   String _authToken = "auth token";
-  final String ipAdress =
-      // 'http://172.250.250.44:8000';
-      'https://mirvcloudapi.azurewebsites.net';
+  final String ipAdress = 'http://52.185.88.232:8080';
+  // 'http://172.250.250.44:8000';
+  // 'https://mirvcloudapi.azurewebsites.net';
 
 // http://172.250.250.213:8000
 

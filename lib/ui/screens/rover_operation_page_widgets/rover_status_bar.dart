@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:test/models/rover_metrics.dart';
 import 'package:test/models/rover_state_type.dart';
 
@@ -49,6 +50,26 @@ class RoverStatusBar extends StatelessWidget {
         return const Icon(Icons.settings_remote_rounded);
     }
   }
+
+  // _connectionStateIcon(RTCPeerConnectionState connectionState) {
+  //   switch (peerConnection?.connectionState) {
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+  //       return Icon(Icons.circle_outlined, color: Colors.red,);
+
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateNew:
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
+
+  //       return Icon(Icons.circle_outlined, color: Colors.green,);
+  //     case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
+
+  //       return Icon(Icons.circle_outlined, color: Colors.yellow,);
+  //     case null:
+
+  //       return Text('null')
+  //   }
+  // }
 
   _healthIcon(
       {required RoverHealthType roverHealthType,
