@@ -78,6 +78,23 @@ class WebRTCConnection {
 
   final Map<String, dynamic> offerOptions = {"offerToReceiveVideo": true};
 
+  // This Data Channel function receives data send on the rover created data channels
+  void _onDataChannel(RTCDataChannel dataChannel) {
+    // or alternatively:
+    dataChannel.messageStream.listen((message) {
+      if (message.type == MessageType.text) {
+        print(message.text);
+      } else {
+        // do something with message.binary
+      }
+    });
+  }
+
+  // This Data Channel Function receives data sent on the data channel created by the flutter app
+  void _onDataChannelMessage(message) {
+    print(message.text);
+  }
+
   void _onTrack(RTCTrackEvent event) {
     print("TRACK EVENT: ${event.streams.map((e) => e.id)}, ${event.track.id}");
     if (event.track.kind == "video") {
@@ -130,7 +147,7 @@ class WebRTCConnection {
           );
           request.body = json.encode({
             "connection_id": "string",
-            "rover_id": "rover_7",
+            "rover_id": "rover_42",
             "offer": {
               "sdp": des!.sdp,
               "type": des.type,
@@ -178,11 +195,12 @@ class WebRTCConnection {
     _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
+    _peerConnection!.onDataChannel = _onDataChannel;
     //* Create Data Channel
     _dataChannelDict = RTCDataChannelInit();
     _dataChannelDict!.ordered = true;
     _dataChannel = await _peerConnection!.createDataChannel(
-      "chat",
+      "RoverStatus",
       _dataChannelDict!,
     );
     _dataChannel!.onDataChannelState = _onDataChannelState;
@@ -211,7 +229,6 @@ class WebRTCConnection {
   }
 
   Future<void> stopCall() async {
-    print("stop1111stop111stop1111stop111");
     try {
       await _dataChannel?.close();
       await _peerConnection?.close();
