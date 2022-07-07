@@ -29,25 +29,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   final MirvApi _mirvApi = MirvApi();
   final mapSelectionController = Get.put(MapSelectionController());
-  final BehaviorSubject<LatLng> locationStream = BehaviorSubject<LatLng>.seeded(
-      new LatLng(40.474019558671344, -104.96957447379826));
+  final BehaviorSubject<LatLng> locationStream =
+      BehaviorSubject<LatLng>.seeded(new LatLng(40.474019558671344, -104.96957447379826));
   final List<PiLit> piLitMarkers = [
-    PiLit(
-        id: 'piLit1',
-        description: 'Pi-lit device',
-        location: new LatLng(40.47399235127373, -104.96957682073116)),
-    PiLit(
-        id: 'piLit2',
-        description: 'Pi-lit device',
-        location: new LatLng(40.474025762131475, -104.9695798382163)),
-    PiLit(
-        id: 'piLit3',
-        description: 'Pi-lit device',
-        location: new LatLng(40.47405381703737, -104.96958520263433)),
-    PiLit(
-        id: 'piLit4',
-        description: 'Pi-lit device',
-        location: new LatLng(40.47408365724258, -104.96959090232849))
+    PiLit(id: 'piLit1', description: 'Pi-lit device', location: new LatLng(40.47399235127373, -104.96957682073116)),
+    PiLit(id: 'piLit2', description: 'Pi-lit device', location: new LatLng(40.474025762131475, -104.9695798382163)),
+    PiLit(id: 'piLit3', description: 'Pi-lit device', location: new LatLng(40.47405381703737, -104.96958520263433)),
+    PiLit(id: 'piLit4', description: 'Pi-lit device', location: new LatLng(40.47408365724258, -104.96959090232849))
   ];
   final RoverMetrics roverMetrics = RoverMetrics();
   final WebRTCConnection webRTCConnection = WebRTCConnection();
@@ -99,14 +87,13 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     mapSelectionController: mapSelectionController)),
           ),
           Align(
-            alignment: Alignment.center,
-            child: Obx(() => CenterPanel(
-                localRenderer: webRTCConnection.localRenderer,
-                locationStream: locationStream,
-                periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                piLitMarkers: piLitMarkers,
-                showMap: mapSelectionController.showMap.value)),
-          ),
+              alignment: Alignment.center,
+              child: Obx(() => CenterPanel(
+                  localRenderer: webRTCConnection.localRenderer.value,
+                  locationStream: locationStream,
+                  periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                  piLitMarkers: piLitMarkers,
+                  showMap: mapSelectionController.showMap.value))),
           Align(
               alignment: Alignment.bottomRight,
               child: RightSideButtons(
