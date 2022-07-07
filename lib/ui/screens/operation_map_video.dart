@@ -23,7 +23,7 @@ class OperationMapVideo extends StatelessWidget {
         width: 800,
         height: 450,
         child: showMap
-            ? RoverOperationMap(locationStream: locationStream, piLitMarkers: piLitMarkers)
+            ? RoverOperationMap(locationStream: locationStream, piLitMarkers: piLitMarkers, roverMetrics: [],)
             : 
               Column(
                children: [

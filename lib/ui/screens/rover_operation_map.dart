@@ -4,14 +4,20 @@ import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/models/pi_lit.dart';
 import 'package:test/models/rover_location.dart';
+import 'package:test/models/rover_metrics.dart';
 
 class RoverOperationMap extends StatefulWidget {
   final BehaviorSubject<LatLng> locationStream;
+  final List<RoverMetrics> roverMetrics;
+
   final List<PiLit> piLitMarkers;
   List<Polygon>? lanes;
 
   RoverOperationMap(
-      {Key? key, required this.locationStream, required this.piLitMarkers})
+      {Key? key,
+      required this.locationStream,
+      required this.piLitMarkers,
+      required this.roverMetrics})
       : super(key: key);
 
   @override
@@ -94,14 +100,29 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             snippet: 'Pi-lit device',
           ),
           icon: mapMarker,
-          // onTap: () async {
-          //   mapController?.animateCamera(CameraUpdate.newCameraPosition(
-          //       CameraPosition(
-          //           target: piLit.location,
-          //           zoom: await mapController!.getZoomLevel())));
-          // }
         );
+
         //add more markers here
+      }),
+      ...this.widget.roverMetrics.map((rover) {
+        return Marker(
+            //add first marker
+            markerId: MarkerId(rover.roverId),
+            position: LatLng(rover.telemetry.location.lat,
+                rover.telemetry.location.long), //position of marker
+            infoWindow: InfoWindow(
+              //popup info
+              title: rover.roverId,
+              snippet: 'My Custom Subtitle',
+            ),
+            icon: mapMarker,
+            onTap: () async {
+              mapController?.animateCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                      target: LatLng(rover.telemetry.location.lat,
+                          rover.telemetry.location.long),
+                      zoom: await mapController!.getZoomLevel())));
+            });
       })
     };
     return markers;

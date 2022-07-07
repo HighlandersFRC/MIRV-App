@@ -82,7 +82,7 @@ class SearchBar extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: TypeAheadField(
                         textFieldConfiguration: TextFieldConfiguration(
-                          autofocus: true,
+                          autofocus: false,
                           style: DefaultTextStyle.of(context)
                               .style
                               .copyWith(fontStyle: FontStyle.italic),
