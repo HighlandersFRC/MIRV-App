@@ -68,10 +68,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                     sendCommand: webRTCConnection.sendCommand)),
           ),
-          Align(
-              alignment: Alignment.center,
-              child:
-                  CenterPanel(localRenderer: webRTCConnection.localRenderer)),
+          Align(alignment: Alignment.center, child: Obx(() => CenterPanel(localRenderer: webRTCConnection.localRenderer.value))),
           Align(
               alignment: Alignment.bottomRight,
               child: RightSideButtons(
