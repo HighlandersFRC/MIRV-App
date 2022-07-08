@@ -75,7 +75,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   @override
   Widget build(BuildContext context) {
-    webRTCConnection.notificationsFromWebRTC(widget.selectedRoverId, context);
+    webRTCConnection.notificationsFromWebRTC(
+        widget.selectedRoverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
         periodicMetricUpdates: _mirvApi.periodicMetricUpdates,

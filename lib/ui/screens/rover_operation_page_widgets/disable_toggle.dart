@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:test/models/rover_metrics.dart';
 
 class ToggleDisable extends StatefulWidget {
@@ -35,9 +36,9 @@ class _ToggleDisableState extends State<ToggleDisable> {
     return ElevatedButton(
         onPressed: () {
           widget.sendCommand("disable", "intake");
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Sending signal"),
-          ));
+          Fluttertoast.showToast(
+            msg: "Sending Signal",
+          );
           setState(() {
             enable = !enable;
           });
