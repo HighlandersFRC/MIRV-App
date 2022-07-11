@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:test/ui/screens/app_bar_theme.dart';
+import 'package:test/ui/screens/settings_language_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -21,7 +23,14 @@ class _SettingsPage extends State<SettingsPage> {
       ),
       body: SettingsList(sections: [
         SettingsSection(title: Text('General'), tiles: [
-          SettingsTile(title: Text('Language'), leading: Icon(Icons.language)),
+          SettingsTile(
+              title: Text('Language'),
+              leading: Icon(Icons.language),
+      // onPressed: () {
+      //             Navigator.of(context).push(MaterialPageRoute(
+      //                 builder: (BuildContext context) => LanguagePage()));
+      //           },
+          ),
           SettingsTile(
               title: Text('Environment'), leading: Icon(Icons.cloud_queue)),
         ]),
