@@ -23,14 +23,11 @@ class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
-  get_pkg.Rx<RTCDataChannelState?> dataChannelState =
-      get_pkg.Rx<RTCDataChannelState?>(null);
+  get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
 
-  get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState =
-      get_pkg.Rx<RTCPeerConnectionState?>(null);
+  get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState = get_pkg.Rx<RTCPeerConnectionState?>(null);
 
-  get_pkg.Rx<RTCVideoRenderer> localRenderer =
-      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -130,8 +127,7 @@ class WebRTCConnection {
   }
 
   Future<bool> _waitForGatheringComplete(int count) async {
-    if (peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else if (count >= GATHERING_RETRY_THRESHOLD) {
       return false;
@@ -227,8 +223,7 @@ class WebRTCConnection {
   }
 
 //public Commands
-  notificationsFromWebRTC(
-      String roverId, context, Function() makeCallReconnect) {
+  notificationsFromWebRTC(String roverId, context, Function() makeCallReconnect) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
@@ -284,8 +279,7 @@ class WebRTCConnection {
       };
       //* Create Peer Connection
       if (peerConnection != null) return;
-      peerConnection =
-          await createPeerConnection(configuration, offerSdpConstraints);
+      peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
       peerConnection!.onTrack = _onTrack;
       peerConnection!.onDataChannel = _onDataChannel;
       //* Create Data Channel
@@ -329,8 +323,7 @@ class WebRTCConnection {
   }
 
   sendCommand(String command, String typeCommand) {
-    if (peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       String messageText = json.encode({
         "$typeCommand": command,
@@ -356,9 +349,7 @@ class WebRTCConnection {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(const Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
+        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
@@ -375,8 +366,7 @@ class WebRTCConnection {
   }
 
   sendJoystick(double x, double y) {
-    if (peerConnection?.connectionState ==
-            RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       if (_dataChannel != null) {
         if (_dataChannel != null) {

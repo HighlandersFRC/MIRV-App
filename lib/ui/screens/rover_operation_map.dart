@@ -11,10 +11,7 @@ class RoverOperationMap extends StatefulWidget {
   final List<PiLit> piLitMarkers;
 
   const RoverOperationMap(
-      {Key? key,
-      required this.locationStream,
-      required this.piLitMarkers,
-      required this.selectedRoverMetrics})
+      {Key? key, required this.locationStream, required this.piLitMarkers, required this.selectedRoverMetrics})
       : super(key: key);
 
   @override
@@ -22,16 +19,14 @@ class RoverOperationMap extends StatefulWidget {
 }
 
 class _RoverOperationMapState extends State<RoverOperationMap> {
-  final LatLng showLocation =
-      const LatLng(40.474019558671344, -104.9693540321517);
+  final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
   Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   BitmapDescriptor roverMarker = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() async {
-    var tempMapMarker = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+    var tempMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
 
     setState(() {
       mapMarker = tempMapMarker;
@@ -39,8 +34,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   }
 
   void setMarkerIcon() async {
-    var roverMapMarker = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), 'assets/images/rover_icon.png');
+    var roverMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
 
     setState(() {
       roverMarker = roverMapMarker;
@@ -70,22 +64,18 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
             setState(() {
               mapController = controller;
             });
-            widget.locationStream.stream.listen((location) async =>
-                mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(location.latitude, location.longitude),
-                        zoom: await mapController!.getZoomLevel()))));
+            widget.locationStream.stream.listen((location) async => mapController?.animateCamera(CameraUpdate.newCameraPosition(
+                CameraPosition(
+                    target: LatLng(location.latitude, location.longitude), zoom: await mapController!.getZoomLevel()))));
           },
         ),
         Align(
           alignment: Alignment.bottomLeft,
           child: ElevatedButton(
-            onPressed: () async => mapController?.animateCamera(
-                CameraUpdate.newCameraPosition(CameraPosition(
-                    target: LatLng(
-                        widget.selectedRoverMetrics.telemetry.location.lat,
-                        widget.selectedRoverMetrics.telemetry.location.long),
-                    zoom: await mapController!.getZoomLevel()))),
+            onPressed: () async => mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                target: LatLng(
+                    widget.selectedRoverMetrics.telemetry.location.lat, widget.selectedRoverMetrics.telemetry.location.long),
+                zoom: await mapController!.getZoomLevel()))),
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
             ),
@@ -118,10 +108,8 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     var marker = Marker(
         //add first marker
         markerId: MarkerId(widget.selectedRoverMetrics.roverId),
-        position: LatLng(
-            widget.selectedRoverMetrics.telemetry.location.lat,
-            widget.selectedRoverMetrics.telemetry.location
-                .long), //position of marker
+        position: LatLng(widget.selectedRoverMetrics.telemetry.location.lat,
+            widget.selectedRoverMetrics.telemetry.location.long), //position of marker
         infoWindow: InfoWindow(
           //popup info
           title: widget.selectedRoverMetrics.roverId,
@@ -129,12 +117,10 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
         ),
         icon: roverMarker,
         onTap: () async {
-          mapController?.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(
-                      widget.selectedRoverMetrics.telemetry.location.lat,
-                      widget.selectedRoverMetrics.telemetry.location.long),
-                  zoom: await mapController!.getZoomLevel())));
+          mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+              target:
+                  LatLng(widget.selectedRoverMetrics.telemetry.location.lat, widget.selectedRoverMetrics.telemetry.location.long),
+              zoom: await mapController!.getZoomLevel())));
         });
 
     markers.add(marker);

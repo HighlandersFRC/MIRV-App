@@ -39,8 +39,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Disconnect?'),
-                  content: Text(
-                      'Would  you like to discconect from ${roverMetrics.roverId}'),
+                  content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
                   actions: <Widget>[
                     TextButton(
                         onPressed: () {
@@ -57,10 +56,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 );
               }),
-          child: Row(mainAxisSize: MainAxisSize.min, children: const [
-            Text('Disconnect'),
-            Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
-          ]),
+          child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
         ),
         foregroundColor: AppBarColor.foregroundColor,
         shadowColor: AppBarColor.shadowColor,
@@ -68,9 +66,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {
-              return Text(snapshot.data != null
-                  ? '${snapshot.data!.state}'
-                  : 'Waiting on data');
+              return Text(snapshot.data != null ? '${snapshot.data!.state}' : 'Waiting on data');
             }),
         actions: [
           Padding(
@@ -89,8 +85,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content:
-                      const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
+                  content: const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
                   actions: [
                     TextButton(
                       onPressed: () {
