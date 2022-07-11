@@ -12,11 +12,13 @@ class RoverStatusBar extends StatelessWidget {
     Key? key,
     required this.roverMetrics,
     required this.peerConnectionState,
-  }) : super(key: key);
+  }) : super(key: key) {
+    uiConnectionState =
+        Rx<UIConnectionState>(setEnum(peerConnectionState.value));
+  }
   final RoverMetrics? roverMetrics;
   final Rx<RTCPeerConnectionState?> peerConnectionState;
-  final Rx<UIConnectionState> uiConnectionState =
-      Rx<UIConnectionState>(UIConnectionState.unavailable);
+  late Rx<UIConnectionState> uiConnectionState;
 
   setEnum(rtcPeerConnectionState) {
     switch (rtcPeerConnectionState) {

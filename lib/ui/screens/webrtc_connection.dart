@@ -23,7 +23,7 @@ class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
-  get_pkg.Rx<RTCDataChannelState?> dataChanelState =
+  get_pkg.Rx<RTCDataChannelState?> dataChannelState =
       get_pkg.Rx<RTCDataChannelState?>(null);
 
   get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState =
@@ -52,7 +52,8 @@ class WebRTCConnection {
   final joystickStream = BehaviorSubject<List<double>>();
 
   final joystickPublish = <JoystickValue>[].obs;
-  int retryGatherCount = 0;
+
+  int GATHERING_RETRY_THRESHOLD = 90; //seconds
 
   WebRTCConnection() {
     init();
@@ -132,24 +133,23 @@ class WebRTCConnection {
     }
   }
 
-  Future<bool> _waitForGatheringComplete(_) async {
+  Future<bool> _waitForGatheringComplete(int count) async {
     print("WAITING FOR GATHERING COMPLETE");
-    // if (retryGatherCount < 60) {
+
     if (peerConnection!.iceGatheringState ==
         RTCIceGatheringState.RTCIceGatheringStateComplete) {
       print('connect :111 $peerConnection');
 
       return true;
+    } else if (count >= GATHERING_RETRY_THRESHOLD) {
+      return false;
     } else {
-      // retryGatherCount++;
+      count++;
+      print('retry gather count $count');
       print('connect :222 $peerConnection');
       await Future.delayed(Duration(seconds: 1));
-      return await _waitForGatheringComplete(_);
+      return await _waitForGatheringComplete(count);
     }
-    // } else {
-    //   retryGatherCount = 0;
-    //   return false;
-    // }
   }
 
   Future<void> _negotiateRemoteConnection(String roverId) async {
@@ -159,118 +159,100 @@ class WebRTCConnection {
           print('connect :444 $peerConnection');
           return peerConnection!.setLocalDescription(offer);
         })
-        .then(_waitForGatheringComplete)
-        .then((_) async {
+        .then((_) => _waitForGatheringComplete(0))
+        .then((success) async {
           print('connect :555 $peerConnection');
-          var des = await peerConnection!.getLocalDescription();
-          print('connect :666 $peerConnection');
 
-          var headers = {
-            'Content-Type': 'application/json',
-          };
-          var request = http.Request(
-            'POST',
-            Uri.parse(
-                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
-          );
-          print('des $des');
-          request.body = json.encode({
-            "connection_id": "string",
-            "rover_id": roverId,
-            "offer": {
-              "sdp": des!.sdp,
-              "type": des.type,
-              "video_transform": transformType,
-            }
-          });
-          request.headers.addAll(headers);
+          if (!success) {
+            await stopCall();
+            return _showReconnectDialog('Connection timed out', roverId);
+          }
 
-          http.StreamedResponse response = await request.send();
+          try {
+            var des = await peerConnection!.getLocalDescription();
+            print('connect :666 $peerConnection');
 
-          String data = "";
-          if (response.statusCode == 200) {
-            data = await response.stream.bytesToString();
-
-            var dataMap = json.decode(data);
-            var answerMap = json.decode(dataMap["answer"]);
-            print('connect :777 $peerConnection');
-            await peerConnection!.setRemoteDescription(
-              RTCSessionDescription(
-                answerMap["sdp"],
-                answerMap["type"],
-              ),
+            var headers = {
+              'Content-Type': 'application/json',
+            };
+            var request = http.Request(
+              'POST',
+              Uri.parse(
+                  '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
             );
+            print('des $des');
+            request.body = json.encode({
+              "connection_id": "string",
+              "rover_id": roverId,
+              "offer": {
+                "sdp": des!.sdp,
+                "type": des.type,
+                "video_transform": transformType,
+              }
+            });
+            request.headers.addAll(headers);
 
-            loading.value = false;
-          } else {
-            loading.value = false;
+            http.StreamedResponse response = await request.send();
+
+            String data = "";
+            if (response.statusCode == 200) {
+              data = await response.stream.bytesToString();
+
+              var dataMap = json.decode(data);
+              var answerMap = json.decode(dataMap["answer"]);
+              print('connect :777 $peerConnection');
+              await peerConnection!.setRemoteDescription(
+                RTCSessionDescription(
+                  answerMap["sdp"],
+                  answerMap["type"],
+                ),
+              );
+
+              loading.value = false;
+            } else {
+              _showReconnectDialog('Failed to comunicate with rover', roverId);
+            }
+          } catch (e) {
+            stopCall();
+            _showReconnectDialog('$e', roverId);
           }
         });
+  }
+
+  _showReconnectDialog(
+    String error,
+    String roverId,
+  ) {
+    get_pkg.Get.dialog(AlertDialog(
+      title: const Text('Failed Connection'),
+      content: Text('$error'),
+      actions: <Widget>[
+        TextButton(
+            onPressed: () {
+              makeCall(roverId);
+              get_pkg.Get.back();
+            },
+            child: Text('Reconnect?')),
+        TextButton(
+            onPressed: () {
+              get_pkg.Get.back();
+              get_pkg.Get.offAll(HomePage());
+            },
+            child: Text('Home page'))
+      ],
+    ));
   }
 
 //public Commands
   notificationsFromWebRTC(
       String roverId, context, Function() makeCallReconnect) {
-// // if (isWorking==false) {
-// //  return return showDialog(
-// //           barrierDismissible: false,
-// //           context: context,
-// //           builder: (BuildContext context) {
-// //             return AlertDialog(
-// //               title: const Text('Failed Connection'),
-// //               content: Text(
-// //                   'Would you like to try to reconnect or go to the home page?'),
-// //               actions: <Widget>[
-// //                 TextButton(
-// //                     onPressed: () {
-// //                       makeCall();
-// //                       return Navigator.pop(context);
-// //                     },
-// //                     child: Text('reconnect?')),
-// //                 TextButton(
-// //                     onPressed: () {
-// //                       stopCall();
-// //                       Navigator.pop(context);
-// //                       get_pkg.Get.offAll(HomePage());
-// //                     },
-// //                     child: Text('home page'))
-// //               ],
-// //             );
-// //           },
-// //         );
-// // }
-
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
           stopCall();
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Failed Connection'),
-                content: Text(
-                    'Would you like to try to reconnect or go to the home page?'),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () {
-                        makeCall(roverId);
-                        return Navigator.pop(context);
-                      },
-                      child: Text('Reconnect?')),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        get_pkg.Get.offAll(HomePage());
-                      },
-                      child: Text('Home page'))
-                ],
-              );
-            },
-          );
+          _showReconnectDialog('Connection Failed', roverId);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
@@ -279,98 +261,73 @@ class WebRTCConnection {
           );
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          CircularProgressIndicator();
+          Fluttertoast.showToast(
+            msg: "Connecting",
+          );
           break;
         case null:
           //most times this case is here when loading or connecting
-          Fluttertoast.showToast(
-            msg: "null",
-          );
+          break;
       }
     });
 
-//     switch (_dataChanelState) {
-//       case RTCDataChannelState.RTCPeerConnectionStateFailed:
-//       case RTCDataChannelState.RTCPeerConnectionStateClosed:
-//       case RTCDataChannelState.RTCPeerConnectionStateDisconnected:
-//         return showDialog(
-//           barrierDismissible: false,
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: const Text('Failed Connection'),
-//               content: Text(
-//                   'Would you like to try to reconnect or go to the home page?'),
-//               actions: <Widget>[
-//                 TextButton(
-//                     onPressed: () {
-//                       makeCall();
-//                       return Navigator.pop(context);
-//                     },
-//                     child: Text('reconnect?')),
-//                 TextButton(
-//                     onPressed: () {
-//                       stopCall();
-//                       Navigator.pop(context);
-//                       get_pkg.Get.offAll(HomePage());
-//                     },
-//                     child: Text('home page'))
-//               ],
-//             );
-//           },
-//         );
-//       case RTCDataChannelState.RTCPeerConnectionStateNew:
-//       case RTCDataChannelState.RTCPeerConnectionStateConnected:
-//         Fluttertoast.showToast(
-    // msg: "Connected",
-    // );
+    switch (dataChannelState.value) {
+      case RTCDataChannelState.RTCDataChannelClosing:
+      case RTCDataChannelState.RTCDataChannelClosed:
+        _showReconnectDialog('Connection Failed', roverId);
+        break;
+      case RTCDataChannelState.RTCDataChannelConnecting:
+        return Fluttertoast.showToast(
+          msg: "Connection",
+        );
 
-//       case RTCDataChannelState.RTCPeerConnectionStateConnecting:
-//         return CircularProgressIndicator();
-//       case null:
-//         return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//           content: Text("null"),
-//         ));
-//     }
+      case RTCDataChannelState.RTCDataChannelOpen:
+        return Fluttertoast.showToast(
+          msg: "Connected",
+        );
+      case null:
+        break;
+    }
   }
 
   Future<void> makeCall(String roverId) async {
-    loading.value = true;
-    var configuration = <String, dynamic>{
-      'sdpSemantics': 'unified-plan',
-      "iceServers": [
-        {"url": "stun:stun.l.google.com:19302"},
-      ]
-    };
-    //* Create Peer Connection
-    print('sting');
-    print('roverId: $roverId');
-    if (peerConnection != null) return;
-    peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
-    print('connect :999 $peerConnection');
-    peerConnection!.onTrack = _onTrack;
-    print('connect :101010 $peerConnection');
-    peerConnection!.onDataChannel = _onDataChannel;
-    print('connect :11111 $peerConnection');
-    //* Create Data Channel
-    _dataChannelDict = RTCDataChannelInit();
-    _dataChannelDict!.ordered = true;
-    print('connect :121212 $peerConnection');
-    _dataChannel = await peerConnection!.createDataChannel(
-      "RoverStatus",
-      _dataChannelDict!,
-    );
-    _dataChannel!.onDataChannelState = _onDataChannelState;
-    final mediaConstraints = <String, dynamic>{
-      'audio': false,
-      'video': {
-        // 'facingMode': 'user',
-        'facingMode': 'environment',
-        'optional': [],
-      }
-    };
     try {
+      loading.value = true;
+      var configuration = <String, dynamic>{
+        'sdpSemantics': 'unified-plan',
+        "iceServers": [
+          {"url": "stun:stun.l.google.com:19302"},
+        ]
+      };
+      //* Create Peer Connection
+      print('sting');
+      print('roverId: $roverId');
+      if (peerConnection != null) return;
+      peerConnection =
+          await createPeerConnection(configuration, offerSdpConstraints);
+      print('connect :999 $peerConnection');
+      peerConnection!.onTrack = _onTrack;
+      print('connect :101010 $peerConnection');
+      peerConnection!.onDataChannel = _onDataChannel;
+      print('connect :11111 $peerConnection');
+      //* Create Data Channel
+      _dataChannelDict = RTCDataChannelInit();
+      _dataChannelDict!.ordered = true;
+      print('connect :121212 $peerConnection');
+      _dataChannel = await peerConnection!.createDataChannel(
+        "RoverStatus",
+        _dataChannelDict!,
+      );
+      _dataChannel!.onDataChannelState = _onDataChannelState;
+      final mediaConstraints = <String, dynamic>{
+        'audio': false,
+        'video': {
+          // 'facingMode': 'user',
+          'facingMode': 'environment',
+          'optional': [],
+        }
+      };
+
       var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
       // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
       _localStream = stream;
@@ -384,6 +341,7 @@ class WebRTCConnection {
       await _negotiateRemoteConnection(roverId);
     } catch (e) {
       print('connect : ${e.toString()}');
+      _showReconnectDialog(e.toString(), roverId);
     }
   }
 
