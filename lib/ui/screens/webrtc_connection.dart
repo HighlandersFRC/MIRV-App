@@ -58,7 +58,6 @@ class WebRTCConnection {
   WebRTCConnection() {
     init();
     Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      print('peerConnectionState: ${peerConnection?.connectionState}');
       peerConnectionState.value = peerConnection?.connectionState;
     });
   }
@@ -67,8 +66,6 @@ class WebRTCConnection {
     RTCVideoRenderer val = localRenderer.value;
     await val.initialize();
     localRenderer.value = val;
-    // await makeCall();
-    // await startJoystickUpdates();
   }
 
   void setStateInFunction({required Function function}) {
@@ -99,7 +96,6 @@ class WebRTCConnection {
     // or alternatively:
     dataChannel.messageStream.listen((message) {
       if (message.type == MessageType.text) {
-        print(message.text);
       } else {
         // do something with message.binary
       }
@@ -134,19 +130,13 @@ class WebRTCConnection {
   }
 
   Future<bool> _waitForGatheringComplete(int count) async {
-    print("WAITING FOR GATHERING COMPLETE");
-
     if (peerConnection!.iceGatheringState ==
         RTCIceGatheringState.RTCIceGatheringStateComplete) {
-      print('connect :111 $peerConnection');
-
       return true;
     } else if (count >= GATHERING_RETRY_THRESHOLD) {
       return false;
     } else {
       count++;
-      print('retry gather count $count');
-      print('connect :222 $peerConnection');
       await Future.delayed(Duration(seconds: 1));
       return await _waitForGatheringComplete(count);
     }
@@ -156,13 +146,10 @@ class WebRTCConnection {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
-          print('connect :444 $peerConnection');
           return peerConnection!.setLocalDescription(offer);
         })
         .then((_) => _waitForGatheringComplete(0))
         .then((success) async {
-          print('connect :555 $peerConnection');
-
           if (!success) {
             await stopCall();
             return _showReconnectDialog('Connection timed out', roverId);
@@ -170,17 +157,14 @@ class WebRTCConnection {
 
           try {
             var des = await peerConnection!.getLocalDescription();
-            print('connect :666 $peerConnection');
 
             var headers = {
               'Content-Type': 'application/json',
             };
             var request = http.Request(
               'POST',
-              Uri.parse(
-                  '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+              Uri.parse('${mirvApi.ipAdress}/rovers/connect'),
             );
-            print('des $des');
             request.body = json.encode({
               "connection_id": "string",
               "rover_id": roverId,
@@ -200,7 +184,6 @@ class WebRTCConnection {
 
               var dataMap = json.decode(data);
               var answerMap = json.decode(dataMap["answer"]);
-              print('connect :777 $peerConnection');
               await peerConnection!.setRemoteDescription(
                 RTCSessionDescription(
                   answerMap["sdp"],
@@ -300,20 +283,14 @@ class WebRTCConnection {
         ]
       };
       //* Create Peer Connection
-      print('sting');
-      print('roverId: $roverId');
       if (peerConnection != null) return;
       peerConnection =
           await createPeerConnection(configuration, offerSdpConstraints);
-      print('connect :999 $peerConnection');
       peerConnection!.onTrack = _onTrack;
-      print('connect :101010 $peerConnection');
       peerConnection!.onDataChannel = _onDataChannel;
-      print('connect :11111 $peerConnection');
       //* Create Data Channel
       _dataChannelDict = RTCDataChannelInit();
       _dataChannelDict!.ordered = true;
-      print('connect :121212 $peerConnection');
       _dataChannel = await peerConnection!.createDataChannel(
         "RoverStatus",
         _dataChannelDict!,
@@ -334,36 +311,21 @@ class WebRTCConnection {
       // localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
-        print('connect :131313 $peerConnection');
         peerConnection!.addTrack(element, stream);
-        print('connect :141414 $peerConnection');
       });
       await _negotiateRemoteConnection(roverId);
     } catch (e) {
-      print('connect : ${e.toString()}');
       _showReconnectDialog(e.toString(), roverId);
     }
   }
 
   Future<void> stopCall() async {
-    try {
-      print('connect : STOP');
-      await _dataChannel?.close();
-      await peerConnection?.close();
-      peerConnection = null;
-      RTCVideoRenderer val = localRenderer.value;
-      val.srcObject = null;
-      localRenderer.value = val;
-      // peerConnection = null;
-      // RTCVideoRenderer val = localRenderer.value;
-      // val.srcObject = null;
-      // localRenderer.value.srcObject = null;
-    } catch (e) {
-      print(e.toString());
-    }
-    setStateInFunction(function: () {
-      inCalling = false;
-    });
+    await _dataChannel?.close();
+    await peerConnection?.close();
+    peerConnection = null;
+    RTCVideoRenderer val = localRenderer.value;
+    val.srcObject = null;
+    localRenderer.value = val;
   }
 
   sendCommand(String command, String typeCommand) {
@@ -417,10 +379,6 @@ class WebRTCConnection {
             RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       if (_dataChannel != null) {
-        print(".                                    .");
-        print(
-            "------------------------- \n $x   $y \n-------------------------");
-        print(".                                    .");
         if (_dataChannel != null) {
           String messageText = json.encode({
             "joystick_x": x,

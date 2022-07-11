@@ -35,7 +35,7 @@ class CenterPanel extends StatelessWidget {
               ? RoverOperationMap(
                   locationStream: locationStream,
                   piLitMarkers: piLitMarkers,
-                  roverMetrics: const [],
+                  selectedRoverMetrics: RoverMetrics(),
                 )
               : AspectRatio(
                   aspectRatio: 1,
