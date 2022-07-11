@@ -29,17 +29,11 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
-  Rx<bool> isConnectButtonEnabled = false.obs;
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
-
-  // selectedMarker() {
-  //   widget.selectedMarkerId
-  //       .listen((selectedMarkerId) => (selectedMarkerId != ""));
-  // }
 
   LocationData? _locationData;
   Location location = Location();
@@ -86,8 +80,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       }
     });
 
-    widget.selectedRoverId.listen((p0) => print(p0));
-
     setState(() {
       const String polygonIdVal = 'polygon_id_polygon_1';
       _polygons.add(Polygon(
@@ -128,9 +120,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       });
     });
 
-    widget.selectedMarkerId.listen((roverId) {
-      widget.selectedRoverController.setSelectedRoverId((roverId));
-    });
+    // widget.selectedMarkerId.listen((roverId) {
+    //   widget.selectedRoverController.setSelectedRoverId((roverId));
+    // });
   }
 
   @override
@@ -195,7 +187,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               onTap: () {
                 rover.status == RoverStatusType.unavailable
                     ? null
-                    : widget.selectedMarkerId.value = rover.roverId;
+                    :
+                // widget.selectedMarkerId.value = rover.roverId;
+                widget.selectedRoverController
+                    .setSelectedRoverId(rover.roverId);
               });
         })
       };
