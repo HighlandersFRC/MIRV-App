@@ -146,7 +146,7 @@ class WebRTCConnection {
           var request = http.Request(
             'POST',
             Uri.parse(
-                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+                '${mirvApi.ipAddress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
