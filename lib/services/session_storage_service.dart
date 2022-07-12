@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import 'package:test/models/auth/token_model.dart';
+import 'package:mirv/models/auth/token_model.dart';
 
 class SessionStorageService {
   static SessionStorageService? manager;

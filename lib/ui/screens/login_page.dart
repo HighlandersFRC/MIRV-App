@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/services/auth_service.dart';
-import 'package:test/ui/screens/home_page.dart';
+import 'package:mirv/services/auth_service.dart';
+import 'package:mirv/ui/screens/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();

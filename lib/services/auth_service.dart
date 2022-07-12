@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:test/constants/api_path.dart';
-import 'package:test/services/session_storage_service.dart';
+import 'package:mirv/constants/api_path.dart';
+import 'package:mirv/services/session_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
