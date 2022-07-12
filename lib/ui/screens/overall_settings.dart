@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);

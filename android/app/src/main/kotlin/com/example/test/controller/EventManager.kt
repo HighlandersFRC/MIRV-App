@@ -1,4 +1,4 @@
-package com.example.test.controller
+package com.neaera.mirv.controller
 
 import io.flutter.plugin.common.EventChannel
 

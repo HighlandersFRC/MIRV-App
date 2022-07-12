@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/gamepad/gamepad_axis_type.dart';
-import 'package:test/models/gamepad/gamepad_command_type.dart';
-import 'package:test/models/gamepad/gamepad_event_types.dart';
-import 'package:test/models/rover_control/rover_command.dart';
-import 'package:test/models/rover_control/rover_command_type.dart';
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/models/gamepad/gamepad_command_type.dart';
+import 'package:mirv/models/gamepad/gamepad_event_types.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class GamepadController {
-  static const eventChannel = EventChannel('com.example.test/gamepad_channel');
+  static const eventChannel = EventChannel('com.neaera.mirv/gamepad_channel');
   late StreamSubscription _eventChannel;
   Timer? controllerTimer;
   final RoverDriveControlType driveType;

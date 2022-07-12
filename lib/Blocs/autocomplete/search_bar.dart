@@ -5,11 +5,11 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:test/models/place.dart';
-import 'package:test/models/searchbox_places.dart';
-import 'package:test/services/geolocator_service.dart';
-import 'package:test/services/places_service.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
+import 'package:mirv/models/place.dart';
+import 'package:mirv/models/searchbox_places.dart';
+import 'package:mirv/services/geolocator_service.dart';
+import 'package:mirv/services/places_service.dart';
+import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 // ignore: must_be_immutable
 class SearchBar extends StatelessWidget {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:test/models/place.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
+import 'package:mirv/models/place.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;

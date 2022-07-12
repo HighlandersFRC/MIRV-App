@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/rover_metrics.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:http/http.dart' as http;
 
 class MirvApi {
   Timer? timer;
-  final String ipAdress = 'https://mirvcloudapi.azurewebsites.net';
+  final String ipAdress = 'http://52.185.111.58:8080';
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({Key? key}) : super(key: key);

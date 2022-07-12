@@ -1,8 +1,8 @@
-package com.example.test
+package com.neaera.mirv
 
 import android.view.KeyEvent
 import android.view.MotionEvent
-import com.example.test.controller.ExternalController
+import com.neaera.mirv.controller.ExternalController
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 

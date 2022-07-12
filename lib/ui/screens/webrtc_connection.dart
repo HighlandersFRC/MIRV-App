@@ -6,8 +6,8 @@ import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/home_page.dart';
+import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/home_page.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/Blocs/autocomplete/search_bar.dart';
-import 'package:test/models/place.dart';
-import 'package:test/models/rover_metrics.dart';
+import 'package:mirv/Blocs/autocomplete/search_bar.dart';
+import 'package:mirv/models/place.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:location/location.dart';
-import 'package:test/models/rover_status_type.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/rover_new_op_page.dart';
-import 'package:test/ui/screens/rover_selection_map.dart';
+import 'package:mirv/models/rover_status_type.dart';
+import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/rover_new_op_page.dart';
+import 'package:mirv/ui/screens/rover_selection_map.dart';
 
 class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;

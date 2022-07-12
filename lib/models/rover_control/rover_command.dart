@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test/models/rover_control/rover_command_type.dart';
+import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 part 'rover_command.freezed.dart';
 part 'rover_command.g.dart';

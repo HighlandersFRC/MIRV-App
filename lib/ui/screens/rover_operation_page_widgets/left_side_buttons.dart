@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
-import 'package:test/ui/screens/rover_new_op_page.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/ui/screens/rover_new_op_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;

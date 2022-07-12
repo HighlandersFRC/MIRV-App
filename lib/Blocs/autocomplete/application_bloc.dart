@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:test/models/searchbox_places.dart';
-import 'package:test/services/geolocator_service.dart';
+import 'package:mirv/models/searchbox_places.dart';
+import 'package:mirv/services/geolocator_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:test/services/places_service.dart';
-import 'package:test/services/marker_service.dart';
-import 'package:test/models/place.dart';
+import 'package:mirv/services/places_service.dart';
+import 'package:mirv/services/marker_service.dart';
+import 'package:mirv/models/place.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 

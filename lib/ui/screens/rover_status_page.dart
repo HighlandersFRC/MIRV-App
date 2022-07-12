@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:test/models/rover_health_type.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/troubleshoot_page.dart';
+import 'package:mirv/models/rover_health_type.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/troubleshoot_page.dart';
 
 class StatusPage extends StatefulWidget {
   const StatusPage({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({

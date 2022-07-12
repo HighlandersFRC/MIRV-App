@@ -1,4 +1,4 @@
-package com.example.test.controller
+package com.neaera.mirv.controller
 
 enum class ControllerKeysData {
     AXIS,

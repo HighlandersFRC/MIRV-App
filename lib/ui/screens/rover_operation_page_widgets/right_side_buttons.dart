@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
-import 'package:test/ui/screens/webrtc_connection.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
   const RightSideButtons(
@@ -53,8 +53,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
             onPressed: widget.makeCall,
             label: const Text('Connect To Rover'),
             icon: const Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
           ),
         ),
         const SizedBox(
@@ -66,8 +65,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
             child: const Text("Stop call"),
           ),
         ),
@@ -79,9 +77,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand);
+                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
               }),
         ),
         const SizedBox(
@@ -97,14 +93,11 @@ class _RightSideButtonsState extends State<RightSideButtons> {
               }),
         )),
         SizedBox(
-            child: (RoverStateType.remoteOperation ==
-                    RoverStateType.remoteOperation)
+            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
                 ? Joystick(
                     mode: joystickMode,
                     listener: (details) {
-                      widget.joystickPublish.value = ([
-                        JoystickValue(details.x, details.y, DateTime.now())
-                      ]);
+                      widget.joystickPublish.value = ([JoystickValue(details.x, details.y, DateTime.now())]);
                     },
                   )
                 : null),
@@ -126,12 +119,10 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                    side: const BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
                   ),
                 ),
-                shadowColor: MaterialStateProperty.all(
-                    const Color.fromARGB(0, 0, 0, 0))),
+                shadowColor: MaterialStateProperty.all(const Color.fromARGB(0, 0, 0, 0))),
           ),
         )
       ],
