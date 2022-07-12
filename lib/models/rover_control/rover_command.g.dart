@@ -6,19 +6,13 @@ part of 'rover_command.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GeneralRoverCommand _$$GeneralRoverCommandFromJson(
-        Map<String, dynamic> json) =>
-    _$GeneralRoverCommand(
+_$GeneralRoverCommand _$$GeneralRoverCommandFromJson(Map<String, dynamic> json) => _$GeneralRoverCommand(
       $enumDecode(_$RoverCommandTypeGeneralEnumMap, json['commandType']),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.general,
+      subsystem: $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ?? RoverSubsystemType.general,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$GeneralRoverCommandToJson(
-        _$GeneralRoverCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$GeneralRoverCommandToJson(_$GeneralRoverCommand instance) => <String, dynamic>{
       'commandType': _$RoverCommandTypeGeneralEnumMap[instance.commandType],
       'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
       'runtimeType': instance.$type,
@@ -43,18 +37,13 @@ const _$RoverSubsystemTypeEnumMap = {
   RoverSubsystemType.sensors: 'sensors',
 };
 
-_$IntakeRoverCommand _$$IntakeRoverCommandFromJson(Map<String, dynamic> json) =>
-    _$IntakeRoverCommand(
+_$IntakeRoverCommand _$$IntakeRoverCommandFromJson(Map<String, dynamic> json) => _$IntakeRoverCommand(
       $enumDecode(_$RoverCommandTypeIntakeEnumMap, json['commandType']),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.intake,
+      subsystem: $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ?? RoverSubsystemType.intake,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$IntakeRoverCommandToJson(
-        _$IntakeRoverCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$IntakeRoverCommandToJson(_$IntakeRoverCommand instance) => <String, dynamic>{
       'commandType': _$RoverCommandTypeIntakeEnumMap[instance.commandType],
       'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
       'runtimeType': instance.$type,
@@ -70,21 +59,15 @@ const _$RoverCommandTypeIntakeEnumMap = {
   RoverCommandTypeIntake.switch_right: 'switch_right',
 };
 
-_$DrivetrainRoverCommand _$$DrivetrainRoverCommandFromJson(
-        Map<String, dynamic> json) =>
-    _$DrivetrainRoverCommand(
+_$DrivetrainRoverCommand _$$DrivetrainRoverCommandFromJson(Map<String, dynamic> json) => _$DrivetrainRoverCommand(
       $enumDecode(_$RoverCommandTypeDrivetrainEnumMap, json['commandType']),
       (json['x'] as num).toDouble(),
       (json['y'] as num).toDouble(),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.drivetrain,
+      subsystem: $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ?? RoverSubsystemType.drivetrain,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$DrivetrainRoverCommandToJson(
-        _$DrivetrainRoverCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$DrivetrainRoverCommandToJson(_$DrivetrainRoverCommand instance) => <String, dynamic>{
       'commandType': _$RoverCommandTypeDrivetrainEnumMap[instance.commandType],
       'x': instance.x,
       'y': instance.y,

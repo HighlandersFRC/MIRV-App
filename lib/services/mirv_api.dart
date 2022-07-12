@@ -9,7 +9,7 @@ import 'package:test/services/session_storage_service.dart';
 
 class MirvApi {
   Timer? timer;
-  final String ipAdress = 'http://52.185.79.181:8080';
+  final String ipAddress = 'http://52.185.79.181:8080';
   SessionStorageService? _sessionStorageService;
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
@@ -29,7 +29,7 @@ class MirvApi {
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
     String? token = await _getCurrentAuthToken();
-    var response = await http.get(Uri.parse("$ipAdress/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
+    var response = await http.get(Uri.parse("$ipAddress/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
@@ -37,7 +37,7 @@ class MirvApi {
   Future<List<RoverMetrics>> getRovers() async {
     String? token = await _getCurrentAuthToken();
     List<RoverMetrics> rovers;
-    var response = await http.get(Uri.parse("$ipAdress/rovers"), headers: {'Authorization': 'Bearer $token'});
+    var response = await http.get(Uri.parse("$ipAddress/rovers"), headers: {'Authorization': 'Bearer $token'});
     rovers = (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
     return rovers;
   }
@@ -47,7 +47,7 @@ class MirvApi {
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
       'POST',
-      Uri.parse('$ipAdress/rovers/connect'),
+      Uri.parse('$ipAddress/rovers/connect'),
     );
     request.body = json.encode({
       "connection_id": "string",
