@@ -20,21 +20,17 @@ mixin _$RoverLocation {
   LatLng get location => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RoverLocationCopyWith<RoverLocation> get copyWith =>
-      throw _privateConstructorUsedError;
+  $RoverLocationCopyWith<RoverLocation> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverLocationCopyWith<$Res> {
-  factory $RoverLocationCopyWith(
-          RoverLocation value, $Res Function(RoverLocation) then) =
-      _$RoverLocationCopyWithImpl<$Res>;
+  factory $RoverLocationCopyWith(RoverLocation value, $Res Function(RoverLocation) then) = _$RoverLocationCopyWithImpl<$Res>;
   $Res call({String roverId, LatLng location});
 }
 
 /// @nodoc
-class _$RoverLocationCopyWithImpl<$Res>
-    implements $RoverLocationCopyWith<$Res> {
+class _$RoverLocationCopyWithImpl<$Res> implements $RoverLocationCopyWith<$Res> {
   _$RoverLocationCopyWithImpl(this._value, this._then);
 
   final RoverLocation _value;
@@ -60,21 +56,16 @@ class _$RoverLocationCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_RoverLocationCopyWith<$Res>
-    implements $RoverLocationCopyWith<$Res> {
-  factory _$$_RoverLocationCopyWith(
-          _$_RoverLocation value, $Res Function(_$_RoverLocation) then) =
+abstract class _$$_RoverLocationCopyWith<$Res> implements $RoverLocationCopyWith<$Res> {
+  factory _$$_RoverLocationCopyWith(_$_RoverLocation value, $Res Function(_$_RoverLocation) then) =
       __$$_RoverLocationCopyWithImpl<$Res>;
   @override
   $Res call({String roverId, LatLng location});
 }
 
 /// @nodoc
-class __$$_RoverLocationCopyWithImpl<$Res>
-    extends _$RoverLocationCopyWithImpl<$Res>
-    implements _$$_RoverLocationCopyWith<$Res> {
-  __$$_RoverLocationCopyWithImpl(
-      _$_RoverLocation _value, $Res Function(_$_RoverLocation) _then)
+class __$$_RoverLocationCopyWithImpl<$Res> extends _$RoverLocationCopyWithImpl<$Res> implements _$$_RoverLocationCopyWith<$Res> {
+  __$$_RoverLocationCopyWithImpl(_$_RoverLocation _value, $Res Function(_$_RoverLocation) _then)
       : super(_value, (v) => _then(v as _$_RoverLocation));
 
   @override
@@ -124,21 +115,16 @@ class _$_RoverLocation implements _RoverLocation {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(roverId),
-      const DeepCollectionEquality().hash(location));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(roverId), const DeepCollectionEquality().hash(location));
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverLocationCopyWith<_$_RoverLocation> get copyWith =>
-      __$$_RoverLocationCopyWithImpl<_$_RoverLocation>(this, _$identity);
+  _$$_RoverLocationCopyWith<_$_RoverLocation> get copyWith => __$$_RoverLocationCopyWithImpl<_$_RoverLocation>(this, _$identity);
 }
 
 abstract class _RoverLocation implements RoverLocation {
-  const factory _RoverLocation(
-      {final String roverId,
-      required final LatLng location}) = _$_RoverLocation;
+  const factory _RoverLocation({final String roverId, required final LatLng location}) = _$_RoverLocation;
 
   @override
   String get roverId => throw _privateConstructorUsedError;
@@ -146,6 +132,5 @@ abstract class _RoverLocation implements RoverLocation {
   LatLng get location => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverLocationCopyWith<_$_RoverLocation> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_RoverLocationCopyWith<_$_RoverLocation> get copyWith => throw _privateConstructorUsedError;
 }

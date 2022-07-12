@@ -154,25 +154,7 @@ class WebRTCConnection {
           try {
             var des = await peerConnection!.getLocalDescription();
 
-            var headers = {
-              'Content-Type': 'application/json',
-            };
-            var request = http.Request(
-              'POST',
-              Uri.parse('${mirvApi.ipAdress}/rovers/connect'),
-            );
-            request.body = json.encode({
-              "connection_id": "string",
-              "rover_id": roverId,
-              "offer": {
-                "sdp": des!.sdp,
-                "type": des.type,
-                "video_transform": transformType,
-              }
-            });
-            request.headers.addAll(headers);
-
-            http.StreamedResponse response = await request.send();
+            http.StreamedResponse response = await mirvApi.startRoverConnection(roverId, des);
 
             String data = "";
             if (response.statusCode == 200) {

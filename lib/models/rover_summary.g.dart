@@ -6,18 +6,14 @@ part of 'rover_summary.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RoverSummary _$$_RoverSummaryFromJson(Map<String, dynamic> json) =>
-    _$_RoverSummary(
+_$_RoverSummary _$$_RoverSummaryFromJson(Map<String, dynamic> json) => _$_RoverSummary(
       roverId: json['roverId'] as String? ?? "unknown",
-      state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
-          RoverStateType.remoteOperation,
-      status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
-          RoverStatusType.available,
+      state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ?? RoverStateType.remoteOperation,
+      status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ?? RoverStatusType.available,
       battery: json['battery'] as int? ?? -1,
     );
 
-Map<String, dynamic> _$$_RoverSummaryToJson(_$_RoverSummary instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$$_RoverSummaryToJson(_$_RoverSummary instance) => <String, dynamic>{
       'roverId': instance.roverId,
       'state': _$RoverStateTypeEnumMap[instance.state],
       'status': _$RoverStatusTypeEnumMap[instance.status],

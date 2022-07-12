@@ -6,14 +6,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_status_type.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class RoverSelectionMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;
   final Rx<String> selectedRoverId;
   final SelectedRoverController selectedRoverController;
+  Rx<String> selectedMarkerId = "".obs;
 
-  const RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
+  RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
 
   @override
   State<RoverSelectionMap> createState() => _RoverSelectionMapState();
@@ -22,6 +24,8 @@ class RoverSelectionMap extends StatefulWidget {
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
   Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
+  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
+  Rx<String> selectedRoverId = "".obs;
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
@@ -70,8 +74,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       }
     });
 
-    widget.selectedRoverId.listen((p0) => print(p0));
-
     setState(() {
       const String polygonIdVal = 'polygon_id_polygon_1';
       _polygons.add(Polygon(
@@ -109,6 +111,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         }
       });
     });
+
+    // widget.selectedMarkerId.listen((roverId) {
+    //   widget.selectedRoverController.setSelectedRoverId((roverId));
+    // });
   }
 
   @override
@@ -142,7 +148,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         onMapCreated: (GoogleMapController controller) {
           _mapController = controller;
         },
-        // markers: Set<Marker>.of(applicationBloc.markers),
       ),
     );
   }
@@ -157,26 +162,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   }
 
   Set<Marker> getMarkers() {
-    //markers to place on map
     setState(() {
       markers = {
         ...widget.roverMetrics.map((rover) {
           return Marker(
-              //add first marker
               markerId: MarkerId(rover.roverId),
-              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long), //position of marker
+              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
               infoWindow: InfoWindow(
-                //popup info
                 title: rover.roverId,
-                snippet: 'My Custom Subtitle',
               ),
               icon: mapMarker,
-              onTap: () async {
-                _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                    target: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
-                    zoom: await _mapController!.getZoomLevel())));
+              onTap: () {
+                rover.status == RoverStatusType.unavailable
+                    ? null
+                    :
+                    // widget.selectedMarkerId.value = rover.roverId;
+                    widget.selectedRoverController.setSelectedRoverId(rover.roverId);
               });
-          //add more markers here
         })
       };
     });
