@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Settings'),
               leading: const Icon(Icons.settings),
               onTap: () {
-                Get.to(const SettingsPage());
+                Get.to(SettingsPage());
               }),
           ListTile(
               title: const Text('About'),

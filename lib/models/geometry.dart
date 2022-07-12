@@ -6,10 +6,9 @@ class Geometry {
 
   Geometry({required this.location});
 
-  Geometry.fromJson(Map<dynamic, dynamic> parsedJson)
-      : location = LocationObject.fromJson(parsedJson['location']);
-  
-  LatLng getLatLng () {
+  Geometry.fromJson(Map<dynamic, dynamic> parsedJson) : location = LocationObject.fromJson(parsedJson['location']);
+
+  LatLng getLatLng() {
     return LatLng(location.lat, location.lng);
   }
 }

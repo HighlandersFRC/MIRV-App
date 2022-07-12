@@ -21,28 +21,19 @@ RoverSummary _$RoverSummaryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$RoverSummary {
   String get roverId => throw _privateConstructorUsedError;
-  RoverStateType get state =>
-      throw _privateConstructorUsedError; //RoverStateType
-  RoverStatusType get status =>
-      throw _privateConstructorUsedError; //RoverStatusType
+  RoverStateType get state => throw _privateConstructorUsedError; //RoverStateType
+  RoverStatusType get status => throw _privateConstructorUsedError; //RoverStatusType
   int get battery => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverSummaryCopyWith<RoverSummary> get copyWith =>
-      throw _privateConstructorUsedError;
+  $RoverSummaryCopyWith<RoverSummary> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverSummaryCopyWith<$Res> {
-  factory $RoverSummaryCopyWith(
-          RoverSummary value, $Res Function(RoverSummary) then) =
-      _$RoverSummaryCopyWithImpl<$Res>;
-  $Res call(
-      {String roverId,
-      RoverStateType state,
-      RoverStatusType status,
-      int battery});
+  factory $RoverSummaryCopyWith(RoverSummary value, $Res Function(RoverSummary) then) = _$RoverSummaryCopyWithImpl<$Res>;
+  $Res call({String roverId, RoverStateType state, RoverStatusType status, int battery});
 }
 
 /// @nodoc
@@ -82,25 +73,16 @@ class _$RoverSummaryCopyWithImpl<$Res> implements $RoverSummaryCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_RoverSummaryCopyWith<$Res>
-    implements $RoverSummaryCopyWith<$Res> {
-  factory _$$_RoverSummaryCopyWith(
-          _$_RoverSummary value, $Res Function(_$_RoverSummary) then) =
+abstract class _$$_RoverSummaryCopyWith<$Res> implements $RoverSummaryCopyWith<$Res> {
+  factory _$$_RoverSummaryCopyWith(_$_RoverSummary value, $Res Function(_$_RoverSummary) then) =
       __$$_RoverSummaryCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String roverId,
-      RoverStateType state,
-      RoverStatusType status,
-      int battery});
+  $Res call({String roverId, RoverStateType state, RoverStatusType status, int battery});
 }
 
 /// @nodoc
-class __$$_RoverSummaryCopyWithImpl<$Res>
-    extends _$RoverSummaryCopyWithImpl<$Res>
-    implements _$$_RoverSummaryCopyWith<$Res> {
-  __$$_RoverSummaryCopyWithImpl(
-      _$_RoverSummary _value, $Res Function(_$_RoverSummary) _then)
+class __$$_RoverSummaryCopyWithImpl<$Res> extends _$RoverSummaryCopyWithImpl<$Res> implements _$$_RoverSummaryCopyWith<$Res> {
+  __$$_RoverSummaryCopyWithImpl(_$_RoverSummary _value, $Res Function(_$_RoverSummary) _then)
       : super(_value, (v) => _then(v as _$_RoverSummary));
 
   @override
@@ -143,8 +125,7 @@ class _$_RoverSummary implements _RoverSummary {
       this.status = RoverStatusType.available,
       this.battery = -1});
 
-  factory _$_RoverSummary.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverSummaryFromJson(json);
+  factory _$_RoverSummary.fromJson(Map<String, dynamic> json) => _$$_RoverSummaryFromJson(json);
 
   @override
   @JsonKey()
@@ -188,8 +169,7 @@ class _$_RoverSummary implements _RoverSummary {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverSummaryCopyWith<_$_RoverSummary> get copyWith =>
-      __$$_RoverSummaryCopyWithImpl<_$_RoverSummary>(this, _$identity);
+  _$$_RoverSummaryCopyWith<_$_RoverSummary> get copyWith => __$$_RoverSummaryCopyWithImpl<_$_RoverSummary>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -199,13 +179,9 @@ class _$_RoverSummary implements _RoverSummary {
 
 abstract class _RoverSummary implements RoverSummary {
   const factory _RoverSummary(
-      {final String roverId,
-      final RoverStateType state,
-      final RoverStatusType status,
-      final int battery}) = _$_RoverSummary;
+      {final String roverId, final RoverStateType state, final RoverStatusType status, final int battery}) = _$_RoverSummary;
 
-  factory _RoverSummary.fromJson(Map<String, dynamic> json) =
-      _$_RoverSummary.fromJson;
+  factory _RoverSummary.fromJson(Map<String, dynamic> json) = _$_RoverSummary.fromJson;
 
   @override
   String get roverId => throw _privateConstructorUsedError;
@@ -217,6 +193,5 @@ abstract class _RoverSummary implements RoverSummary {
   int get battery => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverSummaryCopyWith<_$_RoverSummary> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_RoverSummaryCopyWith<_$_RoverSummary> get copyWith => throw _privateConstructorUsedError;
 }

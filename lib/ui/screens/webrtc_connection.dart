@@ -159,7 +159,7 @@ class WebRTCConnection {
             };
             var request = http.Request(
               'POST',
-              Uri.parse('${mirvApi.ipAdress}/rovers/connect'),
+              Uri.parse('${mirvApi.ipAddress}/rovers/connect'),
             );
             request.body = json.encode({
               "connection_id": "string",

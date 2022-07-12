@@ -24,8 +24,7 @@ RoverCommand _$RoverCommandFromJson(Map<String, dynamic> json) {
       return DrivetrainRoverCommand.fromJson(json);
 
     default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'RoverCommand',
-          'Invalid union type "${json['runtimeType']}"!');
+      throw CheckedFromJsonException(json, 'runtimeType', 'RoverCommand', 'Invalid union type "${json['runtimeType']}"!');
   }
 }
 
@@ -34,41 +33,24 @@ mixin _$RoverCommand {
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)
-        generalCommand,
-    required TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)
-        intakeCommand,
-    required TResult Function(RoverCommandTypeDrivetrain commandType, double x,
-            double y, RoverSubsystemType subsystem)
+    required TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem) generalCommand,
+    required TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem) intakeCommand,
+    required TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)
         drivetrainCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -96,15 +78,12 @@ mixin _$RoverCommand {
       throw _privateConstructorUsedError;
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverCommandCopyWith<RoverCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $RoverCommandCopyWith<RoverCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverCommandCopyWith<$Res> {
-  factory $RoverCommandCopyWith(
-          RoverCommand value, $Res Function(RoverCommand) then) =
-      _$RoverCommandCopyWithImpl<$Res>;
+  factory $RoverCommandCopyWith(RoverCommand value, $Res Function(RoverCommand) then) = _$RoverCommandCopyWithImpl<$Res>;
   $Res call({RoverSubsystemType subsystem});
 }
 
@@ -130,22 +109,17 @@ class _$RoverCommandCopyWithImpl<$Res> implements $RoverCommandCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$GeneralRoverCommandCopyWith<$Res>
-    implements $RoverCommandCopyWith<$Res> {
-  factory _$$GeneralRoverCommandCopyWith(_$GeneralRoverCommand value,
-          $Res Function(_$GeneralRoverCommand) then) =
+abstract class _$$GeneralRoverCommandCopyWith<$Res> implements $RoverCommandCopyWith<$Res> {
+  factory _$$GeneralRoverCommandCopyWith(_$GeneralRoverCommand value, $Res Function(_$GeneralRoverCommand) then) =
       __$$GeneralRoverCommandCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem});
+  $Res call({RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem});
 }
 
 /// @nodoc
-class __$$GeneralRoverCommandCopyWithImpl<$Res>
-    extends _$RoverCommandCopyWithImpl<$Res>
+class __$$GeneralRoverCommandCopyWithImpl<$Res> extends _$RoverCommandCopyWithImpl<$Res>
     implements _$$GeneralRoverCommandCopyWith<$Res> {
-  __$$GeneralRoverCommandCopyWithImpl(
-      _$GeneralRoverCommand _value, $Res Function(_$GeneralRoverCommand) _then)
+  __$$GeneralRoverCommandCopyWithImpl(_$GeneralRoverCommand _value, $Res Function(_$GeneralRoverCommand) _then)
       : super(_value, (v) => _then(v as _$GeneralRoverCommand));
 
   @override
@@ -172,12 +146,10 @@ class __$$GeneralRoverCommandCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GeneralRoverCommand implements GeneralRoverCommand {
-  const _$GeneralRoverCommand(this.commandType,
-      {this.subsystem = RoverSubsystemType.general, final String? $type})
+  const _$GeneralRoverCommand(this.commandType, {this.subsystem = RoverSubsystemType.general, final String? $type})
       : $type = $type ?? 'generalCommand';
 
-  factory _$GeneralRoverCommand.fromJson(Map<String, dynamic> json) =>
-      _$$GeneralRoverCommandFromJson(json);
+  factory _$GeneralRoverCommand.fromJson(Map<String, dynamic> json) => _$$GeneralRoverCommandFromJson(json);
 
   @override
   final RoverCommandTypeGeneral commandType;
@@ -198,35 +170,26 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeneralRoverCommand &&
-            const DeepCollectionEquality()
-                .equals(other.commandType, commandType) &&
+            const DeepCollectionEquality().equals(other.commandType, commandType) &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(commandType),
-      const DeepCollectionEquality().hash(subsystem));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(commandType), const DeepCollectionEquality().hash(subsystem));
 
   @JsonKey(ignore: true)
   @override
   _$$GeneralRoverCommandCopyWith<_$GeneralRoverCommand> get copyWith =>
-      __$$GeneralRoverCommandCopyWithImpl<_$GeneralRoverCommand>(
-          this, _$identity);
+      __$$GeneralRoverCommandCopyWithImpl<_$GeneralRoverCommand>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)
-        generalCommand,
-    required TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)
-        intakeCommand,
-    required TResult Function(RoverCommandTypeDrivetrain commandType, double x,
-            double y, RoverSubsystemType subsystem)
+    required TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem) generalCommand,
+    required TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem) intakeCommand,
+    required TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)
         drivetrainCommand,
   }) {
     return generalCommand(commandType, subsystem);
@@ -235,15 +198,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
   }) {
     return generalCommand?.call(commandType, subsystem);
   }
@@ -251,15 +208,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
     required TResult orElse(),
   }) {
     if (generalCommand != null) {
@@ -309,37 +260,31 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
 }
 
 abstract class GeneralRoverCommand implements RoverCommand {
-  const factory GeneralRoverCommand(final RoverCommandTypeGeneral commandType,
-      {final RoverSubsystemType subsystem}) = _$GeneralRoverCommand;
+  const factory GeneralRoverCommand(final RoverCommandTypeGeneral commandType, {final RoverSubsystemType subsystem}) =
+      _$GeneralRoverCommand;
 
-  factory GeneralRoverCommand.fromJson(Map<String, dynamic> json) =
-      _$GeneralRoverCommand.fromJson;
+  factory GeneralRoverCommand.fromJson(Map<String, dynamic> json) = _$GeneralRoverCommand.fromJson;
 
   RoverCommandTypeGeneral get commandType => throw _privateConstructorUsedError;
   @override
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$GeneralRoverCommandCopyWith<_$GeneralRoverCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$GeneralRoverCommandCopyWith<_$GeneralRoverCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$IntakeRoverCommandCopyWith<$Res>
-    implements $RoverCommandCopyWith<$Res> {
-  factory _$$IntakeRoverCommandCopyWith(_$IntakeRoverCommand value,
-          $Res Function(_$IntakeRoverCommand) then) =
+abstract class _$$IntakeRoverCommandCopyWith<$Res> implements $RoverCommandCopyWith<$Res> {
+  factory _$$IntakeRoverCommandCopyWith(_$IntakeRoverCommand value, $Res Function(_$IntakeRoverCommand) then) =
       __$$IntakeRoverCommandCopyWithImpl<$Res>;
   @override
   $Res call({RoverCommandTypeIntake commandType, RoverSubsystemType subsystem});
 }
 
 /// @nodoc
-class __$$IntakeRoverCommandCopyWithImpl<$Res>
-    extends _$RoverCommandCopyWithImpl<$Res>
+class __$$IntakeRoverCommandCopyWithImpl<$Res> extends _$RoverCommandCopyWithImpl<$Res>
     implements _$$IntakeRoverCommandCopyWith<$Res> {
-  __$$IntakeRoverCommandCopyWithImpl(
-      _$IntakeRoverCommand _value, $Res Function(_$IntakeRoverCommand) _then)
+  __$$IntakeRoverCommandCopyWithImpl(_$IntakeRoverCommand _value, $Res Function(_$IntakeRoverCommand) _then)
       : super(_value, (v) => _then(v as _$IntakeRoverCommand));
 
   @override
@@ -366,12 +311,10 @@ class __$$IntakeRoverCommandCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$IntakeRoverCommand implements IntakeRoverCommand {
-  const _$IntakeRoverCommand(this.commandType,
-      {this.subsystem = RoverSubsystemType.intake, final String? $type})
+  const _$IntakeRoverCommand(this.commandType, {this.subsystem = RoverSubsystemType.intake, final String? $type})
       : $type = $type ?? 'intakeCommand';
 
-  factory _$IntakeRoverCommand.fromJson(Map<String, dynamic> json) =>
-      _$$IntakeRoverCommandFromJson(json);
+  factory _$IntakeRoverCommand.fromJson(Map<String, dynamic> json) => _$$IntakeRoverCommandFromJson(json);
 
   @override
   final RoverCommandTypeIntake commandType;
@@ -392,35 +335,26 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$IntakeRoverCommand &&
-            const DeepCollectionEquality()
-                .equals(other.commandType, commandType) &&
+            const DeepCollectionEquality().equals(other.commandType, commandType) &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(commandType),
-      const DeepCollectionEquality().hash(subsystem));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(commandType), const DeepCollectionEquality().hash(subsystem));
 
   @JsonKey(ignore: true)
   @override
   _$$IntakeRoverCommandCopyWith<_$IntakeRoverCommand> get copyWith =>
-      __$$IntakeRoverCommandCopyWithImpl<_$IntakeRoverCommand>(
-          this, _$identity);
+      __$$IntakeRoverCommandCopyWithImpl<_$IntakeRoverCommand>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)
-        generalCommand,
-    required TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)
-        intakeCommand,
-    required TResult Function(RoverCommandTypeDrivetrain commandType, double x,
-            double y, RoverSubsystemType subsystem)
+    required TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem) generalCommand,
+    required TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem) intakeCommand,
+    required TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)
         drivetrainCommand,
   }) {
     return intakeCommand(commandType, subsystem);
@@ -429,15 +363,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
   }) {
     return intakeCommand?.call(commandType, subsystem);
   }
@@ -445,15 +373,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
     required TResult orElse(),
   }) {
     if (intakeCommand != null) {
@@ -503,46 +425,35 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
 }
 
 abstract class IntakeRoverCommand implements RoverCommand {
-  const factory IntakeRoverCommand(final RoverCommandTypeIntake commandType,
-      {final RoverSubsystemType subsystem}) = _$IntakeRoverCommand;
+  const factory IntakeRoverCommand(final RoverCommandTypeIntake commandType, {final RoverSubsystemType subsystem}) =
+      _$IntakeRoverCommand;
 
-  factory IntakeRoverCommand.fromJson(Map<String, dynamic> json) =
-      _$IntakeRoverCommand.fromJson;
+  factory IntakeRoverCommand.fromJson(Map<String, dynamic> json) = _$IntakeRoverCommand.fromJson;
 
   RoverCommandTypeIntake get commandType => throw _privateConstructorUsedError;
   @override
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$IntakeRoverCommandCopyWith<_$IntakeRoverCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$IntakeRoverCommandCopyWith<_$IntakeRoverCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DrivetrainRoverCommandCopyWith<$Res>
-    implements $RoverCommandCopyWith<$Res> {
-  factory _$$DrivetrainRoverCommandCopyWith(_$DrivetrainRoverCommand value,
-          $Res Function(_$DrivetrainRoverCommand) then) =
+abstract class _$$DrivetrainRoverCommandCopyWith<$Res> implements $RoverCommandCopyWith<$Res> {
+  factory _$$DrivetrainRoverCommandCopyWith(_$DrivetrainRoverCommand value, $Res Function(_$DrivetrainRoverCommand) then) =
       __$$DrivetrainRoverCommandCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {RoverCommandTypeDrivetrain commandType,
-      double x,
-      double y,
-      RoverSubsystemType subsystem});
+  $Res call({RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem});
 }
 
 /// @nodoc
-class __$$DrivetrainRoverCommandCopyWithImpl<$Res>
-    extends _$RoverCommandCopyWithImpl<$Res>
+class __$$DrivetrainRoverCommandCopyWithImpl<$Res> extends _$RoverCommandCopyWithImpl<$Res>
     implements _$$DrivetrainRoverCommandCopyWith<$Res> {
-  __$$DrivetrainRoverCommandCopyWithImpl(_$DrivetrainRoverCommand _value,
-      $Res Function(_$DrivetrainRoverCommand) _then)
+  __$$DrivetrainRoverCommandCopyWithImpl(_$DrivetrainRoverCommand _value, $Res Function(_$DrivetrainRoverCommand) _then)
       : super(_value, (v) => _then(v as _$DrivetrainRoverCommand));
 
   @override
-  _$DrivetrainRoverCommand get _value =>
-      super._value as _$DrivetrainRoverCommand;
+  _$DrivetrainRoverCommand get _value => super._value as _$DrivetrainRoverCommand;
 
   @override
   $Res call({
@@ -579,8 +490,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
       {this.subsystem = RoverSubsystemType.drivetrain, final String? $type})
       : $type = $type ?? 'drivetrainCommand';
 
-  factory _$DrivetrainRoverCommand.fromJson(Map<String, dynamic> json) =>
-      _$$DrivetrainRoverCommandFromJson(json);
+  factory _$DrivetrainRoverCommand.fromJson(Map<String, dynamic> json) => _$$DrivetrainRoverCommandFromJson(json);
 
   @override
   final RoverCommandTypeDrivetrain commandType;
@@ -605,8 +515,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DrivetrainRoverCommand &&
-            const DeepCollectionEquality()
-                .equals(other.commandType, commandType) &&
+            const DeepCollectionEquality().equals(other.commandType, commandType) &&
             const DeepCollectionEquality().equals(other.x, x) &&
             const DeepCollectionEquality().equals(other.y, y) &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem));
@@ -624,20 +533,14 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @JsonKey(ignore: true)
   @override
   _$$DrivetrainRoverCommandCopyWith<_$DrivetrainRoverCommand> get copyWith =>
-      __$$DrivetrainRoverCommandCopyWithImpl<_$DrivetrainRoverCommand>(
-          this, _$identity);
+      __$$DrivetrainRoverCommandCopyWithImpl<_$DrivetrainRoverCommand>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)
-        generalCommand,
-    required TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)
-        intakeCommand,
-    required TResult Function(RoverCommandTypeDrivetrain commandType, double x,
-            double y, RoverSubsystemType subsystem)
+    required TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem) generalCommand,
+    required TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem) intakeCommand,
+    required TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)
         drivetrainCommand,
   }) {
     return drivetrainCommand(commandType, x, y, subsystem);
@@ -646,15 +549,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
   }) {
     return drivetrainCommand?.call(commandType, x, y, subsystem);
   }
@@ -662,15 +559,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)?
-        generalCommand,
-    TResult Function(
-            RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)?
-        intakeCommand,
-    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y,
-            RoverSubsystemType subsystem)?
-        drivetrainCommand,
+    TResult Function(RoverCommandTypeGeneral commandType, RoverSubsystemType subsystem)? generalCommand,
+    TResult Function(RoverCommandTypeIntake commandType, RoverSubsystemType subsystem)? intakeCommand,
+    TResult Function(RoverCommandTypeDrivetrain commandType, double x, double y, RoverSubsystemType subsystem)? drivetrainCommand,
     required TResult orElse(),
   }) {
     if (drivetrainCommand != null) {
@@ -720,23 +611,17 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
 }
 
 abstract class DrivetrainRoverCommand implements RoverCommand {
-  const factory DrivetrainRoverCommand(
-      final RoverCommandTypeDrivetrain commandType,
-      final double x,
-      final double y,
+  const factory DrivetrainRoverCommand(final RoverCommandTypeDrivetrain commandType, final double x, final double y,
       {final RoverSubsystemType subsystem}) = _$DrivetrainRoverCommand;
 
-  factory DrivetrainRoverCommand.fromJson(Map<String, dynamic> json) =
-      _$DrivetrainRoverCommand.fromJson;
+  factory DrivetrainRoverCommand.fromJson(Map<String, dynamic> json) = _$DrivetrainRoverCommand.fromJson;
 
-  RoverCommandTypeDrivetrain get commandType =>
-      throw _privateConstructorUsedError;
+  RoverCommandTypeDrivetrain get commandType => throw _privateConstructorUsedError;
   double get x => throw _privateConstructorUsedError;
   double get y => throw _privateConstructorUsedError;
   @override
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$DrivetrainRoverCommandCopyWith<_$DrivetrainRoverCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DrivetrainRoverCommandCopyWith<_$DrivetrainRoverCommand> get copyWith => throw _privateConstructorUsedError;
 }
