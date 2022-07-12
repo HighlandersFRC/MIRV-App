@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:test/services/mirv_api.dart';
+import 'package:test/ui/screens/home_page.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 
 class JoystickValue extends Observable {
   final double x;
@@ -19,9 +22,12 @@ class JoystickValue extends Observable {
 class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
-  RTCPeerConnection? _peerConnection;
-  get_pkg.Rx<RTCVideoRenderer> localRenderer =
-      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  RTCPeerConnection? peerConnection;
+  get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
+
+  get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState = get_pkg.Rx<RTCPeerConnectionState?>(null);
+
+  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -32,11 +38,9 @@ class WebRTCConnection {
 
   // MediaStream? _localStream;
   bool inCalling = false;
-  bool isWorking = true;
-  DateTime? _timeStart;
   double prevX = 0;
   double prevY = 0;
-  bool loading = false;
+  get_pkg.Rx<bool> loading = false.obs;
 
   DateTime lastSendTime = DateTime.now();
 
@@ -46,30 +50,33 @@ class WebRTCConnection {
 
   final joystickPublish = <JoystickValue>[].obs;
 
+  int GATHERING_RETRY_THRESHOLD = 90; //seconds
+
   WebRTCConnection() {
     init();
+    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      peerConnectionState.value = peerConnection?.connectionState;
+    });
   }
 
   Future<void> init() async {
     RTCVideoRenderer val = localRenderer.value;
     await val.initialize();
     localRenderer.value = val;
-    // await makeCall();
-    // await startJoystickUpdates();
   }
 
   void setStateInFunction({required Function function}) {
     function;
   }
 
-  void toggleCamera() async {
-    if (_localStream == null) throw Exception('Stream is not initialized');
+  // void toggleCamera() async {
+  //   if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
-    await Helper.switchCamera(videoTrack);
-  }
+  //   final videoTrack = _localStream!
+  //       .getVideoTracks()
+  //       .firstWhere((track) => track.kind == 'video');
+  //   await Helper.switchCamera(videoTrack);
+  // }
 
   final Map<String, dynamic> offerSdpConstraints = {
     "mandatory": {
@@ -86,7 +93,6 @@ class WebRTCConnection {
     // or alternatively:
     dataChannel.messageStream.listen((message) {
       if (message.type == MessageType.text) {
-        print(message.text);
       } else {
         // do something with message.binary
       }
@@ -120,137 +126,207 @@ class WebRTCConnection {
     }
   }
 
-  Future<bool> _waitForGatheringComplete(_) async {
-    print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+  Future<bool> _waitForGatheringComplete(int count) async {
+    if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
+    } else if (count >= GATHERING_RETRY_THRESHOLD) {
+      return false;
     } else {
+      count++;
       await Future.delayed(Duration(seconds: 1));
-      return await _waitForGatheringComplete(_);
+      return await _waitForGatheringComplete(count);
     }
   }
 
   Future<void> _negotiateRemoteConnection(String roverId) async {
-    return _peerConnection!
+    return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
-          return _peerConnection!.setLocalDescription(offer);
+          return peerConnection!.setLocalDescription(offer);
         })
-        .then(_waitForGatheringComplete)
-        .then((_) async {
-          var des = await _peerConnection!.getLocalDescription();
-          var headers = {
-            'Content-Type': 'application/json',
-          };
-          var request = http.Request(
-            'POST',
-            Uri.parse(
-                '${mirvApi.ipAdress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
-          );
-          request.body = json.encode({
-            "connection_id": "string",
-            "rover_id": "rover_42",
-            "offer": {
-              "sdp": des!.sdp,
-              "type": des.type,
-              "video_transform": transformType,
-            }
-          });
-          request.headers.addAll(headers);
+        .then((_) => _waitForGatheringComplete(0))
+        .then((success) async {
+          if (!success) {
+            await stopCall();
+            return _showReconnectDialog('Connection timed out', roverId);
+          }
 
-          http.StreamedResponse response = await request.send();
+          try {
+            var des = await peerConnection!.getLocalDescription();
 
-          String data = "";
-          if (response.statusCode == 200) {
-            data = await response.stream.bytesToString();
-            print(data);
-            var dataMap = json.decode(data);
-            var answerMap = json.decode(dataMap["answer"]);
-            await _peerConnection!.setRemoteDescription(
-              RTCSessionDescription(
-                answerMap["sdp"],
-                answerMap["type"],
-              ),
+            var headers = {
+              'Content-Type': 'application/json',
+            };
+            var request = http.Request(
+              'POST',
+              Uri.parse('${mirvApi.ipAdress}/rovers/connect'),
             );
-          } else {
-            print(response.reasonPhrase);
-            isWorking = false;
-            print(
-                "------------------------------------------------------------- \n Uh Oh! something went wrong and you couldn't connect to the rover! \n ------------------------------------------------------------");
+            request.body = json.encode({
+              "connection_id": "string",
+              "rover_id": roverId,
+              "offer": {
+                "sdp": des!.sdp,
+                "type": des.type,
+                "video_transform": transformType,
+              }
+            });
+            request.headers.addAll(headers);
+
+            http.StreamedResponse response = await request.send();
+
+            String data = "";
+            if (response.statusCode == 200) {
+              data = await response.stream.bytesToString();
+
+              var dataMap = json.decode(data);
+              var answerMap = json.decode(dataMap["answer"]);
+              await peerConnection!.setRemoteDescription(
+                RTCSessionDescription(
+                  answerMap["sdp"],
+                  answerMap["type"],
+                ),
+              );
+
+              loading.value = false;
+            } else {
+              _showReconnectDialog('Failed to comunicate with rover', roverId);
+            }
+          } catch (e) {
+            stopCall();
+            _showReconnectDialog('$e', roverId);
           }
         });
   }
+
+  _showReconnectDialog(
+    String error,
+    String roverId,
+  ) {
+    get_pkg.Get.dialog(AlertDialog(
+      title: const Text('Failed Connection'),
+      content: Text('$error'),
+      actions: <Widget>[
+        TextButton(
+            onPressed: () {
+              makeCall(roverId);
+              get_pkg.Get.back();
+            },
+            child: Text('Reconnect?')),
+        TextButton(
+            onPressed: () {
+              get_pkg.Get.back();
+              get_pkg.Get.offAll(HomePage());
+            },
+            child: Text('Home page'))
+      ],
+    ));
+  }
+
 //public Commands
+  notificationsFromWebRTC(String roverId, context, Function() makeCallReconnect) {
+    peerConnectionState.listen((cs) {
+      switch (cs) {
+        case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
+        case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
+        case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+          stopCall();
+          _showReconnectDialog('Connection Failed', roverId);
+          break;
+        case RTCPeerConnectionState.RTCPeerConnectionStateNew:
+        case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
+          Fluttertoast.showToast(
+            msg: "Connected",
+          );
+          break;
+        case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
+          Fluttertoast.showToast(
+            msg: "Connecting",
+          );
+          break;
+        case null:
+          //most times this case is here when loading or connecting
+          break;
+      }
+    });
+
+    switch (dataChannelState.value) {
+      case RTCDataChannelState.RTCDataChannelClosing:
+      case RTCDataChannelState.RTCDataChannelClosed:
+        _showReconnectDialog('Connection Failed', roverId);
+        break;
+      case RTCDataChannelState.RTCDataChannelConnecting:
+        return Fluttertoast.showToast(
+          msg: "Connection",
+        );
+
+      case RTCDataChannelState.RTCDataChannelOpen:
+        return Fluttertoast.showToast(
+          msg: "Connected",
+        );
+      case null:
+        break;
+    }
+  }
 
   Future<void> makeCall(String roverId) async {
-    setStateInFunction(function: () {
-      loading = true;
-    });
-    var configuration = <String, dynamic>{
-      'sdpSemantics': 'unified-plan',
-      "iceServers": [
-        {"url": "stun:stun.l.google.com:19302"},
-      ]
-    };
-    //* Create Peer Connection
-    if (_peerConnection != null) return;
-    _peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
-
-    _peerConnection!.onTrack = _onTrack;
-    _peerConnection!.onDataChannel = _onDataChannel;
-    //* Create Data Channel
-    _dataChannelDict = RTCDataChannelInit();
-    _dataChannelDict!.ordered = true;
-    _dataChannel = await _peerConnection!.createDataChannel(
-      "RoverStatus",
-      _dataChannelDict!,
-    );
-    _dataChannel!.onDataChannelState = _onDataChannelState;
-    final mediaConstraints = <String, dynamic>{
-      'audio': false,
-      'video': {
-        // 'facingMode': 'user',
-        'facingMode': 'environment',
-        'optional': [],
-      }
-    };
     try {
+      loading.value = true;
+      var configuration = <String, dynamic>{
+        'sdpSemantics': 'unified-plan',
+        "iceServers": [
+          {"url": "stun:stun.l.google.com:19302"},
+        ]
+      };
+      //* Create Peer Connection
+      if (peerConnection != null) return;
+      peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
+      peerConnection!.onTrack = _onTrack;
+      peerConnection!.onDataChannel = _onDataChannel;
+      //* Create Data Channel
+      _dataChannelDict = RTCDataChannelInit();
+      _dataChannelDict!.ordered = true;
+      _dataChannel = await peerConnection!.createDataChannel(
+        "RoverStatus",
+        _dataChannelDict!,
+      );
+      _dataChannel!.onDataChannelState = _onDataChannelState;
+      final mediaConstraints = <String, dynamic>{
+        'audio': false,
+        'video': {
+          // 'facingMode': 'user',
+          'facingMode': 'environment',
+          'optional': [],
+        }
+      };
+
       var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
       // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
       _localStream = stream;
       // localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
-        _peerConnection!.addTrack(element, stream);
+        peerConnection!.addTrack(element, stream);
       });
       await _negotiateRemoteConnection(roverId);
     } catch (e) {
-      print(e.toString());
+      _showReconnectDialog(e.toString(), roverId);
     }
   }
 
   Future<void> stopCall() async {
-    try {
-      await _dataChannel?.close();
-      await _peerConnection?.close();
-      _peerConnection = null;
-      RTCVideoRenderer val = localRenderer.value;
-      val.srcObject = null;
-      localRenderer.value = val;
-    } catch (e) {
-      print(e.toString());
-    }
-    setStateInFunction(function: () {
-      inCalling = false;
-    });
+    await _dataChannel?.close();
+    await peerConnection?.close();
+    peerConnection = null;
+    RTCVideoRenderer val = localRenderer.value;
+    val.srcObject = null;
+    localRenderer.value = val;
   }
 
   sendCommand(String command, String typeCommand) {
-    if (_dataChannel != null) {
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       String messageText = json.encode({
-        typeCommand: command,
+        "$typeCommand": command,
       });
       _dataChannel!.send(RTCDataChannelMessage(messageText));
     }
@@ -273,9 +349,7 @@ class WebRTCConnection {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(const Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
+        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);
@@ -292,12 +366,17 @@ class WebRTCConnection {
   }
 
   sendJoystick(double x, double y) {
-    if (_dataChannel != null) {
-      String messageText = json.encode({
-        "joystick_x": x,
-        "joystick_y": y,
-      });
-      _dataChannel!.send(RTCDataChannelMessage(messageText));
+    if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
+        _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
+      if (_dataChannel != null) {
+        if (_dataChannel != null) {
+          String messageText = json.encode({
+            "joystick_x": x,
+            "joystick_y": y,
+          });
+          _dataChannel!.send(RTCDataChannelMessage(messageText));
+        }
+      }
     }
   }
 }
