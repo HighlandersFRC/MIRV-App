@@ -26,8 +26,7 @@ mixin _$PiLit {
 
 /// @nodoc
 abstract class $PiLitCopyWith<$Res> {
-  factory $PiLitCopyWith(PiLit value, $Res Function(PiLit) then) =
-      _$PiLitCopyWithImpl<$Res>;
+  factory $PiLitCopyWith(PiLit value, $Res Function(PiLit) then) = _$PiLitCopyWithImpl<$Res>;
   $Res call({String id, LatLng location, String description});
 }
 
@@ -64,17 +63,14 @@ class _$PiLitCopyWithImpl<$Res> implements $PiLitCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$$_PiLitCopyWith<$Res> implements $PiLitCopyWith<$Res> {
-  factory _$$_PiLitCopyWith(_$_PiLit value, $Res Function(_$_PiLit) then) =
-      __$$_PiLitCopyWithImpl<$Res>;
+  factory _$$_PiLitCopyWith(_$_PiLit value, $Res Function(_$_PiLit) then) = __$$_PiLitCopyWithImpl<$Res>;
   @override
   $Res call({String id, LatLng location, String description});
 }
 
 /// @nodoc
-class __$$_PiLitCopyWithImpl<$Res> extends _$PiLitCopyWithImpl<$Res>
-    implements _$$_PiLitCopyWith<$Res> {
-  __$$_PiLitCopyWithImpl(_$_PiLit _value, $Res Function(_$_PiLit) _then)
-      : super(_value, (v) => _then(v as _$_PiLit));
+class __$$_PiLitCopyWithImpl<$Res> extends _$PiLitCopyWithImpl<$Res> implements _$$_PiLitCopyWith<$Res> {
+  __$$_PiLitCopyWithImpl(_$_PiLit _value, $Res Function(_$_PiLit) _then) : super(_value, (v) => _then(v as _$_PiLit));
 
   @override
   _$_PiLit get _value => super._value as _$_PiLit;
@@ -105,8 +101,7 @@ class __$$_PiLitCopyWithImpl<$Res> extends _$PiLitCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PiLit with DiagnosticableTreeMixin implements _PiLit {
-  const _$_PiLit(
-      {required this.id, required this.location, required this.description});
+  const _$_PiLit({required this.id, required this.location, required this.description});
 
   @override
   final String id;
@@ -137,28 +132,20 @@ class _$_PiLit with DiagnosticableTreeMixin implements _PiLit {
             other is _$_PiLit &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.location, location) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description));
+            const DeepCollectionEquality().equals(other.description, description));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(location),
-      const DeepCollectionEquality().hash(description));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(location), const DeepCollectionEquality().hash(description));
 
   @JsonKey(ignore: true)
   @override
-  _$$_PiLitCopyWith<_$_PiLit> get copyWith =>
-      __$$_PiLitCopyWithImpl<_$_PiLit>(this, _$identity);
+  _$$_PiLitCopyWith<_$_PiLit> get copyWith => __$$_PiLitCopyWithImpl<_$_PiLit>(this, _$identity);
 }
 
 abstract class _PiLit implements PiLit {
-  const factory _PiLit(
-      {required final String id,
-      required final LatLng location,
-      required final String description}) = _$_PiLit;
+  const factory _PiLit({required final String id, required final LatLng location, required final String description}) = _$_PiLit;
 
   @override
   String get id => throw _privateConstructorUsedError;
@@ -168,6 +155,5 @@ abstract class _PiLit implements PiLit {
   String get description => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_PiLitCopyWith<_$_PiLit> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_PiLitCopyWith<_$_PiLit> get copyWith => throw _privateConstructorUsedError;
 }

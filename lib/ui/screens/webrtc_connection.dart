@@ -20,8 +20,7 @@ class WebRTCConnection {
   BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? _peerConnection;
-  get_pkg.Rx<RTCVideoRenderer> localRenderer =
-      get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
 
   MediaStream? _localStream;
 
@@ -65,9 +64,7 @@ class WebRTCConnection {
   void toggleCamera() async {
     if (_localStream == null) throw Exception('Stream is not initialized');
 
-    final videoTrack = _localStream!
-        .getVideoTracks()
-        .firstWhere((track) => track.kind == 'video');
+    final videoTrack = _localStream!.getVideoTracks().firstWhere((track) => track.kind == 'video');
     await Helper.switchCamera(videoTrack);
   }
 
@@ -122,8 +119,7 @@ class WebRTCConnection {
 
   Future<bool> _waitForGatheringComplete(_) async {
     print("WAITING FOR GATHERING COMPLETE");
-    if (_peerConnection!.iceGatheringState ==
-        RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (_peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else {
       await Future.delayed(Duration(seconds: 1));
@@ -145,8 +141,7 @@ class WebRTCConnection {
           };
           var request = http.Request(
             'POST',
-            Uri.parse(
-                '${mirvApi.ipAddress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
+            Uri.parse('${mirvApi.ipAddress}/rovers/connect'), // CHANGE URL HERE TO LOCAL SERVER
           );
           request.body = json.encode({
             "connection_id": "string",
@@ -195,8 +190,7 @@ class WebRTCConnection {
     };
     //* Create Peer Connection
     if (_peerConnection != null) return;
-    _peerConnection =
-        await createPeerConnection(configuration, offerSdpConstraints);
+    _peerConnection = await createPeerConnection(configuration, offerSdpConstraints);
 
     _peerConnection!.onTrack = _onTrack;
     _peerConnection!.onDataChannel = _onDataChannel;
@@ -273,9 +267,7 @@ class WebRTCConnection {
         JoystickValue joyVal = joystickPublish.value[0];
         DateTime currentTime = DateTime.now();
         DateTime prevMessTime = joyVal.ts;
-        if (currentTime
-            .subtract(const Duration(milliseconds: 110))
-            .isBefore(prevMessTime)) {
+        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
           joystickStream.add([joyVal.x, joyVal.y]);
         } else {
           joystickStream.add([0.0, 0.0]);

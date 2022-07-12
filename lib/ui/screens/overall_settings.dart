@@ -34,13 +34,11 @@ class _SettingsPage extends State<SettingsPage> {
             //                 builder: (BuildContext context) => LanguagePage()));
             //           },
           ),
-          SettingsTile(
-              title: Text('Environment'), leading: Icon(Icons.cloud_queue)),
+          SettingsTile(title: Text('Environment'), leading: Icon(Icons.cloud_queue)),
         ]),
         SettingsSection(title: Text('Account'), tiles: [
           SettingsTile(title: Text('Email'), leading: Icon(Icons.email)),
-          SettingsTile(
-              title: Text('Sign Out'), leading: Icon(Icons.exit_to_app)),
+          SettingsTile(title: Text('Sign Out'), leading: Icon(Icons.exit_to_app)),
         ]),
         SettingsSection(
           title: Text('App'),

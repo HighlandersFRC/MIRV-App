@@ -15,10 +15,7 @@ class RoverSelectionMap extends StatefulWidget {
   final SelectedRoverController selectedRoverController;
   Rx<String> selectedMarkerId = "".obs;
 
-  RoverSelectionMap(
-      this.roverMetrics, this.selectedRoverId, this.selectedRoverController,
-      {Key? key})
-      : super(key: key);
+  RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
 
   @override
   State<RoverSelectionMap> createState() => _RoverSelectionMapState();
@@ -31,8 +28,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   Rx<String> selectedRoverId = "".obs;
 
   void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), 'assets/images/rover_icon.png');
+    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
 
   LocationData? _locationData;
@@ -74,9 +70,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
         _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: place.geometry.getLatLng(),
-                zoom: await _mapController!.getZoomLevel())));
+            CameraPosition(target: place.geometry.getLatLng(), zoom: await _mapController!.getZoomLevel())));
       }
     });
 
@@ -111,11 +105,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     widget.selectedRoverId.listen((roverId) {
       widget.roverMetrics.forEach((element) async {
         if (element.roverId == roverId) {
-          _mapController?.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(element.telemetry.location.lat,
-                      element.telemetry.location.long),
-                  zoom: await _mapController!.getZoomLevel())));
+          _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+              target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
+              zoom: await _mapController!.getZoomLevel())));
         }
       });
     });
@@ -164,10 +156,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     final GoogleMapController controller = _mapController!;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(
-                place.geometry.location.lat, place.geometry.location.lng),
-            zoom: 14.0),
+        CameraPosition(target: LatLng(place.geometry.location.lat, place.geometry.location.lng), zoom: 14.0),
       ),
     );
   }
@@ -178,8 +167,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         ...widget.roverMetrics.map((rover) {
           return Marker(
               markerId: MarkerId(rover.roverId),
-              position: LatLng(
-                  rover.telemetry.location.lat, rover.telemetry.location.long),
+              position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
               infoWindow: InfoWindow(
                 title: rover.roverId,
               ),
@@ -188,9 +176,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
                 rover.status == RoverStatusType.unavailable
                     ? null
                     :
-                // widget.selectedMarkerId.value = rover.roverId;
-                widget.selectedRoverController
-                    .setSelectedRoverId(rover.roverId);
+                    // widget.selectedMarkerId.value = rover.roverId;
+                    widget.selectedRoverController.setSelectedRoverId(rover.roverId);
               });
         })
       };

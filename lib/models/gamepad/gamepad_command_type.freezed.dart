@@ -26,21 +26,18 @@ mixin _$GamepadAxisCommand {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GamepadAxisCommandCopyWith<GamepadAxisCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GamepadAxisCommandCopyWith<GamepadAxisCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GamepadAxisCommandCopyWith<$Res> {
-  factory $GamepadAxisCommandCopyWith(
-          GamepadAxisCommand value, $Res Function(GamepadAxisCommand) then) =
+  factory $GamepadAxisCommandCopyWith(GamepadAxisCommand value, $Res Function(GamepadAxisCommand) then) =
       _$GamepadAxisCommandCopyWithImpl<$Res>;
   $Res call({GamepadAxisType type, double x, double y});
 }
 
 /// @nodoc
-class _$GamepadAxisCommandCopyWithImpl<$Res>
-    implements $GamepadAxisCommandCopyWith<$Res> {
+class _$GamepadAxisCommandCopyWithImpl<$Res> implements $GamepadAxisCommandCopyWith<$Res> {
   _$GamepadAxisCommandCopyWithImpl(this._value, this._then);
 
   final GamepadAxisCommand _value;
@@ -71,21 +68,17 @@ class _$GamepadAxisCommandCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$__GamepadAxisCommandCopyWith<$Res>
-    implements $GamepadAxisCommandCopyWith<$Res> {
-  factory _$$__GamepadAxisCommandCopyWith(_$__GamepadAxisCommand value,
-          $Res Function(_$__GamepadAxisCommand) then) =
+abstract class _$$__GamepadAxisCommandCopyWith<$Res> implements $GamepadAxisCommandCopyWith<$Res> {
+  factory _$$__GamepadAxisCommandCopyWith(_$__GamepadAxisCommand value, $Res Function(_$__GamepadAxisCommand) then) =
       __$$__GamepadAxisCommandCopyWithImpl<$Res>;
   @override
   $Res call({GamepadAxisType type, double x, double y});
 }
 
 /// @nodoc
-class __$$__GamepadAxisCommandCopyWithImpl<$Res>
-    extends _$GamepadAxisCommandCopyWithImpl<$Res>
+class __$$__GamepadAxisCommandCopyWithImpl<$Res> extends _$GamepadAxisCommandCopyWithImpl<$Res>
     implements _$$__GamepadAxisCommandCopyWith<$Res> {
-  __$$__GamepadAxisCommandCopyWithImpl(_$__GamepadAxisCommand _value,
-      $Res Function(_$__GamepadAxisCommand) _then)
+  __$$__GamepadAxisCommandCopyWithImpl(_$__GamepadAxisCommand _value, $Res Function(_$__GamepadAxisCommand) _then)
       : super(_value, (v) => _then(v as _$__GamepadAxisCommand));
 
   @override
@@ -117,11 +110,9 @@ class __$$__GamepadAxisCommandCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$__GamepadAxisCommand implements __GamepadAxisCommand {
-  const _$__GamepadAxisCommand(
-      {required this.type, required this.x, required this.y});
+  const _$__GamepadAxisCommand({required this.type, required this.x, required this.y});
 
-  factory _$__GamepadAxisCommand.fromJson(Map<String, dynamic> json) =>
-      _$$__GamepadAxisCommandFromJson(json);
+  factory _$__GamepadAxisCommand.fromJson(Map<String, dynamic> json) => _$$__GamepadAxisCommandFromJson(json);
 
   @override
   final GamepadAxisType type;
@@ -148,17 +139,13 @@ class _$__GamepadAxisCommand implements __GamepadAxisCommand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(x),
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(type), const DeepCollectionEquality().hash(x),
       const DeepCollectionEquality().hash(y));
 
   @JsonKey(ignore: true)
   @override
   _$$__GamepadAxisCommandCopyWith<_$__GamepadAxisCommand> get copyWith =>
-      __$$__GamepadAxisCommandCopyWithImpl<_$__GamepadAxisCommand>(
-          this, _$identity);
+      __$$__GamepadAxisCommandCopyWithImpl<_$__GamepadAxisCommand>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -167,13 +154,10 @@ class _$__GamepadAxisCommand implements __GamepadAxisCommand {
 }
 
 abstract class __GamepadAxisCommand implements GamepadAxisCommand {
-  const factory __GamepadAxisCommand(
-      {required final GamepadAxisType type,
-      required final double x,
-      required final double y}) = _$__GamepadAxisCommand;
+  const factory __GamepadAxisCommand({required final GamepadAxisType type, required final double x, required final double y}) =
+      _$__GamepadAxisCommand;
 
-  factory __GamepadAxisCommand.fromJson(Map<String, dynamic> json) =
-      _$__GamepadAxisCommand.fromJson;
+  factory __GamepadAxisCommand.fromJson(Map<String, dynamic> json) = _$__GamepadAxisCommand.fromJson;
 
   @override
   GamepadAxisType get type => throw _privateConstructorUsedError;
@@ -183,12 +167,10 @@ abstract class __GamepadAxisCommand implements GamepadAxisCommand {
   double get y => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$__GamepadAxisCommandCopyWith<_$__GamepadAxisCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$__GamepadAxisCommandCopyWith<_$__GamepadAxisCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
-GamepadTriggerCommand _$GamepadTriggerCommandFromJson(
-    Map<String, dynamic> json) {
+GamepadTriggerCommand _$GamepadTriggerCommandFromJson(Map<String, dynamic> json) {
   return _GamepadTriggerCommand.fromJson(json);
 }
 
@@ -199,21 +181,18 @@ mixin _$GamepadTriggerCommand {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GamepadTriggerCommandCopyWith<GamepadTriggerCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GamepadTriggerCommandCopyWith<GamepadTriggerCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GamepadTriggerCommandCopyWith<$Res> {
-  factory $GamepadTriggerCommandCopyWith(GamepadTriggerCommand value,
-          $Res Function(GamepadTriggerCommand) then) =
+  factory $GamepadTriggerCommandCopyWith(GamepadTriggerCommand value, $Res Function(GamepadTriggerCommand) then) =
       _$GamepadTriggerCommandCopyWithImpl<$Res>;
   $Res call({GamepadTriggerType type, double value});
 }
 
 /// @nodoc
-class _$GamepadTriggerCommandCopyWithImpl<$Res>
-    implements $GamepadTriggerCommandCopyWith<$Res> {
+class _$GamepadTriggerCommandCopyWithImpl<$Res> implements $GamepadTriggerCommandCopyWith<$Res> {
   _$GamepadTriggerCommandCopyWithImpl(this._value, this._then);
 
   final GamepadTriggerCommand _value;
@@ -239,26 +218,21 @@ class _$GamepadTriggerCommandCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_GamepadTriggerCommandCopyWith<$Res>
-    implements $GamepadTriggerCommandCopyWith<$Res> {
-  factory _$$_GamepadTriggerCommandCopyWith(_$_GamepadTriggerCommand value,
-          $Res Function(_$_GamepadTriggerCommand) then) =
+abstract class _$$_GamepadTriggerCommandCopyWith<$Res> implements $GamepadTriggerCommandCopyWith<$Res> {
+  factory _$$_GamepadTriggerCommandCopyWith(_$_GamepadTriggerCommand value, $Res Function(_$_GamepadTriggerCommand) then) =
       __$$_GamepadTriggerCommandCopyWithImpl<$Res>;
   @override
   $Res call({GamepadTriggerType type, double value});
 }
 
 /// @nodoc
-class __$$_GamepadTriggerCommandCopyWithImpl<$Res>
-    extends _$GamepadTriggerCommandCopyWithImpl<$Res>
+class __$$_GamepadTriggerCommandCopyWithImpl<$Res> extends _$GamepadTriggerCommandCopyWithImpl<$Res>
     implements _$$_GamepadTriggerCommandCopyWith<$Res> {
-  __$$_GamepadTriggerCommandCopyWithImpl(_$_GamepadTriggerCommand _value,
-      $Res Function(_$_GamepadTriggerCommand) _then)
+  __$$_GamepadTriggerCommandCopyWithImpl(_$_GamepadTriggerCommand _value, $Res Function(_$_GamepadTriggerCommand) _then)
       : super(_value, (v) => _then(v as _$_GamepadTriggerCommand));
 
   @override
-  _$_GamepadTriggerCommand get _value =>
-      super._value as _$_GamepadTriggerCommand;
+  _$_GamepadTriggerCommand get _value => super._value as _$_GamepadTriggerCommand;
 
   @override
   $Res call({
@@ -283,8 +257,7 @@ class __$$_GamepadTriggerCommandCopyWithImpl<$Res>
 class _$_GamepadTriggerCommand implements _GamepadTriggerCommand {
   const _$_GamepadTriggerCommand({required this.type, required this.value});
 
-  factory _$_GamepadTriggerCommand.fromJson(Map<String, dynamic> json) =>
-      _$$_GamepadTriggerCommandFromJson(json);
+  factory _$_GamepadTriggerCommand.fromJson(Map<String, dynamic> json) => _$$_GamepadTriggerCommandFromJson(json);
 
   @override
   final GamepadTriggerType type;
@@ -307,16 +280,13 @@ class _$_GamepadTriggerCommand implements _GamepadTriggerCommand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(value));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(type), const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
   _$$_GamepadTriggerCommandCopyWith<_$_GamepadTriggerCommand> get copyWith =>
-      __$$_GamepadTriggerCommandCopyWithImpl<_$_GamepadTriggerCommand>(
-          this, _$identity);
+      __$$_GamepadTriggerCommandCopyWithImpl<_$_GamepadTriggerCommand>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -325,12 +295,10 @@ class _$_GamepadTriggerCommand implements _GamepadTriggerCommand {
 }
 
 abstract class _GamepadTriggerCommand implements GamepadTriggerCommand {
-  const factory _GamepadTriggerCommand(
-      {required final GamepadTriggerType type,
-      required final double value}) = _$_GamepadTriggerCommand;
+  const factory _GamepadTriggerCommand({required final GamepadTriggerType type, required final double value}) =
+      _$_GamepadTriggerCommand;
 
-  factory _GamepadTriggerCommand.fromJson(Map<String, dynamic> json) =
-      _$_GamepadTriggerCommand.fromJson;
+  factory _GamepadTriggerCommand.fromJson(Map<String, dynamic> json) = _$_GamepadTriggerCommand.fromJson;
 
   @override
   GamepadTriggerType get type => throw _privateConstructorUsedError;
@@ -338,8 +306,7 @@ abstract class _GamepadTriggerCommand implements GamepadTriggerCommand {
   double get value => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_GamepadTriggerCommandCopyWith<_$_GamepadTriggerCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_GamepadTriggerCommandCopyWith<_$_GamepadTriggerCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 GamepadBumperCommand _$GamepadBumperCommandFromJson(Map<String, dynamic> json) {
@@ -353,21 +320,18 @@ mixin _$GamepadBumperCommand {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GamepadBumperCommandCopyWith<GamepadBumperCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GamepadBumperCommandCopyWith<GamepadBumperCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GamepadBumperCommandCopyWith<$Res> {
-  factory $GamepadBumperCommandCopyWith(GamepadBumperCommand value,
-          $Res Function(GamepadBumperCommand) then) =
+  factory $GamepadBumperCommandCopyWith(GamepadBumperCommand value, $Res Function(GamepadBumperCommand) then) =
       _$GamepadBumperCommandCopyWithImpl<$Res>;
   $Res call({GamepadBumperType type, double isPressed});
 }
 
 /// @nodoc
-class _$GamepadBumperCommandCopyWithImpl<$Res>
-    implements $GamepadBumperCommandCopyWith<$Res> {
+class _$GamepadBumperCommandCopyWithImpl<$Res> implements $GamepadBumperCommandCopyWith<$Res> {
   _$GamepadBumperCommandCopyWithImpl(this._value, this._then);
 
   final GamepadBumperCommand _value;
@@ -393,21 +357,17 @@ class _$GamepadBumperCommandCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_GamepadBumperCommandCopyWith<$Res>
-    implements $GamepadBumperCommandCopyWith<$Res> {
-  factory _$$_GamepadBumperCommandCopyWith(_$_GamepadBumperCommand value,
-          $Res Function(_$_GamepadBumperCommand) then) =
+abstract class _$$_GamepadBumperCommandCopyWith<$Res> implements $GamepadBumperCommandCopyWith<$Res> {
+  factory _$$_GamepadBumperCommandCopyWith(_$_GamepadBumperCommand value, $Res Function(_$_GamepadBumperCommand) then) =
       __$$_GamepadBumperCommandCopyWithImpl<$Res>;
   @override
   $Res call({GamepadBumperType type, double isPressed});
 }
 
 /// @nodoc
-class __$$_GamepadBumperCommandCopyWithImpl<$Res>
-    extends _$GamepadBumperCommandCopyWithImpl<$Res>
+class __$$_GamepadBumperCommandCopyWithImpl<$Res> extends _$GamepadBumperCommandCopyWithImpl<$Res>
     implements _$$_GamepadBumperCommandCopyWith<$Res> {
-  __$$_GamepadBumperCommandCopyWithImpl(_$_GamepadBumperCommand _value,
-      $Res Function(_$_GamepadBumperCommand) _then)
+  __$$_GamepadBumperCommandCopyWithImpl(_$_GamepadBumperCommand _value, $Res Function(_$_GamepadBumperCommand) _then)
       : super(_value, (v) => _then(v as _$_GamepadBumperCommand));
 
   @override
@@ -436,8 +396,7 @@ class __$$_GamepadBumperCommandCopyWithImpl<$Res>
 class _$_GamepadBumperCommand implements _GamepadBumperCommand {
   const _$_GamepadBumperCommand({required this.type, required this.isPressed});
 
-  factory _$_GamepadBumperCommand.fromJson(Map<String, dynamic> json) =>
-      _$$_GamepadBumperCommandFromJson(json);
+  factory _$_GamepadBumperCommand.fromJson(Map<String, dynamic> json) => _$$_GamepadBumperCommandFromJson(json);
 
   @override
   final GamepadBumperType type;
@@ -460,16 +419,13 @@ class _$_GamepadBumperCommand implements _GamepadBumperCommand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(isPressed));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(type), const DeepCollectionEquality().hash(isPressed));
 
   @JsonKey(ignore: true)
   @override
   _$$_GamepadBumperCommandCopyWith<_$_GamepadBumperCommand> get copyWith =>
-      __$$_GamepadBumperCommandCopyWithImpl<_$_GamepadBumperCommand>(
-          this, _$identity);
+      __$$_GamepadBumperCommandCopyWithImpl<_$_GamepadBumperCommand>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -478,12 +434,10 @@ class _$_GamepadBumperCommand implements _GamepadBumperCommand {
 }
 
 abstract class _GamepadBumperCommand implements GamepadBumperCommand {
-  const factory _GamepadBumperCommand(
-      {required final GamepadBumperType type,
-      required final double isPressed}) = _$_GamepadBumperCommand;
+  const factory _GamepadBumperCommand({required final GamepadBumperType type, required final double isPressed}) =
+      _$_GamepadBumperCommand;
 
-  factory _GamepadBumperCommand.fromJson(Map<String, dynamic> json) =
-      _$_GamepadBumperCommand.fromJson;
+  factory _GamepadBumperCommand.fromJson(Map<String, dynamic> json) = _$_GamepadBumperCommand.fromJson;
 
   @override
   GamepadBumperType get type => throw _privateConstructorUsedError;
@@ -491,8 +445,7 @@ abstract class _GamepadBumperCommand implements GamepadBumperCommand {
   double get isPressed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_GamepadBumperCommandCopyWith<_$_GamepadBumperCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_GamepadBumperCommandCopyWith<_$_GamepadBumperCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 GamepadDPadCommand _$GamepadDPadCommandFromJson(Map<String, dynamic> json) {
@@ -506,21 +459,18 @@ mixin _$GamepadDPadCommand {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GamepadDPadCommandCopyWith<GamepadDPadCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GamepadDPadCommandCopyWith<GamepadDPadCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GamepadDPadCommandCopyWith<$Res> {
-  factory $GamepadDPadCommandCopyWith(
-          GamepadDPadCommand value, $Res Function(GamepadDPadCommand) then) =
+  factory $GamepadDPadCommandCopyWith(GamepadDPadCommand value, $Res Function(GamepadDPadCommand) then) =
       _$GamepadDPadCommandCopyWithImpl<$Res>;
   $Res call({GamepadDPadType type, int isPressed});
 }
 
 /// @nodoc
-class _$GamepadDPadCommandCopyWithImpl<$Res>
-    implements $GamepadDPadCommandCopyWith<$Res> {
+class _$GamepadDPadCommandCopyWithImpl<$Res> implements $GamepadDPadCommandCopyWith<$Res> {
   _$GamepadDPadCommandCopyWithImpl(this._value, this._then);
 
   final GamepadDPadCommand _value;
@@ -546,21 +496,17 @@ class _$GamepadDPadCommandCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_GamepadDPadCommandCopyWith<$Res>
-    implements $GamepadDPadCommandCopyWith<$Res> {
-  factory _$$_GamepadDPadCommandCopyWith(_$_GamepadDPadCommand value,
-          $Res Function(_$_GamepadDPadCommand) then) =
+abstract class _$$_GamepadDPadCommandCopyWith<$Res> implements $GamepadDPadCommandCopyWith<$Res> {
+  factory _$$_GamepadDPadCommandCopyWith(_$_GamepadDPadCommand value, $Res Function(_$_GamepadDPadCommand) then) =
       __$$_GamepadDPadCommandCopyWithImpl<$Res>;
   @override
   $Res call({GamepadDPadType type, int isPressed});
 }
 
 /// @nodoc
-class __$$_GamepadDPadCommandCopyWithImpl<$Res>
-    extends _$GamepadDPadCommandCopyWithImpl<$Res>
+class __$$_GamepadDPadCommandCopyWithImpl<$Res> extends _$GamepadDPadCommandCopyWithImpl<$Res>
     implements _$$_GamepadDPadCommandCopyWith<$Res> {
-  __$$_GamepadDPadCommandCopyWithImpl(
-      _$_GamepadDPadCommand _value, $Res Function(_$_GamepadDPadCommand) _then)
+  __$$_GamepadDPadCommandCopyWithImpl(_$_GamepadDPadCommand _value, $Res Function(_$_GamepadDPadCommand) _then)
       : super(_value, (v) => _then(v as _$_GamepadDPadCommand));
 
   @override
@@ -589,8 +535,7 @@ class __$$_GamepadDPadCommandCopyWithImpl<$Res>
 class _$_GamepadDPadCommand implements _GamepadDPadCommand {
   const _$_GamepadDPadCommand({required this.type, required this.isPressed});
 
-  factory _$_GamepadDPadCommand.fromJson(Map<String, dynamic> json) =>
-      _$$_GamepadDPadCommandFromJson(json);
+  factory _$_GamepadDPadCommand.fromJson(Map<String, dynamic> json) => _$$_GamepadDPadCommandFromJson(json);
 
   @override
   final GamepadDPadType type;
@@ -613,16 +558,13 @@ class _$_GamepadDPadCommand implements _GamepadDPadCommand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(isPressed));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(type), const DeepCollectionEquality().hash(isPressed));
 
   @JsonKey(ignore: true)
   @override
   _$$_GamepadDPadCommandCopyWith<_$_GamepadDPadCommand> get copyWith =>
-      __$$_GamepadDPadCommandCopyWithImpl<_$_GamepadDPadCommand>(
-          this, _$identity);
+      __$$_GamepadDPadCommandCopyWithImpl<_$_GamepadDPadCommand>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -631,12 +573,9 @@ class _$_GamepadDPadCommand implements _GamepadDPadCommand {
 }
 
 abstract class _GamepadDPadCommand implements GamepadDPadCommand {
-  const factory _GamepadDPadCommand(
-      {required final GamepadDPadType type,
-      required final int isPressed}) = _$_GamepadDPadCommand;
+  const factory _GamepadDPadCommand({required final GamepadDPadType type, required final int isPressed}) = _$_GamepadDPadCommand;
 
-  factory _GamepadDPadCommand.fromJson(Map<String, dynamic> json) =
-      _$_GamepadDPadCommand.fromJson;
+  factory _GamepadDPadCommand.fromJson(Map<String, dynamic> json) = _$_GamepadDPadCommand.fromJson;
 
   @override
   GamepadDPadType get type => throw _privateConstructorUsedError;
@@ -644,8 +583,7 @@ abstract class _GamepadDPadCommand implements GamepadDPadCommand {
   int get isPressed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_GamepadDPadCommandCopyWith<_$_GamepadDPadCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_GamepadDPadCommandCopyWith<_$_GamepadDPadCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 GamepadButtonCommand _$GamepadButtonCommandFromJson(Map<String, dynamic> json) {
@@ -659,21 +597,18 @@ mixin _$GamepadButtonCommand {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GamepadButtonCommandCopyWith<GamepadButtonCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GamepadButtonCommandCopyWith<GamepadButtonCommand> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GamepadButtonCommandCopyWith<$Res> {
-  factory $GamepadButtonCommandCopyWith(GamepadButtonCommand value,
-          $Res Function(GamepadButtonCommand) then) =
+  factory $GamepadButtonCommandCopyWith(GamepadButtonCommand value, $Res Function(GamepadButtonCommand) then) =
       _$GamepadButtonCommandCopyWithImpl<$Res>;
   $Res call({GamepadButtonType type, bool isPressed});
 }
 
 /// @nodoc
-class _$GamepadButtonCommandCopyWithImpl<$Res>
-    implements $GamepadButtonCommandCopyWith<$Res> {
+class _$GamepadButtonCommandCopyWithImpl<$Res> implements $GamepadButtonCommandCopyWith<$Res> {
   _$GamepadButtonCommandCopyWithImpl(this._value, this._then);
 
   final GamepadButtonCommand _value;
@@ -699,21 +634,17 @@ class _$GamepadButtonCommandCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_GamepadButtonCommandCopyWith<$Res>
-    implements $GamepadButtonCommandCopyWith<$Res> {
-  factory _$$_GamepadButtonCommandCopyWith(_$_GamepadButtonCommand value,
-          $Res Function(_$_GamepadButtonCommand) then) =
+abstract class _$$_GamepadButtonCommandCopyWith<$Res> implements $GamepadButtonCommandCopyWith<$Res> {
+  factory _$$_GamepadButtonCommandCopyWith(_$_GamepadButtonCommand value, $Res Function(_$_GamepadButtonCommand) then) =
       __$$_GamepadButtonCommandCopyWithImpl<$Res>;
   @override
   $Res call({GamepadButtonType type, bool isPressed});
 }
 
 /// @nodoc
-class __$$_GamepadButtonCommandCopyWithImpl<$Res>
-    extends _$GamepadButtonCommandCopyWithImpl<$Res>
+class __$$_GamepadButtonCommandCopyWithImpl<$Res> extends _$GamepadButtonCommandCopyWithImpl<$Res>
     implements _$$_GamepadButtonCommandCopyWith<$Res> {
-  __$$_GamepadButtonCommandCopyWithImpl(_$_GamepadButtonCommand _value,
-      $Res Function(_$_GamepadButtonCommand) _then)
+  __$$_GamepadButtonCommandCopyWithImpl(_$_GamepadButtonCommand _value, $Res Function(_$_GamepadButtonCommand) _then)
       : super(_value, (v) => _then(v as _$_GamepadButtonCommand));
 
   @override
@@ -742,8 +673,7 @@ class __$$_GamepadButtonCommandCopyWithImpl<$Res>
 class _$_GamepadButtonCommand implements _GamepadButtonCommand {
   const _$_GamepadButtonCommand({required this.type, required this.isPressed});
 
-  factory _$_GamepadButtonCommand.fromJson(Map<String, dynamic> json) =>
-      _$$_GamepadButtonCommandFromJson(json);
+  factory _$_GamepadButtonCommand.fromJson(Map<String, dynamic> json) => _$$_GamepadButtonCommandFromJson(json);
 
   @override
   final GamepadButtonType type;
@@ -766,16 +696,13 @@ class _$_GamepadButtonCommand implements _GamepadButtonCommand {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(isPressed));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(type), const DeepCollectionEquality().hash(isPressed));
 
   @JsonKey(ignore: true)
   @override
   _$$_GamepadButtonCommandCopyWith<_$_GamepadButtonCommand> get copyWith =>
-      __$$_GamepadButtonCommandCopyWithImpl<_$_GamepadButtonCommand>(
-          this, _$identity);
+      __$$_GamepadButtonCommandCopyWithImpl<_$_GamepadButtonCommand>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -784,12 +711,10 @@ class _$_GamepadButtonCommand implements _GamepadButtonCommand {
 }
 
 abstract class _GamepadButtonCommand implements GamepadButtonCommand {
-  const factory _GamepadButtonCommand(
-      {required final GamepadButtonType type,
-      required final bool isPressed}) = _$_GamepadButtonCommand;
+  const factory _GamepadButtonCommand({required final GamepadButtonType type, required final bool isPressed}) =
+      _$_GamepadButtonCommand;
 
-  factory _GamepadButtonCommand.fromJson(Map<String, dynamic> json) =
-      _$_GamepadButtonCommand.fromJson;
+  factory _GamepadButtonCommand.fromJson(Map<String, dynamic> json) = _$_GamepadButtonCommand.fromJson;
 
   @override
   GamepadButtonType get type => throw _privateConstructorUsedError;
@@ -797,6 +722,5 @@ abstract class _GamepadButtonCommand implements GamepadButtonCommand {
   bool get isPressed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_GamepadButtonCommandCopyWith<_$_GamepadButtonCommand> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_GamepadButtonCommandCopyWith<_$_GamepadButtonCommand> get copyWith => throw _privateConstructorUsedError;
 }
