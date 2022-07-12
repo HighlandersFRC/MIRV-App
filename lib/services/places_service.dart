@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
-import 'package:test/models/place.dart';
+import 'package:mirv/models/place.dart';
 import 'dart:convert' as convert;
-import 'package:test/models/searchbox_places.dart';
+import 'package:mirv/models/searchbox_places.dart';
 
 class PlacesService {
   final key = 'AIzaSyAPNZNjOTshdE86EevJ2dbSxZWI_GNIrhc';

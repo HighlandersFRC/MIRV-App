@@ -1,4 +1,4 @@
-import 'package:test/models/searchbox_places.dart';
+import 'package:mirv/models/searchbox_places.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 

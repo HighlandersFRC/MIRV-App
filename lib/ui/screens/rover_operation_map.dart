@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/pi_lit.dart';
-import 'package:test/models/rover_metrics.dart';
+import 'package:mirv/models/pi_lit.dart';
+import 'package:mirv/models/rover_metrics.dart';
 
 class RoverOperationMap extends StatefulWidget {
   final BehaviorSubject<LatLng> locationStream;

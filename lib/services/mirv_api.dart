@@ -3,13 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/rover_metrics.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:http/http.dart' as http;
-import 'package:test/services/session_storage_service.dart';
+import 'package:mirv/services/session_storage_service.dart';
 
 class MirvApi {
   Timer? timer;
-  final String ipAddress = 'http://52.185.79.181:8080';
+  final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
   SessionStorageService? _sessionStorageService;
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();

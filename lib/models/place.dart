@@ -1,4 +1,4 @@
-import 'package:test/models/geometry.dart';
+import 'package:mirv/models/geometry.dart';
 
 class Place {
   final Geometry geometry;

@@ -1,8 +1,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:rxdart/subjects.dart';
-// import 'package:test/models/rover_location.dart';
-// import 'package:test/ui/screens/rover_operation_map.dart';
+// import 'package:mirv/models/rover_location.dart';
+// import 'package:mirv/ui/screens/rover_operation_map.dart';
 
 // class ToggleDisableMap extends StatefulWidget {
 //   const ToggleDisableMap({Key? key}) : super(key: key);

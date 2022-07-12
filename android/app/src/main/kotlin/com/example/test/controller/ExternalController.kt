@@ -1,4 +1,4 @@
-package com.example.test.controller
+package com.neaera.mirv.controller
 
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -8,7 +8,7 @@ import io.flutter.plugin.common.EventChannel
 
 class ExternalController {
     companion object {
-        private const val CHANNEL = "com.example.test/gamepad_channel"
+        private const val CHANNEL = "com.neaera.mirv/gamepad_channel"
     }
 
     private val eventManager = EventManager()

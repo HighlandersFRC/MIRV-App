@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
-import 'package:test/ui/screens/home_page.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/home_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
+import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar(

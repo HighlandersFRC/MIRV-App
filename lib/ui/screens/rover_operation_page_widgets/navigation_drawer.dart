@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test/ui/screens/home_page.dart';
-import 'package:test/ui/screens/info_page.dart';
-import 'package:test/ui/screens/rover_selection_page.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
-import 'package:test/ui/screens/troubleshoot_page.dart';
+import 'package:mirv/ui/screens/home_page.dart';
+import 'package:mirv/ui/screens/info_page.dart';
+import 'package:mirv/ui/screens/rover_selection_page.dart';
+import 'package:mirv/ui/screens/rover_status_page.dart';
+import 'package:mirv/ui/screens/troubleshoot_page.dart';
 import 'package:get/get.dart';
 
 class NavigationDrawer extends StatelessWidget {

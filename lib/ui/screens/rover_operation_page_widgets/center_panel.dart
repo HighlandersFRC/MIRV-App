@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:test/models/pi_lit.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/ui/screens/rover_operation_map.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/telemetry_data_table.dart';
+import 'package:mirv/models/pi_lit.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/ui/screens/rover_operation_map.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry_data_table.dart';
 
 class CenterPanel extends StatelessWidget {
   const CenterPanel(

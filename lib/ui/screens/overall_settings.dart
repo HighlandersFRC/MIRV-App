@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
-import 'package:test/ui/screens/settings_language_page.dart';
+import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/settings_language_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
