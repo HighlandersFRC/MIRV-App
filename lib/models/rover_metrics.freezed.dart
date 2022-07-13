@@ -21,20 +21,25 @@ RoverMetrics _$RoverMetricsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$RoverMetrics {
   String get roverId => throw _privateConstructorUsedError;
-  RoverStateType get state => throw _privateConstructorUsedError; //RoverStateType
-  RoverStatusType get status => throw _privateConstructorUsedError; //RoverStatusType
+  RoverStateType get state =>
+      throw _privateConstructorUsedError; //RoverStateType
+  RoverStatusType get status =>
+      throw _privateConstructorUsedError; //RoverStatusType
   int get battery => throw _privateConstructorUsedError;
   RoverMetricHealth get health => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricsCopyWith<RoverMetrics> get copyWith => throw _privateConstructorUsedError;
+  $RoverMetricsCopyWith<RoverMetrics> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverMetricsCopyWith<$Res> {
-  factory $RoverMetricsCopyWith(RoverMetrics value, $Res Function(RoverMetrics) then) = _$RoverMetricsCopyWithImpl<$Res>;
+  factory $RoverMetricsCopyWith(
+          RoverMetrics value, $Res Function(RoverMetrics) then) =
+      _$RoverMetricsCopyWithImpl<$Res>;
   $Res call(
       {String roverId,
       RoverStateType state,
@@ -108,8 +113,10 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricsCopyWith<$Res> implements $RoverMetricsCopyWith<$Res> {
-  factory _$$_RoverMetricsCopyWith(_$_RoverMetrics value, $Res Function(_$_RoverMetrics) then) =
+abstract class _$$_RoverMetricsCopyWith<$Res>
+    implements $RoverMetricsCopyWith<$Res> {
+  factory _$$_RoverMetricsCopyWith(
+          _$_RoverMetrics value, $Res Function(_$_RoverMetrics) then) =
       __$$_RoverMetricsCopyWithImpl<$Res>;
   @override
   $Res call(
@@ -127,8 +134,11 @@ abstract class _$$_RoverMetricsCopyWith<$Res> implements $RoverMetricsCopyWith<$
 }
 
 /// @nodoc
-class __$$_RoverMetricsCopyWithImpl<$Res> extends _$RoverMetricsCopyWithImpl<$Res> implements _$$_RoverMetricsCopyWith<$Res> {
-  __$$_RoverMetricsCopyWithImpl(_$_RoverMetrics _value, $Res Function(_$_RoverMetrics) _then)
+class __$$_RoverMetricsCopyWithImpl<$Res>
+    extends _$RoverMetricsCopyWithImpl<$Res>
+    implements _$$_RoverMetricsCopyWith<$Res> {
+  __$$_RoverMetricsCopyWithImpl(
+      _$_RoverMetrics _value, $Res Function(_$_RoverMetrics) _then)
       : super(_value, (v) => _then(v as _$_RoverMetrics));
 
   @override
@@ -183,7 +193,8 @@ class _$_RoverMetrics implements _RoverMetrics {
       this.health = const RoverMetricHealth(),
       this.telemetry = const RoverMetricTelemetry()});
 
-  factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) => _$$_RoverMetricsFromJson(json);
+  factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverMetricsFromJson(json);
 
   @override
   @JsonKey()
@@ -237,7 +248,8 @@ class _$_RoverMetrics implements _RoverMetrics {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith => __$$_RoverMetricsCopyWithImpl<_$_RoverMetrics>(this, _$identity);
+  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
+      __$$_RoverMetricsCopyWithImpl<_$_RoverMetrics>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -254,7 +266,8 @@ abstract class _RoverMetrics implements RoverMetrics {
       final RoverMetricHealth health,
       final RoverMetricTelemetry telemetry}) = _$_RoverMetrics;
 
-  factory _RoverMetrics.fromJson(Map<String, dynamic> json) = _$_RoverMetrics.fromJson;
+  factory _RoverMetrics.fromJson(Map<String, dynamic> json) =
+      _$_RoverMetrics.fromJson;
 
   @override
   String get roverId => throw _privateConstructorUsedError;
@@ -270,7 +283,8 @@ abstract class _RoverMetrics implements RoverMetrics {
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith => throw _privateConstructorUsedError;
+  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 RoverMetricHealth _$RoverMetricHealthFromJson(Map<String, dynamic> json) {
@@ -289,12 +303,14 @@ mixin _$RoverMetricHealth {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricHealthCopyWith<RoverMetricHealth> get copyWith => throw _privateConstructorUsedError;
+  $RoverMetricHealthCopyWith<RoverMetricHealth> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverMetricHealthCopyWith<$Res> {
-  factory $RoverMetricHealthCopyWith(RoverMetricHealth value, $Res Function(RoverMetricHealth) then) =
+  factory $RoverMetricHealthCopyWith(
+          RoverMetricHealth value, $Res Function(RoverMetricHealth) then) =
       _$RoverMetricHealthCopyWithImpl<$Res>;
   $Res call(
       {RoverHealthType electronics,
@@ -307,7 +323,8 @@ abstract class $RoverMetricHealthCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RoverMetricHealthCopyWithImpl<$Res> implements $RoverMetricHealthCopyWith<$Res> {
+class _$RoverMetricHealthCopyWithImpl<$Res>
+    implements $RoverMetricHealthCopyWith<$Res> {
   _$RoverMetricHealthCopyWithImpl(this._value, this._then);
 
   final RoverMetricHealth _value;
@@ -358,8 +375,10 @@ class _$RoverMetricHealthCopyWithImpl<$Res> implements $RoverMetricHealthCopyWit
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricHealthCopyWith<$Res> implements $RoverMetricHealthCopyWith<$Res> {
-  factory _$$_RoverMetricHealthCopyWith(_$_RoverMetricHealth value, $Res Function(_$_RoverMetricHealth) then) =
+abstract class _$$_RoverMetricHealthCopyWith<$Res>
+    implements $RoverMetricHealthCopyWith<$Res> {
+  factory _$$_RoverMetricHealthCopyWith(_$_RoverMetricHealth value,
+          $Res Function(_$_RoverMetricHealth) then) =
       __$$_RoverMetricHealthCopyWithImpl<$Res>;
   @override
   $Res call(
@@ -373,9 +392,11 @@ abstract class _$$_RoverMetricHealthCopyWith<$Res> implements $RoverMetricHealth
 }
 
 /// @nodoc
-class __$$_RoverMetricHealthCopyWithImpl<$Res> extends _$RoverMetricHealthCopyWithImpl<$Res>
+class __$$_RoverMetricHealthCopyWithImpl<$Res>
+    extends _$RoverMetricHealthCopyWithImpl<$Res>
     implements _$$_RoverMetricHealthCopyWith<$Res> {
-  __$$_RoverMetricHealthCopyWithImpl(_$_RoverMetricHealth _value, $Res Function(_$_RoverMetricHealth) _then)
+  __$$_RoverMetricHealthCopyWithImpl(
+      _$_RoverMetricHealth _value, $Res Function(_$_RoverMetricHealth) _then)
       : super(_value, (v) => _then(v as _$_RoverMetricHealth));
 
   @override
@@ -436,7 +457,8 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
       this.power = RoverHealthType.unavailable,
       this.general = RoverHealthType.unavailable});
 
-  factory _$_RoverMetricHealth.fromJson(Map<String, dynamic> json) => _$$_RoverMetricHealthFromJson(json);
+  factory _$_RoverMetricHealth.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverMetricHealthFromJson(json);
 
   @override
   @JsonKey()
@@ -470,8 +492,10 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RoverMetricHealth &&
-            const DeepCollectionEquality().equals(other.electronics, electronics) &&
-            const DeepCollectionEquality().equals(other.drivetrain, drivetrain) &&
+            const DeepCollectionEquality()
+                .equals(other.electronics, electronics) &&
+            const DeepCollectionEquality()
+                .equals(other.drivetrain, drivetrain) &&
             const DeepCollectionEquality().equals(other.intake, intake) &&
             const DeepCollectionEquality().equals(other.sensors, sensors) &&
             const DeepCollectionEquality().equals(other.garage, garage) &&
@@ -494,7 +518,8 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
   @JsonKey(ignore: true)
   @override
   _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>
-      __$$_RoverMetricHealthCopyWithImpl<_$_RoverMetricHealth>(this, _$identity);
+      __$$_RoverMetricHealthCopyWithImpl<_$_RoverMetricHealth>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -512,7 +537,8 @@ abstract class _RoverMetricHealth implements RoverMetricHealth {
       final RoverHealthType power,
       final RoverHealthType general}) = _$_RoverMetricHealth;
 
-  factory _RoverMetricHealth.fromJson(Map<String, dynamic> json) = _$_RoverMetricHealth.fromJson;
+  factory _RoverMetricHealth.fromJson(Map<String, dynamic> json) =
+      _$_RoverMetricHealth.fromJson;
 
   @override
   RoverHealthType get electronics => throw _privateConstructorUsedError;
@@ -530,7 +556,8 @@ abstract class _RoverMetricHealth implements RoverMetricHealth {
   RoverHealthType get general => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith => throw _privateConstructorUsedError;
+  _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 RoverMetricTelemetry _$RoverMetricTelemetryFromJson(Map<String, dynamic> json) {
@@ -545,12 +572,14 @@ mixin _$RoverMetricTelemetry {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricTelemetryCopyWith<RoverMetricTelemetry> get copyWith => throw _privateConstructorUsedError;
+  $RoverMetricTelemetryCopyWith<RoverMetricTelemetry> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverMetricTelemetryCopyWith<$Res> {
-  factory $RoverMetricTelemetryCopyWith(RoverMetricTelemetry value, $Res Function(RoverMetricTelemetry) then) =
+  factory $RoverMetricTelemetryCopyWith(RoverMetricTelemetry value,
+          $Res Function(RoverMetricTelemetry) then) =
       _$RoverMetricTelemetryCopyWithImpl<$Res>;
   $Res call({RoverMetricLocation location, double heading, double speed});
 
@@ -558,7 +587,8 @@ abstract class $RoverMetricTelemetryCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RoverMetricTelemetryCopyWithImpl<$Res> implements $RoverMetricTelemetryCopyWith<$Res> {
+class _$RoverMetricTelemetryCopyWithImpl<$Res>
+    implements $RoverMetricTelemetryCopyWith<$Res> {
   _$RoverMetricTelemetryCopyWithImpl(this._value, this._then);
 
   final RoverMetricTelemetry _value;
@@ -596,8 +626,10 @@ class _$RoverMetricTelemetryCopyWithImpl<$Res> implements $RoverMetricTelemetryC
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricTelemetryCopyWith<$Res> implements $RoverMetricTelemetryCopyWith<$Res> {
-  factory _$$_RoverMetricTelemetryCopyWith(_$_RoverMetricTelemetry value, $Res Function(_$_RoverMetricTelemetry) then) =
+abstract class _$$_RoverMetricTelemetryCopyWith<$Res>
+    implements $RoverMetricTelemetryCopyWith<$Res> {
+  factory _$$_RoverMetricTelemetryCopyWith(_$_RoverMetricTelemetry value,
+          $Res Function(_$_RoverMetricTelemetry) then) =
       __$$_RoverMetricTelemetryCopyWithImpl<$Res>;
   @override
   $Res call({RoverMetricLocation location, double heading, double speed});
@@ -607,9 +639,11 @@ abstract class _$$_RoverMetricTelemetryCopyWith<$Res> implements $RoverMetricTel
 }
 
 /// @nodoc
-class __$$_RoverMetricTelemetryCopyWithImpl<$Res> extends _$RoverMetricTelemetryCopyWithImpl<$Res>
+class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
+    extends _$RoverMetricTelemetryCopyWithImpl<$Res>
     implements _$$_RoverMetricTelemetryCopyWith<$Res> {
-  __$$_RoverMetricTelemetryCopyWithImpl(_$_RoverMetricTelemetry _value, $Res Function(_$_RoverMetricTelemetry) _then)
+  __$$_RoverMetricTelemetryCopyWithImpl(_$_RoverMetricTelemetry _value,
+      $Res Function(_$_RoverMetricTelemetry) _then)
       : super(_value, (v) => _then(v as _$_RoverMetricTelemetry));
 
   @override
@@ -641,9 +675,13 @@ class __$$_RoverMetricTelemetryCopyWithImpl<$Res> extends _$RoverMetricTelemetry
 /// @nodoc
 @JsonSerializable()
 class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
-  const _$_RoverMetricTelemetry({this.location = const RoverMetricLocation(), this.heading = 0.0, this.speed = 0.0});
+  const _$_RoverMetricTelemetry(
+      {this.location = const RoverMetricLocation(),
+      this.heading = 0.0,
+      this.speed = 0.0});
 
-  factory _$_RoverMetricTelemetry.fromJson(Map<String, dynamic> json) => _$$_RoverMetricTelemetryFromJson(json);
+  factory _$_RoverMetricTelemetry.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverMetricTelemetryFromJson(json);
 
   @override
   @JsonKey()
@@ -672,13 +710,17 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(location),
-      const DeepCollectionEquality().hash(heading), const DeepCollectionEquality().hash(speed));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(location),
+      const DeepCollectionEquality().hash(heading),
+      const DeepCollectionEquality().hash(speed));
 
   @JsonKey(ignore: true)
   @override
   _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith =>
-      __$$_RoverMetricTelemetryCopyWithImpl<_$_RoverMetricTelemetry>(this, _$identity);
+      __$$_RoverMetricTelemetryCopyWithImpl<_$_RoverMetricTelemetry>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -687,10 +729,13 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 }
 
 abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
-  const factory _RoverMetricTelemetry({final RoverMetricLocation location, final double heading, final double speed}) =
-      _$_RoverMetricTelemetry;
+  const factory _RoverMetricTelemetry(
+      {final RoverMetricLocation location,
+      final double heading,
+      final double speed}) = _$_RoverMetricTelemetry;
 
-  factory _RoverMetricTelemetry.fromJson(Map<String, dynamic> json) = _$_RoverMetricTelemetry.fromJson;
+  factory _RoverMetricTelemetry.fromJson(Map<String, dynamic> json) =
+      _$_RoverMetricTelemetry.fromJson;
 
   @override
   RoverMetricLocation get location => throw _privateConstructorUsedError;
@@ -700,7 +745,8 @@ abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
   double get speed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith => throw _privateConstructorUsedError;
+  _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 RoverMetricLocation _$RoverMetricLocationFromJson(Map<String, dynamic> json) {
@@ -714,18 +760,21 @@ mixin _$RoverMetricLocation {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricLocationCopyWith<RoverMetricLocation> get copyWith => throw _privateConstructorUsedError;
+  $RoverMetricLocationCopyWith<RoverMetricLocation> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RoverMetricLocationCopyWith<$Res> {
-  factory $RoverMetricLocationCopyWith(RoverMetricLocation value, $Res Function(RoverMetricLocation) then) =
+  factory $RoverMetricLocationCopyWith(
+          RoverMetricLocation value, $Res Function(RoverMetricLocation) then) =
       _$RoverMetricLocationCopyWithImpl<$Res>;
   $Res call({double long, double lat});
 }
 
 /// @nodoc
-class _$RoverMetricLocationCopyWithImpl<$Res> implements $RoverMetricLocationCopyWith<$Res> {
+class _$RoverMetricLocationCopyWithImpl<$Res>
+    implements $RoverMetricLocationCopyWith<$Res> {
   _$RoverMetricLocationCopyWithImpl(this._value, this._then);
 
   final RoverMetricLocation _value;
@@ -751,17 +800,21 @@ class _$RoverMetricLocationCopyWithImpl<$Res> implements $RoverMetricLocationCop
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricLocationCopyWith<$Res> implements $RoverMetricLocationCopyWith<$Res> {
-  factory _$$_RoverMetricLocationCopyWith(_$_RoverMetricLocation value, $Res Function(_$_RoverMetricLocation) then) =
+abstract class _$$_RoverMetricLocationCopyWith<$Res>
+    implements $RoverMetricLocationCopyWith<$Res> {
+  factory _$$_RoverMetricLocationCopyWith(_$_RoverMetricLocation value,
+          $Res Function(_$_RoverMetricLocation) then) =
       __$$_RoverMetricLocationCopyWithImpl<$Res>;
   @override
   $Res call({double long, double lat});
 }
 
 /// @nodoc
-class __$$_RoverMetricLocationCopyWithImpl<$Res> extends _$RoverMetricLocationCopyWithImpl<$Res>
+class __$$_RoverMetricLocationCopyWithImpl<$Res>
+    extends _$RoverMetricLocationCopyWithImpl<$Res>
     implements _$$_RoverMetricLocationCopyWith<$Res> {
-  __$$_RoverMetricLocationCopyWithImpl(_$_RoverMetricLocation _value, $Res Function(_$_RoverMetricLocation) _then)
+  __$$_RoverMetricLocationCopyWithImpl(_$_RoverMetricLocation _value,
+      $Res Function(_$_RoverMetricLocation) _then)
       : super(_value, (v) => _then(v as _$_RoverMetricLocation));
 
   @override
@@ -790,7 +843,8 @@ class __$$_RoverMetricLocationCopyWithImpl<$Res> extends _$RoverMetricLocationCo
 class _$_RoverMetricLocation implements _RoverMetricLocation {
   const _$_RoverMetricLocation({this.long = 0.0, this.lat = 0.0});
 
-  factory _$_RoverMetricLocation.fromJson(Map<String, dynamic> json) => _$$_RoverMetricLocationFromJson(json);
+  factory _$_RoverMetricLocation.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverMetricLocationFromJson(json);
 
   @override
   @JsonKey()
@@ -815,13 +869,16 @@ class _$_RoverMetricLocation implements _RoverMetricLocation {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(long), const DeepCollectionEquality().hash(lat));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(long),
+      const DeepCollectionEquality().hash(lat));
 
   @JsonKey(ignore: true)
   @override
   _$$_RoverMetricLocationCopyWith<_$_RoverMetricLocation> get copyWith =>
-      __$$_RoverMetricLocationCopyWithImpl<_$_RoverMetricLocation>(this, _$identity);
+      __$$_RoverMetricLocationCopyWithImpl<_$_RoverMetricLocation>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -830,9 +887,11 @@ class _$_RoverMetricLocation implements _RoverMetricLocation {
 }
 
 abstract class _RoverMetricLocation implements RoverMetricLocation {
-  const factory _RoverMetricLocation({final double long, final double lat}) = _$_RoverMetricLocation;
+  const factory _RoverMetricLocation({final double long, final double lat}) =
+      _$_RoverMetricLocation;
 
-  factory _RoverMetricLocation.fromJson(Map<String, dynamic> json) = _$_RoverMetricLocation.fromJson;
+  factory _RoverMetricLocation.fromJson(Map<String, dynamic> json) =
+      _$_RoverMetricLocation.fromJson;
 
   @override
   double get long => throw _privateConstructorUsedError;
@@ -840,5 +899,6 @@ abstract class _RoverMetricLocation implements RoverMetricLocation {
   double get lat => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricLocationCopyWith<_$_RoverMetricLocation> get copyWith => throw _privateConstructorUsedError;
+  _$$_RoverMetricLocationCopyWith<_$_RoverMetricLocation> get copyWith =>
+      throw _privateConstructorUsedError;
 }

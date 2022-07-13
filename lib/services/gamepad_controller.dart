@@ -25,33 +25,18 @@ class GamepadController {
       .where((cmd) => cmd.type == GamepadCommandType.axis && cmd.command.type == GamepadAxisType.right)
       .map((cmd) => cmd.command as GamepadAxisCommand);
 
-  // final StreamController<DrivetrainRoverCommand> _drivetrainCommandStreamController =
-  //     StreamController<DrivetrainRoverCommand>.broadcast();
-  // Stream<DrivetrainRoverCommand> get drivetrainCommandStream => _drivetrainCommandStreamController.stream.asBroadcastStream();
-
   GamepadController({this.driveType = RoverDriveControlType.arcade}) {
     drivetrainCommandStream = Rx.combineLatest2(axisStreamLeft, axisStreamRight,
         (GamepadAxisCommand left, GamepadAxisCommand right) => _getJoystickCommandOutput(driveType, left, right));
 
     _initializeStreams();
-
-    // controllerTimer = Timer.periodic(
-    //   Duration(milliseconds: 100),
-    //   (Timer t) async {
-    //     var temp = await commandStream.last;
-    //     var latestLeft = await axisStreamLeft.last;
-    //     var latestRight = await axisStreamRight.last;
-
-    //     _drivetrainCommandStreamController.add(_getJoystickCommandOutput(driveType, latestLeft, latestRight));
-    //   },
-    // );
   }
 
   _initializeStreams() {
-    _commandStreamController.add(GamepadCommand(
-        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
-    _commandStreamController.add(GamepadCommand(
-        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
+    _commandStreamController.add(
+        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
+    _commandStreamController.add(
+        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
   }
 
   dispose() {
@@ -62,13 +47,13 @@ class GamepadController {
       RoverDriveControlType driveType, GamepadAxisCommand leftStick, GamepadAxisCommand rightStick) {
     switch (driveType) {
       case RoverDriveControlType.arcade:
-        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, rightStick.x, leftStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, rightStick.x, leftStick.y);
       case RoverDriveControlType.single:
-        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.x, leftStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.x, leftStick.y);
       case RoverDriveControlType.tank:
-        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
       default:
-        return DrivetrainRoverCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
     }
   }
 

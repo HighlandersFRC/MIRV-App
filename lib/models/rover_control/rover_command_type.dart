@@ -1,13 +1,25 @@
-// ignore_for_file: constant_identifier_names
+enum RoverSubsystemType { general, intake, drivetrain, movement, conveyor, sensors }
+// TODO: enhanced enum, integer sub_command, maps to different enum
 
-enum RoverSubsystemType { general, intake, drivetrain, conveyor, sensors }
-
-enum RoverCommandTypeGeneral { deploy, stow, enable, disable, e_stop, deploy_pi_lits, retrieve_pi_lits, enable_remote_operation }
+enum RoverCommandTypeGeneral {
+  deploy,
+  stow,
+  enable,
+  disable,
+  e_stop,
+  start_manual_control,
+  stop_manual_control,
+  deploy_pi_lits,
+  retrieve_pi_lits,
+}
 
 enum RoverCommandTypeIntake { disable, reset, intake, store, deposit, switch_left, switch_right }
 
 enum RoverCommandTypeDrivetrain { arcade, tank }
 
+enum RoverCommandTypeMovement { to_location }
+
 extension RoverSubsytemType1 on RoverSubsystemType {
   dynamic get subCommands {}
 }
+
