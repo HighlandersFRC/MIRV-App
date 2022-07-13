@@ -32,50 +32,52 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
   OverlayEntry? entry;
   late List<bool> isSelected;
 
-  _robotModeButton(RoverStateType roverState) {
-    switch (roverState) {
-      case RoverStateType.disabled:
-      case RoverStateType.docked:
-        return ElevatedButton.icon(
-          onPressed: () {
-            widget.sendCommand(RoverGeneralCommands.startManualControl);
-          },
-          label: const Text(
-            " Manual Control",
-            textScaleFactor: 1.5,
-          ),
-          icon: const Icon(
-            CupertinoIcons.antenna_radiowaves_left_right,
-            size: 60,
-          ),
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
-        );
+  // _robotModeButton(RoverStateType roverState) {
+  //   switch (roverState) {
+  //     case RoverStateType.disabled:
+  //     case RoverStateType.docked:
+  //       return ElevatedButton.icon(
+  //         onPressed: () {
+  //           widget.sendCommand(RoverGeneralCommands.startManualControl);
+  //         },
+  //         label: const Text(
+  //           " Manual Control",
+  //           textScaleFactor: 1.5,
+  //         ),
+  //         icon: const Icon(
+  //           CupertinoIcons.antenna_radiowaves_left_right,
+  //           size: 60,
+  //         ),
+  //         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
+  //       );
 
-      case RoverStateType.remoteOperation:
-        return ElevatedButton(
-          onPressed: null,
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
-          child: Row(children: const [
-            Icon(
-              Icons.smart_toy_outlined,
-              size: 55,
-            ),
-            Text(
-              " Autonomous \n Control",
-            ),
-          ]),
-        );
-      case RoverStateType.eStop:
-        return null;
-    }
-  }
+  //     case RoverStateType.remoteOperation:
+  //       return ElevatedButton(
+  //         onPressed: () {
+  //           widget.sendCommand(RoverGeneralCommands.stopManualControl);
+  //         },
+  //         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
+  //         child: Row(children: const [
+  //           Icon(
+  //             Icons.smart_toy_outlined,
+  //             size: 55,
+  //           ),
+  //           Text(
+  //             " Autonomous \n Control",
+  //           ),
+  //         ]),
+  //       );
+  //     case RoverStateType.eStop:
+  //       return null;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 175, child: _robotModeButton(widget.roverMetrics.state)),
+        SizedBox(width: 175),
         const SizedBox(
           height: 15,
         ),
