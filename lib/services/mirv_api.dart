@@ -9,7 +9,7 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class MirvApi {
   Timer? timer;
-  final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
+  final String ipAddress = 'http://52.185.79.181:8080';
   SessionStorageService? _sessionStorageService;
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();

@@ -21,8 +21,8 @@ class SearchBar extends StatelessWidget {
   final TextEditingController _typeAheadController = TextEditingController();
 
   Rx<Position?> currentLocation = Rx<Position?>(null);
-  List<PlaceSearch> searchResults = [];
   Rx<String> searchBarText = Rx<String>('');
+  List<PlaceSearch> searchResults = [];
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
   Place? selectedLocationStatic;
