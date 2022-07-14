@@ -4,7 +4,11 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
-  SessionStorageService? sessionStorageService = SessionStorageService();
+  SessionStorageService sessionStorageService = SessionStorageService();
+
+  init() async {
+    await sessionStorageService.init();
+  }
 
   getKeycloakAuthEndpoint() {
     return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/token');
@@ -17,7 +21,7 @@ class AuthService {
 
     if (res.statusCode == 200) {
       //copy
-      sessionStorageService?.saveAccessToken(res.body);
+      sessionStorageService.saveAccessToken(res.body);
       return res.statusCode;
       //
     } else {
@@ -27,38 +31,38 @@ class AuthService {
   }
 
   setMirvEndpoint(String endpoint) {
-    return sessionStorageService?.saveMirvEndpoint(endpoint);
+    return sessionStorageService.saveMirvEndpoint(endpoint);
   }
 
   setKeycloakEndpoint(String keyCloakEndpoint) {
-    return sessionStorageService?.saveKeycloakEndpoint(keyCloakEndpoint);
+    return sessionStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
   }
 
   setKeycloakRealm(String keyCloakRealm) {
-    return sessionStorageService?.saveKeycloakRealm(keyCloakRealm);
+    return sessionStorageService.saveKeycloakRealm(keyCloakRealm);
   }
 
   setKeycloakClient(String keyCloakClient) {
-    return sessionStorageService?.saveKeycloakClient(keyCloakClient);
+    return sessionStorageService.saveKeycloakClient(keyCloakClient);
   }
 
   String? getMirvEndpoint() {
-    return sessionStorageService?.retrieveMirvEndpoint();
+    return sessionStorageService.retrieveMirvEndpoint();
   }
 
   String? getKeycloakEndpoint() {
-    return sessionStorageService?.retrieveKeycloakEndpoint();
+    return sessionStorageService.retrieveKeycloakEndpoint();
   }
 
   String? getKeycloakRealm() {
-    return sessionStorageService?.retrieveKeycloakRealm();
+    return sessionStorageService.retrieveKeycloakRealm();
   }
 
   String? getKeycloakClient() {
-    return sessionStorageService?.retrieveKeycloakClient();
+    return sessionStorageService.retrieveKeycloakClient();
   }
 
   String? getKeycloakAccessToken() {
-    return sessionStorageService?.retriveAccessToken();
+    return sessionStorageService.retriveAccessToken();
   }
 }

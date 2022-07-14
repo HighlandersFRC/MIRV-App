@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:mirv/models/auth/token_model.dart';
 
 class SessionStorageService {
-  static SessionStorageService? manager;
   static SharedPreferences? _prefs;
   static const String ACCESS_TOKEN_KEY = "ACCESS_TOKEN";
 
@@ -13,7 +12,10 @@ class SessionStorageService {
   static const String KEY_CLOAK_REALM_TOKEN_KEY = "KEY_CLOAK_REALM_TOKEN";
   static const String KEY_CLOAK_CLIENT_TOKEN_KEY = "KEY_CLOAK_CLIENT_TOKEN";
 
-  init() {
+//call init everytime with class
+  init() async {
+    _prefs = await SharedPreferences.getInstance();
+
     if (retrieveMirvEndpoint() == null) {
       saveMirvEndpoint('http://52.185.79.181:8080');
     }

@@ -12,11 +12,12 @@ class SettingsTextBoxController extends GetxController {
   final keycloakClientController = TextEditingController();
 
   @override
-  onInit() {
-    authService.getMirvEndpoint();
-    authService.getKeycloakEndpoint();
-    authService.getKeycloakRealm();
-    authService.getKeycloakClient();
+  onInit() async {
+    await authService.init();
+    endpointController.text = authService.getMirvEndpoint() ?? '';
+    keycloakEndpointController.text = authService.getKeycloakEndpoint() ?? '';
+    keycloakRealmController.text = authService.getKeycloakRealm() ?? '';
+    keycloakClientController.text = authService.getKeycloakClient() ?? '';
     super.onInit();
   }
 
