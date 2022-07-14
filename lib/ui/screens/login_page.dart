@@ -5,6 +5,7 @@ import 'package:mirv/ui/screens/home_page.dart';
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  AuthService authService = AuthService();
 
   void displayDialog(context, title, text) => showDialog(
         context: context,
@@ -12,8 +13,7 @@ class LoginPage extends StatelessWidget {
       );
 
   Future<int> attemptLogIn(String username, String password) async {
-    var authService = await AuthService.getInstance();
-    return authService!.authenticateUser(username, password);
+    return authService.authenticateUser(username, password);
   }
 
   @override
