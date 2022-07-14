@@ -24,7 +24,7 @@ mixin _$RoverMetrics {
   RoverStateType get state =>
       throw _privateConstructorUsedError; //Rover StateType
   RoverStatusType get status =>
-      throw _privateConstructorUsedError; //Rover StatusType
+      throw _privateConstructorUsedError; //RoverStatusType
   int get battery => throw _privateConstructorUsedError;
   RoverMetricHealth get health => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
@@ -206,7 +206,7 @@ class _$_RoverMetrics implements _RoverMetrics {
   @override
   @JsonKey()
   final RoverStatusType status;
-//Rover StatusType
+//RoverStatusType
   @override
   @JsonKey()
   final int battery;
