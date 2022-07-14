@@ -19,8 +19,10 @@ class SearchBar extends StatelessWidget {
 
   final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
+  final TextEditingController _typeAheadController = TextEditingController();
 
   Rx<Position?> currentLocation = Rx<Position?>(null);
+  Rx<String> searchBarText = Rx<String>('');
   List<PlaceSearch> searchResults = [];
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
@@ -72,10 +74,10 @@ class SearchBar extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: TypeAheadField(
                         textFieldConfiguration: TextFieldConfiguration(
-                          autofocus: false,
-                          style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
-                          decoration: const InputDecoration(border: OutlineInputBorder()),
-                        ),
+                            autofocus: false,
+                            style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
+                            decoration: const InputDecoration(border: OutlineInputBorder()),
+                            controller: this._typeAheadController),
                         suggestionsCallback: (pattern) async {
                           return await searchPlaces(pattern);
                         },
@@ -86,6 +88,8 @@ class SearchBar extends StatelessWidget {
                         },
                         onSuggestionSelected: (PlaceSearch suggestion) {
                           setSelectedLocation(suggestion.placeId);
+                          searchBarText.value = suggestion.description;
+                          this._typeAheadController.text = searchBarText.value;
                         })),
               ),
             ]))),
