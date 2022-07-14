@@ -4,23 +4,10 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
-  SessionStorageService? sessionStorageService;
+  SessionStorageService? sessionStorageService = SessionStorageService();
 
   getKeycloakAuthEndpoint() {
     return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/token');
-  }
-
-  AuthService() {
-    init();
-  }
-  init() async {
-    sessionStorageService = await SessionStorageService.getInstance();
-  }
-
-// put apipath here
-  static Future<AuthService?> getInstance() async {
-    service ??= AuthService();
-    return service;
   }
 
   Future<int> authenticateUser(String username, String password) async {
@@ -69,5 +56,9 @@ class AuthService {
 
   String? getKeycloakClient() {
     return sessionStorageService?.retrieveKeycloakClient();
+  }
+
+  String? getKeycloakAccessToken() {
+    return sessionStorageService?.retriveAccessToken();
   }
 }

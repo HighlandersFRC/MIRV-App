@@ -12,6 +12,7 @@ class SessionStorageService {
   static const String KEY_CLOAK_ENDPOINT_TOKEN_KEY = "KEY_CLOAK_ENDPOINT_TOKEN";
   static const String KEY_CLOAK_REALM_TOKEN_KEY = "KEY_CLOAK_REALM_TOKEN";
   static const String KEY_CLOAK_CLIENT_TOKEN_KEY = "KEY_CLOAK_CLIENT_TOKEN";
+
   init() {
     if (retrieveMirvEndpoint() == null) {
       saveMirvEndpoint('http://52.185.79.181:8080');
@@ -25,15 +26,6 @@ class SessionStorageService {
     if (retrieveKeycloakClient() == null) {
       saveKeycloakClient('mirv');
     }
-  }
-
-  static Future<SessionStorageService> getInstance() async {
-    if (manager == null || _prefs == null) {
-      manager = SessionStorageService();
-      _prefs = await SharedPreferences.getInstance();
-      manager?.init();
-    }
-    return manager!;
   }
 
   void saveAccessToken(String accessToken) {

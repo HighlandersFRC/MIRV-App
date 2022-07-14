@@ -14,22 +14,13 @@ class MirvApi {
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
   AuthService authService = AuthService();
-  MirvApi() {
-    _getSessionStorageService();
-  }
 
-  _getSessionStorageService() async {
-    _sessionStorageService = await SessionStorageService.getInstance();
-  }
-
-//session
-  Future<String?> _getCurrentAuthToken() async {
-    _sessionStorageService ??= await SessionStorageService.getInstance();
-    return _sessionStorageService?.retriveAccessToken();
+  String? _getCurrentAuthToken() {
+    return authService.getKeycloakAccessToken();
   }
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
-    String? token = await _getCurrentAuthToken();
+    String? token = _getCurrentAuthToken();
     var response = await http
         .get(Uri.parse("${authService.getMirvEndpoint()}/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
@@ -37,7 +28,7 @@ class MirvApi {
   }
 
   Future<List<RoverMetrics>> getRovers() async {
-    String? token = await _getCurrentAuthToken();
+    String? token = _getCurrentAuthToken();
     List<RoverMetrics> rovers;
     var response =
         await http.get(Uri.parse("${authService.getMirvEndpoint()}/rovers"), headers: {'Authorization': 'Bearer $token'});
@@ -46,7 +37,7 @@ class MirvApi {
   }
 
   Future<http.StreamedResponse> startRoverConnection(String roverId, RTCSessionDescription? des) async {
-    String? token = await _getCurrentAuthToken();
+    String? token = _getCurrentAuthToken();
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
       'POST',
