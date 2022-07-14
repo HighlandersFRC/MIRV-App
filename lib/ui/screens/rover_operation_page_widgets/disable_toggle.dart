@@ -19,10 +19,11 @@ class ToggleDisable extends StatefulWidget {
 
 class _ToggleDisableState extends State<ToggleDisable> {
   bool enable = true;
-
   _enableState(RoverStateType roverState) {
     switch (roverState) {
-      case RoverStateType.disabled:
+      case RoverStateType.disconnected:
+
+        ///TODO: implement this so it actually works
         enable = false;
         break;
       default:

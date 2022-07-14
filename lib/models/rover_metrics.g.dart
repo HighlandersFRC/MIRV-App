@@ -10,7 +10,7 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
     _$_RoverMetrics(
       roverId: json['roverId'] as String? ?? "unknown",
       state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
-          RoverStateType.remoteOperation,
+          RoverStateType.disconnected,
       status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
           RoverStatusType.available,
       battery: json['battery'] as int? ?? -1,
@@ -34,10 +34,15 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
     };
 
 const _$RoverStateTypeEnumMap = {
-  RoverStateType.docked: 'docked',
-  RoverStateType.remoteOperation: 'remoteOperation',
-  RoverStateType.disabled: 'disabled',
-  RoverStateType.eStop: 'eStop',
+  RoverStateType.disconnected: 'disconnected',
+  RoverStateType.disconnected_fault: 'disconnected_fault',
+  RoverStateType.e_stop: 'e_stop',
+  RoverStateType.connected_disabled: 'connected_disabled',
+  RoverStateType.connected_idle_roaming: 'connected_idle_roaming',
+  RoverStateType.connected_idle_docked: 'connected_idle_docked',
+  RoverStateType.connected_fault: 'connected_fault',
+  RoverStateType.autonomous: 'autonomous',
+  RoverStateType.remote_operation: 'remote_operation',
 };
 
 const _$RoverStatusTypeEnumMap = {
