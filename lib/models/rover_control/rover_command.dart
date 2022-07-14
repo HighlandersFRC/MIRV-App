@@ -97,9 +97,31 @@ class RoverMovementCommands {
 }
 
 Map<RoverStateType, List<Pair<RoverCommand, String>>> roverCommandsByState = {
-  RoverStateType.disconnected: [],
+  RoverStateType.disconnected: [
+    // Pair(RoverGeneralCommands.connect, "Connect"), //TODO: maybe add connect command?
+  ],
   RoverStateType.e_stop: [],
+  RoverStateType.disconnected_fault: [],
+  RoverStateType.connected_disabled: [
+    Pair(RoverGeneralCommands.enable, "Enable"),
+  ],
+  RoverStateType.connected_fault: [
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+  ],
+  RoverStateType.connected_idle_roaming: [
+    Pair(RoverGeneralCommands.startManualControl, "Manual Control"),
+    Pair(RoverGeneralCommands.disable, "Disable"),
+    //  Pair(RoverGeneralCommands.startAutonomous, "Autonomous"), //TODO: add startAutonomous command
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+  ],
+  RoverStateType.autonomous: [
+    Pair(RoverGeneralCommands.stow, "Stow"),
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+    Pair(RoverGeneralCommands.disable, "Disable"),
+    //Pair(RoverGeneralCommands.stopAutonomous, "End Autonomous"), //TODO: add stopAutonomous command
+  ],
   RoverStateType.remote_operation: [
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
     Pair(RoverGeneralCommands.stow, "Stow"),
     Pair(RoverGeneralCommands.deployPiLits, "Deploy Pi Lits"),
     Pair(RoverGeneralCommands.retrievePiLits, "Retrieve Pi Lits"),
