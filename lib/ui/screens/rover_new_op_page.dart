@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/services/gamepad_controller.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:observable/observable.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:get/get.dart';
@@ -10,10 +13,16 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/left_side_buttons.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/right_side_buttons.dart';
-
+import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
+class JoystickValue extends Observable {
+  final double x;
+  final double y;
+  final DateTime ts;
 
+  JoystickValue(this.x, this.y, this.ts);
+}
 class MapSelectionController extends GetxController {
   Rx<bool> showMap = false.obs;
 }
@@ -30,6 +39,9 @@ class RoverOpPage extends StatefulWidget {
 class _RoverOpPageState extends State<RoverOpPage> {
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   final MirvApi _mirvApi = MirvApi();
+  GamepadController gamepadController = GamepadController();
+  String transformType = "none";
+  var messageBoxController = TextEditingController();
   final mapSelectionController = Get.put(MapSelectionController());
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
@@ -41,7 +53,21 @@ class _RoverOpPageState extends State<RoverOpPage> {
   ];
   final RoverMetrics roverMetrics = const RoverMetrics();
   final WebRTCConnection webRTCConnection = WebRTCConnection();
-  Rx<bool> useGamepad = false.obs;
+bool _inCalling = false;
+  bool isWorking = true;
+  DateTime? _timeStart;
+  double prevX = 0;
+  double prevY = 0;
+  bool _loading = false;
+  DateTime lastSendTime = DateTime.now();
+
+  Timer? timerJoy;
+  Timer? timerGamepad;
+
+  final roverCommandStream = BehaviorSubject<RoverCommand>();
+  final gamepadStream = BehaviorSubject<List<double>>();
+
+  get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
 
   @override
   void initState() {
@@ -81,10 +107,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     width: 200,
                     child: LeftSideButtons(
                       roverMetrics: roverMetrics,
-                      sendGeneralCommand: webRTCConnection.sendGeneralCommand,
                       periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                      sendCommand: webRTCConnection.sendCommand,
-                      mapSelectionController: mapSelectionController,
+                      sendCommand: webRTCConnection.sendRoverCommand,
+                      mapSelectionController: mapSelectionController, mirvApi: _mirvApi,
                     )),
               ),
               Align(
@@ -99,13 +124,12 @@ class _RoverOpPageState extends State<RoverOpPage> {
                   alignment: Alignment.bottomRight,
                   child: RightSideButtons(
                     roverMetrics: roverMetrics,
-                    sendCommand: webRTCConnection.sendCommand,
+                    sendCommand: webRTCConnection.sendRoverCommand,
                     makeCall: startWebRTCCall,
                     stopCall: webRTCConnection.stopCall,
                     joystickPublish: webRTCConnection.joystickPublish,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                    startJoystickUpdates: webRTCConnection.startJoystickUpdates,
-                    useGamepad: useGamepad,
+                    useGamepad: webRTCConnection.useGamepad,
                   ))
             ],
           ),

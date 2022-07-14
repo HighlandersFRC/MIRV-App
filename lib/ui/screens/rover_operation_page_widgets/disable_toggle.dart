@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
   final RoverMetrics? roverMetrics;
-  final Function(String, String) sendCommand;
+  final Function(RoverCommand) sendCommand;
   const ToggleDisable({
     Key? key,
     required this.roverMetrics,
@@ -18,15 +20,15 @@ class ToggleDisable extends StatefulWidget {
 class _ToggleDisableState extends State<ToggleDisable> {
   bool enable = true;
 
-  // _enableState(RoverStateType roverState) {
-  //   switch (roverState) {
-  //     case RoverStateType.disabled:
-  //       enable = false;
-  //       break;
-  //     default:
-  //       return null;
-  //   }
-  // }
+  _enableState(RoverStateType roverState) {
+    switch (roverState) {
+      case RoverStateType.disabled:
+        enable = false;
+        break;
+      default:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,10 @@ class _ToggleDisableState extends State<ToggleDisable> {
     //     : RoverStateType.eStop);
     return ElevatedButton(
         onPressed: () {
-          widget.sendCommand("disable", "intake");
-          Fluttertoast.showToast(
-            msg: "Sending Signal",
-          );
+          widget.sendCommand(RoverIntakeCommands.disable);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Sending signal"),
+          ));
           setState(() {
             enable = !enable;
           });

@@ -17,7 +17,6 @@ class SearchBar extends StatelessWidget {
 
   SearchBar({Key? key, required this.selectedRoverController}) : super(key: key);
 
-  final geoLocatorService = GeolocatorService();
   final placesService = PlacesService();
   final TextEditingController _typeAheadController = TextEditingController();
 
@@ -28,10 +27,6 @@ class SearchBar extends StatelessWidget {
   StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>();
   Place? selectedLocationStatic;
   String? placeType;
-
-  setCurrentLocation() async {
-    currentLocation.value = await geoLocatorService.getCurrentLocation();
-  }
 
   Future<List<PlaceSearch>> searchPlaces(String searchTerm) async {
     searchResults = await placesService.getAutocomplete(searchTerm);
@@ -60,39 +55,41 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setCurrentLocation();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Obx(() => ((currentLocation.value == null)
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(children: [
-              SizedBox(
-                height: 70,
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TypeAheadField(
-                        textFieldConfiguration: TextFieldConfiguration(
-                            autofocus: false,
-                            style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
-                            decoration: const InputDecoration(border: OutlineInputBorder()),
-                            controller: this._typeAheadController),
-                        suggestionsCallback: (pattern) async {
-                          return await searchPlaces(pattern);
-                        },
-                        itemBuilder: (context, PlaceSearch suggestion) {
-                          return ListTile(
-                            title: Text(suggestion.description),
-                          );
-                        },
-                        onSuggestionSelected: (PlaceSearch suggestion) {
-                          setSelectedLocation(suggestion.placeId);
-                          searchBarText.value = suggestion.description;
-                          this._typeAheadController.text = searchBarText.value;
-                        })),
-              ),
-            ]))),
+      body:
+          // Obx(() => (
+          // (currentLocation.value == null)
+          //   ? const Center(
+          //       child: CircularProgressIndicator(),
+          //     )
+          //   :
+          Column(children: [
+        SizedBox(
+          height: 70,
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                      autofocus: false,
+                      style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
+                      decoration: const InputDecoration(border: OutlineInputBorder()),
+                      controller: this._typeAheadController),
+                  suggestionsCallback: (pattern) async {
+                    return await searchPlaces(pattern);
+                  },
+                  itemBuilder: (context, PlaceSearch suggestion) {
+                    return ListTile(
+                      title: Text(suggestion.description),
+                    );
+                  },
+                  onSuggestionSelected: (PlaceSearch suggestion) {
+                    setSelectedLocation(suggestion.placeId);
+                    searchBarText.value = suggestion.description;
+                    this._typeAheadController.text = searchBarText.value;
+                  })),
+        ),
+      ]),
     );
   }
 }

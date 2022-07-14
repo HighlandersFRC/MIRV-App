@@ -7,7 +7,7 @@ import 'package:mirv/ui/screens/login_page.dart';
 
 void main() {
   if (WebRTC.platformIsDesktop) {
-    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+    //debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   } else if (WebRTC.platformIsAndroid) {
     WidgetsFlutterBinding.ensureInitialized();
   }

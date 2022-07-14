@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
@@ -16,18 +17,16 @@ class RightSideButtons extends StatefulWidget {
       required this.stopCall,
       required this.joystickPublish,
       required this.periodicMetricUpdates,
-      required this.startJoystickUpdates,
       required this.useGamepad})
       : super(key: key);
   final RoverMetrics roverMetrics;
   final Function() stopCall;
   final Function() makeCall;
-  final get_pkg.RxList<JoystickValue> joystickPublish;
+  final get_pkg.Rx<JoystickValue> joystickPublish;
   final get_pkg.Rx<bool> useGamepad;
 
-  final Function(String, String) sendCommand;
+  final Function(RoverCommand) sendCommand;
   final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
-  final Function() startJoystickUpdates;
 
   @override
   State<RightSideButtons> createState() => _RightSideButtonsState();
@@ -97,7 +96,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 ? Joystick(
                     mode: joystickMode,
                     listener: (details) {
-                      widget.joystickPublish.value = ([JoystickValue(details.x, details.y, DateTime.now())]);
+                      widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));
                     },
                   )
                 : null),
@@ -109,7 +108,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           height: 100,
           width: 250,
           child: ElevatedButton.icon(
-            onPressed: () => widget.sendCommand("eStop", "general"),
+            onPressed: () => widget.sendCommand(RoverGeneralCommands.eStop),
             label: const Text("E-STOP"),
             icon: const Icon(Icons.warning_amber_rounded),
             style: ButtonStyle(
