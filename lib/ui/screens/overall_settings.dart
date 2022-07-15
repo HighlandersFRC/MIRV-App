@@ -50,42 +50,44 @@ class SettingsPage extends StatelessWidget {
           "Settings",
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: [
-            ListTile(
-              title: TextField(
-                controller: settingsTextBoxController.endpointController,
-                decoration: const InputDecoration(hintText: 'MIRV Endpoint address:'),
+      body: Scrollbar(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            children: [
+              ListTile(
+                title: TextField(
+                  controller: settingsTextBoxController.endpointController,
+                  decoration: const InputDecoration(hintText: 'MIRV Endpoint address:'),
+                ),
               ),
-            ),
-            ListTile(
-              title: TextField(
-                controller: settingsTextBoxController.keycloakEndpointController,
-                decoration: const InputDecoration(hintText: 'Keycloak Endpoint:'),
+              ListTile(
+                title: TextField(
+                  controller: settingsTextBoxController.keycloakEndpointController,
+                  decoration: const InputDecoration(hintText: 'Keycloak Endpoint:'),
+                ),
               ),
-            ),
-            ListTile(
-              title: TextField(
-                controller: settingsTextBoxController.keycloakRealmController,
+              ListTile(
+                title: TextField(
+                  controller: settingsTextBoxController.keycloakRealmController,
+                ),
               ),
-            ),
-            ListTile(
-              title: TextField(
-                controller: settingsTextBoxController.keycloakClientController,
-                decoration: const InputDecoration(hintText: 'Keycloak Client:'),
+              ListTile(
+                title: TextField(
+                  controller: settingsTextBoxController.keycloakClientController,
+                  decoration: const InputDecoration(hintText: 'Keycloak Client:'),
+                ),
               ),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  authService.setMirvEndpoint(settingsTextBoxController.endpointController.text);
-                  authService.setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.text);
-                  authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.text);
-                  authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.text);
-                },
-                child: const Text('Save'))
-          ],
+              ElevatedButton(
+                  onPressed: () {
+                    authService.setMirvEndpoint(settingsTextBoxController.endpointController.text);
+                    authService.setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.text);
+                    authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.text);
+                    authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.text);
+                  },
+                  child: const Text('Save'))
+            ],
+          ),
         ),
       ),
     );
