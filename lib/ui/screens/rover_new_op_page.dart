@@ -134,7 +134,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 Align(
                     alignment: Alignment.center,
                     child: Obx(() => CenterPanel(
-                        width: width / 4,
+                        width: width / 2,
                         height: height - 150,
                         localRenderer: webRTCConnection.localRenderer.value,
                         locationStream: locationStream,

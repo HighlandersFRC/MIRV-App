@@ -40,8 +40,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
   @override
   Widget build(BuildContext context) {
     const JoystickMode joystickMode = JoystickMode.all;
-    double heightEquivalent = widget.height > 600 ? 1 : widget.height / 600;
-    double joystickHeight = widget.height > 600 ? 1 : widget.height / 600;
+    double heightEquivalent = widget.height > 600 ? 1 : widget.height / 400;
+    double joystickHeight = widget.height > 600 ? 1 : widget.height / 400;
     Color gradientStart = Colors.transparent;
     Color gradientEnd = Colors.black;
     return Column(
@@ -75,7 +75,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
         Padding(
           padding: EdgeInsets.only(bottom: heightEquivalent * 5),
           child: SizedBox(
-            height: 50,
+            height: 40,
             child: StreamBuilder<RoverMetrics>(
                 stream: widget.periodicMetricUpdates,
                 builder: (context, snapshot) {
@@ -83,15 +83,6 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 }),
           ),
         ),
-        Padding(
-            padding: EdgeInsets.only(bottom: heightEquivalent * 5),
-            child: get_pkg.Obx(
-              () => Switch(
-                  value: widget.useGamepad.value,
-                  onChanged: (val) {
-                    widget.useGamepad.value = !widget.useGamepad.value;
-                  }),
-            )),
         Padding(
           padding: EdgeInsets.only(bottom: heightEquivalent * 5, right: 10, left: 10),
           child: SizedBox(
@@ -102,11 +93,11 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                       base: Container(
                           height: joystickHeight * 200,
                           width: joystickHeight * 200,
-                          child: Transform.scale(scale: 1, child: JoystickBase())
-                          // decoration: BoxDecoration(
-                          //   shape: BoxShape.circle,
-                          //   border: Border.all(color: Colors.blueAccent, width: 5),
-                          ),
+                          // child: Transform.scale(scale: 1, child: JoystickBase())
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.blueAccent, width: 5),
+                          )),
                       listener: (details) {
                         widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));
                       },
