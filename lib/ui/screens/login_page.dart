@@ -17,10 +17,14 @@ class LoginController extends GetxController {
   AuthService authService = AuthService();
   final Rx<bool> isLoading = true.obs;
 
-  @override
-  void onInit() {
-    // Simulating obtaining the user name from some local storage
-    super.onInit();
+  // @override
+  // void onInit() async {
+  //   // Simulating obtaining the user name from some local storage
+  //   super.onInit();
+  // }
+
+  Future<void> init() async {
+    await authService.init();
   }
 
   @override
@@ -73,7 +77,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.validateToken();
+    controller.init().then((val) => controller.validateToken());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Log In Page"),
