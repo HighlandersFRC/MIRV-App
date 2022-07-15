@@ -12,6 +12,7 @@ import 'package:mirv/ui/screens/rover_selection_map.dart';
 class SelectedRoverController extends GetxController {
   Rx<String> selectedRoverId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
+  Rx<bool> isRoverListMinimized = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedRoverController() {
@@ -94,6 +95,9 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    selectedRoverController.isRoverListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
@@ -110,79 +114,117 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
       ),
       body: Row(
         children: [
-          SizedBox(
-            width: roverListWidth,
-            child: Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: () => Future(_refreshRoversList),
-                  child: Obx(
-                    () => ListView.builder(
-                      itemCount: roverList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 1,
-                            horizontal: 4,
-                          ),
-                          child: Obx(
-                            () => ListTile(
-                              tileColor: selectedRoverController.roverTileColor(
-                                roverList[index].roverId,
-                                roverList[index].status,
-                              ),
-                              title: Text(
-                                "Rover ${roverList[index].roverId}",
-                              ),
-                              subtitle: Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
-                              onTap: () {
-                                if (roverList[index].status == RoverStatusType.available) {
-                                  selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
-                                }
-                              },
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  _batteryIcon(roverList[index].battery, alertLevel: 20),
-                                ],
-                              ),
+          Obx(
+            () => SizedBox(
+              width: selectedRoverController.isRoverListMinimized.value ? 150 : 300,
+              child: Stack(
+                children: [
+                  RefreshIndicator(
+                    onRefresh: () => Future(_refreshRoversList),
+                    child: Obx(
+                      () => ListView.builder(
+                        itemCount: roverList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 1,
+                              horizontal: 4,
                             ),
-                          ),
-                        );
-                      },
+                            child: Obx(
+                              () => selectedRoverController.isRoverListMinimized.value
+                                  ? ListTile(
+                                      tileColor: selectedRoverController.roverTileColor(
+                                        roverList[index].roverId,
+                                        roverList[index].status,
+                                      ),
+                                      title: Text(roverList[index].roverId.toString()),
+                                      onTap: () {
+                                        if (roverList[index].status == RoverStatusType.available) {
+                                          selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
+                                        }
+                                      })
+                                  : ListTile(
+                                      tileColor: selectedRoverController.roverTileColor(
+                                        roverList[index].roverId,
+                                        roverList[index].status,
+                                      ),
+                                      title: selectedRoverController.isRoverListMinimized.value
+                                          ? Text(roverList[index].roverId.toString())
+                                          : Text(
+                                              "Rover ${roverList[index].roverId}",
+                                            ),
+                                      subtitle: selectedRoverController.isRoverListMinimized.value
+                                          ? const SizedBox()
+                                          : Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                                      onTap: () {
+                                        if (roverList[index].status == RoverStatusType.available) {
+                                          selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
+                                        }
+                                      },
+                                      trailing: selectedRoverController.isRoverListMinimized.value
+                                          ? const SizedBox()
+                                          : Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                _batteryIcon(roverList[index].battery, alertLevel: 20),
+                                              ],
+                                            ),
+                                    ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Obx(
-                        () => ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
-                          onPressed: selectedRoverController.isConnectButtonEnabled.value
-                              ? () {
-                                  Get.to(RoverOpPage(selectedRoverController.selectedRoverId.value));
-                                }
-                              : null,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.link_rounded),
-                              Text(' Connect'),
-                            ],
+                  Positioned(
+                    bottom: 10,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Obx(
+                          () => ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(
+                                    selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
+                            onPressed: selectedRoverController.isConnectButtonEnabled.value
+                                ? () {
+                                    Get.to(RoverOpPage(selectedRoverController.selectedRoverId.value));
+                                  }
+                                : null,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(Icons.link_rounded),
+                                Text(' Connect'),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  width < 600
+                      ? Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Obx(
+                            () => ElevatedButton(
+                              style: ElevatedButton.styleFrom(primary: Colors.green),
+                              onPressed: () {
+                                selectedRoverController.isRoverListMinimized.value =
+                                    !selectedRoverController.isRoverListMinimized.value;
+                              },
+                              child: selectedRoverController.isRoverListMinimized.value
+                                  ? const Icon(Icons.keyboard_arrow_right)
+                                  : const Icon(Icons.keyboard_arrow_left),
+                            ),
+                          ),
+                        )
+                      : const SizedBox()
+                ],
+              ),
             ),
           ),
           Container(
@@ -190,15 +232,20 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             width: 5,
           ),
           Expanded(
-              child: Column(
+              child: Stack(
             children: [
-              SizedBox(height: 70, child: SearchBar(selectedRoverController: selectedRoverController)),
-              Expanded(
-                child: Obx(
-                  // ignore: invalid_use_of_protected_member
-                  () => (RoverSelectionMap(roverList.value, selectedRoverController.selectedRoverId, selectedRoverController)),
-                ),
-              )
+              Column(
+                children: [
+                  SizedBox(height: 70, child: SearchBar(selectedRoverController: selectedRoverController)),
+                  Expanded(
+                    child: Obx(
+                      // ignore: invalid_use_of_protected_member
+                      () =>
+                          (RoverSelectionMap(roverList.value, selectedRoverController.selectedRoverId, selectedRoverController)),
+                    ),
+                  )
+                ],
+              ),
             ],
           ))
         ],

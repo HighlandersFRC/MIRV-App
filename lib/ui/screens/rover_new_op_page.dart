@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/services/gamepad_controller.dart';
@@ -16,6 +17,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/right_side_buttons.
 import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
+
 class JoystickValue extends Observable {
   final double x;
   final double y;
@@ -23,6 +25,7 @@ class JoystickValue extends Observable {
 
   JoystickValue(this.x, this.y, this.ts);
 }
+
 class MapSelectionController extends GetxController {
   Rx<bool> showMap = false.obs;
 }
@@ -53,7 +56,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   ];
   final RoverMetrics roverMetrics = const RoverMetrics();
   final WebRTCConnection webRTCConnection = WebRTCConnection();
-bool _inCalling = false;
+  bool _inCalling = false;
   bool isWorking = true;
   DateTime? _timeStart;
   double prevX = 0;
@@ -75,11 +78,21 @@ bool _inCalling = false;
     _mirvApi.startPeriodicMetricUpdates(widget.selectedRoverId);
     startWebRTCCall();
     webRTCConnection.startJoystickUpdates();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
   void dispose() {
     super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _mirvApi.stopPeriodicMetricUpdates();
   }
 
@@ -89,6 +102,9 @@ bool _inCalling = false;
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     webRTCConnection.notificationsFromWebRTC(widget.selectedRoverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
@@ -97,47 +113,55 @@ bool _inCalling = false;
         stopCall: webRTCConnection.stopCall,
         peerConnectionState: webRTCConnection.peerConnectionState,
       ),
-      body: Stack(
-        children: [
-          Row(
-            children: [
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: SizedBox(
-                    width: 200,
-                    child: LeftSideButtons(
-                      roverMetrics: roverMetrics,
-                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                      sendCommand: webRTCConnection.sendRoverCommand,
-                      mapSelectionController: mapSelectionController, mirvApi: _mirvApi,
-                    )),
-              ),
-              Align(
-                  alignment: Alignment.center,
-                  child: Obx(() => CenterPanel(
-                      localRenderer: webRTCConnection.localRenderer.value,
-                      locationStream: locationStream,
-                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                      piLitMarkers: piLitMarkers,
-                      showMap: mapSelectionController.showMap.value))),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: RightSideButtons(
+      body: Scrollbar(
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                      child: LeftSideButtons(
+                    width: width / 4,
+                    height: height - 150,
                     roverMetrics: roverMetrics,
-                    sendCommand: webRTCConnection.sendRoverCommand,
-                    makeCall: startWebRTCCall,
-                    stopCall: webRTCConnection.stopCall,
-                    joystickPublish: webRTCConnection.joystickPublish,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                    useGamepad: webRTCConnection.useGamepad,
-                  ))
-            ],
-          ),
-          Obx(() => webRTCConnection.loading.value
-              ? Expanded(
-                  child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
-              : SizedBox.shrink())
-        ],
+                    sendCommand: webRTCConnection.sendRoverCommand,
+                    mapSelectionController: mapSelectionController,
+                    mirvApi: _mirvApi,
+                  )),
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Obx(() => CenterPanel(
+                        width: width / 4,
+                        height: height - 150,
+                        localRenderer: webRTCConnection.localRenderer.value,
+                        locationStream: locationStream,
+                        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                        piLitMarkers: piLitMarkers,
+                        showMap: mapSelectionController.showMap.value))),
+                Align(
+                    alignment: Alignment.bottomRight,
+                    child: RightSideButtons(
+                      width: width / 4,
+                      height: height - 150,
+                      roverMetrics: roverMetrics,
+                      sendCommand: webRTCConnection.sendRoverCommand,
+                      makeCall: startWebRTCCall,
+                      stopCall: webRTCConnection.stopCall,
+                      joystickPublish: webRTCConnection.joystickPublish,
+                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                      useGamepad: webRTCConnection.useGamepad,
+                    ))
+              ],
+            ),
+            Obx(() => webRTCConnection.loading.value
+                ? Expanded(
+                    child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
+                : SizedBox.shrink())
+          ],
+        ),
       ),
     );
   }

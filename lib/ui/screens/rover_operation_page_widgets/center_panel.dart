@@ -14,7 +14,9 @@ class CenterPanel extends StatelessWidget {
       required this.localRenderer,
       required this.showMap,
       required this.locationStream,
-      required this.piLitMarkers})
+      required this.piLitMarkers,
+      required this.width,
+      required this.height})
       : super(key: key);
 
   final dynamic periodicMetricUpdates;
@@ -22,6 +24,8 @@ class CenterPanel extends StatelessWidget {
   final bool showMap;
   final BehaviorSubject<LatLng> locationStream;
   final List<PiLit> piLitMarkers;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +33,8 @@ class CenterPanel extends StatelessWidget {
       children: [
         Container(
           color: Colors.amber,
-          width: 800,
-          height: 450,
+          width: width,
+          height: height * 4 / 5,
           child: showMap
               ? RoverOperationMap(
                   locationStream: locationStream,
@@ -55,6 +59,8 @@ class CenterPanel extends StatelessWidget {
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {
               return Container(
+                  height: height / 5,
+                  width: width,
                   child: snapshot.data != null
                       ? TelemeteryDataTable(roverMetrics: snapshot.data!.telemetry)
                       : const Text('Waiting on data'));

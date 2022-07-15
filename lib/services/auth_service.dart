@@ -5,6 +5,9 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
+  static const baseKeycloakUrl = "http://20.221.15.60:8080";
+
+  static final Uri KEYCLOAK_USER_INFO = Uri.parse('$baseKeycloakUrl/auth/realms/vtti/protocol/openid-connect/userinfo');
 
   static Future<AuthService?> getInstance() async {
     service ??= AuthService();
@@ -24,5 +27,12 @@ class AuthService {
       debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
       return res.statusCode;
     }
+  }
+
+  Future<bool> validateToken() async {
+    var sessionStorageService = await SessionStorageService.getInstance();
+    String? token = sessionStorageService.retriveAccessToken();
+    var res = await http.post(KEYCLOAK_USER_INFO, headers: {"Authorization": "Bearer $token"}, body: {"client_id": "mirv"});
+    return res.statusCode == 200 ? true : false;
   }
 }

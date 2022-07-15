@@ -17,13 +17,17 @@ class RightSideButtons extends StatefulWidget {
       required this.stopCall,
       required this.joystickPublish,
       required this.periodicMetricUpdates,
-      required this.useGamepad})
+      required this.useGamepad,
+      required this.width,
+      required this.height})
       : super(key: key);
   final RoverMetrics roverMetrics;
   final Function() stopCall;
   final Function() makeCall;
   final get_pkg.Rx<JoystickValue> joystickPublish;
   final get_pkg.Rx<bool> useGamepad;
+  final double width;
+  final double height;
 
   final Function(RoverCommand) sendCommand;
   final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
@@ -33,95 +37,94 @@ class RightSideButtons extends StatefulWidget {
 }
 
 class _RightSideButtonsState extends State<RightSideButtons> {
-// TODO: implement e-stop method
-  eStop() {
-    throw UnimplementedError('E-stop is not implemented');
-  }
-
   @override
   Widget build(BuildContext context) {
     const JoystickMode joystickMode = JoystickMode.all;
-
+    double heightEquivalent = widget.height > 600 ? 1 : widget.height / 600;
+    double joystickHeight = widget.height > 600 ? 1 : widget.height / 600;
+    Color gradientStart = Colors.transparent;
+    Color gradientEnd = Colors.black;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 50,
-          width: 250,
-          child: ElevatedButton.icon(
-            onPressed: widget.makeCall,
-            label: const Text('Connect To Rover'),
-            icon: const Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+        Padding(
+          padding: EdgeInsets.only(top: heightEquivalent * 5, bottom: heightEquivalent * 5),
+          child: SizedBox(
+            height: heightEquivalent * 50,
+            width: widget.width - 20,
+            child: ElevatedButton.icon(
+              onPressed: widget.makeCall,
+              label: const Text('Connect To Rover'),
+              icon: const Icon(Icons.wifi_calling_3),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+            ),
           ),
         ),
-        const SizedBox(
-          height: 20,
-          width: 250,
-        ),
-        SizedBox(
-          height: 40,
-          width: 225,
-          child: ElevatedButton(
-            onPressed: widget.stopCall,
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-            child: const Text("Stop call"),
+        Padding(
+          padding: EdgeInsets.only(bottom: heightEquivalent * 5),
+          child: SizedBox(
+            height: heightEquivalent * 50,
+            width: widget.width - 20,
+            child: ElevatedButton(
+              onPressed: widget.stopCall,
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+              child: const Text("Stop call"),
+            ),
           ),
         ),
-        const SizedBox(
-          height: 20,
-          width: 250,
+        Padding(
+          padding: EdgeInsets.only(bottom: heightEquivalent * 5),
+          child: SizedBox(
+            height: 50,
+            child: StreamBuilder<RoverMetrics>(
+                stream: widget.periodicMetricUpdates,
+                builder: (context, snapshot) {
+                  return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
+                }),
+          ),
         ),
-        SizedBox(
-          child: StreamBuilder<RoverMetrics>(
-              stream: widget.periodicMetricUpdates,
-              builder: (context, snapshot) {
-                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
-              }),
-        ),
-        const SizedBox(
-          height: 20,
-          width: 250,
-        ),
-        SizedBox(
+        Padding(
+            padding: EdgeInsets.only(bottom: heightEquivalent * 5),
             child: get_pkg.Obx(
-          () => Switch(
-              value: widget.useGamepad.value,
-              onChanged: (val) {
-                widget.useGamepad.value = !widget.useGamepad.value;
-              }),
-        )),
-        SizedBox(
-            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
-                ? Joystick(
-                    mode: joystickMode,
-                    listener: (details) {
-                      widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));
-                    },
-                  )
-                : null),
-        const SizedBox(
-          height: 20,
-          width: 100,
+              () => Switch(
+                  value: widget.useGamepad.value,
+                  onChanged: (val) {
+                    widget.useGamepad.value = !widget.useGamepad.value;
+                  }),
+            )),
+        Padding(
+          padding: EdgeInsets.only(bottom: heightEquivalent * 5, right: 10, left: 10),
+          child: SizedBox(
+              // height: joystickHeight * 500,
+              child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
+                  ? Joystick(
+                      mode: joystickMode,
+                      base: Container(
+                          height: joystickHeight * 200,
+                          width: joystickHeight * 200,
+                          child: Transform.scale(scale: 1, child: JoystickBase())
+                          // decoration: BoxDecoration(
+                          //   shape: BoxShape.circle,
+                          //   border: Border.all(color: Colors.blueAccent, width: 5),
+                          ),
+                      listener: (details) {
+                        widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));
+                      },
+                    )
+                  : null),
         ),
         SizedBox(
-          height: 100,
-          width: 250,
+          height: heightEquivalent * 50,
+          width: widget.width,
           child: ElevatedButton.icon(
             onPressed: () => widget.sendCommand(RoverGeneralCommands.eStop),
             label: const Text("E-STOP"),
             icon: const Icon(Icons.warning_amber_rounded),
             style: ButtonStyle(
-                animationDuration: const Duration(seconds: 10),
-                backgroundColor: MaterialStateProperty.all(Colors.red[700]),
-                overlayColor: MaterialStateProperty.all(Colors.yellowAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                    side: const BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
-                  ),
-                ),
-                shadowColor: MaterialStateProperty.all(const Color.fromARGB(0, 0, 0, 0))),
+              animationDuration: const Duration(seconds: 10),
+              backgroundColor: MaterialStateProperty.all(Colors.red[700]),
+              overlayColor: MaterialStateProperty.all(Colors.yellowAccent),
+            ),
           ),
         )
       ],

@@ -210,7 +210,7 @@ class WebRTCConnection {
         TextButton(
             onPressed: () {
               get_pkg.Get.back();
-              get_pkg.Get.offAll(HomePage());
+              get_pkg.Get.offAll(() => HomePage());
             },
             child: Text('Home page'))
       ],
@@ -317,8 +317,6 @@ class WebRTCConnection {
     localRenderer.value = val;
   }
 
- 
-
   // sendGeneralCommand(String messageText) {
   //   if (_dataChannel != null) {
   //     _dataChannel!.send(RTCDataChannelMessage(messageText));
@@ -346,7 +344,7 @@ class WebRTCConnection {
     );
     gamepadController.setJoystickListener();
     gamepadController.drivetrainCommandStream.listen((value) {
-    if (!useGamepad.value) return;
+      if (!useGamepad.value) return;
       sendRoverCommand(value);
     });
   }

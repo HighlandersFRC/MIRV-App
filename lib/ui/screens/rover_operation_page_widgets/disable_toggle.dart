@@ -48,8 +48,8 @@ class _ToggleDisableState extends State<ToggleDisable> {
         child: enable == true
             ? const Text(
                 'Disable',
-                style: TextStyle(fontSize: 50),
+                style: TextStyle(fontSize: 30),
               )
-            : const Text('Enable', style: TextStyle(fontSize: 50)));
+            : const Text('Enable', style: TextStyle(fontSize: 30)));
   }
 }
