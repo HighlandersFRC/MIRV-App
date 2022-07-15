@@ -13,7 +13,7 @@ class RoverSelectionMap extends StatefulWidget {
   final List<RoverMetrics> roverMetrics;
   final Rx<String> selectedRoverId;
   final SelectedRoverController selectedRoverController;
-  Rx<String> selectedMarkerId = "".obs;
+  final Rx<String> selectedMarkerId = "".obs;
 
   RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
 
@@ -31,41 +31,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
 
-  LocationData? _locationData;
-  Location location = Location();
+
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
-  final _locationController = TextEditingController();
 
   Set<Polygon> _polygons = HashSet<Polygon>();
-  Set<Circle> _circles = HashSet<Circle>();
   List<LatLng> polygonLatLngs = <LatLng>[];
   double radius = 10.0;
   StreamController<Place?> selectedLocation = StreamController<Place?>();
-
-  BitmapDescriptor _markerIcon = BitmapDescriptor.defaultMarker;
   double zoom = 16.0;
 
-  int _polygonIdCounter = 1;
-  int _circleIdCounter = 1;
-  int _markerIdCounter = 1;
-
-  bool _isPolygon = true;
 
   @override
   void initState() {
     super.initState();
     setCustomMarker();
 
-    locationSubscription = selectedLocation.stream.listen((place) {
-      if (place != null) {
-        _locationController.text = place.name;
-        _goToPlace(place);
-      } else {
-        _locationController.text = "";
-      }
-    });
 
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
@@ -91,16 +73,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
 
-    void _setPolygon() {
-      final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
-      _polygons.add(Polygon(
-        polygonId: PolygonId(polygonIdVal),
-        points: polygonLatLngs,
-        strokeWidth: 2,
-        strokeColor: Colors.yellow,
-        fillColor: Colors.yellow.withOpacity(0.15),
-      ));
-    }
 
     widget.selectedRoverId.listen((roverId) {
       widget.roverMetrics.forEach((element) async {
@@ -111,23 +83,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         }
       });
     });
-
-    // widget.selectedMarkerId.listen((roverId) {
-    //   widget.selectedRoverController.setSelectedRoverId((roverId));
-    // });
   }
 
-  @override
-  void _setPolygon() {
-    final String polygonIdVal = 'polygon_id_$_polygonIdCounter';
-    _polygons.add(Polygon(
-      polygonId: PolygonId(polygonIdVal),
-      points: polygonLatLngs,
-      strokeWidth: 2,
-      strokeColor: Colors.yellow,
-      fillColor: Colors.yellow.withOpacity(0.15),
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +95,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       resizeToAvoidBottomInset: false,
       body: GoogleMap(
         mapType: MapType.hybrid,
-        myLocationEnabled: true,
         initialCameraPosition: CameraPosition(
           target: LatLng(lat, long),
           zoom: 14,
@@ -152,14 +108,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     );
   }
 
-  Future<void> _goToPlace(Place place) async {
-    final GoogleMapController controller = _mapController!;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(place.geometry.location.lat, place.geometry.location.lng), zoom: 14.0),
-      ),
-    );
-  }
+
 
   Set<Marker> getMarkers() {
     setState(() {
