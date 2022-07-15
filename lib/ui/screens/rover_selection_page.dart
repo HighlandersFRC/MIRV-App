@@ -167,7 +167,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                   selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
                           onPressed: selectedRoverController.isConnectButtonEnabled.value
                               ? () {
-                                  Get.to(RoverOpPage(selectedRoverController.selectedRoverId.value));
+                                  Get.to(RoverOpPage(roverList.firstWhere(
+                                      (element) => selectedRoverController.selectedRoverId.value == element.roverId)));
                                 }
                               : null,
                           child: Row(
