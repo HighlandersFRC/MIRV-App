@@ -30,55 +30,98 @@ class RoverCommand with _$RoverCommand {
     @Default(RoverSubsystemType.movement) RoverSubsystemType subsystem,
   }) = MovementRoverCommand;
 
-  factory RoverCommand.fromJson(Map<String, dynamic> json) => _$RoverCommandFromJson(json);
+  factory RoverCommand.fromJson(Map<String, dynamic> json) =>
+      _$RoverCommandFromJson(json);
 }
 
 @freezed
 class RoverCommandParameters with _$RoverCommandParameters {
-  const factory RoverCommandParameters.drivetrain(double x, double y) = RoverCommandParametersDrivetrain;
-  const factory RoverCommandParameters.movement(double lat, double long) = RoverCommandParametersMovement;
+  const factory RoverCommandParameters.drivetrain(double x, double y) =
+      RoverCommandParametersDrivetrain;
+  const factory RoverCommandParameters.movement(double lat, double long) =
+      RoverCommandParametersMovement;
 
-  factory RoverCommandParameters.fromJson(Map<String, dynamic> json) => _$RoverCommandParametersFromJson(json);
+  factory RoverCommandParameters.fromJson(Map<String, dynamic> json) =>
+      _$RoverCommandParametersFromJson(json);
 }
 
 class RoverGeneralCommands {
-  static const eStop = RoverCommand.generalCommand(RoverCommandTypeGeneral.e_stop);
-  static const disable = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable);
-  static const enable = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable);
-  static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
+  static const eStop =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.e_stop);
+  static const disable =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.disable);
+  static const enable =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.enable);
+  static const deploy =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
   static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
-  static const startManualControl = RoverCommand.generalCommand(RoverCommandTypeGeneral.start_manual_control);
-  static const stopManualControl = RoverCommand.generalCommand(RoverCommandTypeGeneral.stop_manual_control);
-  static const deployPiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
-  static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
+  static const startManualControl =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.start_manual_control);
+  static const stopManualControl =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.stop_manual_control);
+  static const deployPiLits =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const retrievePiLits =
+      RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
 }
 
 class RoverIntakeCommands {
-  static const disable = RoverCommand.intakeCommand(RoverCommandTypeIntake.disable);
+  static const disable =
+      RoverCommand.intakeCommand(RoverCommandTypeIntake.disable);
   static const reset = RoverCommand.intakeCommand(RoverCommandTypeIntake.reset);
-  static const intake = RoverCommand.intakeCommand(RoverCommandTypeIntake.intake);
+  static const intake =
+      RoverCommand.intakeCommand(RoverCommandTypeIntake.intake);
   static const store = RoverCommand.intakeCommand(RoverCommandTypeIntake.store);
-  static const deposit = RoverCommand.intakeCommand(RoverCommandTypeIntake.deposit);
-  static const switchLeft = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_left);
-  static const switchRight = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_right);
+  static const deposit =
+      RoverCommand.intakeCommand(RoverCommandTypeIntake.deposit);
+  static const switchLeft =
+      RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_left);
+  static const switchRight =
+      RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_right);
 }
 
 class RoverDrivetrainCommands {
-  static DrivetrainRoverCommand drivetrainCommand(RoverCommandTypeDrivetrain command, double x, double y) {
-    return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
+  static DrivetrainRoverCommand drivetrainCommand(
+      RoverCommandTypeDrivetrain command, double x, double y) {
+    return DrivetrainRoverCommand(
+        command, RoverCommandParameters.drivetrain(x, y));
   }
 }
 
 class RoverMovementCommands {
-  static MovementRoverCommand movementCommand(RoverCommandTypeMovement command, double lat, double long) {
-    return MovementRoverCommand(command, RoverCommandParameters.movement(lat, long));
+  static MovementRoverCommand movementCommand(
+      RoverCommandTypeMovement command, double lat, double long) {
+    return MovementRoverCommand(
+        command, RoverCommandParameters.movement(lat, long));
   }
 }
 
 Map<RoverStateType, List<Pair<RoverCommand, String>>> roverCommandsByState = {
-  RoverStateType.disabled: [],
-  RoverStateType.eStop: [],
-  RoverStateType.remoteOperation: [
+  RoverStateType.disconnected: [
+    // Pair(RoverGeneralCommands.connect, "Connect"), //TODO: maybe add connect command?
+  ],
+  RoverStateType.e_stop: [],
+  RoverStateType.disconnected_fault: [],
+  RoverStateType.connected_disabled: [
+    Pair(RoverGeneralCommands.enable, "Enable"),
+  ],
+  RoverStateType.connected_fault: [
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+  ],
+  RoverStateType.connected_idle_roaming: [
+    Pair(RoverGeneralCommands.startManualControl, "Manual Control"),
+    Pair(RoverGeneralCommands.disable, "Disable"),
+    //  Pair(RoverGeneralCommands.startAutonomous, "Autonomous"), //TODO: add startAutonomous command
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+  ],
+  RoverStateType.autonomous: [
+    Pair(RoverGeneralCommands.stow, "Stow"),
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
+    Pair(RoverGeneralCommands.disable, "Disable"),
+    //Pair(RoverGeneralCommands.stopAutonomous, "End Autonomous"), //TODO: add stopAutonomous command
+  ],
+  RoverStateType.remote_operation: [
+    Pair(RoverGeneralCommands.eStop, "E-Stop"),
     Pair(RoverGeneralCommands.stow, "Stow"),
     Pair(RoverGeneralCommands.deployPiLits, "Deploy Pi Lits"),
     Pair(RoverGeneralCommands.retrievePiLits, "Retrieve Pi Lits"),
@@ -90,8 +133,7 @@ Map<RoverStateType, List<Pair<RoverCommand, String>>> roverCommandsByState = {
     Pair(RoverIntakeCommands.switchLeft, "Switch Left Intake"),
     Pair(RoverIntakeCommands.switchRight, "Switch Right Intake"),
   ],
-  RoverStateType.docked: [
+  RoverStateType.connected_idle_docked: [
     Pair(RoverGeneralCommands.deploy, "Deploy"),
   ],
 };
-

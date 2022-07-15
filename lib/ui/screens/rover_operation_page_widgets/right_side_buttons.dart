@@ -52,7 +52,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
             onPressed: widget.makeCall,
             label: const Text('Connect To Rover'),
             icon: const Icon(Icons.wifi_calling_3),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
           ),
         ),
         const SizedBox(
@@ -64,7 +65,8 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           width: 225,
           child: ElevatedButton(
             onPressed: widget.stopCall,
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
             child: const Text("Stop call"),
           ),
         ),
@@ -76,7 +78,9 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           child: StreamBuilder<RoverMetrics>(
               stream: widget.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return ToggleDisable(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
+                return ToggleDisable(
+                    roverMetrics: snapshot.data,
+                    sendCommand: widget.sendCommand);
               }),
         ),
         const SizedBox(
@@ -92,11 +96,13 @@ class _RightSideButtonsState extends State<RightSideButtons> {
               }),
         )),
         SizedBox(
-            child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
+            child: (RoverStateType.remote_operation ==
+                    RoverStateType.remote_operation)
                 ? Joystick(
                     mode: joystickMode,
                     listener: (details) {
-                      widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));
+                      widget.joystickPublish.value =
+                          (JoystickValue(details.x, details.y, DateTime.now()));
                     },
                   )
                 : null),
@@ -118,10 +124,12 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
-                    side: const BorderSide(color: Color.fromARGB(255, 250, 250, 250), width: 10),
+                    side: const BorderSide(
+                        color: Color.fromARGB(255, 250, 250, 250), width: 10),
                   ),
                 ),
-                shadowColor: MaterialStateProperty.all(const Color.fromARGB(0, 0, 0, 0))),
+                shadowColor: MaterialStateProperty.all(
+                    const Color.fromARGB(0, 0, 0, 0))),
           ),
         )
       ],

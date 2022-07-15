@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
 
-class ToggleDisable extends StatefulWidget {
+class ToggleDisable extends StatelessWidget {
+  late final bool? enabled;
+
   final RoverMetrics? roverMetrics;
   final Function(RoverCommand) sendCommand;
-  const ToggleDisable({
+  ToggleDisable({
     Key? key,
     required this.roverMetrics,
     required this.sendCommand,
-  }) : super(key: key);
+  }) : super(key: key) {
+    enabled = getEnabledState(roverMetrics?.state);
+  }
 
-  @override
-  State<ToggleDisable> createState() => _ToggleDisableState();
-}
-
-class _ToggleDisableState extends State<ToggleDisable> {
-  bool enable = true;
-
-  _enableState(RoverStateType roverState) {
+  bool? getEnabledState(RoverStateType? roverState) {
     switch (roverState) {
-      case RoverStateType.disabled:
-        enable = false;
-        break;
+      case RoverStateType.connected_idle_docked:
+      case RoverStateType.connected_idle_roaming:
+        return true;
+      case RoverStateType.connected_disabled:
+        return false;
       default:
         return null;
     }
@@ -32,20 +30,21 @@ class _ToggleDisableState extends State<ToggleDisable> {
 
   @override
   Widget build(BuildContext context) {
-    // _enableState(widget.roverMetrics != null
-    //     ? widget.roverMetrics!.state
-    //     : RoverStateType.eStop);
     return ElevatedButton(
-        onPressed: () {
-          widget.sendCommand(RoverIntakeCommands.disable);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Sending signal"),
-          ));
-          setState(() {
-            enable = !enable;
-          });
-        },
-        child: enable == true
+        onPressed: enabled == null
+            ? null
+            : () {
+                switch (enabled) {
+                  case true:
+                    sendCommand(RoverGeneralCommands.disable);
+                    break;
+                  case false:
+                    sendCommand(RoverGeneralCommands.enable);
+                    break;
+                  default:
+                }
+              },
+        child: enabled == true
             ? const Text(
                 'Disable',
                 style: TextStyle(fontSize: 50),
