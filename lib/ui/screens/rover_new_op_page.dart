@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/services/gamepad_controller.dart';
@@ -75,11 +76,21 @@ class _RoverOpPageState extends State<RoverOpPage> {
     _mirvApi.startPeriodicMetricUpdates(widget.roverMetrics.roverId);
     startWebRTCCall();
     webRTCConnection.startJoystickUpdates();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
   void dispose() {
     super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _mirvApi.stopPeriodicMetricUpdates();
   }
 
@@ -89,6 +100,9 @@ class _RoverOpPageState extends State<RoverOpPage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     webRTCConnection.notificationsFromWebRTC(widget.roverMetrics.roverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
@@ -97,48 +111,55 @@ class _RoverOpPageState extends State<RoverOpPage> {
         stopCall: webRTCConnection.stopCall,
         peerConnectionState: webRTCConnection.peerConnectionState,
       ),
-      body: Stack(
-        children: [
-          Row(
-            children: [
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: SizedBox(
-                    width: 200,
-                    child: LeftSideButtons(
-                      roverMetrics: widget.roverMetrics,
-                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                      sendCommand: webRTCConnection.sendRoverCommand,
-                      mapSelectionController: mapSelectionController,
-                      mirvApi: _mirvApi,
-                    )),
-              ),
-              Align(
-                  alignment: Alignment.center,
-                  child: Obx(() => CenterPanel(
-                      localRenderer: webRTCConnection.localRenderer.value,
-                      locationStream: locationStream,
-                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                      piLitMarkers: piLitMarkers,
-                      showMap: mapSelectionController.showMap.value))),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: RightSideButtons(
+      body: Scrollbar(
+        child: Stack(
+          children: [
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: SizedBox(
+                      child: LeftSideButtons(
+                    width: width / 4,
+                    height: height - 150,
                     roverMetrics: widget.roverMetrics,
-                    sendCommand: webRTCConnection.sendRoverCommand,
-                    makeCall: startWebRTCCall,
-                    stopCall: webRTCConnection.stopCall,
-                    joystickPublish: webRTCConnection.joystickPublish,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                    useGamepad: webRTCConnection.useGamepad,
-                  ))
-            ],
-          ),
-          Obx(() => webRTCConnection.loading.value
-              ? Expanded(
-                  child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
-              : SizedBox.shrink())
-        ],
+                    sendCommand: webRTCConnection.sendRoverCommand,
+                    mapSelectionController: mapSelectionController,
+                    mirvApi: _mirvApi,
+                  )),
+                ),
+                Align(
+                    alignment: Alignment.center,
+                    child: Obx(() => CenterPanel(
+                        width: width / 2,
+                        height: height - 150,
+                        localRenderer: webRTCConnection.localRenderer.value,
+                        locationStream: locationStream,
+                        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                        piLitMarkers: piLitMarkers,
+                        showMap: mapSelectionController.showMap.value))),
+                Align(
+                    alignment: Alignment.bottomRight,
+                    child: RightSideButtons(
+                      width: width / 4,
+                      height: height - 150,
+                      roverMetrics: widget.roverMetrics,
+                      sendCommand: webRTCConnection.sendRoverCommand,
+                      makeCall: startWebRTCCall,
+                      stopCall: webRTCConnection.stopCall,
+                      joystickPublish: webRTCConnection.joystickPublish,
+                      periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                      useGamepad: webRTCConnection.useGamepad,
+                    ))
+              ],
+            ),
+            Obx(() => webRTCConnection.loading.value
+                ? Expanded(
+                    child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
+                : SizedBox.shrink())
+          ],
+        ),
       ),
     );
   }
