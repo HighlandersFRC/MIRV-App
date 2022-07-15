@@ -20,6 +20,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    authService.init();
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Log In Page"),
