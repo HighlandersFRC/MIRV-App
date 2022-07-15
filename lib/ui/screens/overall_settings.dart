@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:settings_ui/settings_ui.dart';
+import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
-import 'package:mirv/ui/screens/settings_language_page.dart';
+import 'package:get/get.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsTextBoxController extends GetxController {
+  AuthService authService = AuthService();
+  final endpointController = TextEditingController();
+  final keycloakEndpointController = TextEditingController();
+  final keycloakRealmController = TextEditingController();
+  final keycloakClientController = TextEditingController();
+
   @override
-  _SettingsPage createState() => _SettingsPage();
+  onInit() async {
+    await authService.init();
+    endpointController.text = authService.getMirvEndpoint() ?? '';
+    keycloakEndpointController.text = authService.getKeycloakEndpoint() ?? '';
+    keycloakRealmController.text = authService.getKeycloakRealm() ?? '';
+    keycloakClientController.text = authService.getKeycloakClient() ?? '';
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    endpointController.dispose();
+    keycloakEndpointController.dispose();
+    keycloakRealmController.dispose();
+    keycloakClientController.dispose();
+    super.onClose();
+  }
 }
 
-class _SettingsPage extends State<SettingsPage> {
+class SettingsPage extends StatelessWidget {
+  SettingsPage({Key? key}) : super(key: key);
+  final settingsTextBoxController = Get.put(SettingsTextBoxController());
+
+  AuthService authService = AuthService();
+
   final MirvApi mirvApi = MirvApi();
 
   @override
@@ -21,41 +47,47 @@ class _SettingsPage extends State<SettingsPage> {
         shadowColor: AppBarColor.shadowColor,
         backgroundColor: AppBarColor.backgroundColor,
         title: const Text(
-          "settings",
+          "Settings",
         ),
       ),
-      body: SettingsList(sections: [
-        SettingsSection(title: Text('General'), tiles: [
-          SettingsTile(
-            title: Text('Language'),
-            leading: Icon(Icons.language),
-            // onPressed: () {
-            //             Navigator.of(context).push(MaterialPageRoute(
-            //                 builder: (BuildContext context) => LanguagePage()));
-            //           },
-          ),
-          SettingsTile(title: Text('Environment'), leading: Icon(Icons.cloud_queue)),
-        ]),
-        SettingsSection(title: Text('Account'), tiles: [
-          SettingsTile(title: Text('Email'), leading: Icon(Icons.email)),
-          SettingsTile(title: Text('Sign Out'), leading: Icon(Icons.exit_to_app)),
-        ]),
-        SettingsSection(
-          title: Text('App'),
-          tiles: [
-            SettingsTile(
-                title: Text(
-              'App Version: 1.0.0.',
-              textScaleFactor: .75,
-            )),
-            SettingsTile(
-                title: Text(
-              'Cloud IP Address:  ${mirvApi.ipAddress}.',
-              textScaleFactor: .75,
-            )),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
+          children: [
+            ListTile(
+              title: TextField(
+                controller: settingsTextBoxController.endpointController,
+                decoration: const InputDecoration(hintText: 'MIRV Endpoint address:'),
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                controller: settingsTextBoxController.keycloakEndpointController,
+                decoration: const InputDecoration(hintText: 'Keycloak Endpoint:'),
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                controller: settingsTextBoxController.keycloakRealmController,
+              ),
+            ),
+            ListTile(
+              title: TextField(
+                controller: settingsTextBoxController.keycloakClientController,
+                decoration: const InputDecoration(hintText: 'Keycloak Client:'),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  authService.setMirvEndpoint(settingsTextBoxController.endpointController.text);
+                  authService.setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.text);
+                  authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.text);
+                  authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.text);
+                },
+                child: const Text('Save'))
           ],
-        )
-      ]),
+        ),
+      ),
     );
   }
 }

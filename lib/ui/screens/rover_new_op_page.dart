@@ -31,16 +31,14 @@ class MapSelectionController extends GetxController {
 }
 
 class RoverOpPage extends StatefulWidget {
-  const RoverOpPage(this.selectedRoverId, {Key? key}) : super(key: key);
-
-  final String selectedRoverId;
+  const RoverOpPage(this.roverMetrics, {Key? key}) : super(key: key);
+  final RoverMetrics roverMetrics;
 
   @override
   State<RoverOpPage> createState() => _RoverOpPageState();
 }
 
 class _RoverOpPageState extends State<RoverOpPage> {
-  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   final MirvApi _mirvApi = MirvApi();
   GamepadController gamepadController = GamepadController();
   String transformType = "none";
@@ -54,7 +52,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     const PiLit(id: 'piLit3', description: 'Pi-lit device', location: LatLng(40.47405381703737, -104.96958520263433)),
     const PiLit(id: 'piLit4', description: 'Pi-lit device', location: LatLng(40.47408365724258, -104.96959090232849))
   ];
-  final RoverMetrics roverMetrics = const RoverMetrics();
+
   final WebRTCConnection webRTCConnection = WebRTCConnection();
   bool _inCalling = false;
   bool isWorking = true;
@@ -75,7 +73,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   @override
   void initState() {
     super.initState();
-    _mirvApi.startPeriodicMetricUpdates(widget.selectedRoverId);
+    _mirvApi.startPeriodicMetricUpdates(widget.roverMetrics.roverId);
     startWebRTCCall();
     webRTCConnection.startJoystickUpdates();
     SystemChrome.setPreferredOrientations([
@@ -97,7 +95,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   }
 
   void startWebRTCCall() {
-    webRTCConnection.makeCall(widget.selectedRoverId);
+    webRTCConnection.makeCall(widget.roverMetrics.roverId);
   }
 
   @override
@@ -105,11 +103,11 @@ class _RoverOpPageState extends State<RoverOpPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     // SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    webRTCConnection.notificationsFromWebRTC(widget.selectedRoverId, context, startWebRTCCall);
+    webRTCConnection.notificationsFromWebRTC(widget.roverMetrics.roverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
         periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-        roverMetrics: roverMetrics,
+        roverMetrics: widget.roverMetrics,
         stopCall: webRTCConnection.stopCall,
         peerConnectionState: webRTCConnection.peerConnectionState,
       ),
@@ -124,7 +122,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                       child: LeftSideButtons(
                     width: width / 4,
                     height: height - 150,
-                    roverMetrics: roverMetrics,
+                    roverMetrics: widget.roverMetrics,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                     sendCommand: webRTCConnection.sendRoverCommand,
                     mapSelectionController: mapSelectionController,
@@ -146,7 +144,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     child: RightSideButtons(
                       width: width / 4,
                       height: height - 150,
-                      roverMetrics: roverMetrics,
+                      roverMetrics: widget.roverMetrics,
                       sendCommand: webRTCConnection.sendRoverCommand,
                       makeCall: startWebRTCCall,
                       stopCall: webRTCConnection.stopCall,

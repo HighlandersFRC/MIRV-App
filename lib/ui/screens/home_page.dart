@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/info_page.dart';
+import 'package:mirv/ui/screens/login_page.dart';
 import 'package:mirv/ui/screens/overall_settings.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Rover Selection Page'),
               leading: const Icon(Icons.people),
               onTap: () {
-                Get.to(const RoverSelectionPage());
+                Get.to(LoginPage());
               }),
           ListTile(
               title: const Text('Settings'),

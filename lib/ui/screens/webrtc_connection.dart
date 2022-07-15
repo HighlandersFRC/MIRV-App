@@ -140,7 +140,9 @@ class WebRTCConnection {
   }
 
   Future<bool> _waitForGatheringComplete(int count) async {
-    if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
+    if (peerConnection == null) {
+      return false;
+    } else if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else if (count >= GATHERING_RETRY_THRESHOLD) {
       return false;
@@ -159,11 +161,12 @@ class WebRTCConnection {
         })
         .then((_) => _waitForGatheringComplete(0))
         .then((success) async {
-          if (!success) {
+          if (!success && peerConnection != null) {
             await stopCall();
             return _showReconnectDialog('Connection timed out', roverId);
+          } else if (!success) {
+            return;
           }
-
           try {
             var des = await peerConnection!.getLocalDescription();
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/ui/screens/home_page.dart';
+import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class LoginBinding implements Bindings {
   @override
@@ -13,6 +14,7 @@ class LoginBinding implements Bindings {
 class LoginController extends GetxController {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  AuthService authService = AuthService();
   final Rx<bool> isLoading = true.obs;
 
   @override
@@ -39,7 +41,7 @@ class LoginController extends GetxController {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       if (code == 200) {
         Get.snackbar('Login', 'Login successfully');
-        Get.offAll(() => const HomePage());
+        Get.offAll(() => const RoverSelectionPage());
       } else if (code == 401 || code == 403) {
         Get.snackbar('Login', 'Invalid email or password');
       } else {
@@ -52,19 +54,17 @@ class LoginController extends GetxController {
     isCurrentTokenValid().then((isValid) {
       isLoading.value = false;
       if (isValid) {
-        Get.offAll(() => const HomePage());
+        Get.offAll(() => const RoverSelectionPage());
       }
     });
   }
 
   Future<int> attemptLogIn(String username, String password) async {
-    var authService = await AuthService.getInstance();
-    return authService!.authenticateUser(username, password);
+    return authService.authenticateUser(username, password);
   }
 
   Future<bool> isCurrentTokenValid() async {
-    var authService = await AuthService.getInstance();
-    return authService!.validateToken();
+    return validateToken();
   }
 }
 
