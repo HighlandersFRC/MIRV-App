@@ -1,4 +1,4 @@
-name: test
+name: mirv
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -42,7 +42,7 @@ dependencies:
   json_serializable: ^6.2.0
   http: ^0.13.4
   get: ^4.6.5
-  google_maps_flutter: ^2.1.7
+  google_maps_flutter: ^2.1.8
   url_launcher_android: ^6.0.17
   location: ^4.4.0
   flutter_polyline_points: ^1.0.0
@@ -57,17 +57,22 @@ dependencies:
   google_fonts: ^3.0.1
 
   flutter_webrtc: ^0.8.10
+  settings_ui: ^2.0.2
+  fluttertoast: ^8.0.9
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.9.3
+
+flutter_icons: 
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/rover_app_icon.png"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
-import 'package:test/ui/screens/home_page.dart';
-import 'package:test/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get/get.dart' as get_pkg;
+import 'package:rxdart/rxdart.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/home_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
+import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar(
-      {Key? key, required this.mirvApi, required this.roverMetrics})
+      {Key? key,
+      required this.periodicMetricUpdates,
+      required this.roverMetrics,
+      required this.stopCall,
+      required this.peerConnectionState})
       : super(key: key);
-  final MirvApi mirvApi;
+
+  final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
   final RoverMetrics roverMetrics;
+  final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
+  final Function() stopCall;
 
   @override
-  Size get preferredSize => Size.fromHeight(60.0);
+  Size get preferredSize => const Size.fromHeight(60.0);
 
   @override
   Widget build(BuildContext context) {
@@ -31,47 +39,45 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Disconnect?'),
-                  content: Text(
-                      'Would  you like to discconect from ${roverMetrics.roverId}'),
+                  content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
                   actions: <Widget>[
                     TextButton(
                         onPressed: () {
-                          //TODO: disconnect WebRTC
-
+                          stopCall();
                           Navigator.pop(context);
-                          Get.offAll(HomePage());
+                          get_pkg.Get.offAll(const HomePage());
                         },
-                        child: Text('Yes')),
+                        child: const Text('Yes')),
                     TextButton(
                         onPressed: () {
                           return Navigator.pop(context);
                         },
-                        child: Text('No'))
+                        child: const Text('No'))
                   ],
                 );
               }),
-          child: Row(mainAxisSize: MainAxisSize.min, children: [
-            Text('Disconnect'),
-            Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)
-          ]),
+          child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
         ),
         foregroundColor: AppBarColor.foregroundColor,
         shadowColor: AppBarColor.shadowColor,
         backgroundColor: AppBarColor.backgroundColor,
         title: StreamBuilder<RoverMetrics>(
-            stream: mirvApi.periodicMetricUpdates,
+            stream: periodicMetricUpdates,
             builder: (context, snapshot) {
-              return Text(snapshot.data != null
-                  ? '${snapshot.data!.state}'
-                  : 'Waiting on data');
+              return Text(snapshot.data != null ? '${snapshot.data!.state}' : 'Waiting on data');
             }),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: StreamBuilder<RoverMetrics>(
-                stream: mirvApi.periodicMetricUpdates,
+                stream: periodicMetricUpdates.stream,
                 builder: (context, snapshot) {
-                  return RoverStatusBar(roverMetrics: snapshot.data);
+                  return RoverStatusBar(
+                    roverMetrics: snapshot.data,
+                    peerConnectionState: peerConnectionState,
+                  );
                 }),
           ),
           ElevatedButton(
@@ -79,14 +85,13 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: AspectRatio(
-                      aspectRatio: 1.5, child: Container(child: StatusPage())),
+                  content: const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
                   actions: [
                     TextButton(
                       onPressed: () {
                         return Navigator.pop(context);
                       },
-                      child: Text('Close'),
+                      child: const Text('Close'),
                     )
                   ],
                 );

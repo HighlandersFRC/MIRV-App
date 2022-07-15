@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/ui/screens/app_bar_theme.dart';
-import 'package:test/ui/screens/rover_status_page.dart';
-import 'package:test/ui/screens/rover_new_op_page.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/rover_status_page.dart';
+import 'package:mirv/ui/screens/rover_new_op_page.dart';
 
 class TroubleShootingPage extends StatefulWidget {
   const TroubleShootingPage({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                Get.to(RoverOpPage());
+                Get.to(const RoverOpPage(RoverMetrics()));
               },
               child: const Icon(Icons.drive_eta))
         ],
@@ -35,13 +36,12 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
             height: 720,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(StatusPage());
+                Get.to(const StatusPage());
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 0, 255, 17)),
+                backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 255, 17)),
               ),
-              child: Text("go back", textScaleFactor: 20),
+              child: const Text("go back", textScaleFactor: 20),
             ),
           ),
         ],

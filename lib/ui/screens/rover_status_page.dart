@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:test/models/rover_health_type.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/services/mirv_api.dart';
-import 'package:test/ui/screens/troubleshoot_page.dart';
+import 'package:mirv/models/rover_health_type.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/troubleshoot_page.dart';
 
 class StatusPage extends StatefulWidget {
   const StatusPage({Key? key}) : super(key: key);
@@ -17,9 +17,7 @@ class StatusPage extends StatefulWidget {
 class HealthContainer extends StatelessWidget {
   final RoverHealthType roverHealthType;
   final String name;
-  const HealthContainer(
-      {Key? key, required this.roverHealthType, required this.name})
-      : super(key: key);
+  const HealthContainer({Key? key, required this.roverHealthType, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +38,7 @@ class HealthContainer extends StatelessWidget {
                 offset: const Offset(-5, 5),
               ),
               const BoxShadow(
-                  color: Color.fromARGB(255, 250, 250, 250),
-                  offset: Offset(10, -10),
-                  blurRadius: 55,
-                  spreadRadius: 5),
+                  color: Color.fromARGB(255, 250, 250, 250), offset: Offset(10, -10), blurRadius: 55, spreadRadius: 5),
             ], //boxShadow
             gradient: LinearGradient(
               begin: Alignment.center,
@@ -61,7 +56,7 @@ class HealthContainer extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
-              Get.to(TroubleShootingPage());
+              Get.to(const TroubleShootingPage());
             },
             style: ButtonStyle(
               shape: MaterialStateProperty.all(
@@ -134,31 +129,20 @@ class _StatusPageState extends State<StatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GridView.count(
-        padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 50,
-        mainAxisSpacing: 100,
-        crossAxisCount: 4,
-        children: <Widget>[
-          HealthContainer(
-              roverHealthType: roverMetrics.health.sensors, name: "sensors"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.electronics,
-              name: "electronics"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.drivetrain,
-              name: "drivetrain"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.garage, name: "garage"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.intake, name: "intake"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.power, name: "power"),
-          HealthContainer(
-              roverHealthType: roverMetrics.health.general, name: "general"),
-        ],
-      ),
+    return GridView.count(
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 50,
+      mainAxisSpacing: 100,
+      crossAxisCount: 4,
+      children: <Widget>[
+        HealthContainer(roverHealthType: roverMetrics.health.sensors, name: "sensors"),
+        HealthContainer(roverHealthType: roverMetrics.health.electronics, name: "electronics"),
+        HealthContainer(roverHealthType: roverMetrics.health.drivetrain, name: "drivetrain"),
+        HealthContainer(roverHealthType: roverMetrics.health.garage, name: "garage"),
+        HealthContainer(roverHealthType: roverMetrics.health.intake, name: "intake"),
+        HealthContainer(roverHealthType: roverMetrics.health.power, name: "power"),
+        HealthContainer(roverHealthType: roverMetrics.health.general, name: "general"),
+      ],
     );
   } //Build Widget
 }//_Status page state

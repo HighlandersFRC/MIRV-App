@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:test/models/rover_metrics.dart';
-import 'package:test/models/rover_state_type.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/models/rover_state_type.dart';
 
 class ToggleDisable extends StatefulWidget {
   final RoverMetrics? roverMetrics;
-  final Function(String, String) sendCommand;
+  final Function(RoverCommand) sendCommand;
   const ToggleDisable({
     Key? key,
     required this.roverMetrics,
@@ -35,7 +37,7 @@ class _ToggleDisableState extends State<ToggleDisable> {
     //     : RoverStateType.eStop);
     return ElevatedButton(
         onPressed: () {
-          widget.sendCommand("disable", "intake");
+          widget.sendCommand(RoverIntakeCommands.disable);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Sending signal"),
           ));

@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.test">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.neaera.mirv">
 <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <application android:label="test" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">
+    <application android:label="mirv" android:name="${applicationName}" android:icon="@mipmap/launcher_icon">
         <!-- Required to fetch data from the internet. -->
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDnVF4wZWvY3vq3vz1Ogv2Vib3_qEy02pM"/>
