@@ -22,7 +22,7 @@ RoverMetrics _$RoverMetricsFromJson(Map<String, dynamic> json) {
 mixin _$RoverMetrics {
   String get roverId => throw _privateConstructorUsedError;
   RoverStateType get state =>
-      throw _privateConstructorUsedError; //RoverStateType
+      throw _privateConstructorUsedError; //Rover StateType
   RoverStatusType get status =>
       throw _privateConstructorUsedError; //RoverStatusType
   int get battery => throw _privateConstructorUsedError;
@@ -187,7 +187,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
 class _$_RoverMetrics implements _RoverMetrics {
   const _$_RoverMetrics(
       {this.roverId = "unknown",
-      this.state = RoverStateType.remoteOperation,
+      this.state = RoverStateType.disconnected,
       this.status = RoverStatusType.available,
       this.battery = -1,
       this.health = const RoverMetricHealth(),
@@ -202,7 +202,7 @@ class _$_RoverMetrics implements _RoverMetrics {
   @override
   @JsonKey()
   final RoverStateType state;
-//RoverStateType
+//Rover StateType
   @override
   @JsonKey()
   final RoverStatusType status;
@@ -273,7 +273,7 @@ abstract class _RoverMetrics implements RoverMetrics {
   String get roverId => throw _privateConstructorUsedError;
   @override
   RoverStateType get state => throw _privateConstructorUsedError;
-  @override //RoverStateType
+  @override //Rover StateType
   RoverStatusType get status => throw _privateConstructorUsedError;
   @override //RoverStatusType
   int get battery => throw _privateConstructorUsedError;

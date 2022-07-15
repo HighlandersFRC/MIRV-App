@@ -54,21 +54,9 @@ class _RightSideButtonsState extends State<RightSideButtons> {
             width: widget.width - 20,
             child: ElevatedButton.icon(
               onPressed: widget.makeCall,
-              label: const Text('Connect To Rover'),
-              icon: const Icon(Icons.wifi_calling_3),
+              label: const Text('Cancel Command'),
+              icon: const Icon(Icons.cancel),
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: heightEquivalent * 5),
-          child: SizedBox(
-            height: heightEquivalent * 50,
-            width: widget.width - 20,
-            child: ElevatedButton(
-              onPressed: widget.stopCall,
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-              child: const Text("Stop call"),
             ),
           ),
         ),
@@ -87,7 +75,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
           padding: EdgeInsets.only(bottom: heightEquivalent * 5, right: 10, left: 10),
           child: SizedBox(
               // height: joystickHeight * 500,
-              child: (RoverStateType.remoteOperation == RoverStateType.remoteOperation)
+              child: (RoverStateType.remote_operation == RoverStateType.remote_operation)
                   ? Joystick(
                       mode: joystickMode,
                       base: Container(
