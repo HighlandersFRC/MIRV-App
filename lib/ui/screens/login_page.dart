@@ -64,7 +64,7 @@ class LoginController extends GetxController {
   }
 
   Future<bool> isCurrentTokenValid() async {
-    return validateToken();
+    return authService.validateToken();
   }
 }
 
