@@ -14,6 +14,10 @@ class AuthService {
     return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/token');
   }
 
+  getKeycloakUserInfoEndpoint() {
+    return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/userinfo');
+  }
+
   Future<int> authenticateUser(String username, String password) async {
     var res = await http.post(getKeycloakAuthEndpoint(),
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
@@ -28,6 +32,13 @@ class AuthService {
       debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
       return res.statusCode;
     }
+  }
+
+  Future<bool> validateToken() async {
+    String? token = sessionStorageService.retriveAccessToken();
+    var res =
+        await http.post(getKeycloakUserInfoEndpoint(), headers: {"Authorization": "Bearer $token"}, body: {"client_id": "mirv"});
+    return res.statusCode == 200 ? true : false;
   }
 
   setMirvEndpoint(String endpoint) {

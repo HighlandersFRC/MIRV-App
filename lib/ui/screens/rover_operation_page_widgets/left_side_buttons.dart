@@ -15,13 +15,17 @@ class LeftSideButtons extends StatefulWidget {
   final Function(RoverCommand) sendCommand;
   final dynamic periodicMetricUpdates;
   final MapSelectionController mapSelectionController;
+  final double width;
+  final double height;
   const LeftSideButtons(
       {Key? key,
       required this.roverMetrics,
       required this.periodicMetricUpdates,
       required this.sendCommand,
       required this.mapSelectionController,
-      required this.mirvApi})
+      required this.mirvApi,
+      required this.width,
+      required this.height})
       : super(key: key);
 
   @override
@@ -32,58 +36,15 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
   OverlayEntry? entry;
   late List<bool> isSelected;
 
-  // _robotModeButton(RoverStateType roverState) {
-  //   switch (roverState) {
-  //     case RoverStateType.disabled:
-  //     case RoverStateType.docked:
-  //       return ElevatedButton.icon(
-  //         onPressed: () {
-  //           widget.sendCommand(RoverGeneralCommands.startManualControl);
-  //         },
-  //         label: const Text(
-  //           " Manual Control",
-  //           textScaleFactor: 1.5,
-  //         ),
-  //         icon: const Icon(
-  //           CupertinoIcons.antenna_radiowaves_left_right,
-  //           size: 60,
-  //         ),
-  //         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
-  //       );
-
-  //     case RoverStateType.remoteOperation:
-  //       return ElevatedButton(
-  //         onPressed: () {
-  //           widget.sendCommand(RoverGeneralCommands.stopManualControl);
-  //         },
-  //         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
-  //         child: Row(children: const [
-  //           Icon(
-  //             Icons.smart_toy_outlined,
-  //             size: 55,
-  //           ),
-  //           Text(
-  //             " Autonomous \n Control",
-  //           ),
-  //         ]),
-  //       );
-  //     case RoverStateType.eStop:
-  //       return null;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 175),
-        const SizedBox(
-          height: 15,
-        ),
         Obx(
           () => SizedBox(
-              width: 175,
+              width: widget.width,
+              height: 50,
               child: !widget.mapSelectionController.showMap.value
                   ? ElevatedButton.icon(
                       onPressed: () {
@@ -91,11 +52,10 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                       },
                       label: const Text(
                         "Map",
-                        textScaleFactor: 2.5,
                       ),
                       icon: const Icon(
                         Icons.map,
-                        size: 60,
+                        // size: widget.height / 5,
                       ),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
                     )
@@ -105,24 +65,25 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                       },
                       label: const Text(
                         "Video",
-                        textScaleFactor: 2.0,
                       ),
                       icon: const Icon(
                         Icons.video_camera_back,
-                        size: 60,
+                        // size: widget.height / 5,
                       ),
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
                     )),
         ),
         SizedBox(
-          width: 250,
-          height: 500,
+          width: widget.width,
+          height: widget.height / 2,
           child: StreamBuilder<RoverMetrics>(
               stream: widget.mirvApi.periodicMetricUpdates,
               builder: (context, snapshot) {
-                return CommandList(
-                  roverMetrics: snapshot.data,
-                  sendCommand: widget.sendCommand,
+                return Scrollbar(
+                  child: CommandList(
+                    roverMetrics: snapshot.data,
+                    sendCommand: widget.sendCommand,
+                  ),
                 );
               }),
         )

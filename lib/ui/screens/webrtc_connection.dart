@@ -213,7 +213,7 @@ class WebRTCConnection {
         TextButton(
             onPressed: () {
               get_pkg.Get.back();
-              get_pkg.Get.offAll(HomePage());
+              get_pkg.Get.offAll(() => HomePage());
             },
             child: Text('Home page'))
       ],
