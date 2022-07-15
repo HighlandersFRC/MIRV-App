@@ -54,13 +54,6 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
-            const ListTile(
-              title: Text('Language'), leading: Icon(Icons.language),
-              //  onPressed: () {
-              //   Navigator.of(context).push(MaterialPageRoute(
-              // builder: (BuildContext context) => LanguagePage()));
-              //  },
-            ),
             ListTile(
               title: TextField(
                 controller: settingsTextBoxController.endpointController,
