@@ -84,6 +84,7 @@ class SettingsPage extends StatelessWidget {
                     authService.setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.text);
                     authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.text);
                     authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.text);
+                    Get.snackbar('Settings', 'Successfully saved settings');
                   },
                   child: const Text('Save'))
             ],
