@@ -61,10 +61,6 @@ class SettingsPage extends StatelessWidget {
               // builder: (BuildContext context) => LanguagePage()));
               //  },
             ),
-            const ListTile(title: Text('Environment'), leading: Icon(Icons.cloud_queue)),
-            const ListTile(title: Text('Email'), leading: Icon(Icons.email)),
-            const ListTile(title: Text('Sign Out'), leading: Icon(Icons.exit_to_app)),
-            const ListTile(title: Text('App Version: 1.0.0.')),
             ListTile(
               title: TextField(
                 controller: settingsTextBoxController.endpointController,
