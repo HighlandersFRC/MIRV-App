@@ -58,24 +58,24 @@ class SettingsPage extends StatelessWidget {
               ListTile(
                 title: TextField(
                   controller: settingsTextBoxController.endpointController,
-                  decoration: const InputDecoration(hintText: 'MIRV Endpoint address:'),
+                  decoration: const InputDecoration(labelText: 'MIRV Endpoint address:'),
                 ),
               ),
               ListTile(
                 title: TextField(
                   controller: settingsTextBoxController.keycloakEndpointController,
-                  decoration: const InputDecoration(hintText: 'Keycloak Endpoint:'),
+                  decoration: const InputDecoration(labelText: 'Keycloak Endpoint:'),
                 ),
               ),
               ListTile(
                 title: TextField(
-                  controller: settingsTextBoxController.keycloakRealmController,
-                ),
+                    controller: settingsTextBoxController.keycloakRealmController,
+                    decoration: const InputDecoration(labelText: 'Keycloak Realm:')),
               ),
               ListTile(
                 title: TextField(
                   controller: settingsTextBoxController.keycloakClientController,
-                  decoration: const InputDecoration(hintText: 'Keycloak Client:'),
+                  decoration: const InputDecoration(labelText: 'Keycloak Client:'),
                 ),
               ),
               ElevatedButton(
