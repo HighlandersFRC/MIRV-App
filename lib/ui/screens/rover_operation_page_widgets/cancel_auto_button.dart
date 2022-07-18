@@ -26,7 +26,7 @@ class _CancelAutoState extends State<CancelAuto> {
         cancel = false;
         break;
       default:
-        return null;
+        return true;
     }
   }
 
@@ -35,7 +35,7 @@ class _CancelAutoState extends State<CancelAuto> {
     return ElevatedButton(
       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(cancel == true ? Colors.blue : Colors.grey)),
       onPressed: () {
-        cancel == true ? widget.sendCommand(RoverIntakeCommands.disable) : null;
+        cancel == true ? widget.sendCommand(RoverGeneralCommands.stopManualControl) : null;
       },
       child: const Text("cancel"),
     );
