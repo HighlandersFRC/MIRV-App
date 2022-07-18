@@ -60,9 +60,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisSize: MainAxisSize.min,
               children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
         ),
-        foregroundColor: AppBarColor.foregroundColor,
-        shadowColor: AppBarColor.shadowColor,
-        backgroundColor: AppBarColor.backgroundColor,
+        foregroundColor: AppThemeColor.foregroundColor,
+        shadowColor: AppThemeColor.shadowColor,
+        backgroundColor: AppThemeColor.backgroundColor,
         title: StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {

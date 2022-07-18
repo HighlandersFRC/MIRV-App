@@ -96,7 +96,7 @@ class _RightSideButtonsState extends State<RightSideButtons> {
                           // child: Transform.scale(scale: 1, child: JoystickBase())
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.blueAccent, width: 5),
+                            border: Border.all(color: Colors.orangeAccent, width: 5),
                           )),
                       listener: (details) {
                         widget.joystickPublish.value = (JoystickValue(details.x, details.y, DateTime.now()));

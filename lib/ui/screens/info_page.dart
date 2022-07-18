@@ -8,9 +8,9 @@ class InfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            foregroundColor: AppBarColor.foregroundColor,
-            shadowColor: AppBarColor.shadowColor,
-            backgroundColor: AppBarColor.backgroundColor,
+            foregroundColor: AppThemeColor.foregroundColor,
+            shadowColor: AppThemeColor.shadowColor,
+            backgroundColor: AppThemeColor.backgroundColor,
             title: const Text("info")));
   }
 }

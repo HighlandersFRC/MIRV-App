@@ -132,13 +132,15 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 Align(
                     alignment: Alignment.center,
                     child: Obx(() => CenterPanel(
-                        width: width / 2,
-                        height: height - 150,
-                        localRenderer: webRTCConnection.localRenderer.value,
-                        locationStream: locationStream,
-                        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                        piLitMarkers: piLitMarkers,
-                        showMap: mapSelectionController.showMap.value))),
+                          width: width / 2,
+                          height: height - 150,
+                          localRenderer: webRTCConnection.localRenderer.value,
+                          locationStream: locationStream,
+                          periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                          piLitMarkers: piLitMarkers,
+                          selectedRoverMetrics: widget.roverMetrics,
+                          showMap: mapSelectionController.showMap.value,
+                        ))),
                 Align(
                     alignment: Alignment.bottomRight,
                     child: RightSideButtons(
