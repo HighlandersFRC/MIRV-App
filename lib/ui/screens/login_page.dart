@@ -45,7 +45,7 @@ class LoginController extends GetxController {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       if (code == 200) {
         Get.snackbar('Login', 'Login successfully');
-        Get.offAll(() => const RoverSelectionPage());
+        Get.off(const RoverSelectionPage());
       } else if (code == 401 || code == 403) {
         Get.snackbar('Login', 'Invalid email or password');
       } else {
@@ -58,7 +58,7 @@ class LoginController extends GetxController {
     isCurrentTokenValid().then((isValid) {
       isLoading.value = false;
       if (isValid) {
-        Get.offAll(() => const RoverSelectionPage());
+        Get.off(const RoverSelectionPage());
       }
     });
   }

@@ -6,6 +6,7 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:location/location.dart';
 import 'package:mirv/models/rover_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
+import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_new_op_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
 
@@ -92,6 +93,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
@@ -109,7 +111,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45)),
-          )
+          ),
         ],
       ),
       body: Row(
