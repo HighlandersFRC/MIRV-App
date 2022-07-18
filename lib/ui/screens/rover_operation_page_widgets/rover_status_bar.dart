@@ -13,8 +13,7 @@ class RoverStatusBar extends StatelessWidget {
     required this.roverMetrics,
     required this.peerConnectionState,
   }) : super(key: key) {
-    uiConnectionState =
-        Rx<UIConnectionState>(setEnum(peerConnectionState.value));
+    uiConnectionState = Rx<UIConnectionState>(setEnum(peerConnectionState.value));
   }
   final RoverMetrics? roverMetrics;
   final Rx<RTCPeerConnectionState?> peerConnectionState;
@@ -85,13 +84,11 @@ class RoverStatusBar extends StatelessWidget {
       case RoverStateType.remote_operation:
         return const Text("Controlling");
       default:
-        return const Text("Idk you kinda screwed up");
+        return const Text("Unknown");
     }
   }
 
-  _healthIcon(
-      {required RoverHealthType roverHealthType,
-      required IconData healthIconChoice}) {
+  _healthIcon({required RoverHealthType roverHealthType, required IconData healthIconChoice}) {
     switch (roverHealthType) {
       case RoverHealthType.degraded:
         return Icon(healthIconChoice, color: Colors.red);
@@ -125,29 +122,15 @@ class RoverStatusBar extends StatelessWidget {
               _batteryIcon(roverMetrics!.battery),
               _stateText(roverMetrics!.state),
 
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.electronics,
-                  healthIconChoice: Icons.circle), //enconder
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.electronics,
-                  healthIconChoice: Icons.handyman), //mechanical
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.general,
-                  healthIconChoice: Icons.sensors),
+              _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
+              _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.handyman), //mechanical
+              _healthIcon(roverHealthType: roverMetrics!.health.general, healthIconChoice: Icons.sensors),
 
               //lidar
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.drivetrain,
-                  healthIconChoice: Icons.camera_alt), //camera
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.intake,
-                  healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.sensors,
-                  healthIconChoice: Icons.gps_fixed), //gps
-              _healthIcon(
-                  roverHealthType: roverMetrics!.health.garage,
-                  healthIconChoice: Icons.garage), //garage
+              _healthIcon(roverHealthType: roverMetrics!.health.drivetrain, healthIconChoice: Icons.camera_alt), //camera
+              _healthIcon(roverHealthType: roverMetrics!.health.intake, healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
+              _healthIcon(roverHealthType: roverMetrics!.health.sensors, healthIconChoice: Icons.gps_fixed), //gps
+              _healthIcon(roverHealthType: roverMetrics!.health.garage, healthIconChoice: Icons.garage), //garage
             ]
           : [],
     );
