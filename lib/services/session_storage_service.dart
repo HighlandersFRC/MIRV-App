@@ -17,7 +17,7 @@ class SessionStorageService {
     _prefs = await SharedPreferences.getInstance();
 
     if (retrieveMirvEndpoint() == null) {
-      saveMirvEndpoint('http://52.185.111.58:8080');
+      saveMirvEndpoint('http://20.236.228.19:8080');
     }
     if (retrieveKeycloakEndpoint() == null) {
       saveKeycloakEndpoint('http://20.221.15.60:8080');
