@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_new_op_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 
 class LeftSideButtons extends StatefulWidget {
   final RoverMetrics roverMetrics;
@@ -77,6 +79,13 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        SizedBox(
+          child: StreamBuilder<RoverMetrics>(
+              stream: widget.periodicMetricUpdates,
+              builder: (context, snapshot) {
+                return CancelAuto(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
+              }),
+        ),
         SizedBox(width: 175),
         const SizedBox(
           height: 15,
