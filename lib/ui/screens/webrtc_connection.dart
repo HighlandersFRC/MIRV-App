@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
+import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -34,6 +36,7 @@ class WebRTCConnection {
 
   MediaStream? _localStream;
   GamepadController gamepadController = GamepadController();
+  JoystickController joystickController = JoystickController();
   RTCDataChannelInit? _dataChannelDict;
   RTCDataChannel? _dataChannel;
   String transformType = "none";
@@ -72,6 +75,7 @@ class WebRTCConnection {
   }
 
   sendRoverCommand(RoverCommand command) {
+    print("Sending rover command: ${json.encode(command.toJson())}");
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
@@ -81,15 +85,6 @@ class WebRTCConnection {
   void setStateInFunction({required Function function}) {
     function;
   }
-
-  // void toggleCamera() async {
-  //   if (_localStream == null) throw Exception('Stream is not initialized');
-
-  //   final videoTrack = _localStream!
-  //       .getVideoTracks()
-  //       .firstWhere((track) => track.kind == 'video');
-  //   await Helper.switchCamera(videoTrack);
-  // }
 
   final Map<String, dynamic> offerSdpConstraints = {
     "mandatory": {
@@ -320,50 +315,19 @@ class WebRTCConnection {
     localRenderer.value = val;
   }
 
-  // sendGeneralCommand(String messageText) {
-  //   if (_dataChannel != null) {
-  //     _dataChannel!.send(RTCDataChannelMessage(messageText));
-  //   }
-  // }
-//joystick
-
-  startJoystickUpdates() {
-    //put in stream
-    joystickPublish.value = JoystickValue(0, 0, DateTime.now());
-
-    timerJoy = Timer.periodic(
-      const Duration(milliseconds: 110),
-      (Timer t) {
-        if (useGamepad.value) return;
-        JoystickValue joyVal = joystickPublish.value;
-        DateTime currentTime = DateTime.now();
-        DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
-          sendRoverCommand(RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, joyVal.x, joyVal.y));
-        } else {
-          sendRoverCommand(RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, 0, 0));
-        }
-      },
-    );
-    gamepadController.setJoystickListener();
-    gamepadController.drivetrainCommandStream.listen((value) {
-      if (!useGamepad.value) return;
-      sendRoverCommand(value);
-    });
+  onJoystickChanged(GamepadAxisType axis, double x, double y) {
+    GamepadCommand command = GamepadCommand(type: GamepadCommandType.axis, command: GamepadAxisCommand(type: axis, x: x, y: y));
+    joystickController.addJoystickCommand(command);
   }
 
-  // sendJoystick(double x, double y) {
-  //   if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
-  //       _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
-  //     if (_dataChannel != null) {
-  //       if (_dataChannel != null) {
-  //         String messageText = json.encode({
-  //           "joystick_x": x,
-  //           "joystick_y": y,
-  //         });
-  //         _dataChannel!.send(RTCDataChannelMessage(messageText));
-  //       }
-  //     }
-  //   }
-  // }
+  startJoystickUpdates() {
+    joystickController.drivetrainCommandStream.listen((value) {
+      if (!useGamepad.value) sendRoverCommand(value);
+    });
+
+    gamepadController.setJoystickListener();
+    gamepadController.drivetrainCommandStream.listen((value) {
+      if (useGamepad.value) sendRoverCommand(value);
+    });
+  }
 }

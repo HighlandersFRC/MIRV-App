@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover_metrics.dart';
@@ -19,16 +21,18 @@ class LeftSideButtons extends StatefulWidget {
   final MapSelectionController mapSelectionController;
   final double width;
   final double height;
-  const LeftSideButtons(
-      {Key? key,
-      required this.roverMetrics,
-      required this.periodicMetricUpdates,
-      required this.sendCommand,
-      required this.mapSelectionController,
-      required this.mirvApi,
-      required this.width,
-      required this.height})
-      : super(key: key);
+  final Function(GamepadAxisType, double, double) onJoystickChanged;
+  const LeftSideButtons({
+    Key? key,
+    required this.roverMetrics,
+    required this.periodicMetricUpdates,
+    required this.sendCommand,
+    required this.mapSelectionController,
+    required this.mirvApi,
+    required this.width,
+    required this.height,
+    required this.onJoystickChanged,
+  }) : super(key: key);
 
   @override
   State<LeftSideButtons> createState() => _LeftSideButtonsState();
@@ -40,6 +44,7 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
 
   @override
   Widget build(BuildContext context) {
+    const JoystickMode joystickMode = JoystickMode.vertical;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -88,6 +93,12 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                   ),
                 );
               }),
+        ),
+        const Spacer(),
+        Joystick(
+          mode: joystickMode,
+          listener: (details) => widget.onJoystickChanged(GamepadAxisType.left, details.x, details.y),
+          onStickDragEnd: () => widget.onJoystickChanged(GamepadAxisType.left, 0.0, 0.0),
         )
       ],
     );
