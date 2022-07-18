@@ -4,40 +4,36 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
 
-class CancelAuto extends StatefulWidget {
+class CancelAuto extends StatelessWidget {
   final RoverMetrics? roverMetrics;
+  late final bool? cancelled;
+
   final Function(RoverCommand) sendCommand;
-  const CancelAuto({
+  CancelAuto({
     Key? key,
     required this.roverMetrics,
     required this.sendCommand,
-  }) : super(key: key);
+  }) : super(key: key) {
+    cancelled = _cancelState(roverMetrics?.state);
+  }
 
-  @override
-  State<CancelAuto> createState() => _CancelAutoState();
-}
-
-class _CancelAutoState extends State<CancelAuto> {
-  bool cancel = true;
-
-  _cancelState(RoverStateType roverState) {
+  bool? _cancelState(RoverStateType? roverState) {
     switch (roverState) {
-      case RoverStateType.connected_disabled:
-        cancel = false;
-        break;
-      default:
+      case RoverStateType.autonomous:
         return true;
+      default:
+        return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(cancel == true ? Colors.blue : Colors.grey)),
+      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(cancelled == true ? Colors.blue : Colors.grey)),
       onPressed: () {
-        cancel == true ? widget.sendCommand(RoverGeneralCommands.stopManualControl) : null;
+        cancelled == true ? sendCommand(RoverGeneralCommands.cancel) : null;
       },
-      child: const Text("cancel"),
+      child: const Text("Cancel Command"),
     );
   }
 }

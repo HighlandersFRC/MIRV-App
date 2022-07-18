@@ -3,6 +3,7 @@ enum RoverSubsystemType { general, intake, drivetrain, movement, conveyor, senso
 
 enum RoverCommandTypeGeneral {
   deploy,
+  cancel,
   stow,
   enable,
   disable,
@@ -22,4 +23,3 @@ enum RoverCommandTypeMovement { to_location }
 extension RoverSubsytemType1 on RoverSubsystemType {
   dynamic get subCommands {}
 }
-

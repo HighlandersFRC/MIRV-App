@@ -61,16 +61,16 @@ class _RightSideButtonsState extends State<RightSideButtons> {
         ),
         Padding(
           padding: EdgeInsets.only(top: heightEquivalent * 5, bottom: heightEquivalent * 5),
-          child: SizedBox(
-            height: heightEquivalent * 50,
-            width: widget.width - 20,
-            child: ElevatedButton.icon(
-              onPressed: widget.makeCall,
-              label: const Text('Cancel Command'),
-              icon: const Icon(Icons.cancel),
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-            ),
-          ),
+          // child: SizedBox(
+          //   height: heightEquivalent * 50,
+          //   width: widget.width - 20,
+          //   child: ElevatedButton.icon(
+          //     onPressed: widget.makeCall,
+          //     label: const Text('Cancel Command'),
+          //     icon: const Icon(Icons.cancel),
+          //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
+          //   ),
+          // ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: heightEquivalent * 5),
