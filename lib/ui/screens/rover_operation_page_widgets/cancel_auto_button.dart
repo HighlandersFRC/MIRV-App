@@ -22,7 +22,7 @@ class _CancelAutoState extends State<CancelAuto> {
 
   _cancelState(RoverStateType roverState) {
     switch (roverState) {
-      case RoverStateType.disabled:
+      case RoverStateType.connected_disabled:
         cancel = false;
         break;
       default:
@@ -33,16 +33,11 @@ class _CancelAutoState extends State<CancelAuto> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          cancel == true
-              ? widget.sendCommand(RoverIntakeCommands.disable)
-              : null;
-        }, 
-        
-        child: cancel == true
-        ? MaterialStateProperty.all<Color>(Colors.blue)
-        :  MaterialStateProperty.all<Color>(Colors.red);
-        
-        );
+      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(cancel == true ? Colors.blue : Colors.grey)),
+      onPressed: () {
+        cancel == true ? widget.sendCommand(RoverIntakeCommands.disable) : null;
+      },
+      child: const Text("cancel"),
+    );
   }
 }

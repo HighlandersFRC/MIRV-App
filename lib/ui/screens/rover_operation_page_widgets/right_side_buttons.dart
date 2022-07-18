@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
@@ -47,6 +48,17 @@ class _RightSideButtonsState extends State<RightSideButtons> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: heightEquivalent * 5),
+          child: SizedBox(
+            height: 40,
+            child: StreamBuilder<RoverMetrics>(
+                stream: widget.periodicMetricUpdates,
+                builder: (context, snapshot) {
+                  return CancelAuto(roverMetrics: snapshot.data, sendCommand: widget.sendCommand);
+                }),
+          ),
+        ),
         Padding(
           padding: EdgeInsets.only(top: heightEquivalent * 5, bottom: heightEquivalent * 5),
           child: SizedBox(
