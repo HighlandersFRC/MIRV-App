@@ -8,7 +8,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
-import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class RightSideButtons extends StatefulWidget {
   const RightSideButtons(
@@ -43,9 +42,6 @@ class _RightSideButtonsState extends State<RightSideButtons> {
   Widget build(BuildContext context) {
     const JoystickMode joystickMode = JoystickMode.horizontal;
     double heightEquivalent = widget.height > 600 ? 1 : widget.height / 400;
-    double joystickHeight = widget.height > 600 ? 1 : widget.height / 400;
-    Color gradientStart = Colors.transparent;
-    Color gradientEnd = Colors.black;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -62,16 +58,6 @@ class _RightSideButtonsState extends State<RightSideButtons> {
         ),
         Padding(
           padding: EdgeInsets.only(top: heightEquivalent * 5, bottom: heightEquivalent * 5),
-          // child: SizedBox(
-          //   height: heightEquivalent * 50,
-          //   width: widget.width - 20,
-          //   child: ElevatedButton.icon(
-          //     onPressed: widget.makeCall,
-          //     label: const Text('Cancel Command'),
-          //     icon: const Icon(Icons.cancel),
-          //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
-          //   ),
-          // ),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: heightEquivalent * 5),
@@ -100,29 +86,25 @@ class _RightSideButtonsState extends State<RightSideButtons> {
         ),
         Padding(
             padding: EdgeInsets.only(bottom: heightEquivalent * 5),
-            child: get_pkg.Obx(
-              () => Switch(
-                  value: widget.useGamepad.value,
-                  onChanged: (val) {
-                    widget.useGamepad.value = !widget.useGamepad.value;
-                  }),
+            child: Row(
+              children: [
+                const Text("Use External\nController"),
+                get_pkg.Obx(
+                  () => Switch(
+                      value: widget.useGamepad.value,
+                      onChanged: (val) {
+                        widget.useGamepad.value = !widget.useGamepad.value;
+                      }),
+                ),
+              ],
             )),
         const Spacer(),
         Padding(
           padding: EdgeInsets.only(bottom: heightEquivalent * 5, right: 10, left: 10),
           child: SizedBox(
-              // height: joystickHeight * 500,
               child: (RoverStateType.remote_operation == RoverStateType.remote_operation)
                   ? Joystick(
                       mode: joystickMode,
-                      // base: Container(
-                      //     height: joystickHeight * 200,
-                      //     width: joystickHeight * 200,
-                      //     // child: Transform.scale(scale: 1, child: JoystickBase())
-                      //     decoration: BoxDecoration(
-                      //       shape: BoxShape.circle,
-                      //       border: Border.all(color: Colors.blueAccent, width: 5),
-                      //     )),
                       listener: (details) => widget.onJoystickChanged(GamepadAxisType.right, details.x, details.y),
                       onStickDragEnd: () => widget.onJoystickChanged(GamepadAxisType.right, 0.0, 0.0),
                     )
