@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 import 'package:mirv/ui/screens/rover_new_op_page.dart';
@@ -23,7 +24,7 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                Get.to(const RoverOpPage("rover_1"));
+                Get.to(const RoverOpPage(RoverMetrics()));
               },
               child: const Icon(Icons.drive_eta))
         ],

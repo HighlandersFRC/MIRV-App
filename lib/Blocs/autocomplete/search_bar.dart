@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/searchbox_places.dart';
-import 'package:mirv/services/geolocator_service.dart';
 import 'package:mirv/services/places_service.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
@@ -20,7 +18,6 @@ class SearchBar extends StatelessWidget {
   final placesService = PlacesService();
   final TextEditingController _typeAheadController = TextEditingController();
 
-  Rx<Position?> currentLocation = Rx<Position?>(null);
   Rx<String> searchBarText = Rx<String>('');
   List<PlaceSearch> searchResults = [];
   StreamController<Place?> selectedLocation = StreamController<Place?>();

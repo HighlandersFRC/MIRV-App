@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:mirv/services/auth_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:http/http.dart' as http;
@@ -9,45 +10,38 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class MirvApi {
   Timer? timer;
-  final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
   SessionStorageService? _sessionStorageService;
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
+  AuthService authService = AuthService();
 
-  MirvApi() {
-    _getSessionStorageService();
-  }
-
-  _getSessionStorageService() async {
-    _sessionStorageService = await SessionStorageService.getInstance();
-  }
-
-  Future<String?> _getCurrentAuthToken() async {
-    _sessionStorageService ??= await SessionStorageService.getInstance();
-    return _sessionStorageService?.retriveAccessToken();
+  String? _getCurrentAuthToken() {
+    return authService.getKeycloakAccessToken();
   }
 
   Future<RoverMetrics> getRoverMetrics(String roverID) async {
-    String? token = await _getCurrentAuthToken();
-    var response = await http.get(Uri.parse("$ipAddress/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
+    String? token = _getCurrentAuthToken();
+    var response = await http
+        .get(Uri.parse("${authService.getMirvEndpoint()}/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
 
   Future<List<RoverMetrics>> getRovers() async {
-    String? token = await _getCurrentAuthToken();
+    String? token = _getCurrentAuthToken();
     List<RoverMetrics> rovers;
-    var response = await http.get(Uri.parse("$ipAddress/rovers"), headers: {'Authorization': 'Bearer $token'});
+    var response =
+        await http.get(Uri.parse("${authService.getMirvEndpoint()}/rovers"), headers: {'Authorization': 'Bearer $token'});
     rovers = (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
     return rovers;
   }
 
   Future<http.StreamedResponse> startRoverConnection(String roverId, RTCSessionDescription? des) async {
-    String? token = await _getCurrentAuthToken();
+    String? token = _getCurrentAuthToken();
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
       'POST',
-      Uri.parse('$ipAddress/rovers/connect'),
+      Uri.parse('${authService.getMirvEndpoint()}/rovers/connect'),
     );
     request.body = json.encode({
       "connection_id": "string",

@@ -53,36 +53,49 @@ class GamepadCommand {
 class GamepadAxisCommand with _$GamepadAxisCommand {
   const factory GamepadAxisCommand(
       {required GamepadAxisType type,
-      required double x, //RoverStateType
+      required double x, //Rover StateType
       required double y}) = __GamepadAxisCommand;
 
-  factory GamepadAxisCommand.fromJson(Map<String, dynamic> json) => _$GamepadAxisCommandFromJson(json);
+  factory GamepadAxisCommand.fromJson(Map<String, dynamic> json) =>
+      _$GamepadAxisCommandFromJson(json);
 }
 
 @freezed
 class GamepadTriggerCommand with _$GamepadTriggerCommand {
-  const factory GamepadTriggerCommand({required GamepadTriggerType type, required double value}) = _GamepadTriggerCommand;
+  const factory GamepadTriggerCommand(
+      {required GamepadTriggerType type,
+      required double value}) = _GamepadTriggerCommand;
 
-  factory GamepadTriggerCommand.fromJson(Map<String, dynamic> json) => _$GamepadTriggerCommandFromJson(json);
+  factory GamepadTriggerCommand.fromJson(Map<String, dynamic> json) =>
+      _$GamepadTriggerCommandFromJson(json);
 }
 
 @freezed
 class GamepadBumperCommand with _$GamepadBumperCommand {
-  const factory GamepadBumperCommand({required GamepadBumperType type, required double isPressed}) = _GamepadBumperCommand;
+  const factory GamepadBumperCommand(
+      {required GamepadBumperType type,
+      required double isPressed}) = _GamepadBumperCommand;
 
-  factory GamepadBumperCommand.fromJson(Map<String, dynamic> json) => _$GamepadBumperCommandFromJson(json);
+  factory GamepadBumperCommand.fromJson(Map<String, dynamic> json) =>
+      _$GamepadBumperCommandFromJson(json);
 }
 
 @freezed
 class GamepadDPadCommand with _$GamepadDPadCommand {
-  const factory GamepadDPadCommand({required GamepadDPadType type, required int isPressed}) = _GamepadDPadCommand;
+  const factory GamepadDPadCommand(
+      {required GamepadDPadType type,
+      required int isPressed}) = _GamepadDPadCommand;
 
-  factory GamepadDPadCommand.fromJson(Map<String, dynamic> json) => _$GamepadDPadCommandFromJson(json);
+  factory GamepadDPadCommand.fromJson(Map<String, dynamic> json) =>
+      _$GamepadDPadCommandFromJson(json);
 }
 
 @freezed
 class GamepadButtonCommand with _$GamepadButtonCommand {
-  const factory GamepadButtonCommand({required GamepadButtonType type, required bool isPressed}) = _GamepadButtonCommand;
+  const factory GamepadButtonCommand(
+      {required GamepadButtonType type,
+      required bool isPressed}) = _GamepadButtonCommand;
 
-  factory GamepadButtonCommand.fromJson(Map<String, dynamic> json) => _$GamepadButtonCommandFromJson(json);
+  factory GamepadButtonCommand.fromJson(Map<String, dynamic> json) =>
+      _$GamepadButtonCommandFromJson(json);
 }

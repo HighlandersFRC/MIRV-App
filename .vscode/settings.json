@@ -1,0 +1,5 @@
+{
+    "editor.formatOnSave": true,
+    "dart.lineLength": 130,
+    "editor.formatOnPaste": true
+}
