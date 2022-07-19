@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:mirv/models/rover_state_type.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
@@ -23,15 +24,41 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
+  Text _stateText(RoverStateType? roverState) {
+    switch (roverState) {
+      case RoverStateType.disconnected:
+        return const Text("Disconnected");
+      case RoverStateType.autonomous:
+        return const Text("Autonomous");
+      case RoverStateType.disconnected_fault:
+        return const Text("Disconnected with Error");
+      case RoverStateType.connected_disabled:
+        return const Text("Disabled");
+      case RoverStateType.connected_fault:
+        return const Text("Connected with Error");
+      case RoverStateType.connected_idle_roaming:
+        return const Text("Awaiting Orders");
+      case RoverStateType.connected_idle_docked:
+        return const Text("Docked");
+      case RoverStateType.e_stop:
+        return const Text("E-Stopped"); //hexagon?
+      case RoverStateType.remote_operation:
+        return const Text("Controlling");
+      default:
+        return const Text("No Data");
+    }
+  }
+
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        leadingWidth: ,
-        leading: Icons.bluetooth_audio_rounded(
-          icon: Icon(Icon.lin)
+        leadingWidth: 200,
+        leading: ElevatedButton.icon(
+          icon: const Icon(Icons.wifi_tethering_off_outlined),
+          label: const Text("Disconnect"),
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -54,9 +81,6 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 );
               }),
-          child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
         ),
         foregroundColor: AppThemeColor.foregroundColor,
         shadowColor: AppThemeColor.shadowColor,
@@ -64,7 +88,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {
-              return Text(snapshot.data != null ? '${snapshot.data!.state}' : 'Waiting on data');
+              return _stateText(snapshot.data?.state);
             }),
         actions: [
           Padding(
@@ -95,9 +119,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               },
             ),
-            style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(Colors.amber),
-                backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
             child: const Text(
               " Status ",
               textScaleFactor: 2.5,

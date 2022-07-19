@@ -31,8 +31,7 @@ class CenterPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: Colors.amber,
+        SizedBox(
           width: width,
           height: height * 4 / 5,
           child: showMap

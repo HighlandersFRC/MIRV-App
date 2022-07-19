@@ -62,32 +62,6 @@ class RoverStatusBar extends StatelessWidget {
     }
   }
 
-  Text _stateText(RoverStateType roverState) {
-    switch (roverState) {
-      //TODO: implement all new enums so it works well
-      case RoverStateType.disconnected:
-        return const Text("Disconnected");
-      case RoverStateType.autonomous:
-        return const Text("Autonomous");
-      case RoverStateType.disconnected_fault:
-        return const Text("Disconnected with Error");
-      case RoverStateType.connected_disabled:
-        return const Text("Disabled");
-      case RoverStateType.connected_fault:
-        return const Text("Connected with Error");
-      case RoverStateType.connected_idle_roaming:
-        return const Text("Awaiting Orders");
-      case RoverStateType.connected_idle_docked:
-        return const Text("Docked");
-      case RoverStateType.e_stop:
-        return const Text("E-Stopped"); //hexagon?
-      case RoverStateType.remote_operation:
-        return const Text("Controlling");
-      default:
-        return const Text("Unknown");
-    }
-  }
-
   _healthIcon({required RoverHealthType roverHealthType, required IconData healthIconChoice}) {
     switch (roverHealthType) {
       case RoverHealthType.degraded:
@@ -120,7 +94,6 @@ class RoverStatusBar extends StatelessWidget {
                 ),
               ),
               _batteryIcon(roverMetrics!.battery),
-              _stateText(roverMetrics!.state),
 
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.handyman), //mechanical
