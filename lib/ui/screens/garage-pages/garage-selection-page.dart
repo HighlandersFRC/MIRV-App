@@ -122,7 +122,7 @@ class GarageSelectionPage extends StatelessWidget {
                                           : Text(
                                               "garage ${garageList[index].garageId}",
                                             ),
-                                                                            onTap: () {
+                                      onTap: () {
                                         if (garageList[index].status == GarageStatusType.available) {
                                           selectedGarageController.setSelectedGarageId((garageList[index].garageId).toString());
                                         }
@@ -146,12 +146,13 @@ class GarageSelectionPage extends StatelessWidget {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all<Color>(
                                     selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
-                            onPressed: selectedGarageController.isConnectButtonEnabled.value
-                                ? () {
-                                    Get.to(RoverOperationPage(garageList.firstWhere(
-                                        (element) => selectedGarageController.selectedGarageId.value == element.garageId)));
-                                  }
-                                : null,
+                            onPressed: () {},
+                            // selectedGarageController.isConnectButtonEnabled.value
+                            //     ? () {
+                            //         Get.to(RoverOperationPage(garageList.firstWhere(
+                            //             (element) => selectedGarageController.selectedGarageId.value == element.garageId)));
+                            //       }
+                            //     : null,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: const [
@@ -193,18 +194,18 @@ class GarageSelectionPage extends StatelessWidget {
           Expanded(
               child: Stack(
             children: [
-              Column(
-                children: [
-                  SizedBox(height: 70, child: SearchBar(selectedGarageController: selectedGarageController)),
-                  Expanded(
-                    child: Obx(
-                      // ignore: invalid_use_of_protected_member
-                      () => (RoverSelectionMap(
-                          garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
-                    ),
-                  )
-                ],
-              ),
+              // Column(
+              //   children: [
+              //     SizedBox(height: 70, child: SearchBar(selectedGarageController: selectedGarageController)),
+              //     Expanded(
+              //       child: Obx(
+              //         // ignore: invalid_use_of_protected_member
+              //         () => (RoverSelectionMap(
+              //             garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
+              //       ),
+              //     )
+              //   ],
+              // ),
             ],
           ))
         ],

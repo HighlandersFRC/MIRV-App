@@ -30,7 +30,6 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon.png');
   }
 
-
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
@@ -41,12 +40,10 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   double zoom = 16.0;
 
-
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-
 
     widget.selectedGarageController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
@@ -72,24 +69,21 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
       ));
     });
 
-
     widget.selectedGarageId.listen((garageId) {
       widget.garageMetrics.forEach((element) async {
         if (element.garageId == garageId) {
           _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-              target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
-              zoom: await _mapController!.getZoomLevel())));
+              target: LatLng(element.location.lat, element.location.long), zoom: await _mapController!.getZoomLevel())));
         }
       });
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     var firstGarage = widget.garageMetrics.firstWhereOrNull((val) => true);
-    var lat = firstGarage?.telemetry.location.lat ?? 40.5;
-    var long = firstGarage?.telemetry.location.long ?? -105;
+    var lat = firstGarage?.location.lat ?? 40.5;
+    var long = firstGarage?.location.long ?? -105;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GoogleMap(
@@ -107,15 +101,13 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
     );
   }
 
-
-
   Set<Marker> getMarkers() {
     setState(() {
       markers = {
         ...widget.garageMetrics.map((garage) {
           return Marker(
               markerId: MarkerId(garage.garageId),
-              position: LatLng(garage.telemetry.location.lat, garage.telemetry.location.long),
+              position: LatLng(garage.location.lat, garage.location.long),
               infoWindow: InfoWindow(
                 title: garage.garageId,
               ),
