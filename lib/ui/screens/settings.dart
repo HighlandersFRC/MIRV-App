@@ -58,7 +58,7 @@ class SettingsPage extends StatelessWidget {
               ListTile(
                 title: TextField(
                   controller: settingsTextBoxController.endpointController,
-                  decoration: const InputDecoration(labelText: 'MIRV Endpoint address:'),
+                  decoration: const InputDecoration(labelText: 'MIRV Cloud Endpoint:'),
                 ),
               ),
               ListTile(
