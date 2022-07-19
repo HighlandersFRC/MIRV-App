@@ -69,6 +69,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   void initState() {
     super.initState();
     _mirvApi.startPeriodicMetricUpdates(widget.roverMetrics.roverId);
+
     startWebRTCCall();
     webRTCConnection.startJoystickUpdates();
     SystemChrome.setPreferredOrientations([

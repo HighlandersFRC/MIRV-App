@@ -44,6 +44,7 @@ class WebRTCConnection {
   final StreamController<RoverCommand> _commandStreamController = StreamController<RoverCommand>.broadcast();
   Stream<RoverCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
   get_pkg.Rx<bool> useGamepad = false.obs;
+  BehaviorSubject<RoverCommand> periodicRoverCommandUpdates = BehaviorSubject<RoverCommand>();
 
   // MediaStream? _localStream;
   bool inCalling = false;
@@ -54,6 +55,8 @@ class WebRTCConnection {
   DateTime lastSendTime = DateTime.now();
 
   Timer? timerJoy;
+
+  Timer? timerHeart;
 
   final joystickStream = BehaviorSubject<List<double>>();
 
@@ -261,6 +264,16 @@ class WebRTCConnection {
     }
   }
 
+  _startHeartbeatMessages() {
+    timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+      sendRoverCommand(RoverGeneralCommands.heartBeat);
+    });
+  }
+
+  _stopHeartbeatMessages() {
+    timerHeart?.cancel();
+  }
+
   Future<void> makeCall(String roverId) async {
     try {
       loading.value = true;
@@ -301,6 +314,7 @@ class WebRTCConnection {
         peerConnection!.addTrack(element, stream);
       });
       await _negotiateRemoteConnection(roverId);
+      _startHeartbeatMessages();
     } catch (e) {
       _showReconnectDialog(e.toString(), roverId);
     }
@@ -310,6 +324,7 @@ class WebRTCConnection {
     await _dataChannel?.close();
     await peerConnection?.close();
     peerConnection = null;
+    _stopHeartbeatMessages();
     RTCVideoRenderer val = localRenderer.value;
     val.srcObject = null;
     localRenderer.value = val;

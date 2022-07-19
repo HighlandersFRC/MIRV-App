@@ -47,6 +47,7 @@ class RoverGeneralCommands {
   static const disable = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable);
   static const enable = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable);
   static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
+  static const heartBeat = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
   static const cancel = RoverCommand.generalCommand(RoverCommandTypeGeneral.cancel);
   static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
   static const startManualControl = RoverCommand.generalCommand(RoverCommandTypeGeneral.start_manual_control);
