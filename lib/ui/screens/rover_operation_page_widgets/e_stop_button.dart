@@ -20,9 +20,9 @@ class EStopButton extends StatelessWidget {
   bool? _cancelState(RoverStateType? roverState) {
     switch (roverState) {
       case RoverStateType.e_stop:
-        return true;
-      default:
         return false;
+      default:
+        return true;
     }
   }
 

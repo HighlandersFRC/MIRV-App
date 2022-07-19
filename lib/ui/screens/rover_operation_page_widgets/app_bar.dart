@@ -49,8 +49,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         leadingWidth: 200,
         leading: ElevatedButton.icon(
-          icon: const Icon(Icons.wifi_tethering_off_outlined),
-          label: const Text("Disconnect"),
+          icon: const Icon(Icons.wifi_tethering_off_outlined, size: 30, color: Colors.red),
+          label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) {

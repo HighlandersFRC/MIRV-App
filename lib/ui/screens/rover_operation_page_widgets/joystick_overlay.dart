@@ -42,12 +42,21 @@ class JoystickOverlay extends StatelessWidget {
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(right: 50),
-          child: ElevatedButton(
-            child: Text("Disable Manual Control"),
-            onPressed: () => manualOperation.value = false,
-          ),
-        ),
+            padding: const EdgeInsets.only(right: 50),
+            child: Container(
+              height: 80,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                color: Color.fromRGBO(50, 50, 50, 0.5),
+              ),
+              child: IconButton(
+                icon: Icon(Icons.control_camera_outlined),
+                iconSize: 60,
+                color: Colors.red,
+                onPressed: () => manualOperation.value = false,
+              ),
+            )),
         JoystickWidget(
           roverMetrics: roverMetrics,
           onJoystickChanged: onJoystickChanged,

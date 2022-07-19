@@ -38,27 +38,28 @@ class RoverStatusBar extends StatelessWidget {
 
   Icon _batteryIcon(int batteryLevel, {int? alertLevel}) {
     double divisor = 100 / 7;
+    double size = 40;
     int result = (batteryLevel / divisor).ceil();
     if (alertLevel != null && batteryLevel < alertLevel) {
-      return const Icon(Icons.battery_alert_rounded);
+      return Icon(Icons.battery_alert_rounded, size: size);
     }
     switch (result) {
       case 0:
-        return const Icon(Icons.battery_0_bar_rounded);
+        return Icon(Icons.battery_0_bar_rounded, size: size);
       case 1:
-        return const Icon(Icons.battery_1_bar_rounded);
+        return Icon(Icons.battery_1_bar_rounded, size: size);
       case 2:
-        return const Icon(Icons.battery_2_bar_rounded);
+        return Icon(Icons.battery_2_bar_rounded, size: size);
       case 3:
-        return const Icon(Icons.battery_3_bar_rounded);
+        return Icon(Icons.battery_3_bar_rounded, size: size);
       case 4:
-        return const Icon(Icons.battery_4_bar_rounded);
+        return Icon(Icons.battery_4_bar_rounded, size: size);
       case 5:
-        return const Icon(Icons.battery_5_bar_rounded);
+        return Icon(Icons.battery_5_bar_rounded, size: size);
       case 6:
-        return const Icon(Icons.battery_6_bar_rounded);
+        return Icon(Icons.battery_6_bar_rounded, size: size);
       default:
-        return const Icon(Icons.battery_full_rounded);
+        return Icon(Icons.battery_full_rounded, size: size);
     }
   }
 
@@ -88,12 +89,10 @@ class RoverStatusBar extends StatelessWidget {
       children: roverMetrics != null
           ? [
               Obx(
-                () => Icon(
-                  Icons.circle,
-                  color: uiConnectionState.value.iconColor,
-                ),
+                () => Icon(Icons.circle, color: uiConnectionState.value.iconColor, size: 35),
               ),
               _batteryIcon(roverMetrics!.battery),
+              Text("${roverMetrics!.battery}%", style: TextStyle(fontSize: 20)),
 
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.handyman), //mechanical

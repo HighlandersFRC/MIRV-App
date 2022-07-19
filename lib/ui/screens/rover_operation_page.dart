@@ -37,110 +37,122 @@ class RoverOperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Expanded(
-            child: Container(
-              child: RTCVideoView(webRTCConnection.localRenderer.value),
-              decoration: BoxDecoration(
-                color: Colors.grey,
+    webRTCConnection.makeCall(roverMetrics.roverId);
+    webRTCConnection.startJoystickUpdates();
+    return Obx(
+      () => Scaffold(
+        appBar: OpPgAppBar(
+          roverMetrics: roverMetricsObs.value,
+          stopCall: webRTCConnection.stopCall,
+          peerConnectionState: webRTCConnection.peerConnectionState,
+        ),
+        body: Stack(
+          children: [
+            Expanded(
+              child: Container(
+                child: RTCVideoView(webRTCConnection.localRenderer.value),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                ),
               ),
             ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Obx(() => OpPgAppBar(
-                  roverMetrics: roverMetricsObs.value,
-                  stopCall: webRTCConnection.stopCall,
-                  peerConnectionState: webRTCConnection.peerConnectionState,
+            Positioned(
+              top: 30,
+              height: 450,
+              left: 10,
+              width: 110,
+              child: Scrollbar(
+                child: CommandList(
+                  state: roverMetricsObs.value.state,
+                  sendCommand: webRTCConnection.sendRoverCommand,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              height: 450,
+              right: -15,
+              width: 150,
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, bottom: 20),
+                  child: Obx(() => ToggleDisable(
+                        roverMetrics: roverMetricsObs.value,
+                        sendCommand: webRTCConnection.sendRoverCommand,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Obx(() => CancelAuto(
+                        roverMetrics: roverMetricsObs.value,
+                        sendCommand: webRTCConnection.sendRoverCommand,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Obx(() => EStopButton(
+                        roverMetrics: roverMetricsObs.value,
+                        sendCommand: webRTCConnection.sendRoverCommand,
+                      )),
+                )
+              ]),
+            ),
+            Obx(() => Positioned(
+                  bottom: 20,
+                  left: manualOperation.value ? 650 : 400,
+                  child: Obx(() => TelemetryWidget(roverMetricsObs.value)),
                 )),
-          ),
-          Positioned(
-            top: 80,
-            height: 450,
-            left: 10,
-            width: 110,
-            child: Scrollbar(
-              child: CommandList(
-                state: roverMetricsObs.value.state,
-                sendCommand: webRTCConnection.sendRoverCommand,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 80,
-            height: 450,
-            right: -15,
-            width: 150,
-            child: Column(children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
-                child: Obx(() => ToggleDisable(
-                      roverMetrics: roverMetricsObs.value,
-                      sendCommand: webRTCConnection.sendRoverCommand,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Obx(() => CancelAuto(
-                      roverMetrics: roverMetricsObs.value,
-                      sendCommand: webRTCConnection.sendRoverCommand,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Obx(() => EStopButton(
-                      roverMetrics: roverMetricsObs.value,
-                      sendCommand: webRTCConnection.sendRoverCommand,
-                    )),
-              )
-            ]),
-          ),
-          Obx(() => Positioned(
+            Obx(
+              () => Positioned(
                 bottom: 20,
-                left: manualOperation.value ? 650 : 400,
-                child: Obx(() => TelemetryWidget(roverMetricsObs.value)),
-              )),
-          Obx(
-            () => Positioned(
-              bottom: 20,
-              left: manualOperation.value ? 300 : 50,
-              height: 160,
-              width: 300,
-              child: RoverOperationMap(
-                locationStream: locationStream,
-                piLitMarkers: piLitMarkers,
-                selectedRoverMetrics: roverMetrics,
+                left: manualOperation.value ? 300 : 50,
+                height: 160,
+                width: 300,
+                child: RoverOperationMap(
+                  locationStream: locationStream,
+                  piLitMarkers: piLitMarkers,
+                  selectedRoverMetrics: roverMetrics,
+                ),
               ),
             ),
-          ),
-          Obx(
-            () => manualOperation.value
-                ? Positioned(
-                    bottom: 20,
-                    left: 20,
-                    right: 20,
-                    child: JoystickOverlay(
-                      roverMetrics: roverMetricsObs.value,
-                      manualOperation: manualOperation,
-                      onJoystickChanged: webRTCConnection.onJoystickChanged,
-                    ),
-                  )
-                : Positioned(
-                    bottom: 20,
-                    left: 20,
-                    right: 20,
-                    child: Center(
-                      child: ElevatedButton(
-                        child: Text("Enable Manual Control"),
-                        onPressed: () => manualOperation.value = true,
+            Obx(
+              () => manualOperation.value
+                  ? Positioned(
+                      bottom: 20,
+                      left: 20,
+                      right: 20,
+                      child: JoystickOverlay(
+                        roverMetrics: roverMetricsObs.value,
+                        manualOperation: manualOperation,
+                        onJoystickChanged: webRTCConnection.onJoystickChanged,
                       ),
-                    )),
-          )
-        ],
+                    )
+                  : Positioned(
+                      bottom: 20,
+                      left: 20,
+                      right: 20,
+                      child: Center(
+                          child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          color: Color.fromRGBO(50, 50, 50, 0.5),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.control_camera_outlined),
+                          iconSize: 60,
+                          color: Colors.white,
+                          onPressed: () => manualOperation.value = true,
+                        ),
+                      ))),
+            ),
+            Obx(() => webRTCConnection.loading.value
+                ? Expanded(
+                    child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
+                : SizedBox.shrink())
+          ],
+        ),
       ),
     );
   }
