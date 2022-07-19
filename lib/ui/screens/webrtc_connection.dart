@@ -322,12 +322,14 @@ class WebRTCConnection {
 
   startJoystickUpdates() {
     joystickController.drivetrainCommandStream.listen((value) {
-      if (!useGamepad.value) sendRoverCommand(value);
+      // if (!useGamepad.value)
+      sendRoverCommand(value);
     });
 
     gamepadController.setJoystickListener();
     gamepadController.drivetrainCommandStream.listen((value) {
-      if (useGamepad.value) sendRoverCommand(value);
+      // if (useGamepad.value)
+      sendRoverCommand(value);
     });
   }
 }

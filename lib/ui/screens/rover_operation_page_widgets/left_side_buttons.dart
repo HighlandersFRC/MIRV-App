@@ -80,20 +80,20 @@ class _LeftSideButtonsState extends State<LeftSideButtons> {
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 98, 7, 255))),
                     )),
         ),
-        SizedBox(
-          width: widget.width,
-          height: widget.height / 2,
-          child: StreamBuilder<RoverMetrics>(
-              stream: widget.mirvApi.periodicMetricUpdates,
-              builder: (context, snapshot) {
-                return Scrollbar(
-                  child: CommandList(
-                    roverMetrics: snapshot.data,
-                    sendCommand: widget.sendCommand,
-                  ),
-                );
-              }),
-        ),
+        // SizedBox(
+        //   width: widget.width,
+        //   height: widget.height / 2,
+        //   child: StreamBuilder<RoverMetrics>(
+        //       stream: widget.mirvApi.periodicMetricUpdates,
+        //       builder: (context, snapshot) {
+        //         return Scrollbar(
+        //           child: CommandList(
+        //             roverMetrics: snapshot.data,
+        //             sendCommand: widget.sendCommand,
+        //           ),
+        //         );
+        //       }),
+        // ),
         const Spacer(),
         Joystick(
           mode: joystickMode,
