@@ -101,7 +101,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     webRTCConnection.notificationsFromWebRTC(widget.roverMetrics.roverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
-        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+        // periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
         roverMetrics: widget.roverMetrics,
         stopCall: webRTCConnection.stopCall,
         peerConnectionState: webRTCConnection.peerConnectionState,

@@ -60,7 +60,6 @@ dependencies:
   settings_ui: ^2.0.2
   fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
-  icon_forest: ^1.1.8
 
 dev_dependencies:
   flutter_test:
@@ -86,7 +85,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-  - assets/images/
+  - assets/images/home.png
+  - assets/images/ramp.png
+  - assets/images/cancel.png
+  - assets/images/pi_lit_outline_up.png
+  - assets/images/pi_lit_outline_down.png
+  - assets/images/pi_lit_icon.png
+  - assets/images/rover_app_icon.png
+  - assets/images/rover_icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

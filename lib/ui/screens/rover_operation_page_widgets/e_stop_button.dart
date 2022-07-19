@@ -4,22 +4,22 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
 
-class CancelAuto extends StatelessWidget {
+class EStopButton extends StatelessWidget {
   final RoverMetrics? roverMetrics;
-  late final bool? cancelled;
+  late final bool? isEnabled;
 
   final Function(RoverCommand) sendCommand;
-  CancelAuto({
+  EStopButton({
     Key? key,
     required this.roverMetrics,
     required this.sendCommand,
   }) : super(key: key) {
-    cancelled = _cancelState(roverMetrics?.state);
+    isEnabled = _cancelState(roverMetrics?.state);
   }
 
   bool? _cancelState(RoverStateType? roverState) {
     switch (roverState) {
-      case RoverStateType.autonomous:
+      case RoverStateType.e_stop:
         return true;
       default:
         return false;
@@ -36,12 +36,12 @@ class CancelAuto extends StatelessWidget {
           color: Color.fromRGBO(50, 50, 50, 0.5),
         ),
         child: IconButton(
-          onPressed: cancelled == true
+          onPressed: isEnabled == true
               ? () {
-                  cancelled == true ? sendCommand(RoverGeneralCommands.cancel) : null;
+                  sendCommand(RoverGeneralCommands.eStop);
                 }
               : null,
-          icon: const Icon(Icons.cancel_outlined, size: 70),
+          icon: const Icon(Icons.warning_amber_rounded, size: 70, color: Colors.red),
         ));
   }
 }

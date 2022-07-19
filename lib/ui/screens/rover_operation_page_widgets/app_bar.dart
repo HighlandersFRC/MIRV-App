@@ -2,24 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/models/rover_state_type.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
-import 'package:icon_forest/icon_forest.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OpPgAppBar(
-      {Key? key,
-      required this.periodicMetricUpdates,
-      required this.roverMetrics,
-      required this.stopCall,
-      required this.peerConnectionState})
+  const OpPgAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
       : super(key: key);
 
-  final BehaviorSubject<RoverMetrics> periodicMetricUpdates;
   final RoverMetrics roverMetrics;
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
@@ -82,25 +74,15 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               }),
         ),
-        foregroundColor: AppThemeColor.foregroundColor,
-        shadowColor: AppThemeColor.shadowColor,
         backgroundColor: AppThemeColor.backgroundColor,
-        title: StreamBuilder<RoverMetrics>(
-            stream: periodicMetricUpdates,
-            builder: (context, snapshot) {
-              return _stateText(snapshot.data?.state);
-            }),
+        title: _stateText(roverMetrics.state),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: StreamBuilder<RoverMetrics>(
-                stream: periodicMetricUpdates.stream,
-                builder: (context, snapshot) {
-                  return RoverStatusBar(
-                    roverMetrics: snapshot.data,
-                    peerConnectionState: peerConnectionState,
-                  );
-                }),
+            child: RoverStatusBar(
+              roverMetrics: roverMetrics,
+              peerConnectionState: peerConnectionState,
+            ),
           ),
           ElevatedButton(
             onPressed: () => showDialog(
