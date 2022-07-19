@@ -8,6 +8,7 @@ import 'package:mirv/models/rover_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_new_op_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
 
 class SelectedRoverController extends GetxController {
@@ -92,7 +93,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         return const Icon(Icons.battery_full_rounded);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +192,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                     selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
-                                    Get.to(RoverOpPage(roverList.firstWhere(
+                                    Get.to(RoverOperationPage(roverList.firstWhere(
                                         (element) => selectedRoverController.selectedRoverId.value == element.roverId)));
                                   }
                                 : null,
