@@ -11,7 +11,6 @@ import 'package:mirv/models/rover_control/rover_command_type.dart';
 class GamepadController {
   static const eventChannel = EventChannel('com.neaera.mirv/gamepad_channel');
   late StreamSubscription _eventChannel;
-  Timer? controllerTimer;
   final RoverDriveControlType driveType;
 
   late Stream<DrivetrainRoverCommand> drivetrainCommandStream;
@@ -29,7 +28,7 @@ class GamepadController {
     drivetrainCommandStream = Rx.combineLatest2(axisStreamLeft, axisStreamRight,
         (GamepadAxisCommand left, GamepadAxisCommand right) => _getJoystickCommandOutput(driveType, left, right));
 
-    _initializeStreams();
+    Timer(const Duration(seconds: 1), _initializeStreams);
   }
 
   _initializeStreams() {
@@ -37,10 +36,6 @@ class GamepadController {
         GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
     _commandStreamController.add(
         GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
-  }
-
-  dispose() {
-    controllerTimer?.cancel();
   }
 
   DrivetrainRoverCommand _getJoystickCommandOutput(

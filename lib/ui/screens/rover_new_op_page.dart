@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/services/gamepad_controller.dart';
+import 'package:mirv/services/joystick_controller.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:observable/observable.dart';
 import 'package:mirv/models/pi_lit.dart';
@@ -40,7 +41,6 @@ class RoverOpPage extends StatefulWidget {
 
 class _RoverOpPageState extends State<RoverOpPage> {
   final MirvApi _mirvApi = MirvApi();
-  GamepadController gamepadController = GamepadController();
   String transformType = "none";
   var messageBoxController = TextEditingController();
   final mapSelectionController = Get.put(MapSelectionController());
@@ -62,13 +62,8 @@ class _RoverOpPageState extends State<RoverOpPage> {
   bool _loading = false;
   DateTime lastSendTime = DateTime.now();
 
-  Timer? timerJoy;
-  Timer? timerGamepad;
-
   final roverCommandStream = BehaviorSubject<RoverCommand>();
   final gamepadStream = BehaviorSubject<List<double>>();
-
-  get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
 
   @override
   void initState() {
@@ -125,6 +120,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                     roverMetrics: widget.roverMetrics,
                     periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                     sendCommand: webRTCConnection.sendRoverCommand,
+                    onJoystickChanged: webRTCConnection.onJoystickChanged,
                     mapSelectionController: mapSelectionController,
                     mirvApi: _mirvApi,
                   )),
@@ -150,7 +146,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
                       sendCommand: webRTCConnection.sendRoverCommand,
                       makeCall: startWebRTCCall,
                       stopCall: webRTCConnection.stopCall,
-                      joystickPublish: webRTCConnection.joystickPublish,
+                      onJoystickChanged: webRTCConnection.onJoystickChanged,
                       periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
                       useGamepad: webRTCConnection.useGamepad,
                     ))
