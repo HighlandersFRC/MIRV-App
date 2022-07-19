@@ -13,6 +13,10 @@ _$_GarageMetrics _$$_GarageMetricsFromJson(Map<String, dynamic> json) =>
           GarageStateType.unlocked,
       status: $enumDecodeNullable(_$GarageStatusTypeEnumMap, json['status']) ??
           GarageStatusType.available,
+      location: json['location'] == null
+          ? const GarageMetricLocation()
+          : GarageMetricLocation.fromJson(
+              json['location'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_GarageMetricsToJson(_$_GarageMetrics instance) =>
@@ -20,6 +24,7 @@ Map<String, dynamic> _$$_GarageMetricsToJson(_$_GarageMetrics instance) =>
       'garageId': instance.garageId,
       'state': _$GarageStateTypeEnumMap[instance.state],
       'status': _$GarageStatusTypeEnumMap[instance.status],
+      'location': instance.location,
     };
 
 const _$GarageStateTypeEnumMap = {
@@ -33,3 +38,17 @@ const _$GarageStatusTypeEnumMap = {
   GarageStatusType.available: 'available',
   GarageStatusType.unavailable: 'unavailable',
 };
+
+_$_GarageMetricLocation _$$_GarageMetricLocationFromJson(
+        Map<String, dynamic> json) =>
+    _$_GarageMetricLocation(
+      long: (json['long'] as num?)?.toDouble() ?? 0.0,
+      lat: (json['lat'] as num?)?.toDouble() ?? 0.0,
+    );
+
+Map<String, dynamic> _$$_GarageMetricLocationToJson(
+        _$_GarageMetricLocation instance) =>
+    <String, dynamic>{
+      'long': instance.long,
+      'lat': instance.lat,
+    };
