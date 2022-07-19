@@ -7,6 +7,7 @@ import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
+import 'package:icon_forest/icon_forest.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar(
@@ -28,12 +29,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        iconTheme: const IconThemeData(
-          color: Color.fromARGB(255, 0, 0, 0),
-          size: 40,
-        ),
-        leadingWidth: 200,
-        leading: ElevatedButton(
+        leadingWidth: ,
+        leading: Icons.bluetooth_audio_rounded(
+          icon: Icon(Icon.lin)
           onPressed: () => showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -60,9 +58,9 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisSize: MainAxisSize.min,
               children: const [Text('Disconnect'), Icon(Icons.wifi_tethering_off_outlined, color: Colors.red)]),
         ),
-        foregroundColor: AppBarColor.foregroundColor,
-        shadowColor: AppBarColor.shadowColor,
-        backgroundColor: AppBarColor.backgroundColor,
+        foregroundColor: AppThemeColor.foregroundColor,
+        shadowColor: AppThemeColor.shadowColor,
+        backgroundColor: AppThemeColor.backgroundColor,
         title: StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {

@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
 
   freezed_annotation: ^2.0.3
   json_annotation: ^4.5.0
@@ -59,6 +60,7 @@ dependencies:
   settings_ui: ^2.0.2
   fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
+  icon_forest: ^1.1.8
 
 dev_dependencies:
   flutter_test:
