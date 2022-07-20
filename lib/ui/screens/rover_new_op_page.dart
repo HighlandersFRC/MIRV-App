@@ -53,7 +53,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     const PiLit(id: 'piLit4', description: 'Pi-lit device', location: LatLng(40.47408365724258, -104.96959090232849))
   ];
 
-  final WebRTCConnection webRTCConnection = WebRTCConnection();
+  final WebRTCConnection webRTCConnection = WebRTCConnection(RoverMetrics());
   bool _inCalling = false;
   bool isWorking = true;
   DateTime? _timeStart;

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
@@ -33,6 +34,9 @@ class WebRTCConnection {
   get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState = get_pkg.Rx<RTCPeerConnectionState?>(null);
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  final RoverMetrics roverMetrics;
+
+  late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
 
   MediaStream? _localStream;
   GamepadController gamepadController = GamepadController();
@@ -45,6 +49,9 @@ class WebRTCConnection {
   Stream<RoverCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
   get_pkg.Rx<bool> useGamepad = false.obs;
   BehaviorSubject<RoverCommand> periodicRoverCommandUpdates = BehaviorSubject<RoverCommand>();
+  Duration secondsElapsed = const Duration(seconds: 10);
+
+  DateTime? recentStatusMessage;
 
   // MediaStream? _localStream;
   bool inCalling = false;
@@ -52,9 +59,10 @@ class WebRTCConnection {
   double prevY = 0;
   get_pkg.Rx<bool> loading = false.obs;
 
-  DateTime lastSendTime = DateTime.now();
+  DateTime currentTime = DateTime.now();
 
   Timer? timerJoy;
+  Timer? timer;
 
   Timer? timerHeart;
 
@@ -63,8 +71,9 @@ class WebRTCConnection {
   get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
+  int GATHERING_HEARTBEAT = 100;
 
-  WebRTCConnection() {
+  WebRTCConnection(this.roverMetrics) {
     init();
     Timer.periodic(const Duration(seconds: 1), (Timer t) {
       peerConnectionState.value = peerConnection?.connectionState;
@@ -113,6 +122,19 @@ class WebRTCConnection {
   // This Data Channel Function receives data sent on the data channel created by the flutter app
   void _onDataChannelMessage(message) {
     print(message.text);
+    RoverMetrics roverMetricsMessage = RoverMetrics.fromJson(json.decode(message));
+
+    recentStatusMessage = DateTime.now();
+  }
+
+  messagesDuration(String roverId) {
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      final messageDifference = currentTime.difference(recentStatusMessage!).inSeconds.abs();
+      if (messageDifference >= 10) {
+        stopCall();
+        _showReconnectDialog('Connection Failed', roverId);
+      }
+    });
   }
 
   void _onTrack(RTCTrackEvent event) {
@@ -296,6 +318,7 @@ class WebRTCConnection {
         _dataChannelDict!,
       );
       _dataChannel!.onDataChannelState = _onDataChannelState;
+      _dataChannel!.onMessage = _onDataChannelMessage;
       final mediaConstraints = <String, dynamic>{
         'audio': false,
         'video': {

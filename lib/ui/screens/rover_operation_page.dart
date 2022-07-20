@@ -18,13 +18,10 @@ import 'webrtc_connection.dart';
 
 class RoverOperationPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
-  late Rx<RoverMetrics> roverMetricsObs;
 
-  RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key) {
-    roverMetricsObs = Rx<RoverMetrics>(roverMetrics);
-  }
+  RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
 
-  WebRTCConnection webRTCConnection = WebRTCConnection();
+  late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
   final List<PiLit> piLitMarkers = [
     const PiLit(id: 'piLit1', description: 'Pi-lit device', location: LatLng(40.47399235127373, -104.96957682073116)),
     const PiLit(id: 'piLit2', description: 'Pi-lit device', location: LatLng(40.474025762131475, -104.9695798382163)),
@@ -42,7 +39,7 @@ class RoverOperationPage extends StatelessWidget {
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
-          roverMetrics: roverMetricsObs.value,
+          roverMetrics: webRTCConnection.roverMetricsObs.value,
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
         ),
@@ -63,7 +60,7 @@ class RoverOperationPage extends StatelessWidget {
               width: 110,
               child: Scrollbar(
                 child: CommandList(
-                  state: roverMetricsObs.value.state,
+                  state: webRTCConnection.roverMetricsObs.value.state,
                   sendCommand: webRTCConnection.sendRoverCommand,
                 ),
               ),
@@ -77,21 +74,21 @@ class RoverOperationPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 20),
                   child: Obx(() => ToggleDisable(
-                        roverMetrics: roverMetricsObs.value,
+                        roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Obx(() => CancelAuto(
-                        roverMetrics: roverMetricsObs.value,
+                        roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Obx(() => EStopButton(
-                        roverMetrics: roverMetricsObs.value,
+                        roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
                 )
@@ -100,7 +97,7 @@ class RoverOperationPage extends StatelessWidget {
             Obx(() => Positioned(
                   bottom: 20,
                   left: manualOperation.value ? 650 : 400,
-                  child: Obx(() => TelemetryWidget(roverMetricsObs.value)),
+                  child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
             Obx(
               () => Positioned(
@@ -122,7 +119,7 @@ class RoverOperationPage extends StatelessWidget {
                       left: 20,
                       right: 20,
                       child: JoystickOverlay(
-                        roverMetrics: roverMetricsObs.value,
+                        roverMetrics: webRTCConnection.roverMetricsObs.value,
                         manualOperation: manualOperation,
                         onJoystickChanged: webRTCConnection.onJoystickChanged,
                       ),
