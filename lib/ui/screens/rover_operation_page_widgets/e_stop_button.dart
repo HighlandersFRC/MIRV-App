@@ -31,17 +31,21 @@ class EStopButton extends StatelessWidget {
     return Container(
         height: 100,
         width: 100,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0),
-          color: Color.fromRGBO(50, 50, 50, 0.5),
-        ),
-        child: IconButton(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: Color.fromARGB(255, 100, 100, 100)),
+        child: ElevatedButton.icon(
+          style: ButtonStyle(
+            shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0)),
+            backgroundColor: MaterialStateProperty.all(Color.fromARGB(0, 97, 97, 97)),
+            overlayColor: MaterialStateProperty.all(Color.fromARGB(137, 255, 255, 0)),
+            foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 0, 0)),
+          ),
+          label: Text("", textScaleFactor: 0.0),
           onPressed: isEnabled == true
               ? () {
                   sendCommand(RoverGeneralCommands.eStop);
                 }
               : null,
-          icon: const Icon(Icons.warning_amber_rounded, size: 70, color: Colors.red),
+          icon: const Icon(Icons.warning_amber_rounded, size: 64, color: Colors.red),
         ));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,6 +14,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.da
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 import 'webrtc_connection.dart';
 
@@ -140,7 +142,7 @@ class RoverOperationPage extends StatelessWidget {
                           color: Color.fromRGBO(50, 50, 50, 0.5),
                         ),
                         child: IconButton(
-                          icon: Icon(Icons.control_camera_outlined),
+                          icon: Icon(CupertinoIcons.antenna_radiowaves_left_right),
                           iconSize: 60,
                           color: Colors.white,
                           onPressed: () => manualOperation.value = true,

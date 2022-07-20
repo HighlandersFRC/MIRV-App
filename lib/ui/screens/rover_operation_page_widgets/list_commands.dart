@@ -26,7 +26,7 @@ class CommandList extends StatelessWidget {
                       width: 100,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16.0),
-                        color: Color.fromRGBO(50, 50, 50, 0.5),
+                        color: Color.fromARGB(126, 74, 68, 68),
                       ),
                       child: ListTile(
                           title: IconButton(

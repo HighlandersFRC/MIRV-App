@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:get/get.dart';
@@ -51,7 +52,7 @@ class JoystickOverlay extends StatelessWidget {
                 color: Color.fromRGBO(50, 50, 50, 0.5),
               ),
               child: IconButton(
-                icon: Icon(Icons.control_camera_outlined),
+                icon: Icon(CupertinoIcons.xmark_octagon),
                 iconSize: 60,
                 color: Colors.red,
                 onPressed: () => manualOperation.value = false,
