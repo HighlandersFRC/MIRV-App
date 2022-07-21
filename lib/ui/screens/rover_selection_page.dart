@@ -26,7 +26,8 @@ class SelectedRoverController extends GetxController {
     if (roverId == selectedRoverId.value) {
       selectedRoverId.trigger(roverId);
     } else {
-    selectedRoverId.value = roverId;}
+      selectedRoverId.value = roverId;
+    }
   }
 
   verifyRoverId(List<RoverMetrics> rovers) {
@@ -63,8 +64,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   MirvApi mirvApi = MirvApi();
   Location location = Location();
   final TextEditingController typeAheadController = TextEditingController();
-  Rx<Future<void>?> centerRover = Rx<Future<void>?>(null);
-  GoogleMapController? _mapController;
 
   int? groupValue = 0;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
@@ -149,10 +148,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       ),
                                       title: Text(roverList[index].roverId.toString()),
                                       onTap: () {
-                                        _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                                          target: LatLng(
-                                              roverList[index].telemetry.location.lat, roverList[index].telemetry.location.long),
-                                        )));
                                         if (roverList[index].status == RoverStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
                                         }
@@ -171,7 +166,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           ? const SizedBox()
                                           : Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
                                       onTap: () {
-                                        
                                         if (roverList[index].status == RoverStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
                                         }
