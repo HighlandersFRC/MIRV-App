@@ -26,11 +26,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
-
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
-
 
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
@@ -42,12 +40,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   double zoom = 16.0;
 
-
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-
 
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
@@ -73,7 +69,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
 
-
     widget.selectedRoverId.listen((roverId) {
       widget.roverMetrics.forEach((element) async {
         if (element.roverId == roverId) {
@@ -84,7 +79,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +101,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ),
     );
   }
-
-
 
   Set<Marker> getMarkers() {
     setState(() {
