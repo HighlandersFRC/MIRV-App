@@ -53,7 +53,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     const PiLit(id: 'piLit4', description: 'Pi-lit device', location: LatLng(40.47408365724258, -104.96959090232849))
   ];
 
-  final WebRTCConnection webRTCConnection = WebRTCConnection();
+  final WebRTCConnection webRTCConnection = WebRTCConnection(RoverMetrics());
   bool _inCalling = false;
   bool isWorking = true;
   DateTime? _timeStart;
@@ -69,6 +69,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
   void initState() {
     super.initState();
     _mirvApi.startPeriodicMetricUpdates(widget.roverMetrics.roverId);
+
     startWebRTCCall();
     webRTCConnection.startJoystickUpdates();
     SystemChrome.setPreferredOrientations([
@@ -101,7 +102,7 @@ class _RoverOpPageState extends State<RoverOpPage> {
     webRTCConnection.notificationsFromWebRTC(widget.roverMetrics.roverId, context, startWebRTCCall);
     return Scaffold(
       appBar: OpPgAppBar(
-        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+        // periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
         roverMetrics: widget.roverMetrics,
         stopCall: webRTCConnection.stopCall,
         peerConnectionState: webRTCConnection.peerConnectionState,
@@ -128,13 +129,15 @@ class _RoverOpPageState extends State<RoverOpPage> {
                 Align(
                     alignment: Alignment.center,
                     child: Obx(() => CenterPanel(
-                        width: width / 2,
-                        height: height - 150,
-                        localRenderer: webRTCConnection.localRenderer.value,
-                        locationStream: locationStream,
-                        periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
-                        piLitMarkers: piLitMarkers,
-                        showMap: mapSelectionController.showMap.value))),
+                          width: width / 2,
+                          height: height - 150,
+                          localRenderer: webRTCConnection.localRenderer.value,
+                          locationStream: locationStream,
+                          periodicMetricUpdates: _mirvApi.periodicMetricUpdates,
+                          piLitMarkers: piLitMarkers,
+                          selectedRoverMetrics: widget.roverMetrics,
+                          showMap: mapSelectionController.showMap.value,
+                        ))),
                 Align(
                     alignment: Alignment.bottomRight,
                     child: RightSideButtons(

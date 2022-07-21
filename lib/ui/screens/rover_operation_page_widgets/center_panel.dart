@@ -16,7 +16,8 @@ class CenterPanel extends StatelessWidget {
       required this.locationStream,
       required this.piLitMarkers,
       required this.width,
-      required this.height})
+      required this.height,
+      required this.selectedRoverMetrics})
       : super(key: key);
 
   final dynamic periodicMetricUpdates;
@@ -26,20 +27,20 @@ class CenterPanel extends StatelessWidget {
   final List<PiLit> piLitMarkers;
   final double width;
   final double height;
+  final RoverMetrics selectedRoverMetrics;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          color: Colors.amber,
+        SizedBox(
           width: width,
           height: height * 4 / 5,
           child: showMap
               ? RoverOperationMap(
                   locationStream: locationStream,
                   piLitMarkers: piLitMarkers,
-                  selectedRoverMetrics: RoverMetrics(),
+                  selectedRoverMetrics: selectedRoverMetrics,
                 )
               : AspectRatio(
                   aspectRatio: 1,

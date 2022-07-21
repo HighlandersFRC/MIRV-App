@@ -47,7 +47,7 @@ class LoginController extends GetxController {
         Get.snackbar('Login', 'Login successfully');
         Get.off(const RoverSelectionPage());
       } else if (code == 401 || code == 403) {
-        Get.snackbar('Login', 'Invalid email or password');
+        Get.snackbar('Login', 'Invalid username or password');
       } else {
         Get.snackbar('Login', 'Unknown error: $code');
       }
@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
             children: [
               TextFormField(
                 controller: controller.usernameController,
-                decoration: const InputDecoration(labelText: 'E-mail'),
+                decoration: const InputDecoration(labelText: 'Username'),
                 validator: controller.validator,
               ),
               TextFormField(
