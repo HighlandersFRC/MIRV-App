@@ -60,8 +60,8 @@ class RoverOperationPage extends StatelessWidget {
             Positioned(
               top: 30,
               height: 450,
-              left: 2,
-              width: 170,
+              width: 150,
+              left: 10,
               child: Scrollbar(
                 child: CommandList(
                   state: webRTCConnection.roverMetricsObs.value.state,

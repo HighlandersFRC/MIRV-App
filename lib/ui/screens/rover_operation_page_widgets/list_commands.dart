@@ -23,9 +23,10 @@ class CommandList extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 20, right: 2),
                     child: ListTile(
                       title: SizedBox(
-                        height: 100,
-                        width: 160,
+                        height: 110,
+                        width: 64,
                         child: Container(
+                          height: 150,
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.center,
@@ -53,6 +54,7 @@ class CommandList extends StatelessWidget {
                           ),
                           child: ElevatedButton(
                             style: ButtonStyle(
+                              fixedSize: MaterialStateProperty.all(Size(64, 64)),
                               shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(16)),
