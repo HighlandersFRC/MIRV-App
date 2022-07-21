@@ -26,7 +26,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
-
+  Rx<Future<void>?> centerRover = Rx<Future<void>?>(null);
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
@@ -77,13 +77,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
               zoom: await _mapController!.getZoomLevel())));
         }
+       
       });
-
-      onTap(selectedRoverId) {
-        _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(selectedRoverId.telemetry.location.lat, selectedRoverId.telemetry.location.long),
-        )));
-      }
     });
   }
 
