@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
-
 import 'package:mirv/models/rover_health_type.dart';
 import 'package:mirv/models/ui_connection_state.dart';
 

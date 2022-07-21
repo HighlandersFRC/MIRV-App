@@ -16,7 +16,6 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.da
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 
 import 'webrtc_connection.dart';
 

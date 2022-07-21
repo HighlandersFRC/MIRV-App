@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_status_type.dart';
