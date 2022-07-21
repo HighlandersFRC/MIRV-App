@@ -30,7 +30,14 @@ class ToggleDisable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return Container(
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.0),
+        color: Color.fromRGBO(50, 50, 50, 0.5),
+      ),
+      child: IconButton(
         onPressed: enabled == null
             ? null
             : () {
@@ -44,11 +51,9 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        child: enabled == true
-            ? const Text(
-                'Disable',
-                style: TextStyle(fontSize: 30),
-              )
-            : const Text('Enable', style: TextStyle(fontSize: 30)));
+        icon:
+            enabled == true ? const Icon(Icons.stop_circle_outlined, size: 70) : const Icon(Icons.play_circle_outline, size: 70),
+      ),
+    );
   }
 }

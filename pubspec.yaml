@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
 
   freezed_annotation: ^2.0.3
   json_annotation: ^4.5.0
@@ -84,7 +85,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-  - assets/images/
+  - assets/images/home.png
+  - assets/images/ramp.png
+  - assets/images/cancel.png
+  - assets/images/pi_lit_outline_up.png
+  - assets/images/pi_lit_outline_down.png
+  - assets/images/pi_lit_icon.png
+  - assets/images/rover_app_icon.png
+  - assets/images/rover_icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
