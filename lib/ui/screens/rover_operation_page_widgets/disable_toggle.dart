@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ToggleDisable extends StatelessWidget {
   late final bool? enabled;
@@ -35,18 +37,23 @@ class ToggleDisable extends StatelessWidget {
       width: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.0),
-        color: Color.fromARGB(255, 100, 100, 100),
+        color: Color.fromARGB(0, 100, 100, 100),
       ),
       child: ElevatedButton.icon(
         style: ButtonStyle(
-          shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 255, 193, 7)),
-          overlayColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
-          foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 50, 50, 50)),
-          backgroundColor: MaterialStateProperty.all(Color.fromARGB(19, 90, 90, 90)),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+            ),
+          ),
+          shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)),
+          overlayColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 17, 0)),
+          foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 250, 250, 250)),
+          backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
         ),
         label: Text(
           "",
-          textScaleFactor: 0.0000000001,
+          textScaleFactor: 0.0,
         ),
         onPressed: enabled == null
             ? null
@@ -61,8 +68,7 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        icon:
-            enabled == true ? const Icon(Icons.stop_circle_outlined, size: 64) : const Icon(Icons.play_circle_outline, size: 70),
+        icon: enabled == true ? const Icon(Ionicons.flash_off, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
       ),
     );
   }

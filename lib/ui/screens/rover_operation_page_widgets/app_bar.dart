@@ -48,31 +48,45 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         leadingWidth: 200,
-        leading: ElevatedButton.icon(
-          icon: const Icon(Icons.wifi_tethering_off_outlined, size: 30, color: Colors.red),
-          label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
-          onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Disconnect?'),
-                  content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () {
-                          stopCall();
-                          Navigator.pop(context);
-                          get_pkg.Get.offAll(() => const HomePage());
-                        },
-                        child: const Text('Yes')),
-                    TextButton(
-                        onPressed: () {
-                          return Navigator.pop(context);
-                        },
-                        child: const Text('No'))
-                  ],
-                );
-              }),
+        leading: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.call_end_rounded, size: 30, color: Color.fromARGB(255, 255, 255, 255)),
+              label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
+              ),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Disconnect?'),
+                    content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            stopCall();
+                            Navigator.pop(context);
+                            get_pkg.Get.offAll(() => const HomePage());
+                          },
+                          child: const Text('Yes')),
+                      TextButton(
+                          onPressed: () {
+                            return Navigator.pop(context);
+                          },
+                          child: const Text('No'))
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
         ),
         backgroundColor: AppThemeColor.backgroundColor,
         title: _stateText(roverMetrics.state),

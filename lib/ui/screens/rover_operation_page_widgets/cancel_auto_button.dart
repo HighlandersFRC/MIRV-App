@@ -33,15 +33,22 @@ class CancelAuto extends StatelessWidget {
         width: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: Color.fromRGBO(50, 50, 50, 0.5),
+          color: Color.fromARGB(255, 100, 100, 100),
         ),
-        child: IconButton(
+        child: ElevatedButton.icon(
+          label: Text("", textScaleFactor: 0.0),
+          style: ButtonStyle(
+            shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)),
+            overlayColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
+            foregroundColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
+            backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 120, 120, 120)),
+          ),
           onPressed: cancelled == true
               ? () {
                   cancelled == true ? sendCommand(RoverGeneralCommands.cancel) : null;
                 }
               : null,
-          icon: const Icon(Icons.cancel_outlined, size: 70),
+          icon: const Icon(Icons.cancel_outlined, size: 64),
         ));
   }
 }

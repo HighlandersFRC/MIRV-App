@@ -20,22 +20,60 @@ class CommandList extends StatelessWidget {
                 itemCount: commandList!.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.0),
-                        color: Color.fromARGB(126, 74, 68, 68),
+                    padding: const EdgeInsets.only(bottom: 20, right: 2),
+                    child: ListTile(
+                      title: SizedBox(
+                        height: 100,
+                        width: 160,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.center,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Color.fromARGB(0, 255, 17, 0),
+                                Color.fromARGB(0, 138, 9, 0),
+                                Color.fromARGB(0, 0, 0, 0),
+                              ], //colors
+                            ),
+                            backgroundBlendMode: BlendMode.colorBurn,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(29, 0, 0, 0),
+                                spreadRadius: 1,
+                                blurRadius: 7.5,
+                                offset: Offset(-5, 5),
+                              ),
+                              BoxShadow(
+                                  color: Color.fromARGB(40, 255, 255, 255),
+                                  offset: Offset(7, -7),
+                                  blurRadius: 7,
+                                  spreadRadius: 1),
+                            ],
+                          ),
+                          child: ElevatedButton.icon(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                                ),
+                              ),
+                              shadowColor: MaterialStateProperty.all(Color.fromARGB(0, 0, 0, 0)),
+                              overlayColor: MaterialStateProperty.all(Color.fromARGB(49, 21, 255, 0)),
+                              foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 50, 50, 50)),
+                              backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 100, 100, 100)),
+                            ),
+                            label: Text(
+                              "",
+                              textScaleFactor: 0.0,
+                            ),
+                            icon: commandList[index].last,
+                            onPressed: () {
+                              sendCommand(commandList[index].first);
+                            },
+                          ),
+                        ),
                       ),
-                      child: ListTile(
-                          title: IconButton(
-                        icon: commandList[index].last,
-                        iconSize: 70,
-                        onPressed: () {
-                          sendCommand(commandList[index].first);
-                        },
-                      )),
                     ),
                   );
                 },

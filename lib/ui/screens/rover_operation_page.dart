@@ -61,8 +61,8 @@ class RoverOperationPage extends StatelessWidget {
             Positioned(
               top: 30,
               height: 450,
-              left: 10,
-              width: 110,
+              left: 2,
+              width: 170,
               child: Scrollbar(
                 child: CommandList(
                   state: roverMetricsObs.value.state,
