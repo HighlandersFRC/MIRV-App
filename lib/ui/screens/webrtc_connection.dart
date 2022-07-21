@@ -148,13 +148,13 @@ class WebRTCConnection {
     recentStatusMessage = DateTime.now();
   }
 
-  messagesDuration(String roverId) {
+  messagesDuration(String rover_id) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       if (recentStatusMessage == null) return;
       final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
       if (messageDifference >= 10) {
         stopCall();
-        _showReconnectDialog('Connection Failed', roverId);
+        _showReconnectDialog('Connection Failed', rover_id);
       }
     });
   }
@@ -195,7 +195,7 @@ class WebRTCConnection {
     }
   }
 
-  Future<void> _negotiateRemoteConnection(String roverId) async {
+  Future<void> _negotiateRemoteConnection(String rover_id) async {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
@@ -205,14 +205,14 @@ class WebRTCConnection {
         .then((success) async {
           if (!success && peerConnection != null) {
             await stopCall();
-            return _showReconnectDialog('Connection timed out', roverId);
+            return _showReconnectDialog('Connection timed out', rover_id);
           } else if (!success) {
             return;
           }
           try {
             var des = await peerConnection!.getLocalDescription();
 
-            http.StreamedResponse response = await mirvApi.startRoverConnection(roverId, des);
+            http.StreamedResponse response = await mirvApi.startRoverConnection(rover_id, des);
 
             String data = "";
             if (response.statusCode == 200) {
@@ -229,18 +229,18 @@ class WebRTCConnection {
 
               loading.value = false;
             } else {
-              _showReconnectDialog('Failed to comunicate with rover', roverId);
+              _showReconnectDialog('Failed to comunicate with rover', rover_id);
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog('$e', roverId);
+            _showReconnectDialog('$e', rover_id);
           }
         });
   }
 
   _showReconnectDialog(
     String error,
-    String roverId,
+    String rover_id,
   ) {
     get_pkg.Get.dialog(AlertDialog(
       title: const Text('Failed Connection'),
@@ -248,7 +248,7 @@ class WebRTCConnection {
       actions: <Widget>[
         TextButton(
             onPressed: () {
-              makeCall(roverId);
+              makeCall(rover_id);
               get_pkg.Get.back();
             },
             child: Text('Reconnect?')),
@@ -263,14 +263,14 @@ class WebRTCConnection {
   }
 
 //public Commands
-  notificationsFromWebRTC(String roverId, context, Function() makeCallReconnect) {
+  notificationsFromWebRTC(String rover_id, context, Function() makeCallReconnect) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
           stopCall();
-          _showReconnectDialog('Connection Failed', roverId);
+          _showReconnectDialog('Connection Failed', rover_id);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
@@ -292,7 +292,7 @@ class WebRTCConnection {
     switch (dataChannelState.value) {
       case RTCDataChannelState.RTCDataChannelClosing:
       case RTCDataChannelState.RTCDataChannelClosed:
-        _showReconnectDialog('Connection Failed', roverId);
+        _showReconnectDialog('Connection Failed', rover_id);
         break;
       case RTCDataChannelState.RTCDataChannelConnecting:
         return Fluttertoast.showToast(
@@ -309,16 +309,16 @@ class WebRTCConnection {
   }
 
   _startHeartbeatMessages() {
-    timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
-      sendRoverCommand(RoverHeartbeatCommands.heartBeat);
-    });
+    // timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
+    //   sendRoverCommand(RoverHeartbeatCommands.heartBeat);
+    // });
   }
 
   _stopHeartbeatMessages() {
     timerHeart?.cancel();
   }
 
-  Future<void> makeCall(String roverId) async {
+  Future<void> makeCall(String rover_id) async {
     try {
       loading.value = true;
       var configuration = <String, dynamic>{
@@ -355,10 +355,10 @@ class WebRTCConnection {
       stream.getTracks().forEach((element) {
         peerConnection!.addTrack(element, stream);
       });
-      await _negotiateRemoteConnection(roverId);
+      await _negotiateRemoteConnection(rover_id);
       _startHeartbeatMessages();
     } catch (e) {
-      _showReconnectDialog(e.toString(), roverId);
+      _showReconnectDialog(e.toString(), rover_id);
     }
   }
 
