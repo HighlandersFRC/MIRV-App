@@ -39,7 +39,7 @@ class ToggleDisable extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.0),
         color: Color.fromARGB(0, 100, 100, 100),
       ),
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
@@ -50,10 +50,6 @@ class ToggleDisable extends StatelessWidget {
           overlayColor: MaterialStateProperty.all(Color.fromARGB(255, 255, 17, 0)),
           foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 250, 250, 250)),
           backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
-        ),
-        label: Text(
-          "",
-          textScaleFactor: 0.0,
         ),
         onPressed: enabled == null
             ? null
@@ -68,7 +64,7 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        icon: enabled == true ? const Icon(Ionicons.flash_off, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
+        child: enabled == true ? const Icon(Ionicons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
       ),
     );
   }
