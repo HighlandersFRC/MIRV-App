@@ -57,6 +57,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final selectedRoverController = Get.put(SelectedRoverController());
   MirvApi mirvApi = MirvApi();
   Location location = Location();
+  final TextEditingController typeAheadController = TextEditingController();
+
   int? groupValue = 0;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
 
@@ -92,7 +94,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         return const Icon(Icons.battery_full_rounded);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +240,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 70, child: SearchBar(selectedRoverController: selectedRoverController)),
+                  SizedBox(
+                      height: 70,
+                      child:
+                          SearchBar(selectedRoverController: selectedRoverController, typeAheadController: typeAheadController)),
                   Expanded(
                     child: Obx(
                       // ignore: invalid_use_of_protected_member

@@ -31,7 +31,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
 
-
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
@@ -42,12 +41,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   double zoom = 16.0;
 
-
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-
 
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
@@ -73,7 +70,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
 
-
     widget.selectedRoverId.listen((roverId) {
       widget.roverMetrics.forEach((element) async {
         if (element.roverId == roverId) {
@@ -82,9 +78,14 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               zoom: await _mapController!.getZoomLevel())));
         }
       });
+
+      onTap(selectedRoverId) {
+        _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(selectedRoverId.telemetry.location.lat, selectedRoverId.telemetry.location.long),
+        )));
+      }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +108,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ),
     );
   }
-
-
 
   Set<Marker> getMarkers() {
     setState(() {
