@@ -103,7 +103,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: const AspectRatio(aspectRatio: 1.5, child: StatusPage()),
+                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
                   actions: [
                     TextButton(
                       onPressed: () {

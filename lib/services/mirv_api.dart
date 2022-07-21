@@ -2,17 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:http/http.dart' as http;
-import 'package:mirv/services/session_storage_service.dart';
 
 class MirvApi {
-  Timer? timer;
-  //final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
-  SessionStorageService? _sessionStorageService;
-
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
   AuthService authService = AuthService();
 
@@ -24,6 +21,9 @@ class MirvApi {
     String? token = _getCurrentAuthToken();
     var response = await http
         .get(Uri.parse("${authService.getMirvEndpoint()}/rovers/$rover_id"), headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 401 || response.statusCode == 403) {
+      throw UnauthorizedException();
+    }
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
@@ -33,6 +33,9 @@ class MirvApi {
     List<RoverMetrics> rovers;
     var response =
         await http.get(Uri.parse("${authService.getMirvEndpoint()}/rovers"), headers: {'Authorization': 'Bearer $token'});
+    if (response.statusCode == 401 || response.statusCode == 403) {
+      throw UnauthorizedException();
+    }
     rovers = (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
     return rovers;
   }
@@ -56,15 +59,5 @@ class MirvApi {
     request.headers.addAll(headers);
 
     return request.send();
-  }
-
-  startPeriodicMetricUpdates(String rover_id) {
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      getRoverMetrics(rover_id).then((value) => periodicMetricUpdates.add(value));
-    });
-  }
-
-  stopPeriodicMetricUpdates() {
-    timer?.cancel();
   }
 }
