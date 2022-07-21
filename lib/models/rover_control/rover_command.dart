@@ -14,6 +14,11 @@ class RoverCommand with _$RoverCommand {
     @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
   }) = GeneralRoverCommand;
 
+  const factory RoverCommand.heartbeatCommand(
+    RoverCommandTypeHeartbeat command, {
+    @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
+  }) = HeartbeatRoverCommand;
+
   const factory RoverCommand.intakeCommand(
     RoverCommandTypeIntake command, {
     @Default(RoverSubsystemType.intake) RoverSubsystemType subsystem,
@@ -47,13 +52,16 @@ class RoverGeneralCommands {
   static const disable = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable);
   static const enable = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable);
   static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
-  static const heartBeat = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
   static const cancel = RoverCommand.generalCommand(RoverCommandTypeGeneral.cancel);
   static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
-  static const startManualControl = RoverCommand.generalCommand(RoverCommandTypeGeneral.start_manual_control);
-  static const stopManualControl = RoverCommand.generalCommand(RoverCommandTypeGeneral.stop_manual_control);
   static const deployPiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
   static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
+  static const enableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable_remote_operation);
+  static const disableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable_remote_operation);
+}
+
+class RoverHeartbeatCommands {
+  static const heartBeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
 }
 
 class RoverIntakeCommands {

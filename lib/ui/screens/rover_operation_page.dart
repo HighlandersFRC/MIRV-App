@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/pi_lit.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -115,7 +117,7 @@ class RoverOperationPage extends StatelessWidget {
               ),
             ),
             Obx(
-              () => manualOperation.value
+              () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.remote_operation
                   ? Positioned(
                       bottom: 20,
                       left: 20,
@@ -124,6 +126,7 @@ class RoverOperationPage extends StatelessWidget {
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         manualOperation: manualOperation,
                         onJoystickChanged: webRTCConnection.onJoystickChanged,
+                        sendRoverCommand: webRTCConnection.sendRoverCommand,
                       ),
                     )
                   : Positioned(
@@ -142,7 +145,9 @@ class RoverOperationPage extends StatelessWidget {
                           icon: Icon(CupertinoIcons.antenna_radiowaves_left_right),
                           iconSize: 60,
                           color: Colors.white,
-                          onPressed: () => manualOperation.value = true,
+                          onPressed: () {
+                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                          },
                         ),
                       ))),
             ),

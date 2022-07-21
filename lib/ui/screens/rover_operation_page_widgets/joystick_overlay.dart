@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_widget.dart';
@@ -10,6 +11,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_widget.dar
 class JoystickOverlay extends StatelessWidget {
   final RoverMetrics roverMetrics;
   final Function(GamepadAxisType, double, double) onJoystickChanged;
+  final Function(RoverCommand) sendRoverCommand;
   final Rx<bool> manualOperation;
   late JoystickMode joystickMode;
   late final bool? isEnabled;
@@ -19,6 +21,7 @@ class JoystickOverlay extends StatelessWidget {
     required this.roverMetrics,
     required this.manualOperation,
     required this.onJoystickChanged,
+    required this.sendRoverCommand,
   }) : super(key: key) {
     isEnabled = _cancelState(roverMetrics.state);
   }
@@ -55,7 +58,9 @@ class JoystickOverlay extends StatelessWidget {
                 icon: Icon(CupertinoIcons.xmark_octagon),
                 iconSize: 60,
                 color: Colors.red,
-                onPressed: () => manualOperation.value = false,
+                onPressed: () {
+                  sendRoverCommand(RoverGeneralCommands.disableRemoteOperation);
+                },
               ),
             )),
         JoystickWidget(

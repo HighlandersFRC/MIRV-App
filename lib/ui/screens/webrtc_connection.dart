@@ -8,6 +8,7 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
@@ -26,7 +27,6 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
   get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
@@ -38,7 +38,6 @@ class WebRTCConnection {
 
   late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
 
-  MediaStream? _localStream;
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();
   RTCDataChannelInit? _dataChannelDict;
@@ -55,20 +54,11 @@ class WebRTCConnection {
 
   // MediaStream? _localStream;
   bool inCalling = false;
-  double prevX = 0;
-  double prevY = 0;
   get_pkg.Rx<bool> loading = false.obs;
-
-  DateTime currentTime = DateTime.now();
 
   Timer? timerJoy;
   Timer? timer;
-
   Timer? timerHeart;
-
-  final joystickStream = BehaviorSubject<List<double>>();
-
-  get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 100;
@@ -92,6 +82,36 @@ class WebRTCConnection {
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
     }
+
+    // TODO: Remove this before deployment
+    updateRoverState(command);
+  }
+
+  // TODO: Remove this before deployment
+  void updateRoverState(command) {
+    var tempRoverMetrics = roverMetricsObs.value;
+    if (command == RoverGeneralCommands.eStop) {
+      tempRoverMetrics.state = RoverStateType.e_stop;
+    } else if (command == RoverGeneralCommands.disable) {
+      tempRoverMetrics.state = RoverStateType.connected_disabled;
+    } else if (command == RoverGeneralCommands.enable) {
+      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.deploy) {
+      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.cancel) {
+      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.stow) {
+      tempRoverMetrics.state = RoverStateType.connected_idle_docked;
+    } else if (command == RoverGeneralCommands.deployPiLits) {
+      tempRoverMetrics.state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.retrievePiLits) {
+      tempRoverMetrics.state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.enableRemoteOperation) {
+      tempRoverMetrics.state = RoverStateType.remote_operation;
+    } else if (command == RoverGeneralCommands.disableRemoteOperation) {
+      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+    }
+    roverMetricsObs.value = tempRoverMetrics;
   }
 
   void setStateInFunction({required Function function}) {
@@ -129,7 +149,8 @@ class WebRTCConnection {
 
   messagesDuration(String roverId) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      final messageDifference = currentTime.difference(recentStatusMessage!).inSeconds.abs();
+      if (recentStatusMessage == null) return;
+      final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
       if (messageDifference >= 10) {
         stopCall();
         _showReconnectDialog('Connection Failed', roverId);
@@ -288,7 +309,7 @@ class WebRTCConnection {
 
   _startHeartbeatMessages() {
     timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
-      sendRoverCommand(RoverGeneralCommands.heartBeat);
+      sendRoverCommand(RoverHeartbeatCommands.heartBeat);
     });
   }
 
@@ -329,9 +350,6 @@ class WebRTCConnection {
       };
 
       var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-      // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
-      _localStream = stream;
-      // localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
         peerConnection!.addTrack(element, stream);

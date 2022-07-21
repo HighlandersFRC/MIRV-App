@@ -18,6 +18,8 @@ RoverCommand _$RoverCommandFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'generalCommand':
       return GeneralRoverCommand.fromJson(json);
+    case 'heartbeatCommand':
+      return HeartbeatRoverCommand.fromJson(json);
     case 'intakeCommand':
       return IntakeRoverCommand.fromJson(json);
     case 'drivetrainCommand':
@@ -40,6 +42,9 @@ mixin _$RoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
@@ -59,6 +64,9 @@ mixin _$RoverCommand {
     TResult Function(
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
@@ -80,6 +88,9 @@ mixin _$RoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
     TResult Function(
@@ -98,6 +109,7 @@ mixin _$RoverCommand {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
@@ -106,6 +118,7 @@ mixin _$RoverCommand {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -114,6 +127,7 @@ mixin _$RoverCommand {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -247,6 +261,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
@@ -270,6 +287,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
     TResult Function(
@@ -292,6 +312,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
@@ -317,6 +340,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
@@ -328,6 +352,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -339,6 +364,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -369,6 +395,235 @@ abstract class GeneralRoverCommand implements RoverCommand {
   @override
   @JsonKey(ignore: true)
   _$$GeneralRoverCommandCopyWith<_$GeneralRoverCommand> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$HeartbeatRoverCommandCopyWith<$Res>
+    implements $RoverCommandCopyWith<$Res> {
+  factory _$$HeartbeatRoverCommandCopyWith(_$HeartbeatRoverCommand value,
+          $Res Function(_$HeartbeatRoverCommand) then) =
+      __$$HeartbeatRoverCommandCopyWithImpl<$Res>;
+  @override
+  $Res call({RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem});
+}
+
+/// @nodoc
+class __$$HeartbeatRoverCommandCopyWithImpl<$Res>
+    extends _$RoverCommandCopyWithImpl<$Res>
+    implements _$$HeartbeatRoverCommandCopyWith<$Res> {
+  __$$HeartbeatRoverCommandCopyWithImpl(_$HeartbeatRoverCommand _value,
+      $Res Function(_$HeartbeatRoverCommand) _then)
+      : super(_value, (v) => _then(v as _$HeartbeatRoverCommand));
+
+  @override
+  _$HeartbeatRoverCommand get _value => super._value as _$HeartbeatRoverCommand;
+
+  @override
+  $Res call({
+    Object? command = freezed,
+    Object? subsystem = freezed,
+  }) {
+    return _then(_$HeartbeatRoverCommand(
+      command == freezed
+          ? _value.command
+          : command // ignore: cast_nullable_to_non_nullable
+              as RoverCommandTypeHeartbeat,
+      subsystem: subsystem == freezed
+          ? _value.subsystem
+          : subsystem // ignore: cast_nullable_to_non_nullable
+              as RoverSubsystemType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
+  const _$HeartbeatRoverCommand(this.command,
+      {this.subsystem = RoverSubsystemType.general, final String? $type})
+      : $type = $type ?? 'heartbeatCommand';
+
+  factory _$HeartbeatRoverCommand.fromJson(Map<String, dynamic> json) =>
+      _$$HeartbeatRoverCommandFromJson(json);
+
+  @override
+  final RoverCommandTypeHeartbeat command;
+  @override
+  @JsonKey()
+  final RoverSubsystemType subsystem;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommand.heartbeatCommand(command: $command, subsystem: $subsystem)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HeartbeatRoverCommand &&
+            const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality().equals(other.subsystem, subsystem));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(subsystem));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$HeartbeatRoverCommandCopyWith<_$HeartbeatRoverCommand> get copyWith =>
+      __$$HeartbeatRoverCommandCopyWithImpl<_$HeartbeatRoverCommand>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+        generalCommand,
+    required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)
+        intakeCommand,
+    required TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        drivetrainCommand,
+    required TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        movementCommand,
+  }) {
+    return heartbeatCommand(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+  }) {
+    return heartbeatCommand?.call(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+    required TResult orElse(),
+  }) {
+    if (heartbeatCommand != null) {
+      return heartbeatCommand(command, subsystem);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
+    required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
+    required TResult Function(MovementRoverCommand value) movementCommand,
+  }) {
+    return heartbeatCommand(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+  }) {
+    return heartbeatCommand?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+    required TResult orElse(),
+  }) {
+    if (heartbeatCommand != null) {
+      return heartbeatCommand(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$HeartbeatRoverCommandToJson(this);
+  }
+}
+
+abstract class HeartbeatRoverCommand implements RoverCommand {
+  const factory HeartbeatRoverCommand(final RoverCommandTypeHeartbeat command,
+      {final RoverSubsystemType subsystem}) = _$HeartbeatRoverCommand;
+
+  factory HeartbeatRoverCommand.fromJson(Map<String, dynamic> json) =
+      _$HeartbeatRoverCommand.fromJson;
+
+  RoverCommandTypeHeartbeat get command => throw _privateConstructorUsedError;
+  @override
+  RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$HeartbeatRoverCommandCopyWith<_$HeartbeatRoverCommand> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -464,6 +719,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
@@ -487,6 +745,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
     TResult Function(
@@ -509,6 +770,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
@@ -534,6 +798,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
@@ -545,6 +810,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -556,6 +822,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -705,6 +972,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
@@ -728,6 +998,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
     TResult Function(
@@ -750,6 +1023,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
@@ -775,6 +1051,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
@@ -786,6 +1063,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -797,6 +1075,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -948,6 +1227,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
@@ -971,6 +1253,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
     TResult Function(
@@ -993,6 +1278,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     TResult Function(
             RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
         generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
@@ -1018,6 +1306,7 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
@@ -1029,6 +1318,7 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
@@ -1040,6 +1330,7 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
