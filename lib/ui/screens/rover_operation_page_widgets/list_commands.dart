@@ -51,7 +51,7 @@ class CommandList extends StatelessWidget {
                                   spreadRadius: 1),
                             ],
                           ),
-                          child: ElevatedButton.icon(
+                          child: ElevatedButton(
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
@@ -63,11 +63,7 @@ class CommandList extends StatelessWidget {
                               foregroundColor: MaterialStateProperty.all(Color.fromARGB(255, 50, 50, 50)),
                               backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 100, 100, 100)),
                             ),
-                            label: Text(
-                              "",
-                              textScaleFactor: 0.0,
-                            ),
-                            icon: commandList[index].last,
+                            child: commandList[index].last,
                             onPressed: () {
                               sendCommand(commandList[index].first);
                             },

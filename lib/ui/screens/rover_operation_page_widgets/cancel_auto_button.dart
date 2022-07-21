@@ -35,8 +35,7 @@ class CancelAuto extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.0),
           color: Color.fromARGB(255, 100, 100, 100),
         ),
-        child: ElevatedButton.icon(
-          label: Text("", textScaleFactor: 0.0),
+        child: ElevatedButton(
           style: ButtonStyle(
             shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)),
             overlayColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
@@ -48,7 +47,7 @@ class CancelAuto extends StatelessWidget {
                   cancelled == true ? sendCommand(RoverGeneralCommands.cancel) : null;
                 }
               : null,
-          icon: const Icon(Icons.cancel_outlined, size: 64),
+          child: const Icon(Icons.cancel_outlined, size: 64),
         ));
   }
 }
