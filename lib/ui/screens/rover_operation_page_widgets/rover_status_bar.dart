@@ -91,8 +91,8 @@ class RoverStatusBar extends StatelessWidget {
               Obx(
                 () => Icon(Icons.circle, color: uiConnectionState.value.iconColor, size: 35),
               ),
-              _batteryIcon(roverMetrics!.battery),
-              Text("${roverMetrics!.battery}%", style: TextStyle(fontSize: 20)),
+              _batteryIcon(roverMetrics!.battery_percent),
+              Text("${roverMetrics!.battery_percent}%", style: TextStyle(fontSize: 20)),
 
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.handyman), //mechanical

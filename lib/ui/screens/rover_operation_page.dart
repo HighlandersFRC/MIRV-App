@@ -38,8 +38,9 @@ class RoverOperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    webRTCConnection.makeCall(roverMetrics.roverId);
+    webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
+    webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
@@ -117,14 +118,13 @@ class RoverOperationPage extends StatelessWidget {
               ),
             ),
             Obx(
-              () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.remote_operation
+              () => manualOperation.value
                   ? Positioned(
                       bottom: 20,
                       left: 20,
                       right: 20,
                       child: JoystickOverlay(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        manualOperation: manualOperation,
                         onJoystickChanged: webRTCConnection.onJoystickChanged,
                         sendRoverCommand: webRTCConnection.sendRoverCommand,
                       ),

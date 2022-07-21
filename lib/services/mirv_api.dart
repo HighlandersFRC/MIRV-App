@@ -10,7 +10,7 @@ import 'package:mirv/services/session_storage_service.dart';
 
 class MirvApi {
   Timer? timer;
-   //final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
+  //final String ipAddress = 'https://mirvcloudapi.azurewebsites.net';
   SessionStorageService? _sessionStorageService;
 
   BehaviorSubject<RoverMetrics> periodicMetricUpdates = BehaviorSubject<RoverMetrics>();
@@ -20,10 +20,10 @@ class MirvApi {
     return authService.getKeycloakAccessToken();
   }
 
-  Future<RoverMetrics> getRoverMetrics(String roverID) async {
+  Future<RoverMetrics> getRoverMetrics(String rover_id) async {
     String? token = _getCurrentAuthToken();
     var response = await http
-        .get(Uri.parse("${authService.getMirvEndpoint()}/rovers/$roverID"), headers: {'Authorization': 'Bearer $token'});
+        .get(Uri.parse("${authService.getMirvEndpoint()}/rovers/$rover_id"), headers: {'Authorization': 'Bearer $token'});
     var roverMetrics = RoverMetrics.fromJson(json.decode(response.body));
     return roverMetrics;
   }
@@ -37,7 +37,7 @@ class MirvApi {
     return rovers;
   }
 
-  Future<http.StreamedResponse> startRoverConnection(String roverId, RTCSessionDescription? des) async {
+  Future<http.StreamedResponse> startRoverConnection(String rover_id, RTCSessionDescription? des) async {
     String? token = _getCurrentAuthToken();
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
@@ -46,7 +46,7 @@ class MirvApi {
     );
     request.body = json.encode({
       "connection_id": "string",
-      "rover_id": roverId,
+      "rover_id": rover_id,
       "offer": {
         "sdp": des!.sdp,
         "type": des.type,
@@ -58,9 +58,9 @@ class MirvApi {
     return request.send();
   }
 
-  startPeriodicMetricUpdates(String roverId) {
+  startPeriodicMetricUpdates(String rover_id) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      getRoverMetrics(roverId).then((value) => periodicMetricUpdates.add(value));
+      getRoverMetrics(rover_id).then((value) => periodicMetricUpdates.add(value));
     });
   }
 

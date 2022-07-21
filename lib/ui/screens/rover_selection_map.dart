@@ -31,7 +31,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
 
-
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
@@ -42,12 +41,10 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   double zoom = 16.0;
 
-
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-
 
     widget.selectedRoverController.searchSelect.listen((place) async {
       if (_mapController != null && place != null) {
@@ -73,10 +70,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
 
-
-    widget.selectedRoverId.listen((roverId) {
+    widget.selectedRoverId.listen((rover_id) {
       widget.roverMetrics.forEach((element) async {
-        if (element.roverId == roverId) {
+        if (element.rover_id == rover_id) {
           _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
               target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
               zoom: await _mapController!.getZoomLevel())));
@@ -84,7 +80,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       });
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,25 +103,23 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     );
   }
 
-
-
   Set<Marker> getMarkers() {
     setState(() {
       markers = {
         ...widget.roverMetrics.map((rover) {
           return Marker(
-              markerId: MarkerId(rover.roverId),
+              markerId: MarkerId(rover.rover_id),
               position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
               infoWindow: InfoWindow(
-                title: rover.roverId,
+                title: rover.rover_id,
               ),
               icon: mapMarker,
               onTap: () {
                 rover.status == RoverStatusType.unavailable
                     ? null
                     :
-                    // widget.selectedMarkerId.value = rover.roverId;
-                    widget.selectedRoverController.setSelectedRoverId(rover.roverId);
+                    // widget.selectedMarkerId.value = rover.rover_id;
+                    widget.selectedRoverController.setSelectedRoverId(rover.rover_id);
               });
         })
       };

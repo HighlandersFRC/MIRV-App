@@ -67,7 +67,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Disconnect?'),
-                    content: Text('Would  you like to discconect from ${roverMetrics.roverId}'),
+                    content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {

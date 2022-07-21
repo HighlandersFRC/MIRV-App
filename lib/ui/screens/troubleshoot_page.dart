@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
-import 'package:mirv/ui/screens/rover_new_op_page.dart';
 
 class TroubleShootingPage extends StatefulWidget {
   const TroubleShootingPage({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _TroubleShootingPageState extends State<TroubleShootingPage> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                Get.to(const RoverOpPage(RoverMetrics()));
+                Get.to(RoverOperationPage(RoverMetrics(rover_id: "temp")));
               },
               child: const Icon(Icons.drive_eta))
         ],
