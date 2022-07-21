@@ -18,7 +18,7 @@ class RoverMetrics with _$RoverMetrics {
     @Default(RoverMetricTelemetry()) RoverMetricTelemetry telemetry,
   }) = _RoverMetrics;
 
-  set state(RoverStateType newState) => state = newState;
+  // set state(RoverStateType newState) => state = newState;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
 }

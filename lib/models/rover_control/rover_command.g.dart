@@ -35,6 +35,8 @@ const _$RoverCommandTypeGeneralEnumMap = {
   RoverCommandTypeGeneral.stop_manual_control: 'stop_manual_control',
   RoverCommandTypeGeneral.deploy_pi_lits: 'deploy_pi_lits',
   RoverCommandTypeGeneral.retrieve_pi_lits: 'retrieve_pi_lits',
+  RoverCommandTypeGeneral.enable_remote_operation: 'enable_remote_operation',
+  RoverCommandTypeGeneral.disable_remote_operation: 'disable_remote_operation',
 };
 
 const _$RoverSubsystemTypeEnumMap = {

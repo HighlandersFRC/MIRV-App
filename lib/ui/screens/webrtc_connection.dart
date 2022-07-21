@@ -90,28 +90,29 @@ class WebRTCConnection {
   // TODO: Remove this before deployment
   void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
+    RoverStateType state = tempRoverMetrics.state;
     if (command == RoverGeneralCommands.eStop) {
-      tempRoverMetrics.state = RoverStateType.e_stop;
+      state = RoverStateType.e_stop;
     } else if (command == RoverGeneralCommands.disable) {
-      tempRoverMetrics.state = RoverStateType.connected_disabled;
+      state = RoverStateType.connected_disabled;
     } else if (command == RoverGeneralCommands.enable) {
-      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+      state = RoverStateType.connected_idle_roaming;
     } else if (command == RoverGeneralCommands.deploy) {
-      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+      state = RoverStateType.connected_idle_roaming;
     } else if (command == RoverGeneralCommands.cancel) {
-      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+      state = RoverStateType.connected_idle_roaming;
     } else if (command == RoverGeneralCommands.stow) {
-      tempRoverMetrics.state = RoverStateType.connected_idle_docked;
+      state = RoverStateType.connected_idle_docked;
     } else if (command == RoverGeneralCommands.deployPiLits) {
-      tempRoverMetrics.state = RoverStateType.autonomous;
+      state = RoverStateType.autonomous;
     } else if (command == RoverGeneralCommands.retrievePiLits) {
-      tempRoverMetrics.state = RoverStateType.autonomous;
+      state = RoverStateType.autonomous;
     } else if (command == RoverGeneralCommands.enableRemoteOperation) {
-      tempRoverMetrics.state = RoverStateType.remote_operation;
+      state = RoverStateType.remote_operation;
     } else if (command == RoverGeneralCommands.disableRemoteOperation) {
-      tempRoverMetrics.state = RoverStateType.connected_idle_roaming;
+      state = RoverStateType.connected_idle_roaming;
     }
-    roverMetricsObs.value = tempRoverMetrics;
+    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
   }
 
   void setStateInFunction({required Function function}) {
