@@ -210,6 +210,7 @@ class WebRTCConnection {
             return;
           }
           try {
+            _startNotificationsFromWebRTC(rover_id);
             var des = await peerConnection!.getLocalDescription();
 
             http.StreamedResponse response = await mirvApi.startRoverConnection(rover_id, des);
@@ -262,8 +263,8 @@ class WebRTCConnection {
     ));
   }
 
-//public Commands
-  notificationsFromWebRTC(String rover_id, context, Function() makeCallReconnect) {
+  //public Commands
+  _startNotificationsFromWebRTC(String rover_id) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
@@ -289,23 +290,26 @@ class WebRTCConnection {
       }
     });
 
-    switch (dataChannelState.value) {
-      case RTCDataChannelState.RTCDataChannelClosing:
-      case RTCDataChannelState.RTCDataChannelClosed:
-        _showReconnectDialog('Connection Failed', rover_id);
-        break;
-      case RTCDataChannelState.RTCDataChannelConnecting:
-        return Fluttertoast.showToast(
-          msg: "Connection",
-        );
-
-      case RTCDataChannelState.RTCDataChannelOpen:
-        return Fluttertoast.showToast(
-          msg: "Connected",
-        );
-      case null:
-        break;
-    }
+    dataChannelState.listen((dcs) {
+      switch (dcs) {
+        case RTCDataChannelState.RTCDataChannelClosing:
+        case RTCDataChannelState.RTCDataChannelClosed:
+          _showReconnectDialog('Connection Failed', rover_id);
+          break;
+        case RTCDataChannelState.RTCDataChannelConnecting:
+          Fluttertoast.showToast(
+            msg: "Connection",
+          );
+          break;
+        case RTCDataChannelState.RTCDataChannelOpen:
+          Fluttertoast.showToast(
+            msg: "Connected",
+          );
+          break;
+        case null:
+          break;
+      }
+    });
   }
 
   _startHeartbeatMessages() {
