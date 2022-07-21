@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RoverLocation {
-  String get roverId => throw _privateConstructorUsedError;
+  String get rover_id => throw _privateConstructorUsedError;
   LatLng get location => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,7 +29,7 @@ abstract class $RoverLocationCopyWith<$Res> {
   factory $RoverLocationCopyWith(
           RoverLocation value, $Res Function(RoverLocation) then) =
       _$RoverLocationCopyWithImpl<$Res>;
-  $Res call({String roverId, LatLng location});
+  $Res call({String rover_id, LatLng location});
 }
 
 /// @nodoc
@@ -43,13 +43,13 @@ class _$RoverLocationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? roverId = freezed,
+    Object? rover_id = freezed,
     Object? location = freezed,
   }) {
     return _then(_value.copyWith(
-      roverId: roverId == freezed
-          ? _value.roverId
-          : roverId // ignore: cast_nullable_to_non_nullable
+      rover_id: rover_id == freezed
+          ? _value.rover_id
+          : rover_id // ignore: cast_nullable_to_non_nullable
               as String,
       location: location == freezed
           ? _value.location
@@ -66,7 +66,7 @@ abstract class _$$_RoverLocationCopyWith<$Res>
           _$_RoverLocation value, $Res Function(_$_RoverLocation) then) =
       __$$_RoverLocationCopyWithImpl<$Res>;
   @override
-  $Res call({String roverId, LatLng location});
+  $Res call({String rover_id, LatLng location});
 }
 
 /// @nodoc
@@ -82,13 +82,13 @@ class __$$_RoverLocationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? roverId = freezed,
+    Object? rover_id = freezed,
     Object? location = freezed,
   }) {
     return _then(_$_RoverLocation(
-      roverId: roverId == freezed
-          ? _value.roverId
-          : roverId // ignore: cast_nullable_to_non_nullable
+      rover_id: rover_id == freezed
+          ? _value.rover_id
+          : rover_id // ignore: cast_nullable_to_non_nullable
               as String,
       location: location == freezed
           ? _value.location
@@ -101,17 +101,17 @@ class __$$_RoverLocationCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RoverLocation implements _RoverLocation {
-  const _$_RoverLocation({this.roverId = "unknown", required this.location});
+  const _$_RoverLocation({this.rover_id = "unknown", required this.location});
 
   @override
   @JsonKey()
-  final String roverId;
+  final String rover_id;
   @override
   final LatLng location;
 
   @override
   String toString() {
-    return 'RoverLocation(roverId: $roverId, location: $location)';
+    return 'RoverLocation(rover_id: $rover_id, location: $location)';
   }
 
   @override
@@ -119,14 +119,14 @@ class _$_RoverLocation implements _RoverLocation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RoverLocation &&
-            const DeepCollectionEquality().equals(other.roverId, roverId) &&
+            const DeepCollectionEquality().equals(other.rover_id, rover_id) &&
             const DeepCollectionEquality().equals(other.location, location));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(roverId),
+      const DeepCollectionEquality().hash(rover_id),
       const DeepCollectionEquality().hash(location));
 
   @JsonKey(ignore: true)
@@ -137,11 +137,11 @@ class _$_RoverLocation implements _RoverLocation {
 
 abstract class _RoverLocation implements RoverLocation {
   const factory _RoverLocation(
-      {final String roverId,
+      {final String rover_id,
       required final LatLng location}) = _$_RoverLocation;
 
   @override
-  String get roverId => throw _privateConstructorUsedError;
+  String get rover_id => throw _privateConstructorUsedError;
   @override
   LatLng get location => throw _privateConstructorUsedError;
   @override

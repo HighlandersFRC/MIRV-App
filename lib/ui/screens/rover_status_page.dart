@@ -15,9 +15,11 @@ class StatusPage extends StatefulWidget {
 } // StatusPage
 
 class HealthContainer extends StatelessWidget {
-  final RoverHealthType roverHealthType;
+  late RoverHealthType roverHealthType;
   final String name;
-  const HealthContainer({Key? key, required this.roverHealthType, required this.name}) : super(key: key);
+  HealthContainer(RoverHealthType? roverHealthTypeTemp, this.name, {Key? key}) : super(key: key) {
+    roverHealthType = roverHealthTypeTemp ?? RoverHealthType.unavailable;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,7 @@ class HealthContainer extends StatelessWidget {
 } //Health Container
 
 class _StatusPageState extends State<StatusPage> {
-  RoverMetrics roverMetrics = const RoverMetrics();
+  RoverMetrics? roverMetrics;
 
   Timer? timer;
 
@@ -135,13 +137,13 @@ class _StatusPageState extends State<StatusPage> {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverHealthType: roverMetrics.health.sensors, name: "sensors"),
-        HealthContainer(roverHealthType: roverMetrics.health.electronics, name: "electronics"),
-        HealthContainer(roverHealthType: roverMetrics.health.drivetrain, name: "drivetrain"),
-        HealthContainer(roverHealthType: roverMetrics.health.garage, name: "garage"),
-        HealthContainer(roverHealthType: roverMetrics.health.intake, name: "intake"),
-        HealthContainer(roverHealthType: roverMetrics.health.power, name: "power"),
-        HealthContainer(roverHealthType: roverMetrics.health.general, name: "general"),
+        HealthContainer(roverMetrics?.health.sensors, "sensors"),
+        HealthContainer(roverMetrics?.health.electronics, "electronics"),
+        HealthContainer(roverMetrics?.health.drivetrain, "drivetrain"),
+        HealthContainer(roverMetrics?.health.garage, "garage"),
+        HealthContainer(roverMetrics?.health.intake, "intake"),
+        HealthContainer(roverMetrics?.health.power, "power"),
+        HealthContainer(roverMetrics?.health.general, "general"),
       ],
     );
   } //Build Widget

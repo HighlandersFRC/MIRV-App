@@ -10,15 +10,14 @@ part 'rover_metrics.g.dart';
 @freezed
 class RoverMetrics with _$RoverMetrics {
   const factory RoverMetrics({
-    @Default("unknown") String roverId,
+    required String rover_id,
     @Default(RoverStateType.disconnected) RoverStateType state, //Rover StateType
     @Default(RoverStatusType.available) RoverStatusType status, //RoverStatusType
-    @Default(-1) int battery,
+    @Default(-1) int battery_voltage,
+    @Default(-1) int battery_percent,
     @Default(RoverMetricHealth()) RoverMetricHealth health,
     @Default(RoverMetricTelemetry()) RoverMetricTelemetry telemetry,
   }) = _RoverMetrics;
-
-  // set state(RoverStateType newState) => state = newState;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
 }

@@ -12,14 +12,12 @@ class JoystickOverlay extends StatelessWidget {
   final RoverMetrics roverMetrics;
   final Function(GamepadAxisType, double, double) onJoystickChanged;
   final Function(RoverCommand) sendRoverCommand;
-  final Rx<bool> manualOperation;
   late JoystickMode joystickMode;
   late final bool? isEnabled;
 
   JoystickOverlay({
     Key? key,
     required this.roverMetrics,
-    required this.manualOperation,
     required this.onJoystickChanged,
     required this.sendRoverCommand,
   }) : super(key: key) {
