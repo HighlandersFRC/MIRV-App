@@ -61,7 +61,7 @@ class RoverGeneralCommands {
 }
 
 class RoverHeartbeatCommands {
-  static const heartBeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
+  static const heartbeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
 }
 
 class RoverIntakeCommands {

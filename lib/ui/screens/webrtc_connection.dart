@@ -58,7 +58,7 @@ class WebRTCConnection {
 
   Timer? timerJoy;
   Timer? timer;
-  Timer? timerHeart;
+  Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 100;
@@ -141,11 +141,17 @@ class WebRTCConnection {
   }
 
   // This Data Channel Function receives data sent on the data channel created by the flutter app
-  void _onDataChannelMessage(message) {
-    print(message.text);
-    RoverMetrics roverMetricsMessage = RoverMetrics.fromJson(json.decode(message));
-
-    recentStatusMessage = DateTime.now();
+  void _onDataChannelMessage(RTCDataChannelMessage message) {
+    if (message.type == MessageType.text) {
+      try {
+        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+        recentStatusMessage = DateTime.now();
+      } catch (e) {
+        print("Failed to process status message: $message");
+      }
+    } else {
+      // do something with message.binary
+    }
   }
 
   messagesDuration(String rover_id) {
@@ -154,7 +160,7 @@ class WebRTCConnection {
       final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
       if (messageDifference >= 10) {
         stopCall();
-        _showReconnectDialog('Connection Failed', rover_id);
+        _showReconnectDialog('No Heartbeat Messages Received', rover_id);
       }
     });
   }
@@ -234,7 +240,7 @@ class WebRTCConnection {
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog('$e', rover_id);
+            _showReconnectDialog('Failed to negotiate connection: $e', rover_id);
           }
         });
   }
@@ -271,7 +277,7 @@ class WebRTCConnection {
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
           stopCall();
-          _showReconnectDialog('Connection Failed', rover_id);
+          _showReconnectDialog('Invalid Connection State', rover_id);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
@@ -294,7 +300,7 @@ class WebRTCConnection {
       switch (dcs) {
         case RTCDataChannelState.RTCDataChannelClosing:
         case RTCDataChannelState.RTCDataChannelClosed:
-          _showReconnectDialog('Connection Failed', rover_id);
+          _showReconnectDialog('Invalid Data Channel State', rover_id);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
           Fluttertoast.showToast(
@@ -313,13 +319,13 @@ class WebRTCConnection {
   }
 
   _startHeartbeatMessages() {
-    // timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
-    //   sendRoverCommand(RoverHeartbeatCommands.heartBeat);
-    // });
+    heartbeatTimer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
+      sendRoverCommand(RoverHeartbeatCommands.heartbeat);
+    });
   }
 
   _stopHeartbeatMessages() {
-    timerHeart?.cancel();
+    heartbeatTimer?.cancel();
   }
 
   Future<void> makeCall(String rover_id) async {
@@ -362,7 +368,7 @@ class WebRTCConnection {
       await _negotiateRemoteConnection(rover_id);
       _startHeartbeatMessages();
     } catch (e) {
-      _showReconnectDialog(e.toString(), rover_id);
+      _showReconnectDialog('Failed to create connection: $e', rover_id);
     }
   }
 
@@ -383,13 +389,11 @@ class WebRTCConnection {
 
   startJoystickUpdates() {
     joystickController.drivetrainCommandStream.listen((value) {
-      // if (!useGamepad.value)
       sendRoverCommand(value);
     });
 
     gamepadController.setJoystickListener();
     gamepadController.drivetrainCommandStream.listen((value) {
-      // if (useGamepad.value)
       sendRoverCommand(value);
     });
   }
