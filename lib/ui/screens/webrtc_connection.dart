@@ -84,7 +84,7 @@ class WebRTCConnection {
     }
 
     // TODO: Remove this before deployment
-    updateRoverState(command);
+    // updateRoverState(command);
   }
 
   // TODO: Remove this before deployment
