@@ -25,7 +25,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
-
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
   }
