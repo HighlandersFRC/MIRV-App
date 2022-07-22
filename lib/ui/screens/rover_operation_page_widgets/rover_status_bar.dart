@@ -78,7 +78,6 @@ class RoverStatusBar extends StatelessWidget {
   ) {
     peerConnectionState.listen((cs) {
       uiConnectionState.value = setEnum(cs);
-      print('VALUE  ${uiConnectionState.value.iconColor}');
       uiConnectionState.trigger(setEnum(cs));
     });
 

@@ -49,7 +49,8 @@ class RoverOperationPage extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            Expanded(
+            // TODO: This throws exception
+            Center(
               child: Container(
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
                 decoration: BoxDecoration(
@@ -151,7 +152,7 @@ class RoverOperationPage extends StatelessWidget {
                       ))),
             ),
             Obx(() => webRTCConnection.loading.value
-                ? Expanded(
+                ? Center(
                     child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
                 : SizedBox.shrink())
           ],

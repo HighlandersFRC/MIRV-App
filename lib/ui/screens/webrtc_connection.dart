@@ -177,13 +177,11 @@ class WebRTCConnection {
   void _onDataChannelState(RTCDataChannelState? state) {
     switch (state) {
       case RTCDataChannelState.RTCDataChannelClosed:
-        print("Camera Closed!!!!!!!");
         break;
       case RTCDataChannelState.RTCDataChannelOpen:
-        print("Camera Opened!!!!!!!");
         break;
       default:
-        print("Data Channel State: $state");
+        break;
     }
   }
 
@@ -216,7 +214,7 @@ class WebRTCConnection {
             return;
           }
           try {
-            _startNotificationsFromWebRTC(rover_id);
+            // _startNotificationsFromWebRTC(rover_id);
             var des = await peerConnection!.getLocalDescription();
 
             http.StreamedResponse response = await mirvApi.startRoverConnection(rover_id, des);

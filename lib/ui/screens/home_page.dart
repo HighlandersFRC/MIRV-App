@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/info_page.dart';
 import 'package:mirv/ui/screens/login_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {

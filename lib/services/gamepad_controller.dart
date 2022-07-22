@@ -94,9 +94,9 @@ class GamepadController {
       }
 
       if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.button) {
-        print('BUTTON: $eventParameters');
+        // print('BUTTON: $eventParameters');
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.axis) {
-        print('AXIS: $eventParameters');
+        // print('AXIS: $eventParameters');
         var axisType = getAxisType(eventParameters['sourceInput']);
 
         var axisCommand =
@@ -105,7 +105,7 @@ class GamepadController {
         GamepadCommand command = GamepadCommand(command: axisCommand, type: GamepadCommandType.axis);
         _commandStreamController.add(command);
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.dpad) {
-        print('DPAD: $eventParameters');
+        // print('DPAD: $eventParameters');
       }
     });
   }
