@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
-import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/services/mirv_garage_api.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_operation_map.dart';
 import 'package:mirv/ui/screens/garage-pages/list_garage_commands.dart';
-import 'package:mirv/ui/screens/rover_operation_map.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
-import 'package:mirv/ui/screens/webrtc_connection.dart';
 import 'package:rxdart/subjects.dart';
 
 class GarageOpPage extends StatelessWidget {
@@ -58,18 +48,18 @@ class GarageOpPage extends StatelessWidget {
       // ),
       body: Stack(
         children: [
-          // Expanded(
-          //   child: Container(
-          //     decoration: const BoxDecoration(
-          //       color: Colors.grey,
-          //     ),
-          //     child: RoverOperationMap(
-          //       locationStream: locationStream,
-          //       piLitMarkers: piLitMarkers,
-          //       selectedRoverMetrics: roverMetrics,
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+              ),
+              child: GarageOperationMap(
+                locationStream: locationStream,
+                piLitMarkers: piLitMarkers,
+                selectedGarageMetrics: garageMetrics,
+              ),
+            ),
+          ),
           Positioned(
             top: 30,
             height: 450,
@@ -83,19 +73,20 @@ class GarageOpPage extends StatelessWidget {
             ),
           ),
           // Positioned(
-          //   top: 0,
-          //   height: 450,
-          //   right: -15,
-          //   width: 150,
-          //   child: Column(children: [
-          //     // Padding(
-          //     //   padding: const EdgeInsets.only(top: 30, bottom: 20),
-          //     //   child: RoverOperationMap(
-          //     //     locationStream: locationStream,
-          //     //     piLitMarkers: piLitMarkers,
-          //     //     selectedRoverMetrics: roverMetrics,
-          //     //   ),
-          //     // ),
+          //     top: 0,
+          //     height: 450,
+          //     right: -15,
+          //     width: 150,
+          //     child: Column(children: [
+          //       Padding(
+          //         padding: const EdgeInsets.only(top: 30, bottom: 20),
+          //         child: GarageOperationMap(
+          //           locationStream: locationStream,
+          //           piLitMarkers: piLitMarkers,
+          //           selectedGarageMetrics: garageMetrics,
+          //         ),
+          //       ),
+          //     ])),
           //     // Padding(
           //     //   padding: const EdgeInsets.only(bottom: 20),
           //     //   child: Obx(() => CancelAuto(
@@ -123,10 +114,10 @@ class GarageOpPage extends StatelessWidget {
           //     left: manualOperation.value ? 300 : 50,
           //     height: 160,
           //     width: 300,
-          //     child: RoverOperationMap(
+          //     child: GarageOperationMap(
           //       locationStream: locationStream,
           //       piLitMarkers: piLitMarkers,
-          //       selectedRoverMetrics: roverMetrics,
+          //       selectedGarageMetrics: garageMetrics,
           //     ),
           //   ),
           // ),

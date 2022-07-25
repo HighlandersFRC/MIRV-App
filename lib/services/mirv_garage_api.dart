@@ -37,16 +37,6 @@ class MirvGarageApi {
     return garages;
   }
 
-  // startPeriodicMetricUpdates(String garageId) {
-  //   garageTimer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-  //     getGarageMetrics(garageId).then((value) => periodicMetricUpdates.add(value));
-  //   });
-  // }
-
-  // stopPeriodicMetricUpdates() {
-  //   garageTimer?.cancel();
-  // }
-
   sendGarageCommand(GarageCommand command) {
     print("Sending garage command: ${json.encode(command.toJson())}");
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
