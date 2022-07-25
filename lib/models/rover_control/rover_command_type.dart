@@ -1,4 +1,5 @@
 enum RoverSubsystemType { general, intake, drivetrain, movement, conveyor, sensors, heartbeat }
+// ignore: todo
 // TODO: enhanced enum, integer sub_command, maps to different enum
 
 enum RoverCommandTypeGeneral {

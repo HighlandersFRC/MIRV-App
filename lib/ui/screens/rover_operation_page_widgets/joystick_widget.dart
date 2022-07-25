@@ -4,6 +4,7 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
 
+// ignore: must_be_immutable
 class JoystickWidget extends StatelessWidget {
   final RoverMetrics roverMetrics;
   final Function(GamepadAxisType, double, double) onJoystickChanged;

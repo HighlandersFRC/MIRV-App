@@ -7,6 +7,7 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_widget.dart';
 
+// ignore: must_be_immutable
 class JoystickOverlay extends StatelessWidget {
   final RoverMetrics roverMetrics;
   final Function(GamepadAxisType, double, double) onJoystickChanged;
@@ -49,10 +50,10 @@ class JoystickOverlay extends StatelessWidget {
               width: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                color: Color.fromRGBO(50, 50, 50, 0.5),
+                color: const Color.fromRGBO(50, 50, 50, 0.5),
               ),
               child: IconButton(
-                icon: Icon(CupertinoIcons.xmark_octagon),
+                icon: const Icon(CupertinoIcons.xmark_octagon),
                 iconSize: 60,
                 color: Colors.red,
                 onPressed: () {

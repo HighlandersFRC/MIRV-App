@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:rxdart/rxdart.dart';

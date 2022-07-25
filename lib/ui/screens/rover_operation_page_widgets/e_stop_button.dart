@@ -30,14 +30,14 @@ class EStopButton extends StatelessWidget {
     return Container(
         height: 100,
         width: 100,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: Color.fromARGB(255, 120, 120, 120)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(25.0), color: const Color.fromARGB(255, 120, 120, 120)),
         child: ElevatedButton(
           style: ButtonStyle(
-            shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)),
-            backgroundColor: MaterialStateProperty.all(Color.fromARGB(182, 255, 255, 0)),
-            overlayColor: MaterialStateProperty.all(Color.fromARGB(86, 255, 0, 0)),
-            foregroundColor: MaterialStateProperty.all(Color.fromARGB(148, 255, 0, 0)),
-            shape: MaterialStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16)))),
+            shadowColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 0, 0)),
+            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(182, 255, 255, 0)),
+            overlayColor: MaterialStateProperty.all(const Color.fromARGB(86, 255, 0, 0)),
+            foregroundColor: MaterialStateProperty.all(const Color.fromARGB(148, 255, 0, 0)),
+            shape: MaterialStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25)))),
           ),
           onPressed: isEnabled == true
               ? () {

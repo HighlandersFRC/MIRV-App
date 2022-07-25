@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 
 enum RoverHealthType { healthy, unhealthy, degraded, unavailable }
@@ -34,17 +32,17 @@ extension RoverHealthTypeColor2 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        ;
+        {}
         return healthy2;
       case RoverHealthType.unhealthy:
-        ;
+        {}
         return unhealthy2;
       case RoverHealthType.degraded:
-        ;
+        {}
         return degraded2;
       case RoverHealthType.unavailable:
       default:
-        ;
+        {}
         return invalid2;
     }
   }
@@ -59,17 +57,17 @@ extension RoverHealthTypeColor3 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        ;
+        {}
         return healthy3;
       case RoverHealthType.unhealthy:
-        ;
+        {}
         return unhealthy3;
       case RoverHealthType.degraded:
-        ;
+        {}
         return degraded3;
       case RoverHealthType.unavailable:
       default:
-        ;
+        {}
         return invalid3;
     }
   }
@@ -84,17 +82,17 @@ extension RoverHealthTypeColor4 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        ;
+        {}
         return healthy4;
       case RoverHealthType.unhealthy:
-        ;
+        {}
         return unhealthy4;
       case RoverHealthType.degraded:
-        ;
+        {}
         return degraded4;
       case RoverHealthType.unavailable:
       default:
-        ;
+        {}
         return invalid4;
     }
   }
@@ -109,17 +107,17 @@ extension RoverHealthTypeColor5 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        ;
+        {}
         return healthy5;
       case RoverHealthType.unhealthy:
-        ;
+        {}
         return unhealthy5;
       case RoverHealthType.degraded:
-        ;
+        {}
         return degraded5;
       case RoverHealthType.unavailable:
       default:
-        ;
+        {}
         return invalid5;
     }
   }

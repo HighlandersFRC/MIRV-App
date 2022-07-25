@@ -32,10 +32,10 @@ class GamepadController {
   }
 
   _initializeStreams() {
-    _commandStreamController.add(
-        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
-    _commandStreamController.add(
-        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
+    _commandStreamController.add(GamepadCommand(
+        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
+    _commandStreamController.add(GamepadCommand(
+        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
   }
 
   DrivetrainRoverCommand _getJoystickCommandOutput(

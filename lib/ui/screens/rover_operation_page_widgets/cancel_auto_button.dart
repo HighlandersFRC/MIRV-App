@@ -32,14 +32,21 @@ class CancelAuto extends StatelessWidget {
         width: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: Color.fromARGB(255, 100, 100, 100),
+          color: const Color.fromARGB(0, 100, 100, 100),
         ),
         child: ElevatedButton(
           style: ButtonStyle(
-            shadowColor: MaterialStateProperty.all(Color.fromARGB(255, 0, 0, 0)),
-            overlayColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
-            foregroundColor: MaterialStateProperty.all(Color.fromARGB(50, 255, 17, 0)),
-            backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 120, 120, 120)),
+            shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25),
+                ),
+              ),
+            ),
+            shadowColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 0, 0)),
+            overlayColor: MaterialStateProperty.all(const Color.fromARGB(50, 255, 17, 0)),
+            foregroundColor: MaterialStateProperty.all(const Color.fromARGB(63, 255, 17, 0)),
+            backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 120, 120, 120)),
           ),
           onPressed: cancelled == true
               ? () {

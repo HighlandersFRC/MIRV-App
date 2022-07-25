@@ -5,6 +5,7 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_health_type.dart';
 import 'package:mirv/models/ui_connection_state.dart';
 
+// ignore: must_be_immutable
 class RoverStatusBar extends StatelessWidget {
   RoverStatusBar({
     Key? key,

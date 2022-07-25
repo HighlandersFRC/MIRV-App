@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
+// ignore: depend_on_referenced_packages
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';

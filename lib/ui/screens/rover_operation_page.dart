@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -49,13 +51,14 @@ class RoverOperationPage extends StatelessWidget {
         ),
         body: Stack(
           children: [
+            // ignore: todo
             // TODO: This throws exception
             Center(
               child: Container(
-                child: RTCVideoView(webRTCConnection.localRenderer.value),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.grey,
                 ),
+                child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
             ),
             Positioned(
@@ -139,7 +142,7 @@ class RoverOperationPage extends StatelessWidget {
                         width: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.0),
-                          color: Color.fromARGB(0, 50, 50, 50),
+                          color: const Color.fromARGB(0, 50, 50, 50),
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
@@ -159,8 +162,9 @@ class RoverOperationPage extends StatelessWidget {
             ),
             Obx(() => webRTCConnection.loading.value
                 ? Center(
-                    child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
-                : SizedBox.shrink())
+                    child: Container(
+                        color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+                : const SizedBox.shrink())
           ],
         ),
       ),

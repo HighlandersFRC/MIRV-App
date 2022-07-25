@@ -256,13 +256,13 @@ class WebRTCConnection {
               makeCall(rover_id);
               get_pkg.Get.back();
             },
-            child: Text('Reconnect?')),
+            child: const Text('Reconnect?')),
         TextButton(
             onPressed: () {
               get_pkg.Get.back();
-              get_pkg.Get.offAll(() => HomePage());
+              get_pkg.Get.offAll(() => const HomePage());
             },
-            child: Text('Home page'))
+            child: const Text('Home page'))
       ],
     ));
   }
