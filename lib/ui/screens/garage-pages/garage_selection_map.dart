@@ -10,11 +10,11 @@ import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 
 class GarageSelectionMap extends StatefulWidget {
   final List<GarageMetrics> garageMetrics;
-  final Rx<String> selectedGarageId;
+  final Rx<String> selectedgarage_id;
   final SelectedGarageController selectedGarageController;
   final Rx<String> selectedMarkerId = "".obs;
 
-  GarageSelectionMap(this.garageMetrics, this.selectedGarageId, this.selectedGarageController, {Key? key}) : super(key: key);
+  GarageSelectionMap(this.garageMetrics, this.selectedgarage_id, this.selectedGarageController, {Key? key}) : super(key: key);
 
   @override
   State<GarageSelectionMap> createState() => _GarageSelectionMapState();
@@ -24,7 +24,7 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
   Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
-  Rx<String> selectedGarageId = "".obs;
+  Rx<String> selectedgarage_id = "".obs;
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon_2.png');
@@ -69,9 +69,9 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
       ));
     });
 
-    widget.selectedGarageId.listen((garageId) {
+    widget.selectedgarage_id.listen((garage_id) {
       widget.garageMetrics.forEach((element) async {
-        if (element.garageId == garageId) {
+        if (element.garage_id == garage_id) {
           _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
               target: LatLng(element.location.lat, element.location.long), zoom: await _mapController!.getZoomLevel())));
         }
@@ -106,18 +106,18 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
       markers = {
         ...widget.garageMetrics.map((garage) {
           return Marker(
-              markerId: MarkerId(garage.garageId),
+              markerId: MarkerId(garage.garage_id),
               position: LatLng(garage.location.lat, garage.location.long),
               infoWindow: InfoWindow(
-                title: garage.garageId,
+                title: garage.garage_id,
               ),
               icon: mapMarker,
               onTap: () {
                 garage.status == GarageStatusType.unavailable
                     ? null
                     :
-                    // widget.selectedMarkerId.value = garage.garageId;
-                    widget.selectedGarageController.setSelectedGarageId(garage.garageId);
+                    // widget.selectedMarkerId.value = garage.garage_id;
+                    widget.selectedGarageController.setSelectedgarage_id(garage.garage_id);
               });
         })
       };

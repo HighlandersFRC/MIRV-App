@@ -30,9 +30,9 @@ class GarageOpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // _mirvGarageApi.startPeriodicMetricUpdates(garageMetrics.garageId);
+    // _mirvGarageApi.startPeriodicMetricUpdates(garageMetrics.garage_id);
     // _mirvGarageApi.stopPeriodicMetricUpdates();
-    _mirvGarageApi.getGarageMetrics(garageMetrics.garageId);
+    _mirvGarageApi.getGarageMetrics(garageMetrics.garage_id);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +67,7 @@ class GarageOpPage extends StatelessWidget {
             width: 110,
             child: Scrollbar(
               child: GarageCommandList(
-                state: garageMetrics.state,
+                position: garageMetrics.position,
                 sendCommand: _mirvGarageApi.sendGarageCommand,
               ),
             ),

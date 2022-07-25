@@ -8,47 +8,36 @@ part of 'garage_metrics.dart';
 
 _$_GarageMetrics _$$_GarageMetricsFromJson(Map<String, dynamic> json) =>
     _$_GarageMetrics(
-      garageId: json['garageId'] as String? ?? "unknown",
-      state: $enumDecodeNullable(_$GarageStateTypeEnumMap, json['state']) ??
-          GarageStateType.unlocked,
+      garage_id: json['garage_id'] as String,
+      linked_rover_id: json['linked_rover_id'] as String?,
+      latched: json['latched'] as bool,
+      position:
+          $enumDecodeNullable(_$GaragePositionEnumMap, json['position']) ??
+              GaragePosition.down,
       status: $enumDecodeNullable(_$GarageStatusTypeEnumMap, json['status']) ??
           GarageStatusType.available,
       location: json['location'] == null
-          ? const GarageMetricLocation()
-          : GarageMetricLocation.fromJson(
+          ? const RoverMetricLocation()
+          : RoverMetricLocation.fromJson(
               json['location'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_GarageMetricsToJson(_$_GarageMetrics instance) =>
     <String, dynamic>{
-      'garageId': instance.garageId,
-      'state': _$GarageStateTypeEnumMap[instance.state],
+      'garage_id': instance.garage_id,
+      'linked_rover_id': instance.linked_rover_id,
+      'latched': instance.latched,
+      'position': _$GaragePositionEnumMap[instance.position],
       'status': _$GarageStatusTypeEnumMap[instance.status],
       'location': instance.location,
     };
 
-const _$GarageStateTypeEnumMap = {
-  GarageStateType.up: 'up',
-  GarageStateType.down: 'down',
-  GarageStateType.locked: 'locked',
-  GarageStateType.unlocked: 'unlocked',
+const _$GaragePositionEnumMap = {
+  GaragePosition.up: 'up',
+  GaragePosition.down: 'down',
 };
 
 const _$GarageStatusTypeEnumMap = {
   GarageStatusType.available: 'available',
   GarageStatusType.unavailable: 'unavailable',
 };
-
-_$_GarageMetricLocation _$$_GarageMetricLocationFromJson(
-        Map<String, dynamic> json) =>
-    _$_GarageMetricLocation(
-      long: (json['long'] as num?)?.toDouble() ?? 0.0,
-      lat: (json['lat'] as num?)?.toDouble() ?? 0.0,
-    );
-
-Map<String, dynamic> _$$_GarageMetricLocationToJson(
-        _$_GarageMetricLocation instance) =>
-    <String, dynamic>{
-      'long': instance.long,
-      'lat': instance.lat,
-    };

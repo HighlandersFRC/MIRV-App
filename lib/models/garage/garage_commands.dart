@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mirv/models/garage/garage_position.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/Garage/Garage_command_type.dart';
 import 'package:mirv/models/Garage/Garage_state_type.dart';
@@ -38,21 +41,11 @@ class GarageGeneralCommands {
 //   }
 // }
 
-Map<GarageStateType?, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
-  GarageStateType.locked: [
-    // Pair(.eStop, "E-Stop"),
-    Pair(GarageGeneralCommands.unlock, Image.asset('assets/images/cancel.png')),
-    // Pair( GarageGeneralCommands.cancel, "Cancel Current Command"),
-  ],
-  GarageStateType.unlocked: [
-    // Pair( GarageGeneralCommands.eStop, "E-Stop"),
-    Pair(GarageGeneralCommands.lock, Image.asset('assets/images/cancel.png')),
-    // Pair( GarageGeneralCommands.cancel, "Cancel Current Command"),
-  ],
-  GarageStateType.up: [
+Map<GaragePosition?, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
+  GaragePosition.up: [
     Pair(GarageGeneralCommands.down, Image.asset('assets/images/ramp.png')),
   ],
-  GarageStateType.down: [
+  GaragePosition.down: [
     Pair(GarageGeneralCommands.up, Image.asset('assets/images/ramp.png')),
   ],
   null: [],

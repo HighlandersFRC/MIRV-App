@@ -1,3 +1,5 @@
-enum GarageStateType {
-  up, down, locked, unlocked
-}
+// enum GarageStateType {
+//   up, down, locked, unlocked
+// }
+
+

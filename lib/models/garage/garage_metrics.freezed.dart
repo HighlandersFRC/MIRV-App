@@ -20,12 +20,14 @@ GarageMetrics _$GarageMetricsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GarageMetrics {
-  String get garageId => throw _privateConstructorUsedError;
-  GarageStateType get state =>
+  String get garage_id => throw _privateConstructorUsedError;
+  String? get linked_rover_id => throw _privateConstructorUsedError;
+  bool get latched => throw _privateConstructorUsedError;
+  GaragePosition get position =>
       throw _privateConstructorUsedError; //Garage StateType
   GarageStatusType get status =>
       throw _privateConstructorUsedError; //GarageStatusType
-  GarageMetricLocation get location => throw _privateConstructorUsedError;
+  RoverMetricLocation get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,12 +41,14 @@ abstract class $GarageMetricsCopyWith<$Res> {
           GarageMetrics value, $Res Function(GarageMetrics) then) =
       _$GarageMetricsCopyWithImpl<$Res>;
   $Res call(
-      {String garageId,
-      GarageStateType state,
+      {String garage_id,
+      String? linked_rover_id,
+      bool latched,
+      GaragePosition position,
       GarageStatusType status,
-      GarageMetricLocation location});
+      RoverMetricLocation location});
 
-  $GarageMetricLocationCopyWith<$Res> get location;
+  $RoverMetricLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -58,20 +62,30 @@ class _$GarageMetricsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? garageId = freezed,
-    Object? state = freezed,
+    Object? garage_id = freezed,
+    Object? linked_rover_id = freezed,
+    Object? latched = freezed,
+    Object? position = freezed,
     Object? status = freezed,
     Object? location = freezed,
   }) {
     return _then(_value.copyWith(
-      garageId: garageId == freezed
-          ? _value.garageId
-          : garageId // ignore: cast_nullable_to_non_nullable
+      garage_id: garage_id == freezed
+          ? _value.garage_id
+          : garage_id // ignore: cast_nullable_to_non_nullable
               as String,
-      state: state == freezed
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as GarageStateType,
+      linked_rover_id: linked_rover_id == freezed
+          ? _value.linked_rover_id
+          : linked_rover_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latched: latched == freezed
+          ? _value.latched
+          : latched // ignore: cast_nullable_to_non_nullable
+              as bool,
+      position: position == freezed
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as GaragePosition,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -79,13 +93,13 @@ class _$GarageMetricsCopyWithImpl<$Res>
       location: location == freezed
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as GarageMetricLocation,
+              as RoverMetricLocation,
     ));
   }
 
   @override
-  $GarageMetricLocationCopyWith<$Res> get location {
-    return $GarageMetricLocationCopyWith<$Res>(_value.location, (value) {
+  $RoverMetricLocationCopyWith<$Res> get location {
+    return $RoverMetricLocationCopyWith<$Res>(_value.location, (value) {
       return _then(_value.copyWith(location: value));
     });
   }
@@ -99,13 +113,15 @@ abstract class _$$_GarageMetricsCopyWith<$Res>
       __$$_GarageMetricsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String garageId,
-      GarageStateType state,
+      {String garage_id,
+      String? linked_rover_id,
+      bool latched,
+      GaragePosition position,
       GarageStatusType status,
-      GarageMetricLocation location});
+      RoverMetricLocation location});
 
   @override
-  $GarageMetricLocationCopyWith<$Res> get location;
+  $RoverMetricLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -121,20 +137,30 @@ class __$$_GarageMetricsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? garageId = freezed,
-    Object? state = freezed,
+    Object? garage_id = freezed,
+    Object? linked_rover_id = freezed,
+    Object? latched = freezed,
+    Object? position = freezed,
     Object? status = freezed,
     Object? location = freezed,
   }) {
     return _then(_$_GarageMetrics(
-      garageId: garageId == freezed
-          ? _value.garageId
-          : garageId // ignore: cast_nullable_to_non_nullable
+      garage_id: garage_id == freezed
+          ? _value.garage_id
+          : garage_id // ignore: cast_nullable_to_non_nullable
               as String,
-      state: state == freezed
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as GarageStateType,
+      linked_rover_id: linked_rover_id == freezed
+          ? _value.linked_rover_id
+          : linked_rover_id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      latched: latched == freezed
+          ? _value.latched
+          : latched // ignore: cast_nullable_to_non_nullable
+              as bool,
+      position: position == freezed
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as GaragePosition,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -142,7 +168,7 @@ class __$$_GarageMetricsCopyWithImpl<$Res>
       location: location == freezed
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as GarageMetricLocation,
+              as RoverMetricLocation,
     ));
   }
 }
@@ -151,20 +177,25 @@ class __$$_GarageMetricsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_GarageMetrics implements _GarageMetrics {
   const _$_GarageMetrics(
-      {this.garageId = "unknown",
-      this.state = GarageStateType.unlocked,
+      {required this.garage_id,
+      this.linked_rover_id,
+      required this.latched,
+      this.position = GaragePosition.down,
       this.status = GarageStatusType.available,
-      this.location = const GarageMetricLocation()});
+      this.location = const RoverMetricLocation()});
 
   factory _$_GarageMetrics.fromJson(Map<String, dynamic> json) =>
       _$$_GarageMetricsFromJson(json);
 
   @override
-  @JsonKey()
-  final String garageId;
+  final String garage_id;
+  @override
+  final String? linked_rover_id;
+  @override
+  final bool latched;
   @override
   @JsonKey()
-  final GarageStateType state;
+  final GaragePosition position;
 //Garage StateType
   @override
   @JsonKey()
@@ -172,11 +203,11 @@ class _$_GarageMetrics implements _GarageMetrics {
 //GarageStatusType
   @override
   @JsonKey()
-  final GarageMetricLocation location;
+  final RoverMetricLocation location;
 
   @override
   String toString() {
-    return 'GarageMetrics(garageId: $garageId, state: $state, status: $status, location: $location)';
+    return 'GarageMetrics(garage_id: $garage_id, linked_rover_id: $linked_rover_id, latched: $latched, position: $position, status: $status, location: $location)';
   }
 
   @override
@@ -184,8 +215,11 @@ class _$_GarageMetrics implements _GarageMetrics {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GarageMetrics &&
-            const DeepCollectionEquality().equals(other.garageId, garageId) &&
-            const DeepCollectionEquality().equals(other.state, state) &&
+            const DeepCollectionEquality().equals(other.garage_id, garage_id) &&
+            const DeepCollectionEquality()
+                .equals(other.linked_rover_id, linked_rover_id) &&
+            const DeepCollectionEquality().equals(other.latched, latched) &&
+            const DeepCollectionEquality().equals(other.position, position) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.location, location));
   }
@@ -194,8 +228,10 @@ class _$_GarageMetrics implements _GarageMetrics {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(garageId),
-      const DeepCollectionEquality().hash(state),
+      const DeepCollectionEquality().hash(garage_id),
+      const DeepCollectionEquality().hash(linked_rover_id),
+      const DeepCollectionEquality().hash(latched),
+      const DeepCollectionEquality().hash(position),
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(location));
 
@@ -212,178 +248,30 @@ class _$_GarageMetrics implements _GarageMetrics {
 
 abstract class _GarageMetrics implements GarageMetrics {
   const factory _GarageMetrics(
-      {final String garageId,
-      final GarageStateType state,
+      {required final String garage_id,
+      final String? linked_rover_id,
+      required final bool latched,
+      final GaragePosition position,
       final GarageStatusType status,
-      final GarageMetricLocation location}) = _$_GarageMetrics;
+      final RoverMetricLocation location}) = _$_GarageMetrics;
 
   factory _GarageMetrics.fromJson(Map<String, dynamic> json) =
       _$_GarageMetrics.fromJson;
 
   @override
-  String get garageId => throw _privateConstructorUsedError;
+  String get garage_id => throw _privateConstructorUsedError;
   @override
-  GarageStateType get state => throw _privateConstructorUsedError;
+  String? get linked_rover_id => throw _privateConstructorUsedError;
+  @override
+  bool get latched => throw _privateConstructorUsedError;
+  @override
+  GaragePosition get position => throw _privateConstructorUsedError;
   @override //Garage StateType
   GarageStatusType get status => throw _privateConstructorUsedError;
   @override //GarageStatusType
-  GarageMetricLocation get location => throw _privateConstructorUsedError;
+  RoverMetricLocation get location => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_GarageMetricsCopyWith<_$_GarageMetrics> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-GarageMetricLocation _$GarageMetricLocationFromJson(Map<String, dynamic> json) {
-  return _GarageMetricLocation.fromJson(json);
-}
-
-/// @nodoc
-mixin _$GarageMetricLocation {
-  double get long => throw _privateConstructorUsedError;
-  double get lat => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $GarageMetricLocationCopyWith<GarageMetricLocation> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $GarageMetricLocationCopyWith<$Res> {
-  factory $GarageMetricLocationCopyWith(GarageMetricLocation value,
-          $Res Function(GarageMetricLocation) then) =
-      _$GarageMetricLocationCopyWithImpl<$Res>;
-  $Res call({double long, double lat});
-}
-
-/// @nodoc
-class _$GarageMetricLocationCopyWithImpl<$Res>
-    implements $GarageMetricLocationCopyWith<$Res> {
-  _$GarageMetricLocationCopyWithImpl(this._value, this._then);
-
-  final GarageMetricLocation _value;
-  // ignore: unused_field
-  final $Res Function(GarageMetricLocation) _then;
-
-  @override
-  $Res call({
-    Object? long = freezed,
-    Object? lat = freezed,
-  }) {
-    return _then(_value.copyWith(
-      long: long == freezed
-          ? _value.long
-          : long // ignore: cast_nullable_to_non_nullable
-              as double,
-      lat: lat == freezed
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_GarageMetricLocationCopyWith<$Res>
-    implements $GarageMetricLocationCopyWith<$Res> {
-  factory _$$_GarageMetricLocationCopyWith(_$_GarageMetricLocation value,
-          $Res Function(_$_GarageMetricLocation) then) =
-      __$$_GarageMetricLocationCopyWithImpl<$Res>;
-  @override
-  $Res call({double long, double lat});
-}
-
-/// @nodoc
-class __$$_GarageMetricLocationCopyWithImpl<$Res>
-    extends _$GarageMetricLocationCopyWithImpl<$Res>
-    implements _$$_GarageMetricLocationCopyWith<$Res> {
-  __$$_GarageMetricLocationCopyWithImpl(_$_GarageMetricLocation _value,
-      $Res Function(_$_GarageMetricLocation) _then)
-      : super(_value, (v) => _then(v as _$_GarageMetricLocation));
-
-  @override
-  _$_GarageMetricLocation get _value => super._value as _$_GarageMetricLocation;
-
-  @override
-  $Res call({
-    Object? long = freezed,
-    Object? lat = freezed,
-  }) {
-    return _then(_$_GarageMetricLocation(
-      long: long == freezed
-          ? _value.long
-          : long // ignore: cast_nullable_to_non_nullable
-              as double,
-      lat: lat == freezed
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_GarageMetricLocation implements _GarageMetricLocation {
-  const _$_GarageMetricLocation({this.long = 0.0, this.lat = 0.0});
-
-  factory _$_GarageMetricLocation.fromJson(Map<String, dynamic> json) =>
-      _$$_GarageMetricLocationFromJson(json);
-
-  @override
-  @JsonKey()
-  final double long;
-  @override
-  @JsonKey()
-  final double lat;
-
-  @override
-  String toString() {
-    return 'GarageMetricLocation(long: $long, lat: $lat)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_GarageMetricLocation &&
-            const DeepCollectionEquality().equals(other.long, long) &&
-            const DeepCollectionEquality().equals(other.lat, lat));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(long),
-      const DeepCollectionEquality().hash(lat));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_GarageMetricLocationCopyWith<_$_GarageMetricLocation> get copyWith =>
-      __$$_GarageMetricLocationCopyWithImpl<_$_GarageMetricLocation>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_GarageMetricLocationToJson(this);
-  }
-}
-
-abstract class _GarageMetricLocation implements GarageMetricLocation {
-  const factory _GarageMetricLocation({final double long, final double lat}) =
-      _$_GarageMetricLocation;
-
-  factory _GarageMetricLocation.fromJson(Map<String, dynamic> json) =
-      _$_GarageMetricLocation.fromJson;
-
-  @override
-  double get long => throw _privateConstructorUsedError;
-  @override
-  double get lat => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$$_GarageMetricLocationCopyWith<_$_GarageMetricLocation> get copyWith =>
       throw _privateConstructorUsedError;
 }

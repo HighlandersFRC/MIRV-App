@@ -99,12 +99,12 @@ class _GarageOperationMapState extends State<GarageOperationMap> {
 
     var marker = Marker(
         //add first marker
-        markerId: MarkerId(widget.selectedGarageMetrics.garageId),
+        markerId: MarkerId(widget.selectedGarageMetrics.garage_id),
         position: LatLng(widget.selectedGarageMetrics.location.lat,
             widget.selectedGarageMetrics.location.long), //position of marker
         infoWindow: InfoWindow(
           //popup info
-          title: widget.selectedGarageMetrics.garageId,
+          title: widget.selectedGarageMetrics.garage_id,
           snippet: 'My Custom Subtitle',
         ),
         icon: garageMarker,

@@ -13,32 +13,32 @@ import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
 
 class SelectedGarageController extends GetxController {
-  Rx<String> selectedGarageId = "".obs;
+  Rx<String> selectedgarage_id = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<bool> isGarageListMinimized = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedGarageController() {
-    selectedGarageId.listen((selectedGarageId) => isConnectButtonEnabled.value = (selectedGarageId != ""));
+    selectedgarage_id.listen((selectedgarage_id) => isConnectButtonEnabled.value = (selectedgarage_id != ""));
   }
 
-  setSelectedGarageId(String garageId) {
-    if (garageId == selectedGarageId.value) {
-      selectedGarageId.trigger(garageId);
+  setSelectedgarage_id(String garage_id) {
+    if (garage_id == selectedgarage_id.value) {
+      selectedgarage_id.trigger(garage_id);
     } else {
-      selectedGarageId.value = garageId;
+      selectedgarage_id.value = garage_id;
     }
   }
 
-  verifyGarageId(List<GarageMetrics> garages) {
-    if (garages.where((element) => element.garageId == selectedGarageId.value).isEmpty) selectedGarageId.value = "";
+  verifygarage_id(List<GarageMetrics> garages) {
+    if (garages.where((element) => element.garage_id == selectedgarage_id.value).isEmpty) selectedgarage_id.value = "";
   }
 
   Color garageTileColor(
-    String garageId,
+    String garage_id,
     GarageStatusType value,
   ) {
-    if (selectedGarageId.value == garageId) {
+    if (selectedgarage_id.value == garage_id) {
       return Colors.blue;
     } else {
       return Colors.white;
@@ -64,7 +64,7 @@ class GarageSelectionPage extends StatelessWidget {
 
   void _refreshGaragesList() async {
     garageList.value = await mirvGarageApi.getGarages();
-    selectedGarageController.verifyGarageId(garageList);
+    selectedGarageController.verifygarage_id(garageList);
   }
 
   double garageListWidth = 300;
@@ -111,28 +111,28 @@ class GarageSelectionPage extends StatelessWidget {
                               () => selectedGarageController.isGarageListMinimized.value
                                   ? ListTile(
                                       tileColor: selectedGarageController.garageTileColor(
-                                        garageList[index].garageId,
+                                        garageList[index].garage_id,
                                         garageList[index].status,
                                       ),
-                                      title: Text(garageList[index].garageId.toString()),
+                                      title: Text(garageList[index].garage_id.toString()),
                                       onTap: () {
                                         if (garageList[index].status == GarageStatusType.available) {
-                                          selectedGarageController.setSelectedGarageId((garageList[index].garageId).toString());
+                                          selectedGarageController.setSelectedgarage_id((garageList[index].garage_id).toString());
                                         }
                                       })
                                   : ListTile(
                                       tileColor: selectedGarageController.garageTileColor(
-                                        garageList[index].garageId,
+                                        garageList[index].garage_id,
                                         garageList[index].status,
                                       ),
                                       title: selectedGarageController.isGarageListMinimized.value
-                                          ? Text(garageList[index].garageId.toString())
+                                          ? Text(garageList[index].garage_id.toString())
                                           : Text(
-                                              "garage ${garageList[index].garageId}",
+                                              "garage ${garageList[index].garage_id}",
                                             ),
                                       onTap: () {
                                         if (garageList[index].status == GarageStatusType.available) {
-                                          selectedGarageController.setSelectedGarageId((garageList[index].garageId).toString());
+                                          selectedGarageController.setSelectedgarage_id((garageList[index].garage_id).toString());
                                         }
                                       },
                                     ),
@@ -156,7 +156,7 @@ class GarageSelectionPage extends StatelessWidget {
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
                                   Get.to(() => (GarageOpPage(garageList.firstWhere(
-                                    (element) => selectedGarageController.selectedGarageId.value == element.garageId,
+                                    (element) => selectedGarageController.selectedgarage_id.value == element.garage_id,
                                   ))));
                                 }
                               : null,
@@ -210,7 +210,7 @@ class GarageSelectionPage extends StatelessWidget {
                     child: Obx(
                       // ignore: invalid_use_of_protected_member
                       () => (GarageSelectionMap(
-                          garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
+                          garageList.value, selectedGarageController.selectedgarage_id, selectedGarageController)),
                     ),
                   )
                 ],

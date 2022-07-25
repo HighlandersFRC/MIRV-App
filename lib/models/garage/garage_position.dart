@@ -1,0 +1,1 @@
+enum GaragePosition { up, down }
