@@ -139,12 +139,18 @@ class RoverOperationPage extends StatelessWidget {
                         width: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.0),
-                          color: Color.fromRGBO(50, 50, 50, 0.5),
+                          color: Color.fromARGB(0, 50, 50, 50),
                         ),
-                        child: IconButton(
-                          icon: Icon(CupertinoIcons.antenna_radiowaves_left_right),
-                          iconSize: 60,
-                          color: Colors.white,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(50, 50, 50, 0.5)),
+                              shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
+                          child: const Icon(
+                            CupertinoIcons.antenna_radiowaves_left_right,
+                            size: 50,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
                             webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
                           },
