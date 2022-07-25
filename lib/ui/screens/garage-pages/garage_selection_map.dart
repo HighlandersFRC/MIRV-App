@@ -27,7 +27,7 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
   Rx<String> selectedGarageId = "".obs;
 
   void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon.png');
+    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon_2.png');
   }
 
   GoogleMapController? _mapController;

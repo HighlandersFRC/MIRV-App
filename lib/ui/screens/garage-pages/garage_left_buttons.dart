@@ -4,6 +4,8 @@ import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/models/garage/garage_commands.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover_metrics.dart';
@@ -14,9 +16,10 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart'
 import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 
 class LeftSideButtons extends StatefulWidget {
-  final RoverMetrics roverMetrics;
+  //final RoverMetrics roverMetrics;
+  final GarageMetrics garageMetrics;
   final MirvApi mirvApi;
-  final Function(RoverCommand) sendCommand;
+  final Function(GarageCommand) sendCommand;
   final dynamic periodicMetricUpdates;
   final MapSelectionController mapSelectionController;
   final double width;
@@ -24,7 +27,7 @@ class LeftSideButtons extends StatefulWidget {
   final Function(GamepadAxisType, double, double) onJoystickChanged;
   const LeftSideButtons({
     Key? key,
-    required this.roverMetrics,
+    required this.garageMetrics,
     required this.periodicMetricUpdates,
     required this.sendCommand,
     required this.mapSelectionController,
@@ -41,7 +44,6 @@ class LeftSideButtons extends StatefulWidget {
 class _LeftSideButtonsState extends State<LeftSideButtons> {
   OverlayEntry? entry;
   late List<bool> isSelected;
-
   @override
   Widget build(BuildContext context) {
     const JoystickMode joystickMode = JoystickMode.vertical;

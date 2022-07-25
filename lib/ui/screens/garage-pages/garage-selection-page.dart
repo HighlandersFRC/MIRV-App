@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/Blocs/autocomplete/garage_search_bar.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_status_type.dart';
 import 'package:mirv/models/place.dart';
 import 'package:location/location.dart';
 import 'package:mirv/services/mirv_garage_api.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_selection_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
 
@@ -16,11 +19,15 @@ class SelectedGarageController extends GetxController {
   Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedGarageController() {
-    selectedGarageId.listen((selectedGarage) => isConnectButtonEnabled.value = (selectedGarage != ""));
+    selectedGarageId.listen((selectedGarageId) => isConnectButtonEnabled.value = (selectedGarageId != ""));
   }
 
   setSelectedGarageId(String garageId) {
-    selectedGarageId.value = garageId;
+    if (garageId == selectedGarageId.value) {
+      selectedGarageId.trigger(garageId);
+    } else {
+      selectedGarageId.value = garageId;
+    }
   }
 
   verifyGarageId(List<GarageMetrics> garages) {
@@ -53,6 +60,7 @@ class GarageSelectionPage extends StatelessWidget {
   Location location = Location();
   int? groupValue = 0;
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
+  final TextEditingController typeAheadController = TextEditingController();
 
   void _refreshGaragesList() async {
     garageList.value = await mirvGarageApi.getGarages();
@@ -141,25 +149,23 @@ class GarageSelectionPage extends StatelessWidget {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Obx(
-                          () => ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
-                            onPressed: () {},
-                            // selectedGarageController.isConnectButtonEnabled.value
-                            //     ? () {
-                            //         Get.to(RoverOperationPage(garageList.firstWhere(
-                            //             (element) => selectedGarageController.selectedGarageId.value == element.garageId)));
-                            //       }
-                            //     : null,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.link_rounded),
-                                Text(' Connect'),
-                              ],
-                            ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
+                          onPressed: selectedGarageController.isConnectButtonEnabled.value
+                              ? () {
+                                  Get.to(() => (GarageOpPage(garageList.firstWhere(
+                                    (element) => selectedGarageController.selectedGarageId.value == element.garageId,
+                                  ))));
+                                }
+                              : null,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.link_rounded),
+                              Text(' Connect'),
+                            ],
                           ),
                         ),
                       ),
@@ -194,18 +200,21 @@ class GarageSelectionPage extends StatelessWidget {
           Expanded(
               child: Stack(
             children: [
-              // Column(
-              //   children: [
-              //     SizedBox(height: 70, child: SearchBar(selectedGarageController: selectedGarageController)),
-              //     Expanded(
-              //       child: Obx(
-              //         // ignore: invalid_use_of_protected_member
-              //         () => (RoverSelectionMap(
-              //             garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
-              //       ),
-              //     )
-              //   ],
-              // ),
+              Column(
+                children: [
+                  SizedBox(
+                      height: 70,
+                      child: GarageSearchBar(
+                          selectedGarageController: selectedGarageController, typeAheadController: typeAheadController)),
+                  Expanded(
+                    child: Obx(
+                      // ignore: invalid_use_of_protected_member
+                      () => (GarageSelectionMap(
+                          garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
+                    ),
+                  )
+                ],
+              ),
             ],
           ))
         ],

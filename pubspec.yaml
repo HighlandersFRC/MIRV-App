@@ -85,6 +85,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+  - assets/images/garage_icon.png
+  - assets/images/garage_icon_2.png
   - assets/images/home.png
   - assets/images/ramp.png
   - assets/images/cancel.png

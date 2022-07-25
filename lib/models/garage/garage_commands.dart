@@ -38,7 +38,7 @@ class GarageGeneralCommands {
 //   }
 // }
 
-Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
+Map<GarageStateType?, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
   GarageStateType.locked: [
     // Pair(.eStop, "E-Stop"),
     Pair(GarageGeneralCommands.unlock, Image.asset('assets/images/cancel.png')),
@@ -55,4 +55,5 @@ Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
   GarageStateType.down: [
     Pair(GarageGeneralCommands.up, Image.asset('assets/images/ramp.png')),
   ],
+  null: [],
 };
