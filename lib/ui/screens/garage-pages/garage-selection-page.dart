@@ -6,6 +6,7 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_status_type.dart';
 import 'package:mirv/models/place.dart';
 import 'package:location/location.dart';
+import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/services/mirv_garage_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_selection_map.dart';
@@ -54,7 +55,7 @@ class SelectedGarageController extends GetxController {
 }
 
 class GarageSelectionPage extends StatelessWidget {
-  GarageSelectionPage({Key? key}) : super(key: key);
+  GarageSelectionPage({Key? key,}) : super(key: key);
   final selectedGarageController = Get.put(SelectedGarageController());
   MirvGarageApi mirvGarageApi = MirvGarageApi();
   Location location = Location();
@@ -130,6 +131,9 @@ class GarageSelectionPage extends StatelessWidget {
                                           : Text(
                                               "garage ${garageList[index].garage_id}",
                                             ),
+                                      subtitle: selectedGarageController.isGarageListMinimized.value
+                                          ? const SizedBox()
+                                          : Text('State: ${garageList[index].position.toString()}'),
                                       onTap: () {
                                         if (garageList[index].status == GarageStatusType.available) {
                                           selectedGarageController.setSelectedgarage_id((garageList[index].garage_id).toString());
@@ -155,9 +159,11 @@ class GarageSelectionPage extends StatelessWidget {
                                   selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
-                                  Get.to(() => (GarageOpPage(garageList.firstWhere(
-                                    (element) => selectedGarageController.selectedgarage_id.value == element.garage_id,
-                                  ))));
+                                  Get.to(() => (GarageOpPage(
+                                        garageList.firstWhere(
+                                          (element) => selectedGarageController.selectedgarage_id.value == element.garage_id,
+                                        ),
+                                      )));
                                 }
                               : null,
                           child: Row(

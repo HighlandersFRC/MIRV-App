@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/models/garage/garage_position.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/mirv_garage_api.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_app_bar.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_operation_map.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_status_bar.dart';
 import 'package:mirv/ui/screens/garage-pages/list_garage_commands.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
@@ -13,6 +17,8 @@ class GarageOpPage extends StatelessWidget {
   final GarageMetrics garageMetrics;
   //final RoverMetrics roverMetrics;
   final MirvGarageApi _mirvGarageApi = MirvGarageApi();
+  final selectedGarageController = Get.put(SelectedGarageController());
+  RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
 
   GarageOpPage(this.garageMetrics, {Key? key}) : super(key: key);
 
@@ -35,17 +41,7 @@ class GarageOpPage extends StatelessWidget {
     _mirvGarageApi.getGarageMetrics(garageMetrics.garage_id);
 
     return Scaffold(
-      appBar: AppBar(
-          foregroundColor: AppThemeColor.foregroundColor,
-          shadowColor: AppThemeColor.shadowColor,
-          backgroundColor: AppThemeColor.backgroundColor,
-          title: const Text("Garage Operation Page")),
-
-      // OpPgAppBar(
-      //   // roverMetrics: webRTCConnection.roverMetricsObs.value,
-      //   // stopCall: webRTCConnection.stopCall,
-      //   // peerConnectionState: webRTCConnection.peerConnectionState,
-      // ),
+      appBar: GarageAppBar(garageMetrics: garageMetrics,),
       body: Stack(
         children: [
           Expanded(

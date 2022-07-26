@@ -21,7 +21,7 @@ class MirvGarageApi {
 
   Future<GarageMetrics> getGarageMetrics(String garageID) async {
     String? token = _getCurrentAuthToken();
-    GarageMetrics garageMetrics = GarageMetrics(garage_id: 'garage_1');
+    GarageMetrics garageMetrics = const GarageMetrics(garage_id: '1');
     print(json.encode(garageMetrics.toJson()));
 
     return garageMetrics;
@@ -30,7 +30,9 @@ class MirvGarageApi {
   Future<List<GarageMetrics>> getGarages() async {
     String? token = _getCurrentAuthToken();
     List<GarageMetrics> garages;
-    GarageMetrics garageMetrics = GarageMetrics(garage_id: 'garage_1',);
+    GarageMetrics garageMetrics = const GarageMetrics(
+      garage_id: '1',
+    );
     String response = '[${json.encode(garageMetrics.toJson())}]';
 
     garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();

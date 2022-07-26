@@ -24,19 +24,17 @@ class GarageCommands {
 
 Map<GaragePosition, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
   GaragePosition.retracted_latched: [
-    Pair(GarageCommands.unlock, Image.asset('assets/images/ramp.png')),
+    Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
   ],
   GaragePosition.deployed: [
-    Pair(GarageCommands.retract, Image.asset('assets/images/ramp.png')),
+    Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
   ],
   GaragePosition.disabled: [
     Pair(GarageCommands.enable, Image.asset('assets/images/ramp.png')),
   ],
   GaragePosition.retracted_unlatched: [
-    Pair(GarageCommands.lock, Image.asset('assets/images/ramp.png')),
-    Pair(GarageCommands.deploy, Image.asset('assets/images/ramp.png')),
+    Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),
+    Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
   ],
-  GaragePosition.unavailable: [
-    Pair(GarageCommands.retract, Image.asset('assets/images/ramp.png')),
-  ],
+  GaragePosition.unavailable: [],
 };
