@@ -20,46 +20,8 @@ GarageCommand _$GarageCommandFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GarageCommand {
-  GarageCommandTypeGeneral get command => throw _privateConstructorUsedError;
-  GarageSubsystemType get subsystem => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)
-        generalCommand,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)?
-        generalCommand,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)?
-        generalCommand,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GeneralGarageCommand value) generalCommand,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(GeneralGarageCommand value)? generalCommand,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GeneralGarageCommand value)? generalCommand,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  GarageCommandType get command => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $GarageCommandCopyWith<GarageCommand> get copyWith =>
@@ -71,7 +33,7 @@ abstract class $GarageCommandCopyWith<$Res> {
   factory $GarageCommandCopyWith(
           GarageCommand value, $Res Function(GarageCommand) then) =
       _$GarageCommandCopyWithImpl<$Res>;
-  $Res call({GarageCommandTypeGeneral command, GarageSubsystemType subsystem});
+  $Res call({GarageCommandType command});
 }
 
 /// @nodoc
@@ -86,17 +48,12 @@ class _$GarageCommandCopyWithImpl<$Res>
   @override
   $Res call({
     Object? command = freezed,
-    Object? subsystem = freezed,
   }) {
     return _then(_value.copyWith(
       command: command == freezed
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as GarageCommandTypeGeneral,
-      subsystem: subsystem == freezed
-          ? _value.subsystem
-          : subsystem // ignore: cast_nullable_to_non_nullable
-              as GarageSubsystemType,
+              as GarageCommandType,
     ));
   }
 }
@@ -108,7 +65,7 @@ abstract class _$$GeneralGarageCommandCopyWith<$Res>
           $Res Function(_$GeneralGarageCommand) then) =
       __$$GeneralGarageCommandCopyWithImpl<$Res>;
   @override
-  $Res call({GarageCommandTypeGeneral command, GarageSubsystemType subsystem});
+  $Res call({GarageCommandType command});
 }
 
 /// @nodoc
@@ -125,17 +82,12 @@ class __$$GeneralGarageCommandCopyWithImpl<$Res>
   @override
   $Res call({
     Object? command = freezed,
-    Object? subsystem = freezed,
   }) {
     return _then(_$GeneralGarageCommand(
       command == freezed
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
-              as GarageCommandTypeGeneral,
-      subsystem: subsystem == freezed
-          ? _value.subsystem
-          : subsystem // ignore: cast_nullable_to_non_nullable
-              as GarageSubsystemType,
+              as GarageCommandType,
     ));
   }
 }
@@ -143,21 +95,17 @@ class __$$GeneralGarageCommandCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GeneralGarageCommand implements GeneralGarageCommand {
-  const _$GeneralGarageCommand(this.command,
-      {this.subsystem = GarageSubsystemType.general});
+  const _$GeneralGarageCommand(this.command);
 
   factory _$GeneralGarageCommand.fromJson(Map<String, dynamic> json) =>
       _$$GeneralGarageCommandFromJson(json);
 
   @override
-  final GarageCommandTypeGeneral command;
-  @override
-  @JsonKey()
-  final GarageSubsystemType subsystem;
+  final GarageCommandType command;
 
   @override
   String toString() {
-    return 'GarageCommand.generalCommand(command: $command, subsystem: $subsystem)';
+    return 'GarageCommand(command: $command)';
   }
 
   @override
@@ -165,16 +113,13 @@ class _$GeneralGarageCommand implements GeneralGarageCommand {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeneralGarageCommand &&
-            const DeepCollectionEquality().equals(other.command, command) &&
-            const DeepCollectionEquality().equals(other.subsystem, subsystem));
+            const DeepCollectionEquality().equals(other.command, command));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(command),
-      const DeepCollectionEquality().hash(subsystem));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(command));
 
   @JsonKey(ignore: true)
   @override
@@ -183,84 +128,20 @@ class _$GeneralGarageCommand implements GeneralGarageCommand {
           this, _$identity);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)
-        generalCommand,
-  }) {
-    return generalCommand(command, subsystem);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)?
-        generalCommand,
-  }) {
-    return generalCommand?.call(command, subsystem);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            GarageCommandTypeGeneral command, GarageSubsystemType subsystem)?
-        generalCommand,
-    required TResult orElse(),
-  }) {
-    if (generalCommand != null) {
-      return generalCommand(command, subsystem);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GeneralGarageCommand value) generalCommand,
-  }) {
-    return generalCommand(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(GeneralGarageCommand value)? generalCommand,
-  }) {
-    return generalCommand?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GeneralGarageCommand value)? generalCommand,
-    required TResult orElse(),
-  }) {
-    if (generalCommand != null) {
-      return generalCommand(this);
-    }
-    return orElse();
-  }
-
-  @override
   Map<String, dynamic> toJson() {
     return _$$GeneralGarageCommandToJson(this);
   }
 }
 
 abstract class GeneralGarageCommand implements GarageCommand {
-  const factory GeneralGarageCommand(final GarageCommandTypeGeneral command,
-      {final GarageSubsystemType subsystem}) = _$GeneralGarageCommand;
+  const factory GeneralGarageCommand(final GarageCommandType command) =
+      _$GeneralGarageCommand;
 
   factory GeneralGarageCommand.fromJson(Map<String, dynamic> json) =
       _$GeneralGarageCommand.fromJson;
 
   @override
-  GarageCommandTypeGeneral get command => throw _privateConstructorUsedError;
-  @override
-  GarageSubsystemType get subsystem => throw _privateConstructorUsedError;
+  GarageCommandType get command => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$GeneralGarageCommandCopyWith<_$GeneralGarageCommand> get copyWith =>

@@ -9,13 +9,19 @@ part of 'garage_commands.dart';
 _$GeneralGarageCommand _$$GeneralGarageCommandFromJson(
         Map<String, dynamic> json) =>
     _$GeneralGarageCommand(
-      json['command'],
-      subsystem: json['subsystem'] ?? GarageSubsystemType.general,
+      $enumDecode(_$GarageCommandTypeEnumMap, json['command']),
     );
 
 Map<String, dynamic> _$$GeneralGarageCommandToJson(
         _$GeneralGarageCommand instance) =>
     <String, dynamic>{
-      'command': instance.command,
-      'subsystem': instance.subsystem,
+      'command': _$GarageCommandTypeEnumMap[instance.command],
     };
+
+const _$GarageCommandTypeEnumMap = {
+  GarageCommandType.lock: 'lock',
+  GarageCommandType.unlock: 'unlock',
+  GarageCommandType.retract: 'retract',
+  GarageCommandType.enable: 'enable',
+  GarageCommandType.deploy: 'deploy',
+};
