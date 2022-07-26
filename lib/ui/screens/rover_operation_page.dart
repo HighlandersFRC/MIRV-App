@@ -35,13 +35,13 @@ class RoverOperationPage extends StatelessWidget {
   ];
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
-  late Rx<bool> manualOperation = false.obs;
+  late Rx<bool> manualOperation = true.obs;
 
   @override
   Widget build(BuildContext context) {
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
-    webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
+    // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
