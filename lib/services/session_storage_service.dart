@@ -13,9 +13,8 @@ class SessionStorageService {
   static const String KEY_CLOAK_CLIENT_TOKEN_KEY = "KEY_CLOAK_CLIENT_TOKEN";
 
 //call init everytime with class
-  init() async {
+init() async {
     _prefs = await SharedPreferences.getInstance();
-
     if (retrieveMirvEndpoint() == null) {
       saveMirvEndpoint('http://20.106.14.47:8080');
     }

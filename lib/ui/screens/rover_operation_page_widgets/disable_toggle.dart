@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
-import 'package:ionicons/ionicons.dart';
 
 class ToggleDisable extends StatelessWidget {
   late final bool? enabled;
@@ -63,7 +62,7 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        child: enabled == true ? const Icon(Ionicons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
+        child: enabled == true ? const Icon(Icons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
       ),
     );
   }

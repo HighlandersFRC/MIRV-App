@@ -58,7 +58,6 @@ dependencies:
 
   flutter_webrtc: ^0.8.10
   settings_ui: ^2.0.2
-  fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
   ionicons: ^0.1.2
 
