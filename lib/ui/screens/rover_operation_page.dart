@@ -1,8 +1,13 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/pi_lit.dart';
+import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -30,12 +35,13 @@ class RoverOperationPage extends StatelessWidget {
   ];
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
-  late Rx<bool> manualOperation = false.obs;
+  late Rx<bool> manualOperation = true.obs;
 
   @override
   Widget build(BuildContext context) {
-    webRTCConnection.makeCall(roverMetrics.roverId);
+    webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
+    // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
@@ -45,19 +51,21 @@ class RoverOperationPage extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            Expanded(
+            // ignore: todo
+            // TODO: This throws exception
+            Center(
               child: Container(
-                child: RTCVideoView(webRTCConnection.localRenderer.value),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.grey,
                 ),
+                child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
             ),
             Positioned(
               top: 30,
               height: 450,
+              width: 150,
               left: 10,
-              width: 110,
               child: Scrollbar(
                 child: CommandList(
                   state: webRTCConnection.roverMetricsObs.value.state,
@@ -120,8 +128,8 @@ class RoverOperationPage extends StatelessWidget {
                       right: 20,
                       child: JoystickOverlay(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        manualOperation: manualOperation,
                         onJoystickChanged: webRTCConnection.onJoystickChanged,
+                        sendRoverCommand: webRTCConnection.sendRoverCommand,
                       ),
                     )
                   : Positioned(
@@ -134,20 +142,29 @@ class RoverOperationPage extends StatelessWidget {
                         width: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16.0),
-                          color: Color.fromRGBO(50, 50, 50, 0.5),
+                          color: const Color.fromARGB(0, 50, 50, 50),
                         ),
-                        child: IconButton(
-                          icon: Icon(Icons.control_camera_outlined),
-                          iconSize: 60,
-                          color: Colors.white,
-                          onPressed: () => manualOperation.value = true,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(50, 50, 50, 0.5)),
+                              shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
+                          child: const Icon(
+                            CupertinoIcons.antenna_radiowaves_left_right,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                          },
                         ),
                       ))),
             ),
             Obx(() => webRTCConnection.loading.value
-                ? Expanded(
-                    child: Container(color: Color.fromRGBO(51, 53, 42, 42), child: Center(child: CircularProgressIndicator())))
-                : SizedBox.shrink())
+                ? Center(
+                    child: Container(
+                        color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+                : const SizedBox.shrink())
           ],
         ),
       ),

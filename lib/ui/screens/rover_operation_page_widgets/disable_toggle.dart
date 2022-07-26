@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_state_type.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ToggleDisable extends StatelessWidget {
   late final bool? enabled;
@@ -35,9 +36,20 @@ class ToggleDisable extends StatelessWidget {
       width: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.0),
-        color: Color.fromRGBO(50, 50, 50, 0.5),
+        color: const Color.fromARGB(0, 100, 100, 100),
       ),
-      child: IconButton(
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+            const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+            ),
+          ),
+          shadowColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 0, 0)),
+          overlayColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 17, 0)),
+          foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 250, 250, 250)),
+          backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
+        ),
         onPressed: enabled == null
             ? null
             : () {
@@ -51,8 +63,7 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        icon:
-            enabled == true ? const Icon(Icons.stop_circle_outlined, size: 70) : const Icon(Icons.play_circle_outline, size: 70),
+        child: enabled == true ? const Icon(Ionicons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
       ),
     );
   }

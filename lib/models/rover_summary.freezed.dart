@@ -20,12 +20,12 @@ RoverSummary _$RoverSummaryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoverSummary {
-  String get roverId => throw _privateConstructorUsedError;
+  String get rover_id => throw _privateConstructorUsedError;
   RoverStateType get state =>
       throw _privateConstructorUsedError; //Rover StateType
   RoverStatusType get status =>
       throw _privateConstructorUsedError; //RoverStatusType
-  int get battery => throw _privateConstructorUsedError;
+  int get battery_percent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,10 +39,10 @@ abstract class $RoverSummaryCopyWith<$Res> {
           RoverSummary value, $Res Function(RoverSummary) then) =
       _$RoverSummaryCopyWithImpl<$Res>;
   $Res call(
-      {String roverId,
+      {String rover_id,
       RoverStateType state,
       RoverStatusType status,
-      int battery});
+      int battery_percent});
 }
 
 /// @nodoc
@@ -55,15 +55,15 @@ class _$RoverSummaryCopyWithImpl<$Res> implements $RoverSummaryCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? roverId = freezed,
+    Object? rover_id = freezed,
     Object? state = freezed,
     Object? status = freezed,
-    Object? battery = freezed,
+    Object? battery_percent = freezed,
   }) {
     return _then(_value.copyWith(
-      roverId: roverId == freezed
-          ? _value.roverId
-          : roverId // ignore: cast_nullable_to_non_nullable
+      rover_id: rover_id == freezed
+          ? _value.rover_id
+          : rover_id // ignore: cast_nullable_to_non_nullable
               as String,
       state: state == freezed
           ? _value.state
@@ -73,9 +73,9 @@ class _$RoverSummaryCopyWithImpl<$Res> implements $RoverSummaryCopyWith<$Res> {
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RoverStatusType,
-      battery: battery == freezed
-          ? _value.battery
-          : battery // ignore: cast_nullable_to_non_nullable
+      battery_percent: battery_percent == freezed
+          ? _value.battery_percent
+          : battery_percent // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -89,10 +89,10 @@ abstract class _$$_RoverSummaryCopyWith<$Res>
       __$$_RoverSummaryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String roverId,
+      {String rover_id,
       RoverStateType state,
       RoverStatusType status,
-      int battery});
+      int battery_percent});
 }
 
 /// @nodoc
@@ -108,15 +108,15 @@ class __$$_RoverSummaryCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? roverId = freezed,
+    Object? rover_id = freezed,
     Object? state = freezed,
     Object? status = freezed,
-    Object? battery = freezed,
+    Object? battery_percent = freezed,
   }) {
     return _then(_$_RoverSummary(
-      roverId: roverId == freezed
-          ? _value.roverId
-          : roverId // ignore: cast_nullable_to_non_nullable
+      rover_id: rover_id == freezed
+          ? _value.rover_id
+          : rover_id // ignore: cast_nullable_to_non_nullable
               as String,
       state: state == freezed
           ? _value.state
@@ -126,9 +126,9 @@ class __$$_RoverSummaryCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as RoverStatusType,
-      battery: battery == freezed
-          ? _value.battery
-          : battery // ignore: cast_nullable_to_non_nullable
+      battery_percent: battery_percent == freezed
+          ? _value.battery_percent
+          : battery_percent // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -138,17 +138,17 @@ class __$$_RoverSummaryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_RoverSummary implements _RoverSummary {
   const _$_RoverSummary(
-      {this.roverId = "unknown",
+      {this.rover_id = "unknown",
       this.state = RoverStateType.disconnected,
       this.status = RoverStatusType.available,
-      this.battery = -1});
+      this.battery_percent = -1});
 
   factory _$_RoverSummary.fromJson(Map<String, dynamic> json) =>
       _$$_RoverSummaryFromJson(json);
 
   @override
   @JsonKey()
-  final String roverId;
+  final String rover_id;
   @override
   @JsonKey()
   final RoverStateType state;
@@ -159,11 +159,11 @@ class _$_RoverSummary implements _RoverSummary {
 //RoverStatusType
   @override
   @JsonKey()
-  final int battery;
+  final int battery_percent;
 
   @override
   String toString() {
-    return 'RoverSummary(roverId: $roverId, state: $state, status: $status, battery: $battery)';
+    return 'RoverSummary(rover_id: $rover_id, state: $state, status: $status, battery_percent: $battery_percent)';
   }
 
   @override
@@ -171,20 +171,21 @@ class _$_RoverSummary implements _RoverSummary {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RoverSummary &&
-            const DeepCollectionEquality().equals(other.roverId, roverId) &&
+            const DeepCollectionEquality().equals(other.rover_id, rover_id) &&
             const DeepCollectionEquality().equals(other.state, state) &&
             const DeepCollectionEquality().equals(other.status, status) &&
-            const DeepCollectionEquality().equals(other.battery, battery));
+            const DeepCollectionEquality()
+                .equals(other.battery_percent, battery_percent));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(roverId),
+      const DeepCollectionEquality().hash(rover_id),
       const DeepCollectionEquality().hash(state),
       const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(battery));
+      const DeepCollectionEquality().hash(battery_percent));
 
   @JsonKey(ignore: true)
   @override
@@ -199,22 +200,22 @@ class _$_RoverSummary implements _RoverSummary {
 
 abstract class _RoverSummary implements RoverSummary {
   const factory _RoverSummary(
-      {final String roverId,
+      {final String rover_id,
       final RoverStateType state,
       final RoverStatusType status,
-      final int battery}) = _$_RoverSummary;
+      final int battery_percent}) = _$_RoverSummary;
 
   factory _RoverSummary.fromJson(Map<String, dynamic> json) =
       _$_RoverSummary.fromJson;
 
   @override
-  String get roverId => throw _privateConstructorUsedError;
+  String get rover_id => throw _privateConstructorUsedError;
   @override
   RoverStateType get state => throw _privateConstructorUsedError;
   @override //Rover StateType
   RoverStatusType get status => throw _privateConstructorUsedError;
   @override //RoverStatusType
-  int get battery => throw _privateConstructorUsedError;
+  int get battery_percent => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverSummaryCopyWith<_$_RoverSummary> get copyWith =>

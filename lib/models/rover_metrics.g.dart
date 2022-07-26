@@ -8,12 +8,13 @@ part of 'rover_metrics.dart';
 
 _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
     _$_RoverMetrics(
-      roverId: json['roverId'] as String? ?? "unknown",
+      rover_id: json['rover_id'] as String,
       state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
           RoverStateType.disconnected,
       status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
           RoverStatusType.available,
-      battery: json['battery'] as int? ?? -1,
+      battery_voltage: json['battery_voltage'] as int? ?? -1,
+      battery_percent: json['battery_percent'] as int? ?? -1,
       health: json['health'] == null
           ? const RoverMetricHealth()
           : RoverMetricHealth.fromJson(json['health'] as Map<String, dynamic>),
@@ -25,10 +26,11 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
     <String, dynamic>{
-      'roverId': instance.roverId,
+      'rover_id': instance.rover_id,
       'state': _$RoverStateTypeEnumMap[instance.state],
       'status': _$RoverStatusTypeEnumMap[instance.status],
-      'battery': instance.battery,
+      'battery_voltage': instance.battery_voltage,
+      'battery_percent': instance.battery_percent,
       'health': instance.health,
       'telemetry': instance.telemetry,
     };

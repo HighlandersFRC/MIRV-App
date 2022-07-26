@@ -35,6 +35,8 @@ const _$RoverCommandTypeGeneralEnumMap = {
   RoverCommandTypeGeneral.stop_manual_control: 'stop_manual_control',
   RoverCommandTypeGeneral.deploy_pi_lits: 'deploy_pi_lits',
   RoverCommandTypeGeneral.retrieve_pi_lits: 'retrieve_pi_lits',
+  RoverCommandTypeGeneral.enable_remote_operation: 'enable_remote_operation',
+  RoverCommandTypeGeneral.disable_remote_operation: 'disable_remote_operation',
 };
 
 const _$RoverSubsystemTypeEnumMap = {
@@ -44,6 +46,29 @@ const _$RoverSubsystemTypeEnumMap = {
   RoverSubsystemType.movement: 'movement',
   RoverSubsystemType.conveyor: 'conveyor',
   RoverSubsystemType.sensors: 'sensors',
+  RoverSubsystemType.heartbeat: 'heartbeat',
+};
+
+_$HeartbeatRoverCommand _$$HeartbeatRoverCommandFromJson(
+        Map<String, dynamic> json) =>
+    _$HeartbeatRoverCommand(
+      $enumDecode(_$RoverCommandTypeHeartbeatEnumMap, json['command']),
+      subsystem:
+          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
+              RoverSubsystemType.general,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$HeartbeatRoverCommandToJson(
+        _$HeartbeatRoverCommand instance) =>
+    <String, dynamic>{
+      'command': _$RoverCommandTypeHeartbeatEnumMap[instance.command],
+      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
+      'runtimeType': instance.$type,
+    };
+
+const _$RoverCommandTypeHeartbeatEnumMap = {
+  RoverCommandTypeHeartbeat.heartbeat: 'heartbeat',
 };
 
 _$IntakeRoverCommand _$$IntakeRoverCommandFromJson(Map<String, dynamic> json) =>

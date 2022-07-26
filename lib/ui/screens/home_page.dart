@@ -4,7 +4,6 @@ import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/info_page.dart';
 import 'package:mirv/ui/screens/login_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
-import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

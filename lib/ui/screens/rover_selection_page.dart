@@ -7,8 +7,6 @@ import 'package:mirv/models/rover_metrics.dart';
 import 'package:location/location.dart';
 import 'package:mirv/models/rover_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
-import 'package:mirv/ui/screens/home_page.dart';
-import 'package:mirv/ui/screens/rover_new_op_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
 
@@ -19,26 +17,26 @@ class SelectedRoverController extends GetxController {
   Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedRoverController() {
-    selectedRoverId.listen((selectedroverId) => isConnectButtonEnabled.value = (selectedroverId != ""));
+    selectedRoverId.listen((selectedRoverId) => isConnectButtonEnabled.value = (selectedRoverId != ""));
   }
 
-  setSelectedRoverId(String roverId) {
-    if (roverId == selectedRoverId.value) {
-      selectedRoverId.trigger(roverId);
+  setSelectedRoverId(String rover_id) {
+    if (rover_id == selectedRoverId.value) {
+      selectedRoverId.trigger(rover_id);
     } else {
-      selectedRoverId.value = roverId;
+      selectedRoverId.value = rover_id;
     }
   }
 
   verifyRoverId(List<RoverMetrics> rovers) {
-    if (rovers.where((element) => element.roverId == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
+    if (rovers.where((element) => element.rover_id == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
   }
 
   Color roverTileColor(
-    String roverId,
+    String rover_id,
     RoverStatusType value,
   ) {
-    if (selectedRoverId.value == roverId) {
+    if (selectedRoverId.value == rover_id) {
       return Colors.blue;
     } else {
       switch (value) {
@@ -143,31 +141,32 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                               () => selectedRoverController.isRoverListMinimized.value
                                   ? ListTile(
                                       tileColor: selectedRoverController.roverTileColor(
-                                        roverList[index].roverId,
+                                        roverList[index].rover_id,
                                         roverList[index].status,
                                       ),
-                                      title: Text(roverList[index].roverId.toString()),
+                                      title: Text(roverList[index].rover_id.toString()),
                                       onTap: () {
                                         if (roverList[index].status == RoverStatusType.available) {
-                                          selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
+                                          selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       })
                                   : ListTile(
                                       tileColor: selectedRoverController.roverTileColor(
-                                        roverList[index].roverId,
+                                        roverList[index].rover_id,
                                         roverList[index].status,
                                       ),
                                       title: selectedRoverController.isRoverListMinimized.value
-                                          ? Text(roverList[index].roverId.toString())
+                                          ? Text(roverList[index].rover_id.toString())
                                           : Text(
-                                              "Rover ${roverList[index].roverId}",
+                                              "Rover ${roverList[index].rover_id}",
                                             ),
                                       subtitle: selectedRoverController.isRoverListMinimized.value
                                           ? const SizedBox()
-                                          : Text('Battery ${roverList[index].battery.toString()} \n ${roverList[index].state}'),
+                                          : Text(
+                                              'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state}'),
                                       onTap: () {
                                         if (roverList[index].status == RoverStatusType.available) {
-                                          selectedRoverController.setSelectedRoverId((roverList[index].roverId).toString());
+                                          selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       },
                                       trailing: selectedRoverController.isRoverListMinimized.value
@@ -175,7 +174,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                _batteryIcon(roverList[index].battery, alertLevel: 20),
+                                                _batteryIcon(roverList[index].battery_percent, alertLevel: 20),
                                               ],
                                             ),
                                     ),
@@ -200,7 +199,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
                                     Get.to(RoverOperationPage(roverList.firstWhere(
-                                        (element) => selectedRoverController.selectedRoverId.value == element.roverId)));
+                                        (element) => selectedRoverController.selectedRoverId.value == element.rover_id)));
                                   }
                                 : null,
                             child: Row(
