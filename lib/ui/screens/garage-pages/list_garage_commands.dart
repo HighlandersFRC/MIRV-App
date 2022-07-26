@@ -20,20 +20,20 @@ class GarageCommandList extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<GaragePosition, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
       GaragePosition.retracted_latched: [
-        Pair(GarageGeneralCommands.unlock, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.unlock, Image.asset('assets/images/ramp.png')),
       ],
       GaragePosition.deployed: [
-        Pair(GarageGeneralCommands.retract, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.retract, Image.asset('assets/images/ramp.png')),
       ],
       GaragePosition.disabled: [
-        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.deploy, Image.asset('assets/images/ramp.png')),
       ],
       GaragePosition.retracted_unlatched: [
-        Pair(GarageGeneralCommands.lock, Image.asset('assets/images/ramp.png')),
-        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.lock, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.deploy, Image.asset('assets/images/ramp.png')),
       ],
       GaragePosition.unavailable: [
-        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+        Pair(GarageCommands.deploy, Image.asset('assets/images/ramp.png')),
       ],
     };
     var garageCommandList = garageCommandsByPosition[GaragePosition.retracted_latched];
