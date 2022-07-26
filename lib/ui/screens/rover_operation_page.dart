@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
@@ -150,11 +151,13 @@ class RoverOperationPage extends StatelessWidget {
                               shape: MaterialStateProperty.all(
                                   const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
                           child: const Icon(
-                            CupertinoIcons.antenna_radiowaves_left_right,
+                            Ionicons.game_controller_outline,
                             size: 50,
                             color: Colors.white,
                           ),
                           onPressed: () {
+                            Get.snackbar('Manual Control Enabled', 'You have enabled Manual Control',
+                                backgroundColor: Color.fromARGB(170, 76, 175, 79));
                             webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
                           },
                         ),
