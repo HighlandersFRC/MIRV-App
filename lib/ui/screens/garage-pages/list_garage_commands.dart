@@ -18,17 +18,25 @@ class GarageCommandList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<GaragePosition?, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
-      GaragePosition.up: [
-        Pair(GarageGeneralCommands.down, Image.asset('assets/images/ramp.png')),
+    Map<GaragePosition, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
+      GaragePosition.retracted_latched: [
+        Pair(GarageGeneralCommands.unlock, Image.asset('assets/images/ramp.png')),
       ],
-      GaragePosition.down: [
-        Pair(GarageGeneralCommands.up, Image.asset('assets/images/ramp.png')),
+      GaragePosition.deployed: [
+        Pair(GarageGeneralCommands.retract, Image.asset('assets/images/ramp.png')),
       ],
-      null: [],
+      GaragePosition.disabled: [
+        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+      ],
+      GaragePosition.retracted_unlatched: [
+        Pair(GarageGeneralCommands.lock, Image.asset('assets/images/ramp.png')),
+        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+      ],
+      GaragePosition.unavailable: [
+        Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+      ],
     };
-
-    var garageCommandList = garageCommandsByPosition[position];
+    var garageCommandList = garageCommandsByPosition[GaragePosition.retracted_latched];
     return Container(
         child: position != null
             ? ListView.builder(

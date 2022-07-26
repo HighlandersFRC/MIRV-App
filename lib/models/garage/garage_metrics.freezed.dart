@@ -22,7 +22,6 @@ GarageMetrics _$GarageMetricsFromJson(Map<String, dynamic> json) {
 mixin _$GarageMetrics {
   String get garage_id => throw _privateConstructorUsedError;
   String? get linked_rover_id => throw _privateConstructorUsedError;
-  bool get latched => throw _privateConstructorUsedError;
   GaragePosition get position =>
       throw _privateConstructorUsedError; //Garage StateType
   GarageStatusType get status =>
@@ -43,7 +42,6 @@ abstract class $GarageMetricsCopyWith<$Res> {
   $Res call(
       {String garage_id,
       String? linked_rover_id,
-      bool latched,
       GaragePosition position,
       GarageStatusType status,
       RoverMetricLocation location});
@@ -64,7 +62,6 @@ class _$GarageMetricsCopyWithImpl<$Res>
   $Res call({
     Object? garage_id = freezed,
     Object? linked_rover_id = freezed,
-    Object? latched = freezed,
     Object? position = freezed,
     Object? status = freezed,
     Object? location = freezed,
@@ -78,10 +75,6 @@ class _$GarageMetricsCopyWithImpl<$Res>
           ? _value.linked_rover_id
           : linked_rover_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      latched: latched == freezed
-          ? _value.latched
-          : latched // ignore: cast_nullable_to_non_nullable
-              as bool,
       position: position == freezed
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -115,7 +108,6 @@ abstract class _$$_GarageMetricsCopyWith<$Res>
   $Res call(
       {String garage_id,
       String? linked_rover_id,
-      bool latched,
       GaragePosition position,
       GarageStatusType status,
       RoverMetricLocation location});
@@ -139,7 +131,6 @@ class __$$_GarageMetricsCopyWithImpl<$Res>
   $Res call({
     Object? garage_id = freezed,
     Object? linked_rover_id = freezed,
-    Object? latched = freezed,
     Object? position = freezed,
     Object? status = freezed,
     Object? location = freezed,
@@ -153,10 +144,6 @@ class __$$_GarageMetricsCopyWithImpl<$Res>
           ? _value.linked_rover_id
           : linked_rover_id // ignore: cast_nullable_to_non_nullable
               as String?,
-      latched: latched == freezed
-          ? _value.latched
-          : latched // ignore: cast_nullable_to_non_nullable
-              as bool,
       position: position == freezed
           ? _value.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -179,8 +166,7 @@ class _$_GarageMetrics implements _GarageMetrics {
   const _$_GarageMetrics(
       {required this.garage_id,
       this.linked_rover_id,
-      required this.latched,
-      this.position = GaragePosition.down,
+      this.position = GaragePosition.retracted_unlatched,
       this.status = GarageStatusType.available,
       this.location = const RoverMetricLocation()});
 
@@ -191,8 +177,6 @@ class _$_GarageMetrics implements _GarageMetrics {
   final String garage_id;
   @override
   final String? linked_rover_id;
-  @override
-  final bool latched;
   @override
   @JsonKey()
   final GaragePosition position;
@@ -207,7 +191,7 @@ class _$_GarageMetrics implements _GarageMetrics {
 
   @override
   String toString() {
-    return 'GarageMetrics(garage_id: $garage_id, linked_rover_id: $linked_rover_id, latched: $latched, position: $position, status: $status, location: $location)';
+    return 'GarageMetrics(garage_id: $garage_id, linked_rover_id: $linked_rover_id, position: $position, status: $status, location: $location)';
   }
 
   @override
@@ -218,7 +202,6 @@ class _$_GarageMetrics implements _GarageMetrics {
             const DeepCollectionEquality().equals(other.garage_id, garage_id) &&
             const DeepCollectionEquality()
                 .equals(other.linked_rover_id, linked_rover_id) &&
-            const DeepCollectionEquality().equals(other.latched, latched) &&
             const DeepCollectionEquality().equals(other.position, position) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.location, location));
@@ -230,7 +213,6 @@ class _$_GarageMetrics implements _GarageMetrics {
       runtimeType,
       const DeepCollectionEquality().hash(garage_id),
       const DeepCollectionEquality().hash(linked_rover_id),
-      const DeepCollectionEquality().hash(latched),
       const DeepCollectionEquality().hash(position),
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(location));
@@ -250,7 +232,6 @@ abstract class _GarageMetrics implements GarageMetrics {
   const factory _GarageMetrics(
       {required final String garage_id,
       final String? linked_rover_id,
-      required final bool latched,
       final GaragePosition position,
       final GarageStatusType status,
       final RoverMetricLocation location}) = _$_GarageMetrics;
@@ -262,8 +243,6 @@ abstract class _GarageMetrics implements GarageMetrics {
   String get garage_id => throw _privateConstructorUsedError;
   @override
   String? get linked_rover_id => throw _privateConstructorUsedError;
-  @override
-  bool get latched => throw _privateConstructorUsedError;
   @override
   GaragePosition get position => throw _privateConstructorUsedError;
   @override //Garage StateType

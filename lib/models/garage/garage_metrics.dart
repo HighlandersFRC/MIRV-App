@@ -12,8 +12,7 @@ class GarageMetrics with _$GarageMetrics {
   const factory GarageMetrics(
       {required String garage_id,
       String? linked_rover_id,
-      required bool latched,
-      @Default(GaragePosition.down) GaragePosition position, //Garage StateType
+           @Default(GaragePosition.retracted_unlatched) GaragePosition position, //Garage StateType
       @Default(GarageStatusType.available) GarageStatusType status, //GarageStatusType
       @Default(RoverMetricLocation()) RoverMetricLocation location}) = _GarageMetrics;
 

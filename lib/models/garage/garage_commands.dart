@@ -2,6 +2,9 @@ import 'dart:ffi';
 
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/models/garage/garage_position.dart';
+import 'package:mirv/models/garage/garage_position.dart';
 import 'package:mirv/models/garage/garage_position.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/Garage/Garage_command_type.dart';
@@ -31,8 +34,9 @@ class GarageCommand with _$GarageCommand {
 class GarageGeneralCommands {
   static const lock = GarageCommand.generalCommand(GarageCommandTypeGeneral.lock);
   static const unlock = GarageCommand.generalCommand(GarageCommandTypeGeneral.unlock);
-  static const up = GarageCommand.generalCommand(GarageCommandTypeGeneral.up);
-  static const down = GarageCommand.generalCommand(GarageCommandTypeGeneral.down);
+  static GarageCommand retract = GarageCommand.generalCommand(GarageCommandTypeGeneral.retract);
+  static GarageCommand deploy = GarageCommand.generalCommand(GarageCommandTypeGeneral.deploy);
+  static GarageCommand enable = GarageCommand.generalCommand(GarageCommandTypeGeneral.enable);
 }
 
 // class  GarageMovementCommands {
@@ -41,12 +45,23 @@ class GarageGeneralCommands {
 //   }
 // }
 
-Map<GaragePosition?, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
-  GaragePosition.up: [
-    Pair(GarageGeneralCommands.down, Image.asset('assets/images/ramp.png')),
+// GarageMetrics? garageMetrics;
+
+Map<GaragePosition, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
+  GaragePosition.retracted_latched: [
+    Pair(GarageGeneralCommands.unlock, Image.asset('assets/images/ramp.png')),
   ],
-  GaragePosition.down: [
-    Pair(GarageGeneralCommands.up, Image.asset('assets/images/ramp.png')),
+  GaragePosition.deployed: [
+    Pair(GarageGeneralCommands.retract, Image.asset('assets/images/ramp.png')),
   ],
-  null: [],
+  GaragePosition.disabled: [
+    Pair(GarageGeneralCommands.enable, Image.asset('assets/images/ramp.png')),
+  ],
+  GaragePosition.retracted_unlatched: [
+    Pair(GarageGeneralCommands.lock, Image.asset('assets/images/ramp.png')),
+    Pair(GarageGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+  ],
+  GaragePosition.unavailable: [
+    Pair(GarageGeneralCommands.retract, Image.asset('assets/images/ramp.png')),
+  ],
 };
