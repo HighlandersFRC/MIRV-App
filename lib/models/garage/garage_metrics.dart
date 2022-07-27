@@ -13,10 +13,10 @@ class GarageMetrics with _$GarageMetrics {
   const factory GarageMetrics({
     required String garage_id,
     String? linked_rover_id,
-    required GarageStateType state,
+     required GarageStateType state,
     @Default(GarageStatusType.available) GarageStatusType status,
     @Default(GarageMetricHealth()) GarageMetricHealth health,
-    required DeviceLocation location,
+     required DeviceLocation location,
   }) = _GarageMetrics;
 
   factory GarageMetrics.fromJson(Map<String, dynamic> json) => _$GarageMetricsFromJson(json);

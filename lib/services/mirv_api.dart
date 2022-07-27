@@ -4,8 +4,12 @@ import 'dart:convert';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:http/http.dart' as http;
@@ -112,14 +116,34 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
-  Future<GarageMetrics> getGarageMetrics(String garage_id) async {
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
-    return GarageMetrics.fromJson(json.decode(response.body));
+  // Future<GarageMetrics> getGarageMetrics(String garage_id) async {
+  //   var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
+  //   return GarageMetrics.fromJson(json.decode(response.body));
+  // }
+
+  // Future<List<GarageMetrics>> getGarages() async {
+  //   var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
+  //   return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
+  // }
+
+  Future<GarageMetrics> getGarageMetrics(String garageID) async {
+    String? token = _getCurrentAuthToken();
+    GarageMetrics garageMetrics =
+        GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_latched);
+    print(json.encode(garageMetrics.toJson()));
+
+    return garageMetrics;
   }
 
   Future<List<GarageMetrics>> getGarages() async {
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
-    return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
+    String? token = _getCurrentAuthToken();
+    List<GarageMetrics> garages;
+    GarageMetrics garageMetrics =
+        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_latched);
+    String response = '[${json.encode(garageMetrics.toJson())}]';
+
+    garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();
+    return garages;
   }
 
   Future<bool> sendGarageCommand(String garage_id, GarageCommand command) async {

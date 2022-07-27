@@ -10,42 +10,41 @@ import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_selection_map.dart';
 
 class SelectedGarageController extends GetxController {
-  Rx<String> selectedgarage_id = "".obs;
+  Rx<String> selectedGarageId = "".obs;
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<bool> isGarageListMinimized = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
 
   SelectedGarageController() {
-    selectedgarage_id.listen((selectedgarage_id) => isConnectButtonEnabled.value = (selectedgarage_id != ""));
+    selectedGarageId.listen((selectedGarageId) => isConnectButtonEnabled.value = (selectedGarageId != ""));
   }
 
   setSelectedGarageId(String garage_id) {
-    if (garage_id == selectedgarage_id.value) {
-      selectedgarage_id.trigger(garage_id);
+    if (garage_id == selectedGarageId.value) {
+      selectedGarageId.trigger(garage_id);
     } else {
-      selectedgarage_id.value = garage_id;
+      selectedGarageId.value = garage_id;
     }
   }
 
   verifyGarageId(List<GarageMetrics> garages) {
-    if (garages.where((element) => element.garage_id == selectedgarage_id.value).isEmpty) selectedgarage_id.value = "";
+    if (garages.where((element) => element.garage_id == selectedGarageId.value).isEmpty) selectedGarageId.value = "";
   }
 
   Color garageTileColor(
     String garage_id,
     GarageStatusType value,
   ) {
-    if (selectedgarage_id.value == garage_id) {
+    if (selectedGarageId.value == garage_id) {
       return Colors.blue;
     } else {
-      return Colors.white;
-      // switch (value) {
-      //   case GarageStatusType.available:
-      //     return Colors.white;
+      switch (value) {
+        case GarageStatusType.available:
+          return Colors.white;
 
-      //   case GarageStatusType.unavailable:
-      //     return Colors.grey;
-      // }
+        case GarageStatusType.unavailable:
+          return Colors.grey;
+      }
     }
   }
 }
@@ -159,7 +158,7 @@ class GarageSelectionPage extends StatelessWidget {
                               ? () {
                                   Get.to(() => (GarageOperationPage(
                                         garageList.firstWhere(
-                                          (element) => selectedGarageController.selectedgarage_id.value == element.garage_id,
+                                          (element) => selectedGarageController.selectedGarageId.value == element.garage_id,
                                         ),
                                       )));
                                 }
@@ -214,7 +213,7 @@ class GarageSelectionPage extends StatelessWidget {
                     child: Obx(
                       // ignore: invalid_use_of_protected_member
                       () => (GarageSelectionMap(
-                          garageList.value, selectedGarageController.selectedgarage_id, selectedGarageController)),
+                          garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
                     ),
                   )
                 ],

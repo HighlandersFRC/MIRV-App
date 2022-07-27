@@ -24,17 +24,6 @@ class GarageStatusBar extends StatelessWidget {
     }
   }
 
-  // _healthIcon({required DeviceHealthType roverHealthType, required IconData healthIconChoice}) {
-  //   switch (roverHealthType) {
-  //     case DeviceHealthType.degraded:
-  //       return Icon(healthIconChoice, color: Colors.red);
-  //     case DeviceHealthType.unhealthy:
-  //       return Icon(healthIconChoice, color: Colors.yellow);
-  //     default:
-  //       return Visibility(visible: false, child: Icon(healthIconChoice));
-  //   }
-  // }
-
   @override
   Widget build(
     BuildContext context,

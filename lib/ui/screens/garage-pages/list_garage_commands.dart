@@ -20,21 +20,22 @@ class GarageCommandList extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),
-          child: Container(
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              color: const Color.fromRGBO(50, 50, 50, 0.5),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                color: const Color.fromRGBO(50, 50, 50, 0.5),
+              ),
+              child: ListTile(
+                  title: IconButton(
+                icon: garageCommandList[index].last,
+                iconSize: 70,
+                onPressed: () {
+                  sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
+                },
+              )),
             ),
-            child: ListTile(
-                title: IconButton(
-              icon: garageCommandList[index].last,
-              iconSize: 70,
-              onPressed: () {
-                sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
-              },
-            )),
           ),
         );
       },
