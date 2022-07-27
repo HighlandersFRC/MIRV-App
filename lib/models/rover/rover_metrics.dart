@@ -18,7 +18,7 @@ class RoverMetrics with _$RoverMetrics {
     required int battery_percent,
     required RoverMetricHealth health,
     required RoverMetricTelemetry telemetry,
-    required RoverPiLits pi_lits,
+    //  RoverPiLits pi_lits,
   }) = _RoverMetrics;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);

@@ -45,6 +45,15 @@ class MirvApi {
     }
   }
 
+  Future<bool> testEndpoint(String endpoint) async {
+    try {
+      var response = await http.get(Uri.parse(endpoint)).timeout(const Duration(seconds: 2));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<http.Response> makeAuthenticatedPostRequest(String endpoint, String body,
       {Map<String, String>? additionalHeaders}) async {
     String? token = _getCurrentAuthToken();

@@ -17,7 +17,6 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
           RoverMetricHealth.fromJson(json['health'] as Map<String, dynamic>),
       telemetry: RoverMetricTelemetry.fromJson(
           json['telemetry'] as Map<String, dynamic>),
-      pi_lits: RoverPiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
@@ -29,7 +28,6 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
       'battery_percent': instance.battery_percent,
       'health': instance.health,
       'telemetry': instance.telemetry,
-      'pi_lits': instance.pi_lits,
     };
 
 const _$RoverStateTypeEnumMap = {

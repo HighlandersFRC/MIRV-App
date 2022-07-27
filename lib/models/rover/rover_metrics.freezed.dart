@@ -29,7 +29,6 @@ mixin _$RoverMetrics {
   int get battery_percent => throw _privateConstructorUsedError;
   RoverMetricHealth get health => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
-  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,12 +48,10 @@ abstract class $RoverMetricsCopyWith<$Res> {
       int battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
-      RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits});
+      RoverMetricTelemetry telemetry});
 
   $RoverMetricHealthCopyWith<$Res> get health;
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
-  $RoverPiLitsCopyWith<$Res> get pi_lits;
 }
 
 /// @nodoc
@@ -74,7 +71,6 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
     Object? battery_percent = freezed,
     Object? health = freezed,
     Object? telemetry = freezed,
-    Object? pi_lits = freezed,
   }) {
     return _then(_value.copyWith(
       rover_id: rover_id == freezed
@@ -105,10 +101,6 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
               as RoverMetricTelemetry,
-      pi_lits: pi_lits == freezed
-          ? _value.pi_lits
-          : pi_lits // ignore: cast_nullable_to_non_nullable
-              as RoverPiLits,
     ));
   }
 
@@ -123,13 +115,6 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
   $RoverMetricTelemetryCopyWith<$Res> get telemetry {
     return $RoverMetricTelemetryCopyWith<$Res>(_value.telemetry, (value) {
       return _then(_value.copyWith(telemetry: value));
-    });
-  }
-
-  @override
-  $RoverPiLitsCopyWith<$Res> get pi_lits {
-    return $RoverPiLitsCopyWith<$Res>(_value.pi_lits, (value) {
-      return _then(_value.copyWith(pi_lits: value));
     });
   }
 }
@@ -148,15 +133,12 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       int battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
-      RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits});
+      RoverMetricTelemetry telemetry});
 
   @override
   $RoverMetricHealthCopyWith<$Res> get health;
   @override
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
-  @override
-  $RoverPiLitsCopyWith<$Res> get pi_lits;
 }
 
 /// @nodoc
@@ -179,7 +161,6 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
     Object? battery_percent = freezed,
     Object? health = freezed,
     Object? telemetry = freezed,
-    Object? pi_lits = freezed,
   }) {
     return _then(_$_RoverMetrics(
       rover_id: rover_id == freezed
@@ -210,10 +191,6 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
               as RoverMetricTelemetry,
-      pi_lits: pi_lits == freezed
-          ? _value.pi_lits
-          : pi_lits // ignore: cast_nullable_to_non_nullable
-              as RoverPiLits,
     ));
   }
 }
@@ -228,8 +205,7 @@ class _$_RoverMetrics implements _RoverMetrics {
       this.battery_voltage = -1,
       required this.battery_percent,
       required this.health,
-      required this.telemetry,
-      required this.pi_lits});
+      required this.telemetry});
 
   factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) =>
       _$$_RoverMetricsFromJson(json);
@@ -251,12 +227,10 @@ class _$_RoverMetrics implements _RoverMetrics {
   final RoverMetricHealth health;
   @override
   final RoverMetricTelemetry telemetry;
-  @override
-  final RoverPiLits pi_lits;
 
   @override
   String toString() {
-    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, health: $health, telemetry: $telemetry, pi_lits: $pi_lits)';
+    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, health: $health, telemetry: $telemetry)';
   }
 
   @override
@@ -272,8 +246,7 @@ class _$_RoverMetrics implements _RoverMetrics {
             const DeepCollectionEquality()
                 .equals(other.battery_percent, battery_percent) &&
             const DeepCollectionEquality().equals(other.health, health) &&
-            const DeepCollectionEquality().equals(other.telemetry, telemetry) &&
-            const DeepCollectionEquality().equals(other.pi_lits, pi_lits));
+            const DeepCollectionEquality().equals(other.telemetry, telemetry));
   }
 
   @JsonKey(ignore: true)
@@ -286,8 +259,7 @@ class _$_RoverMetrics implements _RoverMetrics {
       const DeepCollectionEquality().hash(battery_voltage),
       const DeepCollectionEquality().hash(battery_percent),
       const DeepCollectionEquality().hash(health),
-      const DeepCollectionEquality().hash(telemetry),
-      const DeepCollectionEquality().hash(pi_lits));
+      const DeepCollectionEquality().hash(telemetry));
 
   @JsonKey(ignore: true)
   @override
@@ -308,8 +280,7 @@ abstract class _RoverMetrics implements RoverMetrics {
       final int battery_voltage,
       required final int battery_percent,
       required final RoverMetricHealth health,
-      required final RoverMetricTelemetry telemetry,
-      required final RoverPiLits pi_lits}) = _$_RoverMetrics;
+      required final RoverMetricTelemetry telemetry}) = _$_RoverMetrics;
 
   factory _RoverMetrics.fromJson(Map<String, dynamic> json) =
       _$_RoverMetrics.fromJson;
@@ -328,8 +299,6 @@ abstract class _RoverMetrics implements RoverMetrics {
   RoverMetricHealth get health => throw _privateConstructorUsedError;
   @override
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
-  @override
-  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
