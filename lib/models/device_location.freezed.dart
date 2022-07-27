@@ -105,8 +105,8 @@ class __$$_DeviceLocationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DeviceLocation implements _DeviceLocation {
-  const _$_DeviceLocation({this.long = 0.0, this.lat = 0.0});
+class _$_DeviceLocation extends _DeviceLocation {
+  const _$_DeviceLocation({this.long = 0.0, this.lat = 0.0}) : super._();
 
   factory _$_DeviceLocation.fromJson(Map<String, dynamic> json) =>
       _$$_DeviceLocationFromJson(json);
@@ -150,9 +150,10 @@ class _$_DeviceLocation implements _DeviceLocation {
   }
 }
 
-abstract class _DeviceLocation implements DeviceLocation {
+abstract class _DeviceLocation extends DeviceLocation {
   const factory _DeviceLocation({final double long, final double lat}) =
       _$_DeviceLocation;
+  const _DeviceLocation._() : super._();
 
   factory _DeviceLocation.fromJson(Map<String, dynamic> json) =
       _$_DeviceLocation.fromJson;

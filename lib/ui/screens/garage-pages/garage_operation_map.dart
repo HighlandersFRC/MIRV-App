@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:mirv/models/pi_lit.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 
 class GarageOperationMap extends StatefulWidget {
   final BehaviorSubject<LatLng> locationStream;
-  final GarageMetrics selectedGarageMetrics;
+  final GarageMetrics garageMetrics;
 
-  final List<PiLit> piLitMarkers;
-
-  const GarageOperationMap(
-      {Key? key, required this.locationStream, required this.piLitMarkers, required this.selectedGarageMetrics})
-      : super(key: key);
+  const GarageOperationMap({
+    Key? key,
+    required this.locationStream,
+    required this.garageMetrics,
+  }) : super(key: key);
 
   @override
   State<GarageOperationMap> createState() => _GarageOperationMapState();
@@ -64,7 +62,7 @@ class _GarageOperationMapState extends State<GarageOperationMap> {
           alignment: Alignment.bottomLeft,
           child: ElevatedButton(
             onPressed: () async => mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                target: LatLng(widget.selectedGarageMetrics.location.lat, widget.selectedGarageMetrics.location.long),
+                target: LatLng(widget.garageMetrics.location.lat, widget.garageMetrics.location.long),
                 zoom: await mapController!.getZoomLevel()))),
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
@@ -79,18 +77,17 @@ class _GarageOperationMapState extends State<GarageOperationMap> {
   Set<Marker> getMarkers(garageMarker) {
     var marker = Marker(
         //add first marker
-        markerId: MarkerId(widget.selectedGarageMetrics.garage_id),
-        position:
-            LatLng(widget.selectedGarageMetrics.location.lat, widget.selectedGarageMetrics.location.long), //position of marker
+        markerId: MarkerId(widget.garageMetrics.garage_id),
+        position: LatLng(widget.garageMetrics.location.lat, widget.garageMetrics.location.long), //position of marker
         infoWindow: InfoWindow(
           //popup info
-          title: widget.selectedGarageMetrics.garage_id,
+          title: widget.garageMetrics.garage_id,
           snippet: '',
         ),
         icon: garageMarker,
         onTap: () async {
           mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-              target: LatLng(widget.selectedGarageMetrics.location.lat, widget.selectedGarageMetrics.location.long),
+              target: LatLng(widget.garageMetrics.location.lat, widget.garageMetrics.location.long),
               zoom: await mapController!.getZoomLevel())));
         });
 

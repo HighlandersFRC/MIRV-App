@@ -9,19 +9,15 @@ part of 'rover_metrics.dart';
 _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
     _$_RoverMetrics(
       rover_id: json['rover_id'] as String,
-      state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
-          RoverStateType.disconnected,
-      status: $enumDecodeNullable(_$DeviceStatusTypeEnumMap, json['status']) ??
-          DeviceStatusType.available,
+      state: $enumDecode(_$RoverStateTypeEnumMap, json['state']),
+      status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
       battery_voltage: json['battery_voltage'] as int? ?? -1,
-      battery_percent: json['battery_percent'] as int? ?? -1,
-      health: json['health'] == null
-          ? const RoverMetricHealth()
-          : RoverMetricHealth.fromJson(json['health'] as Map<String, dynamic>),
-      telemetry: json['telemetry'] == null
-          ? const RoverMetricTelemetry()
-          : RoverMetricTelemetry.fromJson(
-              json['telemetry'] as Map<String, dynamic>),
+      battery_percent: json['battery_percent'] as int,
+      health:
+          RoverMetricHealth.fromJson(json['health'] as Map<String, dynamic>),
+      telemetry: RoverMetricTelemetry.fromJson(
+          json['telemetry'] as Map<String, dynamic>),
+      pi_lits: RoverPiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
@@ -33,6 +29,7 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
       'battery_percent': instance.battery_percent,
       'health': instance.health,
       'telemetry': instance.telemetry,
+      'pi_lits': instance.pi_lits,
     };
 
 const _$RoverStateTypeEnumMap = {
@@ -96,11 +93,10 @@ const _$DeviceHealthTypeEnumMap = {
 _$_RoverMetricTelemetry _$$_RoverMetricTelemetryFromJson(
         Map<String, dynamic> json) =>
     _$_RoverMetricTelemetry(
-      location: json['location'] == null
-          ? const DeviceLocation()
-          : DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
-      heading: (json['heading'] as num?)?.toDouble() ?? 0.0,
-      speed: (json['speed'] as num?)?.toDouble() ?? 0.0,
+      location:
+          DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
+      heading: (json['heading'] as num).toDouble(),
+      speed: (json['speed'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$_RoverMetricTelemetryToJson(
@@ -109,4 +105,42 @@ Map<String, dynamic> _$$_RoverMetricTelemetryToJson(
       'location': instance.location,
       'heading': instance.heading,
       'speed': instance.speed,
+    };
+
+_$_RoverPiLits _$$_RoverPiLitsFromJson(Map<String, dynamic> json) =>
+    _$_RoverPiLits(
+      state: $enumDecode(_$PiLitStateTypeEnumMap, json['state']),
+      pi_lits_stowed_left: json['pi_lits_stowed_left'] as int,
+      pi_lits_stowed_right: json['pi_lits_stowed_right'] as int,
+      deployed_pi_lits: (json['deployed_pi_lits'] as List<dynamic>)
+          .map((e) => PiLit.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_RoverPiLitsToJson(_$_RoverPiLits instance) =>
+    <String, dynamic>{
+      'state': _$PiLitStateTypeEnumMap[instance.state],
+      'pi_lits_stowed_left': instance.pi_lits_stowed_left,
+      'pi_lits_stowed_right': instance.pi_lits_stowed_right,
+      'deployed_pi_lits': instance.deployed_pi_lits,
+    };
+
+const _$PiLitStateTypeEnumMap = {
+  PiLitStateType.off: 'off',
+  PiLitStateType.idle: 'idle',
+  PiLitStateType.sequential_1: 'sequential_1',
+  PiLitStateType.sequential_2: 'sequential_2',
+  PiLitStateType.simultaneous: 'simultaneous',
+  PiLitStateType.steady_burn: 'steady_burn',
+};
+
+_$_PiLit _$$_PiLitFromJson(Map<String, dynamic> json) => _$_PiLit(
+      pi_lit_id: json['pi_lit_id'] as String,
+      location:
+          DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_PiLitToJson(_$_PiLit instance) => <String, dynamic>{
+      'pi_lit_id': instance.pi_lit_id,
+      'location': instance.location,
     };

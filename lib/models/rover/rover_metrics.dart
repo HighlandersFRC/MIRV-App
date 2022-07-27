@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/device_location.dart';
+import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_health_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/device_status_type.dart';
@@ -11,12 +12,13 @@ part 'rover_metrics.g.dart';
 class RoverMetrics with _$RoverMetrics {
   const factory RoverMetrics({
     required String rover_id,
-    @Default(RoverStateType.disconnected) RoverStateType state, //Rover StateType
-    @Default(DeviceStatusType.available) DeviceStatusType status, //RoverStatusType
+    required RoverStateType state, //Rover StateType
+    required DeviceStatusType status, //RoverStatusType
     @Default(-1) int battery_voltage,
-    @Default(-1) int battery_percent,
-    @Default(RoverMetricHealth()) RoverMetricHealth health,
-    @Default(RoverMetricTelemetry()) RoverMetricTelemetry telemetry,
+    required int battery_percent,
+    required RoverMetricHealth health,
+    required RoverMetricTelemetry telemetry,
+    required RoverPiLits pi_lits,
   }) = _RoverMetrics;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
@@ -40,10 +42,32 @@ class RoverMetricHealth with _$RoverMetricHealth {
 @freezed
 class RoverMetricTelemetry with _$RoverMetricTelemetry {
   const factory RoverMetricTelemetry({
-    @Default(DeviceLocation()) DeviceLocation location,
-    @Default(0.0) double heading,
-    @Default(0.0) double speed,
+    required DeviceLocation location,
+    required double heading,
+    required double speed,
   }) = _RoverMetricTelemetry;
 
   factory RoverMetricTelemetry.fromJson(Map<String, dynamic> json) => _$RoverMetricTelemetryFromJson(json);
+}
+
+@freezed
+class RoverPiLits with _$RoverPiLits {
+  const factory RoverPiLits({
+    required PiLitStateType state,
+    required int pi_lits_stowed_left,
+    required int pi_lits_stowed_right,
+    required List<PiLit> deployed_pi_lits,
+  }) = _RoverPiLits;
+
+  factory RoverPiLits.fromJson(Map<String, dynamic> json) => _$RoverPiLitsFromJson(json);
+}
+
+@freezed
+class PiLit with _$PiLit {
+  const factory PiLit({
+    required String pi_lit_id,
+    required DeviceLocation location,
+  }) = _PiLit;
+
+  factory PiLit.fromJson(Map<String, dynamic> json) => _$PiLitFromJson(json);
 }
