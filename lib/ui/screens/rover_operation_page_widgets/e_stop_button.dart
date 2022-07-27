@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 
 class EStopButton extends StatelessWidget {
   final RoverMetrics? roverMetrics;

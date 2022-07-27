@@ -1,0 +1,1 @@
+enum DeviceStatusType { available, unavailable }

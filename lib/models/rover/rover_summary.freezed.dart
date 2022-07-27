@@ -23,7 +23,7 @@ mixin _$RoverSummary {
   String get rover_id => throw _privateConstructorUsedError;
   RoverStateType get state =>
       throw _privateConstructorUsedError; //Rover StateType
-  RoverStatusType get status =>
+  DeviceStatusType get status =>
       throw _privateConstructorUsedError; //RoverStatusType
   int get battery_percent => throw _privateConstructorUsedError;
 
@@ -41,7 +41,7 @@ abstract class $RoverSummaryCopyWith<$Res> {
   $Res call(
       {String rover_id,
       RoverStateType state,
-      RoverStatusType status,
+      DeviceStatusType status,
       int battery_percent});
 }
 
@@ -72,7 +72,7 @@ class _$RoverSummaryCopyWithImpl<$Res> implements $RoverSummaryCopyWith<$Res> {
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as RoverStatusType,
+              as DeviceStatusType,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
@@ -91,7 +91,7 @@ abstract class _$$_RoverSummaryCopyWith<$Res>
   $Res call(
       {String rover_id,
       RoverStateType state,
-      RoverStatusType status,
+      DeviceStatusType status,
       int battery_percent});
 }
 
@@ -125,7 +125,7 @@ class __$$_RoverSummaryCopyWithImpl<$Res>
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as RoverStatusType,
+              as DeviceStatusType,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
@@ -140,7 +140,7 @@ class _$_RoverSummary implements _RoverSummary {
   const _$_RoverSummary(
       {this.rover_id = "unknown",
       this.state = RoverStateType.disconnected,
-      this.status = RoverStatusType.available,
+      this.status = DeviceStatusType.available,
       this.battery_percent = -1});
 
   factory _$_RoverSummary.fromJson(Map<String, dynamic> json) =>
@@ -155,7 +155,7 @@ class _$_RoverSummary implements _RoverSummary {
 //Rover StateType
   @override
   @JsonKey()
-  final RoverStatusType status;
+  final DeviceStatusType status;
 //RoverStatusType
   @override
   @JsonKey()
@@ -202,7 +202,7 @@ abstract class _RoverSummary implements RoverSummary {
   const factory _RoverSummary(
       {final String rover_id,
       final RoverStateType state,
-      final RoverStatusType status,
+      final DeviceStatusType status,
       final int battery_percent}) = _$_RoverSummary;
 
   factory _RoverSummary.fromJson(Map<String, dynamic> json) =
@@ -213,7 +213,7 @@ abstract class _RoverSummary implements RoverSummary {
   @override
   RoverStateType get state => throw _privateConstructorUsedError;
   @override //Rover StateType
-  RoverStatusType get status => throw _privateConstructorUsedError;
+  DeviceStatusType get status => throw _privateConstructorUsedError;
   @override //RoverStatusType
   int get battery_percent => throw _privateConstructorUsedError;
   @override

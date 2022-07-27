@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_health_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_health_type.dart';
 import 'package:mirv/models/ui_connection_state.dart';
 
 // ignore: must_be_immutable
@@ -62,11 +62,11 @@ class RoverStatusBar extends StatelessWidget {
     }
   }
 
-  _healthIcon({required RoverHealthType roverHealthType, required IconData healthIconChoice}) {
+  _healthIcon({required DeviceHealthType roverHealthType, required IconData healthIconChoice}) {
     switch (roverHealthType) {
-      case RoverHealthType.degraded:
+      case DeviceHealthType.degraded:
         return Icon(healthIconChoice, color: Colors.red);
-      case RoverHealthType.unhealthy:
+      case DeviceHealthType.unhealthy:
         return Icon(healthIconChoice, color: Colors.yellow);
       default:
         return Visibility(visible: false, child: Icon(healthIconChoice));

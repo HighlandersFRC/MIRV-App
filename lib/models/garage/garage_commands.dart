@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
-import 'package:mirv/models/garage/garage_position.dart';
+import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/pair.dart';
 
 part 'garage_commands.freezed.dart';
@@ -22,19 +22,19 @@ class GarageCommands {
   static const enable = GarageCommand(GarageCommandType.enable);
 }
 
-Map<GaragePosition, List<Pair<GarageCommand, Image>>> garageCommandsByPosition = {
-  GaragePosition.retracted_latched: [
+Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
+  GarageStateType.retracted_latched: [
     Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
   ],
-  GaragePosition.deployed: [
+  GarageStateType.deployed: [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
   ],
-  GaragePosition.disabled: [
+  GarageStateType.disabled: [
     Pair(GarageCommands.enable, Image.asset('assets/images/ramp.png')),
   ],
-  GaragePosition.retracted_unlatched: [
+  GarageStateType.retracted_unlatched: [
     Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
   ],
-  GaragePosition.unavailable: [],
+  GarageStateType.unavailable: [],
 };

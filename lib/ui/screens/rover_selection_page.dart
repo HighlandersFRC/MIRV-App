@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:location/location.dart';
-import 'package:mirv/models/rover_status_type.dart';
+import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
@@ -34,16 +34,16 @@ class SelectedRoverController extends GetxController {
 
   Color roverTileColor(
     String rover_id,
-    RoverStatusType value,
+    DeviceStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
       return Colors.blue;
     } else {
       switch (value) {
-        case RoverStatusType.available:
+        case DeviceStatusType.available:
           return Colors.white;
 
-        case RoverStatusType.unavailable:
+        case DeviceStatusType.unavailable:
           return Colors.grey;
       }
     }
@@ -146,7 +146,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       ),
                                       title: Text(roverList[index].rover_id.toString()),
                                       onTap: () {
-                                        if (roverList[index].status == RoverStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       })
@@ -165,7 +165,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Text(
                                               'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state}'),
                                       onTap: () {
-                                        if (roverList[index].status == RoverStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 
 class TelemetryWidget extends StatelessWidget {
   final RoverMetrics roverMetrics;

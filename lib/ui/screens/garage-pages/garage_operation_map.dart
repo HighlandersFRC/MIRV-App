@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/pi_lit.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 
 class GarageOperationMap extends StatefulWidget {

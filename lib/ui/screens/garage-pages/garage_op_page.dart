@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mirv/models/garage/garage_position.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
-import 'package:mirv/services/mirv_garage_api.dart';
-import 'package:mirv/ui/screens/app_bar_theme.dart';
+import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_app_bar.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_operation_map.dart';
-import 'package:mirv/ui/screens/garage-pages/garage_status_bar.dart';
 import 'package:mirv/ui/screens/garage-pages/list_garage_commands.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
 
-class GarageOpPage extends StatelessWidget {
+class GarageOperationPage extends StatelessWidget {
   final GarageMetrics garageMetrics;
   //final RoverMetrics roverMetrics;
-  final MirvGarageApi _mirvGarageApi = MirvGarageApi();
+  final MirvApi _mirvGarageApi = MirvApi();
   final selectedGarageController = Get.put(SelectedGarageController());
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
 
-  GarageOpPage(this.garageMetrics, {Key? key}) : super(key: key);
+  GarageOperationPage(this.garageMetrics, {Key? key}) : super(key: key);
 
   final List<PiLit> piLitMarkers = [
     const PiLit(id: 'piLit1', description: 'Pi-lit device', location: LatLng(40.47399235127373, -104.96957682073116)),
@@ -30,18 +27,15 @@ class GarageOpPage extends StatelessWidget {
   ];
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
-  late Rx<bool> manualOperation = false.obs;
-  final garageCommandStream = BehaviorSubject<GarageCommandList>();
-  BehaviorSubject<GarageMetrics> periodicMetricUpdates = BehaviorSubject<GarageMetrics>();
 
   @override
   Widget build(BuildContext context) {
-    // _mirvGarageApi.startPeriodicMetricUpdates(garageMetrics.garage_id);
-    // _mirvGarageApi.stopPeriodicMetricUpdates();
     _mirvGarageApi.getGarageMetrics(garageMetrics.garage_id);
 
     return Scaffold(
-      appBar: GarageAppBar(garageMetrics: garageMetrics,),
+      appBar: GarageAppBar(
+        garageMetrics: garageMetrics,
+      ),
       body: Stack(
         children: [
           Expanded(
@@ -63,7 +57,7 @@ class GarageOpPage extends StatelessWidget {
             width: 110,
             child: Scrollbar(
               child: GarageCommandList(
-                position: garageMetrics.position,
+                garageMetrics: garageMetrics,
                 sendCommand: _mirvGarageApi.sendGarageCommand,
               ),
             ),

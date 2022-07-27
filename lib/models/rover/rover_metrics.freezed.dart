@@ -23,7 +23,7 @@ mixin _$RoverMetrics {
   String get rover_id => throw _privateConstructorUsedError;
   RoverStateType get state =>
       throw _privateConstructorUsedError; //Rover StateType
-  RoverStatusType get status =>
+  DeviceStatusType get status =>
       throw _privateConstructorUsedError; //RoverStatusType
   int get battery_voltage => throw _privateConstructorUsedError;
   int get battery_percent => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $RoverMetricsCopyWith<$Res> {
   $Res call(
       {String rover_id,
       RoverStateType state,
-      RoverStatusType status,
+      DeviceStatusType status,
       int battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
@@ -84,7 +84,7 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as RoverStatusType,
+              as DeviceStatusType,
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
@@ -129,7 +129,7 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
   $Res call(
       {String rover_id,
       RoverStateType state,
-      RoverStatusType status,
+      DeviceStatusType status,
       int battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
@@ -174,7 +174,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as RoverStatusType,
+              as DeviceStatusType,
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
@@ -201,7 +201,7 @@ class _$_RoverMetrics implements _RoverMetrics {
   const _$_RoverMetrics(
       {required this.rover_id,
       this.state = RoverStateType.disconnected,
-      this.status = RoverStatusType.available,
+      this.status = DeviceStatusType.available,
       this.battery_voltage = -1,
       this.battery_percent = -1,
       this.health = const RoverMetricHealth(),
@@ -218,7 +218,7 @@ class _$_RoverMetrics implements _RoverMetrics {
 //Rover StateType
   @override
   @JsonKey()
-  final RoverStatusType status;
+  final DeviceStatusType status;
 //RoverStatusType
   @override
   @JsonKey()
@@ -281,7 +281,7 @@ abstract class _RoverMetrics implements RoverMetrics {
   const factory _RoverMetrics(
       {required final String rover_id,
       final RoverStateType state,
-      final RoverStatusType status,
+      final DeviceStatusType status,
       final int battery_voltage,
       final int battery_percent,
       final RoverMetricHealth health,
@@ -295,7 +295,7 @@ abstract class _RoverMetrics implements RoverMetrics {
   @override
   RoverStateType get state => throw _privateConstructorUsedError;
   @override //Rover StateType
-  RoverStatusType get status => throw _privateConstructorUsedError;
+  DeviceStatusType get status => throw _privateConstructorUsedError;
   @override //RoverStatusType
   int get battery_voltage => throw _privateConstructorUsedError;
   @override
@@ -316,13 +316,13 @@ RoverMetricHealth _$RoverMetricHealthFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoverMetricHealth {
-  RoverHealthType get electronics => throw _privateConstructorUsedError;
-  RoverHealthType get drivetrain => throw _privateConstructorUsedError;
-  RoverHealthType get intake => throw _privateConstructorUsedError;
-  RoverHealthType get sensors => throw _privateConstructorUsedError;
-  RoverHealthType get garage => throw _privateConstructorUsedError;
-  RoverHealthType get power => throw _privateConstructorUsedError;
-  RoverHealthType get general => throw _privateConstructorUsedError;
+  DeviceHealthType get electronics => throw _privateConstructorUsedError;
+  DeviceHealthType get drivetrain => throw _privateConstructorUsedError;
+  DeviceHealthType get intake => throw _privateConstructorUsedError;
+  DeviceHealthType get sensors => throw _privateConstructorUsedError;
+  DeviceHealthType get garage => throw _privateConstructorUsedError;
+  DeviceHealthType get power => throw _privateConstructorUsedError;
+  DeviceHealthType get general => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -336,13 +336,13 @@ abstract class $RoverMetricHealthCopyWith<$Res> {
           RoverMetricHealth value, $Res Function(RoverMetricHealth) then) =
       _$RoverMetricHealthCopyWithImpl<$Res>;
   $Res call(
-      {RoverHealthType electronics,
-      RoverHealthType drivetrain,
-      RoverHealthType intake,
-      RoverHealthType sensors,
-      RoverHealthType garage,
-      RoverHealthType power,
-      RoverHealthType general});
+      {DeviceHealthType electronics,
+      DeviceHealthType drivetrain,
+      DeviceHealthType intake,
+      DeviceHealthType sensors,
+      DeviceHealthType garage,
+      DeviceHealthType power,
+      DeviceHealthType general});
 }
 
 /// @nodoc
@@ -368,31 +368,31 @@ class _$RoverMetricHealthCopyWithImpl<$Res>
       electronics: electronics == freezed
           ? _value.electronics
           : electronics // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       drivetrain: drivetrain == freezed
           ? _value.drivetrain
           : drivetrain // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       intake: intake == freezed
           ? _value.intake
           : intake // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       sensors: sensors == freezed
           ? _value.sensors
           : sensors // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       power: power == freezed
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       general: general == freezed
           ? _value.general
           : general // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
     ));
   }
 }
@@ -405,13 +405,13 @@ abstract class _$$_RoverMetricHealthCopyWith<$Res>
       __$$_RoverMetricHealthCopyWithImpl<$Res>;
   @override
   $Res call(
-      {RoverHealthType electronics,
-      RoverHealthType drivetrain,
-      RoverHealthType intake,
-      RoverHealthType sensors,
-      RoverHealthType garage,
-      RoverHealthType power,
-      RoverHealthType general});
+      {DeviceHealthType electronics,
+      DeviceHealthType drivetrain,
+      DeviceHealthType intake,
+      DeviceHealthType sensors,
+      DeviceHealthType garage,
+      DeviceHealthType power,
+      DeviceHealthType general});
 }
 
 /// @nodoc
@@ -439,31 +439,31 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
       electronics: electronics == freezed
           ? _value.electronics
           : electronics // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       drivetrain: drivetrain == freezed
           ? _value.drivetrain
           : drivetrain // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       intake: intake == freezed
           ? _value.intake
           : intake // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       sensors: sensors == freezed
           ? _value.sensors
           : sensors // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       power: power == freezed
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
       general: general == freezed
           ? _value.general
           : general // ignore: cast_nullable_to_non_nullable
-              as RoverHealthType,
+              as DeviceHealthType,
     ));
   }
 }
@@ -472,38 +472,38 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_RoverMetricHealth implements _RoverMetricHealth {
   const _$_RoverMetricHealth(
-      {this.electronics = RoverHealthType.unavailable,
-      this.drivetrain = RoverHealthType.unavailable,
-      this.intake = RoverHealthType.unavailable,
-      this.sensors = RoverHealthType.unavailable,
-      this.garage = RoverHealthType.unavailable,
-      this.power = RoverHealthType.unavailable,
-      this.general = RoverHealthType.unavailable});
+      {this.electronics = DeviceHealthType.unavailable,
+      this.drivetrain = DeviceHealthType.unavailable,
+      this.intake = DeviceHealthType.unavailable,
+      this.sensors = DeviceHealthType.unavailable,
+      this.garage = DeviceHealthType.unavailable,
+      this.power = DeviceHealthType.unavailable,
+      this.general = DeviceHealthType.unavailable});
 
   factory _$_RoverMetricHealth.fromJson(Map<String, dynamic> json) =>
       _$$_RoverMetricHealthFromJson(json);
 
   @override
   @JsonKey()
-  final RoverHealthType electronics;
+  final DeviceHealthType electronics;
   @override
   @JsonKey()
-  final RoverHealthType drivetrain;
+  final DeviceHealthType drivetrain;
   @override
   @JsonKey()
-  final RoverHealthType intake;
+  final DeviceHealthType intake;
   @override
   @JsonKey()
-  final RoverHealthType sensors;
+  final DeviceHealthType sensors;
   @override
   @JsonKey()
-  final RoverHealthType garage;
+  final DeviceHealthType garage;
   @override
   @JsonKey()
-  final RoverHealthType power;
+  final DeviceHealthType power;
   @override
   @JsonKey()
-  final RoverHealthType general;
+  final DeviceHealthType general;
 
   @override
   String toString() {
@@ -552,31 +552,31 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
 
 abstract class _RoverMetricHealth implements RoverMetricHealth {
   const factory _RoverMetricHealth(
-      {final RoverHealthType electronics,
-      final RoverHealthType drivetrain,
-      final RoverHealthType intake,
-      final RoverHealthType sensors,
-      final RoverHealthType garage,
-      final RoverHealthType power,
-      final RoverHealthType general}) = _$_RoverMetricHealth;
+      {final DeviceHealthType electronics,
+      final DeviceHealthType drivetrain,
+      final DeviceHealthType intake,
+      final DeviceHealthType sensors,
+      final DeviceHealthType garage,
+      final DeviceHealthType power,
+      final DeviceHealthType general}) = _$_RoverMetricHealth;
 
   factory _RoverMetricHealth.fromJson(Map<String, dynamic> json) =
       _$_RoverMetricHealth.fromJson;
 
   @override
-  RoverHealthType get electronics => throw _privateConstructorUsedError;
+  DeviceHealthType get electronics => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get drivetrain => throw _privateConstructorUsedError;
+  DeviceHealthType get drivetrain => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get intake => throw _privateConstructorUsedError;
+  DeviceHealthType get intake => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get sensors => throw _privateConstructorUsedError;
+  DeviceHealthType get sensors => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get garage => throw _privateConstructorUsedError;
+  DeviceHealthType get garage => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get power => throw _privateConstructorUsedError;
+  DeviceHealthType get power => throw _privateConstructorUsedError;
   @override
-  RoverHealthType get general => throw _privateConstructorUsedError;
+  DeviceHealthType get general => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>
@@ -589,7 +589,7 @@ RoverMetricTelemetry _$RoverMetricTelemetryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoverMetricTelemetry {
-  RoverMetricLocation get location => throw _privateConstructorUsedError;
+  DeviceLocation get location => throw _privateConstructorUsedError;
   double get heading => throw _privateConstructorUsedError;
   double get speed => throw _privateConstructorUsedError;
 
@@ -604,9 +604,9 @@ abstract class $RoverMetricTelemetryCopyWith<$Res> {
   factory $RoverMetricTelemetryCopyWith(RoverMetricTelemetry value,
           $Res Function(RoverMetricTelemetry) then) =
       _$RoverMetricTelemetryCopyWithImpl<$Res>;
-  $Res call({RoverMetricLocation location, double heading, double speed});
+  $Res call({DeviceLocation location, double heading, double speed});
 
-  $RoverMetricLocationCopyWith<$Res> get location;
+  $DeviceLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -628,7 +628,7 @@ class _$RoverMetricTelemetryCopyWithImpl<$Res>
       location: location == freezed
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as RoverMetricLocation,
+              as DeviceLocation,
       heading: heading == freezed
           ? _value.heading
           : heading // ignore: cast_nullable_to_non_nullable
@@ -641,8 +641,8 @@ class _$RoverMetricTelemetryCopyWithImpl<$Res>
   }
 
   @override
-  $RoverMetricLocationCopyWith<$Res> get location {
-    return $RoverMetricLocationCopyWith<$Res>(_value.location, (value) {
+  $DeviceLocationCopyWith<$Res> get location {
+    return $DeviceLocationCopyWith<$Res>(_value.location, (value) {
       return _then(_value.copyWith(location: value));
     });
   }
@@ -655,10 +655,10 @@ abstract class _$$_RoverMetricTelemetryCopyWith<$Res>
           $Res Function(_$_RoverMetricTelemetry) then) =
       __$$_RoverMetricTelemetryCopyWithImpl<$Res>;
   @override
-  $Res call({RoverMetricLocation location, double heading, double speed});
+  $Res call({DeviceLocation location, double heading, double speed});
 
   @override
-  $RoverMetricLocationCopyWith<$Res> get location;
+  $DeviceLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
@@ -682,7 +682,7 @@ class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
       location: location == freezed
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as RoverMetricLocation,
+              as DeviceLocation,
       heading: heading == freezed
           ? _value.heading
           : heading // ignore: cast_nullable_to_non_nullable
@@ -699,7 +699,7 @@ class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
   const _$_RoverMetricTelemetry(
-      {this.location = const RoverMetricLocation(),
+      {this.location = const DeviceLocation(),
       this.heading = 0.0,
       this.speed = 0.0});
 
@@ -708,7 +708,7 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 
   @override
   @JsonKey()
-  final RoverMetricLocation location;
+  final DeviceLocation location;
   @override
   @JsonKey()
   final double heading;
@@ -753,7 +753,7 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 
 abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
   const factory _RoverMetricTelemetry(
-      {final RoverMetricLocation location,
+      {final DeviceLocation location,
       final double heading,
       final double speed}) = _$_RoverMetricTelemetry;
 
@@ -761,7 +761,7 @@ abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
       _$_RoverMetricTelemetry.fromJson;
 
   @override
-  RoverMetricLocation get location => throw _privateConstructorUsedError;
+  DeviceLocation get location => throw _privateConstructorUsedError;
   @override
   double get heading => throw _privateConstructorUsedError;
   @override
@@ -769,159 +769,5 @@ abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-RoverMetricLocation _$RoverMetricLocationFromJson(Map<String, dynamic> json) {
-  return _RoverMetricLocation.fromJson(json);
-}
-
-/// @nodoc
-mixin _$RoverMetricLocation {
-  double get long => throw _privateConstructorUsedError;
-  double get lat => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RoverMetricLocationCopyWith<RoverMetricLocation> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $RoverMetricLocationCopyWith<$Res> {
-  factory $RoverMetricLocationCopyWith(
-          RoverMetricLocation value, $Res Function(RoverMetricLocation) then) =
-      _$RoverMetricLocationCopyWithImpl<$Res>;
-  $Res call({double long, double lat});
-}
-
-/// @nodoc
-class _$RoverMetricLocationCopyWithImpl<$Res>
-    implements $RoverMetricLocationCopyWith<$Res> {
-  _$RoverMetricLocationCopyWithImpl(this._value, this._then);
-
-  final RoverMetricLocation _value;
-  // ignore: unused_field
-  final $Res Function(RoverMetricLocation) _then;
-
-  @override
-  $Res call({
-    Object? long = freezed,
-    Object? lat = freezed,
-  }) {
-    return _then(_value.copyWith(
-      long: long == freezed
-          ? _value.long
-          : long // ignore: cast_nullable_to_non_nullable
-              as double,
-      lat: lat == freezed
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_RoverMetricLocationCopyWith<$Res>
-    implements $RoverMetricLocationCopyWith<$Res> {
-  factory _$$_RoverMetricLocationCopyWith(_$_RoverMetricLocation value,
-          $Res Function(_$_RoverMetricLocation) then) =
-      __$$_RoverMetricLocationCopyWithImpl<$Res>;
-  @override
-  $Res call({double long, double lat});
-}
-
-/// @nodoc
-class __$$_RoverMetricLocationCopyWithImpl<$Res>
-    extends _$RoverMetricLocationCopyWithImpl<$Res>
-    implements _$$_RoverMetricLocationCopyWith<$Res> {
-  __$$_RoverMetricLocationCopyWithImpl(_$_RoverMetricLocation _value,
-      $Res Function(_$_RoverMetricLocation) _then)
-      : super(_value, (v) => _then(v as _$_RoverMetricLocation));
-
-  @override
-  _$_RoverMetricLocation get _value => super._value as _$_RoverMetricLocation;
-
-  @override
-  $Res call({
-    Object? long = freezed,
-    Object? lat = freezed,
-  }) {
-    return _then(_$_RoverMetricLocation(
-      long: long == freezed
-          ? _value.long
-          : long // ignore: cast_nullable_to_non_nullable
-              as double,
-      lat: lat == freezed
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_RoverMetricLocation implements _RoverMetricLocation {
-  const _$_RoverMetricLocation({this.long = 0.0, this.lat = 0.0});
-
-  factory _$_RoverMetricLocation.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverMetricLocationFromJson(json);
-
-  @override
-  @JsonKey()
-  final double long;
-  @override
-  @JsonKey()
-  final double lat;
-
-  @override
-  String toString() {
-    return 'RoverMetricLocation(long: $long, lat: $lat)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_RoverMetricLocation &&
-            const DeepCollectionEquality().equals(other.long, long) &&
-            const DeepCollectionEquality().equals(other.lat, lat));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(long),
-      const DeepCollectionEquality().hash(lat));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_RoverMetricLocationCopyWith<_$_RoverMetricLocation> get copyWith =>
-      __$$_RoverMetricLocationCopyWithImpl<_$_RoverMetricLocation>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_RoverMetricLocationToJson(this);
-  }
-}
-
-abstract class _RoverMetricLocation implements RoverMetricLocation {
-  const factory _RoverMetricLocation({final double long, final double lat}) =
-      _$_RoverMetricLocation;
-
-  factory _RoverMetricLocation.fromJson(Map<String, dynamic> json) =
-      _$_RoverMetricLocation.fromJson;
-
-  @override
-  double get long => throw _privateConstructorUsedError;
-  @override
-  double get lat => throw _privateConstructorUsedError;
-  @override
-  @JsonKey(ignore: true)
-  _$$_RoverMetricLocationCopyWith<_$_RoverMetricLocation> get copyWith =>
       throw _privateConstructorUsedError;
 }

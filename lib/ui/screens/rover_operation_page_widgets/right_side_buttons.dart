@@ -5,8 +5,8 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 
 class RightSideButtons extends StatefulWidget {

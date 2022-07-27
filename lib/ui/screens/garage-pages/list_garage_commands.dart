@@ -1,50 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
-import 'package:mirv/models/garage/garage_position.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
-import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_state_type.dart';
-import 'package:mirv/models/pair.dart';
 
 class GarageCommandList extends StatelessWidget {
-  GarageCommandList({
+  const GarageCommandList({
     Key? key,
-    required this.position,
+    required this.garageMetrics,
     required this.sendCommand,
   }) : super(key: key);
-  late final GaragePosition? position;
-
-  final Function(GarageCommand) sendCommand;
+  final GarageMetrics garageMetrics;
+  final Function(String, GarageCommand) sendCommand;
 
   @override
   Widget build(BuildContext context) {
-    var garageCommandList = garageCommandsByPosition[GaragePosition.retracted_latched];
-    return Container(
-        child: position != null
-            ? ListView.builder(
-                itemCount: garageCommandList!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.0),
-                        color: Color.fromRGBO(50, 50, 50, 0.5),
-                      ),
-                      child: ListTile(
-                          title: IconButton(
-                        icon: garageCommandList[index].last,
-                        iconSize: 70,
-                        onPressed: () {
-                          sendCommand(garageCommandList[index].first);
-                        },
-                      )),
-                    ),
-                  );
-                },
-              )
-            : null);
+    var garageCommandList = garageCommandsByState[GarageStateType.retracted_latched];
+    return ListView.builder(
+      itemCount: garageCommandList!.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+              color: const Color.fromRGBO(50, 50, 50, 0.5),
+            ),
+            child: ListTile(
+                title: IconButton(
+              icon: garageCommandList[index].last,
+              iconSize: 70,
+              onPressed: () {
+                sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
+              },
+            )),
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover/rover_health_type.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
 
-class StatusPage extends StatelessWidget {
-  final RoverMetrics? roverMetrics;
-  const StatusPage(this.roverMetrics, {Key? key}) : super(key: key);
+class StatusPageGarage extends StatelessWidget {
+  final GarageMetrics garageMetrics;
+  const StatusPageGarage(this.garageMetrics, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,7 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics?.health.sensors, "sensors"),
-        HealthContainer(roverMetrics?.health.electronics, "electronics"),
-        HealthContainer(roverMetrics?.health.drivetrain, "drivetrain"),
-        HealthContainer(roverMetrics?.health.garage, "garage"),
-        HealthContainer(roverMetrics?.health.intake, "intake"),
-        HealthContainer(roverMetrics?.health.power, "power"),
-        HealthContainer(roverMetrics?.health.general, "general"),
+        HealthContainer(garageMetrics.health.motor_controllers, "sensors"),
       ],
     );
   }

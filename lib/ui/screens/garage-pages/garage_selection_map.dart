@@ -115,9 +115,7 @@ class _GarageSelectionMapState extends State<GarageSelectionMap> {
               onTap: () {
                 garage.status == GarageStatusType.unavailable
                     ? null
-                    :
-                    // widget.selectedMarkerId.value = garage.garage_id;
-                    widget.selectedGarageController.setSelectedgarage_id(garage.garage_id);
+                    : widget.selectedGarageController.setSelectedGarageId(garage.garage_id);
               });
         })
       };
