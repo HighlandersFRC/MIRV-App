@@ -45,7 +45,7 @@ class MirvApi {
     }
   }
 
-  Future<http.Response> makeAuthenticatedPostRequest(String endpoint, Map<String, dynamic> body,
+  Future<http.Response> makeAuthenticatedPostRequest(String endpoint, String body,
       {Map<String, String>? additionalHeaders}) async {
     String? token = _getCurrentAuthToken();
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
@@ -114,8 +114,11 @@ class MirvApi {
   }
 
   Future<bool> sendGarageCommand(String garage_id, GarageCommand command) async {
-    var response =
-        await makeAuthenticatedPostRequest("${authService.getMirvEndpoint()}/garages/$garage_id/command", command.toJson());
+    var response = await makeAuthenticatedPostRequest(
+      "${authService.getMirvEndpoint()}/garages/$garage_id/command",
+      json.encode(command.toJson()),
+      additionalHeaders: {'Content-Type': 'application/json'},
+    );
     return response.statusCode == 200;
   }
 
