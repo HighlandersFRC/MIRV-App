@@ -1,23 +1,22 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mirv/models/messages_type.dart';
 import 'package:mirv/models/rover_health_type.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/models/rover_status_type.dart';
-
 
 part 'rover_metrics.freezed.dart';
 part 'rover_metrics.g.dart';
 
 @freezed
 class RoverMetrics with _$RoverMetrics {
-  const factory RoverMetrics(
-      {@Default("unknown") String roverId,
-      @Default(RoverStateType.disconnected) RoverStateType state, //Rover StateType
-      @Default(RoverStatusType.available) RoverStatusType status, //RoverStatusType
-      @Default(-1) int battery,
-      @Default(RoverMetricHealth()) RoverMetricHealth health,
-      @Default(RoverMetricTelemetry()) RoverMetricTelemetry telemetry,
-      }) = _RoverMetrics;
+  const factory RoverMetrics({
+    required String rover_id,
+    @Default(RoverStateType.disconnected) RoverStateType state, //Rover StateType
+    @Default(RoverStatusType.available) RoverStatusType status, //RoverStatusType
+    @Default(-1) int battery_voltage,
+    @Default(-1) int battery_percent,
+    @Default(RoverMetricHealth()) RoverMetricHealth health,
+    @Default(RoverMetricTelemetry()) RoverMetricTelemetry telemetry,
+  }) = _RoverMetrics;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
 }

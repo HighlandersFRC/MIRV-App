@@ -6,7 +6,7 @@ part 'rover_location.freezed.dart';
 @freezed
 class RoverLocation with _$RoverLocation {
   const factory RoverLocation({
-    @Default("unknown") String roverId,
+    @Default("unknown") String rover_id,
     required LatLng location,
   }) = _RoverLocation;
 }

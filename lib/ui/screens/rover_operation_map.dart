@@ -107,12 +107,12 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
 
     var marker = Marker(
         //add first marker
-        markerId: MarkerId(widget.selectedRoverMetrics.roverId),
+        markerId: MarkerId(widget.selectedRoverMetrics.rover_id),
         position: LatLng(widget.selectedRoverMetrics.telemetry.location.lat,
             widget.selectedRoverMetrics.telemetry.location.long), //position of marker
         infoWindow: InfoWindow(
           //popup info
-          title: widget.selectedRoverMetrics.roverId,
+          title: widget.selectedRoverMetrics.rover_id,
           snippet: 'My Custom Subtitle',
         ),
         icon: roverMarker,

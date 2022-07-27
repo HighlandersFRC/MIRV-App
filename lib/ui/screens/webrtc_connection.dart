@@ -8,6 +8,7 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
@@ -26,7 +27,6 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
   MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
   get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
@@ -38,7 +38,6 @@ class WebRTCConnection {
 
   late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
 
-  MediaStream? _localStream;
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();
   RTCDataChannelInit? _dataChannelDict;
@@ -55,20 +54,11 @@ class WebRTCConnection {
 
   // MediaStream? _localStream;
   bool inCalling = false;
-  double prevX = 0;
-  double prevY = 0;
   get_pkg.Rx<bool> loading = false.obs;
-
-  DateTime currentTime = DateTime.now();
 
   Timer? timerJoy;
   Timer? timer;
-
-  Timer? timerHeart;
-
-  final joystickStream = BehaviorSubject<List<double>>();
-
-  get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
+  Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 100;
@@ -92,6 +82,37 @@ class WebRTCConnection {
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
     }
+
+    // TODO: Remove this before deployment
+    // updateRoverState(command);
+  }
+
+  // TODO: Remove this before deployment
+  void updateRoverState(command) {
+    var tempRoverMetrics = roverMetricsObs.value;
+    RoverStateType state = tempRoverMetrics.state;
+    if (command == RoverGeneralCommands.eStop) {
+      state = RoverStateType.e_stop;
+    } else if (command == RoverGeneralCommands.disable) {
+      state = RoverStateType.connected_disabled;
+    } else if (command == RoverGeneralCommands.enable) {
+      state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.deploy) {
+      state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.cancel) {
+      state = RoverStateType.connected_idle_roaming;
+    } else if (command == RoverGeneralCommands.stow) {
+      state = RoverStateType.connected_idle_docked;
+    } else if (command == RoverGeneralCommands.deployPiLits) {
+      state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.retrievePiLits) {
+      state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.enableRemoteOperation) {
+      state = RoverStateType.remote_operation;
+    } else if (command == RoverGeneralCommands.disableRemoteOperation) {
+      state = RoverStateType.connected_idle_roaming;
+    }
+    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
   }
 
   void setStateInFunction({required Function function}) {
@@ -120,19 +141,26 @@ class WebRTCConnection {
   }
 
   // This Data Channel Function receives data sent on the data channel created by the flutter app
-  void _onDataChannelMessage(message) {
-    print(message.text);
-    RoverMetrics roverMetricsMessage = RoverMetrics.fromJson(json.decode(message));
-
-    recentStatusMessage = DateTime.now();
+  void _onDataChannelMessage(RTCDataChannelMessage message) {
+    if (message.type == MessageType.text) {
+      try {
+        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+        recentStatusMessage = DateTime.now();
+      } catch (e) {
+        print("Failed to process status message: $message");
+      }
+    } else {
+      // do something with message.binary
+    }
   }
 
-  messagesDuration(String roverId) {
+  messagesDuration(String rover_id) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
-      final messageDifference = currentTime.difference(recentStatusMessage!).inSeconds.abs();
+      if (recentStatusMessage == null) return;
+      final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
       if (messageDifference >= 10) {
         stopCall();
-        _showReconnectDialog('Connection Failed', roverId);
+        _showReconnectDialog('No Heartbeat Messages Received', rover_id);
       }
     });
   }
@@ -149,13 +177,11 @@ class WebRTCConnection {
   void _onDataChannelState(RTCDataChannelState? state) {
     switch (state) {
       case RTCDataChannelState.RTCDataChannelClosed:
-        print("Camera Closed!!!!!!!");
         break;
       case RTCDataChannelState.RTCDataChannelOpen:
-        print("Camera Opened!!!!!!!");
         break;
       default:
-        print("Data Channel State: $state");
+        break;
     }
   }
 
@@ -173,7 +199,7 @@ class WebRTCConnection {
     }
   }
 
-  Future<void> _negotiateRemoteConnection(String roverId) async {
+  Future<void> _negotiateRemoteConnection(String rover_id) async {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
@@ -183,14 +209,15 @@ class WebRTCConnection {
         .then((success) async {
           if (!success && peerConnection != null) {
             await stopCall();
-            return _showReconnectDialog('Connection timed out', roverId);
+            return _showReconnectDialog('Connection timed out', rover_id);
           } else if (!success) {
             return;
           }
           try {
+            // _startNotificationsFromWebRTC(rover_id);
             var des = await peerConnection!.getLocalDescription();
 
-            http.StreamedResponse response = await mirvApi.startRoverConnection(roverId, des);
+            http.StreamedResponse response = await mirvApi.startRoverConnection(rover_id, des);
 
             String data = "";
             if (response.statusCode == 200) {
@@ -207,18 +234,18 @@ class WebRTCConnection {
 
               loading.value = false;
             } else {
-              _showReconnectDialog('Failed to comunicate with rover', roverId);
+              _showReconnectDialog('Failed to comunicate with rover', rover_id);
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog('$e', roverId);
+            _showReconnectDialog('Failed to negotiate connection: $e', rover_id);
           }
         });
   }
 
   _showReconnectDialog(
     String error,
-    String roverId,
+    String rover_id,
   ) {
     get_pkg.Get.dialog(AlertDialog(
       title: const Text('Failed Connection'),
@@ -226,29 +253,29 @@ class WebRTCConnection {
       actions: <Widget>[
         TextButton(
             onPressed: () {
-              makeCall(roverId);
+              makeCall(rover_id);
               get_pkg.Get.back();
             },
-            child: Text('Reconnect?')),
+            child: const Text('Reconnect?')),
         TextButton(
             onPressed: () {
               get_pkg.Get.back();
-              get_pkg.Get.offAll(() => HomePage());
+              get_pkg.Get.offAll(() => const HomePage());
             },
-            child: Text('Home page'))
+            child: const Text('Home page'))
       ],
     ));
   }
 
-//public Commands
-  notificationsFromWebRTC(String roverId, context, Function() makeCallReconnect) {
+  //public Commands
+  _startNotificationsFromWebRTC(String rover_id) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
           stopCall();
-          _showReconnectDialog('Connection Failed', roverId);
+          _showReconnectDialog('Invalid Connection State', rover_id);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
@@ -267,36 +294,39 @@ class WebRTCConnection {
       }
     });
 
-    switch (dataChannelState.value) {
-      case RTCDataChannelState.RTCDataChannelClosing:
-      case RTCDataChannelState.RTCDataChannelClosed:
-        _showReconnectDialog('Connection Failed', roverId);
-        break;
-      case RTCDataChannelState.RTCDataChannelConnecting:
-        return Fluttertoast.showToast(
-          msg: "Connection",
-        );
-
-      case RTCDataChannelState.RTCDataChannelOpen:
-        return Fluttertoast.showToast(
-          msg: "Connected",
-        );
-      case null:
-        break;
-    }
+    dataChannelState.listen((dcs) {
+      switch (dcs) {
+        case RTCDataChannelState.RTCDataChannelClosing:
+        case RTCDataChannelState.RTCDataChannelClosed:
+          _showReconnectDialog('Invalid Data Channel State', rover_id);
+          break;
+        case RTCDataChannelState.RTCDataChannelConnecting:
+          Fluttertoast.showToast(
+            msg: "Connection",
+          );
+          break;
+        case RTCDataChannelState.RTCDataChannelOpen:
+          Fluttertoast.showToast(
+            msg: "Connected",
+          );
+          break;
+        case null:
+          break;
+      }
+    });
   }
 
   _startHeartbeatMessages() {
-    timerHeart = Timer.periodic(const Duration(milliseconds: 100), (Timer t) {
-      sendRoverCommand(RoverGeneralCommands.heartBeat);
+    heartbeatTimer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
+      sendRoverCommand(RoverHeartbeatCommands.heartbeat);
     });
   }
 
   _stopHeartbeatMessages() {
-    timerHeart?.cancel();
+    heartbeatTimer?.cancel();
   }
 
-  Future<void> makeCall(String roverId) async {
+  Future<void> makeCall(String rover_id) async {
     try {
       loading.value = true;
       var configuration = <String, dynamic>{
@@ -329,17 +359,14 @@ class WebRTCConnection {
       };
 
       var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-      // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
-      _localStream = stream;
-      // localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
         peerConnection!.addTrack(element, stream);
       });
-      await _negotiateRemoteConnection(roverId);
+      await _negotiateRemoteConnection(rover_id);
       _startHeartbeatMessages();
     } catch (e) {
-      _showReconnectDialog(e.toString(), roverId);
+      _showReconnectDialog('Failed to create connection: $e', rover_id);
     }
   }
 
@@ -360,13 +387,11 @@ class WebRTCConnection {
 
   startJoystickUpdates() {
     joystickController.drivetrainCommandStream.listen((value) {
-      // if (!useGamepad.value)
       sendRoverCommand(value);
     });
 
     gamepadController.setJoystickListener();
     gamepadController.drivetrainCommandStream.listen((value) {
-      // if (useGamepad.value)
       sendRoverCommand(value);
     });
   }

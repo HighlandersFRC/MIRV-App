@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 
 enum RoverHealthType { healthy, unhealthy, degraded, unavailable }
@@ -13,17 +11,13 @@ extension RoverHealthTypeColor1 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        print("It's healthy");
         return healthy1;
       case RoverHealthType.unhealthy:
-        print("it's unhealthy");
         return unhealthy1;
       case RoverHealthType.degraded:
-        print("It's degraded");
         return degraded1;
       case RoverHealthType.unavailable:
       default:
-        print("Error: Invalid Health Type");
         return invalid1;
     }
   }
@@ -38,17 +32,17 @@ extension RoverHealthTypeColor2 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        print("It's healthy");
+        {}
         return healthy2;
       case RoverHealthType.unhealthy:
-        print("it's unhealthy");
+        {}
         return unhealthy2;
       case RoverHealthType.degraded:
-        print("It's degraded");
+        {}
         return degraded2;
       case RoverHealthType.unavailable:
       default:
-        print("Error: Invalid Health Type");
+        {}
         return invalid2;
     }
   }
@@ -63,17 +57,17 @@ extension RoverHealthTypeColor3 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        print("It's healthy");
+        {}
         return healthy3;
       case RoverHealthType.unhealthy:
-        print("it's unhealthy");
+        {}
         return unhealthy3;
       case RoverHealthType.degraded:
-        print("It's degraded");
+        {}
         return degraded3;
       case RoverHealthType.unavailable:
       default:
-        print("Error: Invalid Health Type");
+        {}
         return invalid3;
     }
   }
@@ -88,17 +82,17 @@ extension RoverHealthTypeColor4 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        print("It's healthy");
+        {}
         return healthy4;
       case RoverHealthType.unhealthy:
-        print("it's unhealthy");
+        {}
         return unhealthy4;
       case RoverHealthType.degraded:
-        print("It's degraded");
+        {}
         return degraded4;
       case RoverHealthType.unavailable:
       default:
-        print("Error: Invalid Health Type");
+        {}
         return invalid4;
     }
   }
@@ -113,17 +107,17 @@ extension RoverHealthTypeColor5 on RoverHealthType {
 
     switch (this) {
       case RoverHealthType.healthy:
-        print("It's healthy");
+        {}
         return healthy5;
       case RoverHealthType.unhealthy:
-        print("it's unhealthy");
+        {}
         return unhealthy5;
       case RoverHealthType.degraded:
-        print("It's degraded");
+        {}
         return degraded5;
       case RoverHealthType.unavailable:
       default:
-        print("Error: Invalid Health Type");
+        {}
         return invalid5;
     }
   }

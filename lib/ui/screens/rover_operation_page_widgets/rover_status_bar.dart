@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
-
 import 'package:mirv/models/rover_health_type.dart';
 import 'package:mirv/models/ui_connection_state.dart';
 
+// ignore: must_be_immutable
 class RoverStatusBar extends StatelessWidget {
   RoverStatusBar({
     Key? key,
@@ -80,7 +79,6 @@ class RoverStatusBar extends StatelessWidget {
   ) {
     peerConnectionState.listen((cs) {
       uiConnectionState.value = setEnum(cs);
-      print('VALUE  ${uiConnectionState.value.iconColor}');
       uiConnectionState.trigger(setEnum(cs));
     });
 
@@ -91,8 +89,8 @@ class RoverStatusBar extends StatelessWidget {
               Obx(
                 () => Icon(Icons.circle, color: uiConnectionState.value.iconColor, size: 35),
               ),
-              _batteryIcon(roverMetrics!.battery),
-              Text("${roverMetrics!.battery}%", style: TextStyle(fontSize: 20)),
+              _batteryIcon(roverMetrics!.battery_percent),
+              Text("${roverMetrics!.battery_percent}%", style: TextStyle(fontSize: 20)),
 
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
               _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.handyman), //mechanical

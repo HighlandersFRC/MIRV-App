@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/services/auth_service.dart';
-import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class LoginController extends GetxController {

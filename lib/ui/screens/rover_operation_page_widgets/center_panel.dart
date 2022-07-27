@@ -59,7 +59,7 @@ class CenterPanel extends StatelessWidget {
         StreamBuilder<RoverMetrics>(
             stream: periodicMetricUpdates,
             builder: (context, snapshot) {
-              return Container(
+              return SizedBox(
                   height: height / 5,
                   width: width,
                   child: snapshot.data != null

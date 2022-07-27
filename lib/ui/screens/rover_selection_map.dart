@@ -3,7 +3,6 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:mirv/models/rover_status_type.dart';
@@ -69,9 +68,9 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       ));
     });
 
-    widget.selectedRoverId.listen((roverId) {
+    widget.selectedRoverId.listen((rover_id) {
       widget.roverMetrics.forEach((element) async {
-        if (element.roverId == roverId) {
+        if (element.rover_id == rover_id) {
           _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
               target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
               zoom: await _mapController!.getZoomLevel())));
@@ -107,18 +106,18 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
       markers = {
         ...widget.roverMetrics.map((rover) {
           return Marker(
-              markerId: MarkerId(rover.roverId),
+              markerId: MarkerId(rover.rover_id),
               position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),
               infoWindow: InfoWindow(
-                title: rover.roverId,
+                title: rover.rover_id,
               ),
               icon: mapMarker,
               onTap: () {
                 rover.status == RoverStatusType.unavailable
                     ? null
                     :
-                    // widget.selectedMarkerId.value = rover.roverId;
-                    widget.selectedRoverController.setSelectedRoverId(rover.roverId);
+                    // widget.selectedMarkerId.value = rover.rover_id;
+                    widget.selectedRoverController.setSelectedRoverId(rover.rover_id);
               });
         })
       };

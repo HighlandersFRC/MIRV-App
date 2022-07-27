@@ -8,20 +8,20 @@ part of 'rover_summary.dart';
 
 _$_RoverSummary _$$_RoverSummaryFromJson(Map<String, dynamic> json) =>
     _$_RoverSummary(
-      roverId: json['roverId'] as String? ?? "unknown",
+      rover_id: json['rover_id'] as String? ?? "unknown",
       state: $enumDecodeNullable(_$RoverStateTypeEnumMap, json['state']) ??
           RoverStateType.disconnected,
       status: $enumDecodeNullable(_$RoverStatusTypeEnumMap, json['status']) ??
           RoverStatusType.available,
-      battery: json['battery'] as int? ?? -1,
+      battery_percent: json['battery_percent'] as int? ?? -1,
     );
 
 Map<String, dynamic> _$$_RoverSummaryToJson(_$_RoverSummary instance) =>
     <String, dynamic>{
-      'roverId': instance.roverId,
+      'rover_id': instance.rover_id,
       'state': _$RoverStateTypeEnumMap[instance.state],
       'status': _$RoverStatusTypeEnumMap[instance.status],
-      'battery': instance.battery,
+      'battery_percent': instance.battery_percent,
     };
 
 const _$RoverStateTypeEnumMap = {

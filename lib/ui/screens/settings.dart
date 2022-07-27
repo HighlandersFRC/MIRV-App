@@ -31,6 +31,7 @@ class SettingsTextBoxController extends GetxController {
   }
 }
 
+// ignore: must_be_immutable
 class SettingsPage extends StatelessWidget {
   SettingsPage({Key? key}) : super(key: key);
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
