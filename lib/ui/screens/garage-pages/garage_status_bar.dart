@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
@@ -21,6 +23,8 @@ class GarageStatusBar extends StatelessWidget {
         return const Text("State: Disabled");
       case GarageStateType.unavailable:
         return const Text("State: Unavailable");
+ 
+
     }
   }
 
