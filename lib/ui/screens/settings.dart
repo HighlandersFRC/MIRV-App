@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:get/get.dart';
+import 'package:mirv/ui/screens/home_page.dart';
 
 class SettingsTextBoxController extends GetxController {
   AuthService authService = AuthService();
@@ -89,8 +88,29 @@ class SettingsPage extends StatelessWidget {
               compareOrigin.value = true;
             }
           },
-          child: Text('Reset'),
+          child: const Text('Reset'),
         ),
+      ),
+    );
+  }
+
+  Future _unsavedDialog(String unsavedValue) {
+    return Get.dialog(
+      AlertDialog(
+        title: const Text('Unsaved Changes'),
+        content: Text(unsavedValue),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Back')),
+          TextButton(
+              onPressed: () {
+                Get.offAll(const HomePage());
+              },
+              child: const Text('Proceed'))
+        ],
       ),
     );
   }
@@ -102,6 +122,19 @@ class SettingsPage extends StatelessWidget {
         foregroundColor: AppThemeColor.foregroundColor,
         shadowColor: AppThemeColor.shadowColor,
         backgroundColor: AppThemeColor.backgroundColor,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (!compareOriginEndpoint.value) {
+                _unsavedDialog('MIRV Cloud API Unsaved');
+              } else if (!compareOriginKeycloakEndpoint.value) {
+                _unsavedDialog('Keycloak Endpoint Unsaved');
+              } else if (!compareOriginKeycloakRealm.value) {
+                _unsavedDialog('Keycloak Realm Unsaved');
+              } else if (!compareOriginKeycloakClient.value) {
+                _unsavedDialog('Keycloak Client Unsaved');
+              }
+            }),
         title: const Text(
           "Settings",
         ),
@@ -116,30 +149,28 @@ class SettingsPage extends StatelessWidget {
                   savedValue: settingsTextBoxController.savedEndpoint,
                   compareOrigin: compareOriginEndpoint,
                   labelText: 'MIRV Cloud Api'),
-                  _textFieldtile(
+              _textFieldtile(
                   controller: settingsTextBoxController.keycloakEndpointController,
                   savedValue: settingsTextBoxController.savedKeycloakEndpoint,
                   compareOrigin: compareOriginKeycloakEndpoint,
                   labelText: 'Keycloak Endpoint'),
-                  _textFieldtile(
+              _textFieldtile(
                   controller: settingsTextBoxController.keycloakRealmController,
                   savedValue: settingsTextBoxController.savedKeycloakRealm,
                   compareOrigin: compareOriginKeycloakRealm,
                   labelText: 'Keycloak Realm'),
-                  _textFieldtile(
+              _textFieldtile(
                   controller: settingsTextBoxController.keycloakClientController,
                   savedValue: settingsTextBoxController.savedKeycloakClient,
                   compareOrigin: compareOriginKeycloakClient,
                   labelText: 'Keycloak Client'),
-                  
-
               ElevatedButton(
                   onPressed: () async {
                     if (!await mirvApi.testEndpoint(settingsTextBoxController.endpointController.value.text)) {
                       Get.dialog(
                         AlertDialog(
-                          title: Text('Invalid Input'),
-                          content: Text('Invalid Endpoint'),
+                          title: const Text('Invalid Input'),
+                          content: const Text('Invalid Endpoint'),
                           actions: [
                             TextButton(
                                 onPressed: () {
@@ -152,8 +183,8 @@ class SettingsPage extends StatelessWidget {
                     } else if (!await mirvApi.testEndpoint(settingsTextBoxController.keycloakEndpointController.value.text)) {
                       Get.dialog(
                         AlertDialog(
-                          title: Text('Invalid Input'),
-                          content: Text('Invalid Keycloak Endpoint'),
+                          title: const Text('Invalid Input'),
+                          content: const Text('Invalid Keycloak Endpoint'),
                           actions: [
                             TextButton(
                                 onPressed: () {
