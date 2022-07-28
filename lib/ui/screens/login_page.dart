@@ -73,6 +73,7 @@ class LoginController extends GetxController {
 
 class LoginPage extends StatelessWidget {
   LoginController controller = LoginController();
+  Rx<bool> _isObscure = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -81,38 +82,52 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Log In Page"),
       ),
-      body: Stack(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: controller.usernameController,
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: controller.validator,
-              ),
-              TextFormField(
-                controller: controller.passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                validator: controller.validator,
-                obscureText: true,
-              ),
-              ElevatedButton(
-                onPressed: controller.login,
-                child: const Text('Login'),
-              )
-            ],
-          ),
-        ),
-        Obx(() => controller.isLoading.value
-            ? Container(
-                color: Colors.black.withOpacity(0.5),
-                child: const Center(
-                  child: CircularProgressIndicator(),
+      body: ListView(children: [
+        Stack(children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: controller.usernameController,
+                  decoration: const InputDecoration(labelText: 'Username'),
+                  validator: controller.validator,
                 ),
-              )
-            : Container()),
+                Obx(
+                  () => TextFormField(
+                    controller: controller.passwordController,
+                    validator: controller.validator,
+                    obscureText: _isObscure.value,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure.value ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          _isObscure.value = !_isObscure.value;
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: controller.login,
+                  child: const Text('Login'),
+                )
+              ],
+            ),
+          ),
+          Obx(() => controller.isLoading.value
+              ? Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container()),
+        ]),
       ]),
     );
     // body: Padding(
