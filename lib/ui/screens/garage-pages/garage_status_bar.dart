@@ -1,13 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
+import 'package:mirv/services/mirv_api.dart';
 
 class GarageStatusBar extends StatelessWidget {
-  const GarageStatusBar({
-    Key? key,
-    required this.garageMetrics,
+  GarageStatusBar({
+    Key? key, required this.garageMetrics,
   }) : super(key: key);
   final GarageMetrics garageMetrics;
+  // MirvApi mirvApi = MirvApi(garageMetrics);
+  // static MirvApi? stateMirvApi;
 
   StatelessWidget _stateDescription(GarageStateType state) {
     switch (state) {
@@ -19,6 +24,8 @@ class GarageStatusBar extends StatelessWidget {
         return const Text("State: Deployed");
       case GarageStateType.disabled:
         return const Text("State: Disabled");
+      case GarageStateType.enabled:
+        return const Text("State: Enabled");
       case GarageStateType.unavailable:
         return const Text("State: Unavailable");
     }
@@ -29,7 +36,7 @@ class GarageStatusBar extends StatelessWidget {
     BuildContext context,
   ) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      _stateDescription(garageMetrics.state),
-    ]);
+          _stateDescription(garageMetrics.state),
+        ]);
   }
 }

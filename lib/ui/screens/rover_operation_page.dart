@@ -20,7 +20,7 @@ import 'package:rxdart/subjects.dart';
 import 'webrtc_connection.dart';
 
 class RoverOperationPage extends StatelessWidget {
-  final RoverMetrics roverMetrics;
+ final RoverMetrics roverMetrics;
 
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
 

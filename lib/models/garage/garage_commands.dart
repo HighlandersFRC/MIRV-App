@@ -1,8 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/pair.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 
 part 'garage_commands.freezed.dart';
 part 'garage_commands.g.dart';
@@ -20,6 +22,7 @@ class GarageCommands {
   static const retract = GarageCommand(GarageCommandType.retract);
   static const deploy = GarageCommand(GarageCommandType.deploy);
   static const enable = GarageCommand(GarageCommandType.enable);
+  static const disable = GarageCommand(GarageCommandType.disable);
 }
 
 Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
@@ -28,9 +31,14 @@ Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
   ],
   GarageStateType.deployed: [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
+    Pair(GarageCommands.disable, Image.asset('assets/images/disabled.png')),
   ],
   GarageStateType.disabled: [
-    Pair(GarageCommands.enable, Image.asset('assets/images/ramp.png')),
+    Pair(GarageCommands.enable, Image.asset('assets/images/enabled.png')),
+  ],
+  GarageStateType.enabled: [
+    Pair(GarageCommands.disable, Image.asset('assets/images/disabled.png')),
+    Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
   ],
   GarageStateType.retracted_unlatched: [
     Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),

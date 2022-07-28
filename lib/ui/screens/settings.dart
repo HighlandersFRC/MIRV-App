@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
@@ -38,8 +39,9 @@ class SettingsPage extends StatelessWidget {
 
   AuthService authService = AuthService();
 
-  final MirvApi mirvApi = MirvApi();
+  late GarageMetrics garageMetrics;
 
+  late MirvApi mirvApi = MirvApi();
   @override
   Widget build(context) {
     return Scaffold(

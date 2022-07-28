@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_status_bar.dart';
 import 'package:mirv/ui/screens/garage_status_page.dart';
 
 class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const GarageAppBar({Key? key, required this.garageMetrics}) : super(key: key);
-  final GarageMetrics garageMetrics;
+  const GarageAppBar({
+    Key? key,
+    required this.garageMetricsObs,
+  }) : super(key: key);
+  final Rx<GarageMetrics?> garageMetricsObs;
 
   @override
   Size get preferredSize => const Size.fromHeight(60.0);
@@ -13,16 +17,18 @@ class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(actions: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GarageStatusBar(garageMetrics: garageMetrics),
+      Obx(
+        () => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GarageStatusBar(garageMetrics: garageMetricsObs.value!),
+        ),
       ),
       ElevatedButton(
         onPressed: () => showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              content: AspectRatio(aspectRatio: 1.5, child: StatusPageGarage(garageMetrics)),
+              content: AspectRatio(aspectRatio: 1.5, child: Obx(() => StatusPageGarage(garageMetricsObs.value!))),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -39,7 +45,7 @@ class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
           " Status ",
           textScaleFactor: 2.5,
         ),
-      )
+      ),
     ]);
   }
 }

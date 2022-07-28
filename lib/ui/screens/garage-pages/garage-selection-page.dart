@@ -54,14 +54,15 @@ class GarageSelectionPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   final selectedGarageController = Get.put(SelectedGarageController());
-  MirvApi mirvGarageApi = MirvApi();
+
+  late MirvApi? mirvGarageApi = MirvApi();
   Location location = Location();
   int? groupValue = 0;
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
   final TextEditingController typeAheadController = TextEditingController();
 
   void _refreshGaragesList() async {
-    garageList.value = await mirvGarageApi.getGarages();
+    garageList.value = await mirvGarageApi!.getGarages();
     selectedGarageController.verifyGarageId(garageList);
   }
 

@@ -88,6 +88,8 @@ flutter:
   assets:
   - assets/images/garage_icon.png
   - assets/images/lock.png
+  - assets/images/enabled.png
+  - assets/images/disabled.png
   - assets/images/up_arrow.png
   - assets/images/down_arrow.png
   - assets/images/unlock.png

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/info_page.dart';
@@ -8,8 +9,8 @@ import 'package:mirv/ui/screens/rover_selection_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {
+  
   const HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Garage Selection Page'),
               leading: const Icon(Icons.people),
               onTap: () {
-                Get.to(LoginPage(GarageSelectionPage()));
+                Get.to(LoginPage(GarageSelectionPage( )));
               }),
           ListTile(
               title: const Text('Settings'),

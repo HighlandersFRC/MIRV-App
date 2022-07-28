@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mirv/models/device_location.dart';
+import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
+import 'package:mirv/models/pair.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +21,7 @@ class MirvApi {
   Timer? garageMetricsUpdatesTimer;
   Rx<GarageMetrics?> garageMetricsObs = Rx<GarageMetrics?>(null);
   AuthService authService = AuthService();
+  Rx<GarageCommandType?> garageCommandsObs = Rx<GarageCommandType?>(null);
 
   MirvApi() {
     authService.init();
@@ -129,18 +133,20 @@ class MirvApi {
   Future<GarageMetrics> getGarageMetrics(String garageID) async {
     String? token = _getCurrentAuthToken();
     GarageMetrics garageMetrics =
-        GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_latched);
+        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
     print(json.encode(garageMetrics.toJson()));
+    garageMetricsObs.value;
 
-    return garageMetrics;
+    return garageMetrics = garageMetrics;
   }
 
   Future<List<GarageMetrics>> getGarages() async {
     String? token = _getCurrentAuthToken();
     List<GarageMetrics> garages;
     GarageMetrics garageMetrics =
-        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_latched);
+        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
     String response = '[${json.encode(garageMetrics.toJson())}]';
+    garageMetricsObs.value = garageMetrics;
 
     garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();
     return garages;
@@ -148,20 +154,44 @@ class MirvApi {
 
   Future<bool> sendGarageCommand(String garage_id, GarageCommand command) async {
     var response = await makeAuthenticatedPostRequest(
-      "${authService.getMirvEndpoint()}/garages/$garage_id/command",
-      json.encode(command.toJson()),
-      additionalHeaders: {'Content-Type': 'application/json'},
-    );
+        "${authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
+        additionalHeaders: {'Content-Type': 'application/json'});
+
+    // setStateInFunction(function: function);
     return response.statusCode == 200;
   }
 
-  void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
-    garageMetricsUpdatesTimer = Timer.periodic(Duration(seconds: seconds), (timer) {
-      getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
-    });
+  // void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
+  //   garageMetricsUpdatesTimer = Timer.periodic(Duration(seconds: seconds), (timer) {
+  //     getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
+  //   });
+  // }
+
+  // void stopGarageMetricUpdates() {
+  //   garageMetricsUpdatesTimer?.cancel();
+  // }
+
+  Future<void> updateGarageState(String garage_id, GarageCommand command) async {
+    var tempGarageMetrics = garageMetricsObs.value;
+    GarageStateType? state = tempGarageMetrics?.state;
+    Rx<GarageStateType?> roverStateObs = Rx<GarageStateType?>(state);
+    if (command == GarageCommands.unlock) {
+      state = GarageStateType.retracted_unlatched;
+    } else if (command == GarageCommands.lock) {
+      state = GarageStateType.retracted_latched;
+    } else if (command == GarageCommands.retract) {
+      state = GarageStateType.retracted_unlatched;
+    } else if (command == GarageCommands.deploy) {
+      state = GarageStateType.deployed;
+    } else if (command == GarageCommands.disable) {
+      state = GarageStateType.disabled;
+    } else if (command == GarageCommands.enable) {
+      state = GarageStateType.enabled;
+    } else {
+      state = GarageStateType.unavailable;
+    }
+    garageMetricsObs.value = tempGarageMetrics?.copyWith(state: state);
   }
 
-  void stopGarageMetricUpdates() {
-    garageMetricsUpdatesTimer?.cancel();
-  }
+
 }

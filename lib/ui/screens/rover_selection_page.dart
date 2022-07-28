@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:location/location.dart';
@@ -59,7 +60,9 @@ class RoverSelectionPage extends StatefulWidget {
 
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final selectedRoverController = Get.put(SelectedRoverController());
-  MirvApi mirvApi = MirvApi();
+   late GarageMetrics garageMetrics;
+
+  late MirvApi mirvApi = MirvApi();
   Location location = Location();
   final TextEditingController typeAheadController = TextEditingController();
 
