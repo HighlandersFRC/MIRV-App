@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
@@ -27,10 +28,11 @@ class RoverOperationPage extends StatelessWidget {
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
-  late Rx<bool> manualOperation = true.obs;
+  late Rx<bool> manualOperation = false.obs;
 
   @override
   Widget build(BuildContext context) {
+    webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
     // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
