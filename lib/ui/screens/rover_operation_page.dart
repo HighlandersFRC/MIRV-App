@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/pi_lit.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_metrics.dart';
@@ -56,7 +57,7 @@ class RoverOperationPage extends StatelessWidget {
             Center(
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Colors.grey,
+                  color: loadingColor,
                 ),
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),

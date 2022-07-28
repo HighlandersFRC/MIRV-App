@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
-import 'package:mirv/ui/screens/app_bar_theme.dart';
+
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 
@@ -119,9 +119,6 @@ class SettingsPage extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: AppThemeColor.foregroundColor,
-        shadowColor: AppThemeColor.shadowColor,
-        backgroundColor: AppThemeColor.backgroundColor,
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
