@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -11,13 +13,12 @@ class SettingsTextBoxController extends GetxController {
   final keycloakEndpointController = TextEditingController().obs;
   final keycloakRealmController = TextEditingController().obs;
   final keycloakClientController = TextEditingController().obs;
-  late Rx<String> savedEndpoint;
-  late Rx<String> savedKeycloakEndpoint;
-  late Rx<String> savedKeycloakRealm;
-  late Rx<String> savedKeycloakClient;
+  Rx<String> savedEndpoint = ''.obs;
+  Rx<String> savedKeycloakEndpoint = ''.obs;
+  Rx<String> savedKeycloakRealm = ''.obs;
+  Rx<String> savedKeycloakClient = ''.obs;
 
-  @override
-  onInit() async {
+  initialize() async {
     await authService.init();
 
     savedEndpoint = (authService.getMirvEndpoint()).obs;
@@ -25,14 +26,10 @@ class SettingsTextBoxController extends GetxController {
     savedKeycloakRealm = (authService.getKeycloakRealm()).obs;
     savedKeycloakClient = (authService.getKeycloakClient()).obs;
 
-    endpointController.value.text = 'http://20.106.14.47:8080';
-
-    // savedEndpoint.value;
+    endpointController.value.text = savedEndpoint.value;
     keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
     keycloakRealmController.value.text = savedKeycloakRealm.value;
     keycloakClientController.value.text = savedKeycloakClient.value;
-
-    super.onInit();
   }
 
   @override
@@ -47,13 +44,17 @@ class SettingsTextBoxController extends GetxController {
 
 // ignore: must_be_immutable
 class SettingsPage extends StatelessWidget {
+  Rx<bool> loading = false.obs;
   Rx<bool> compareOriginEndpoint = true.obs;
   Rx<bool> compareOriginKeycloakEndpoint = true.obs;
   Rx<bool> compareOriginKeycloakRealm = true.obs;
   Rx<bool> compareOriginKeycloakClient = true.obs;
 
-  SettingsPage({Key? key}) : super(key: key);
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
+
+  SettingsPage({Key? key}) : super(key: key) {
+    settingsTextBoxController.initialize();
+  }
 
   AuthService authService = AuthService();
 
@@ -79,26 +80,25 @@ class SettingsPage extends StatelessWidget {
       ),
       trailing: Obx(
         () => ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(compareOrigin.value ? Colors.grey : Colors.blue),
-          ),
-          onPressed: () {
-            if (!compareOrigin.value) {
-              controller.value.text = savedValue.value;
-              compareOrigin.value = true;
-            }
-          },
+          onPressed: compareOrigin.value
+              ? null
+              : () {
+                  if (!compareOrigin.value) {
+                    controller.value.text = savedValue.value;
+                    compareOrigin.value = true;
+                  }
+                },
           child: const Text('Reset'),
         ),
       ),
     );
   }
 
-  Future _unsavedDialog(String unsavedValue) {
+  Future _unsavedDialog(List<String> unsavedValues) {
     return Get.dialog(
       AlertDialog(
         title: const Text('Unsaved Changes'),
-        content: Text(unsavedValue),
+        content: Text('You have unsaved to the following variables: ${unsavedValues.join(", ")}'),
         actions: [
           TextButton(
               onPressed: () {
@@ -109,7 +109,7 @@ class SettingsPage extends StatelessWidget {
               onPressed: () {
                 Get.offAll(const HomePage());
               },
-              child: const Text('Proceed'))
+              child: const Text('Continue'))
         ],
       ),
     );
@@ -125,96 +125,129 @@ class SettingsPage extends StatelessWidget {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
+              List<String> variableList = [];
+
               if (!compareOriginEndpoint.value) {
-                _unsavedDialog('MIRV Cloud API Unsaved');
-              } else if (!compareOriginKeycloakEndpoint.value) {
-                _unsavedDialog('Keycloak Endpoint Unsaved');
-              } else if (!compareOriginKeycloakRealm.value) {
-                _unsavedDialog('Keycloak Realm Unsaved');
-              } else if (!compareOriginKeycloakClient.value) {
-                _unsavedDialog('Keycloak Client Unsaved');
+                variableList.add('MIRV Cloud API');
+              }
+              if (!compareOriginKeycloakEndpoint.value) {
+                variableList.add('Keycloak Endpoint');
+              }
+              if (!compareOriginKeycloakRealm.value) {
+                variableList.add('Keycloak Realm');
+              }
+              if (!compareOriginKeycloakClient.value) {
+                variableList.add('Keycloak Client');
+              }
+              if (variableList.isNotEmpty) {
+                _unsavedDialog(variableList);
+              } else {
+                Get.offAll(const HomePage());
               }
             }),
         title: const Text(
           "Settings",
         ),
       ),
-      body: Scrollbar(
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: ListView(
-            children: [
-              _textFieldtile(
-                  controller: settingsTextBoxController.endpointController,
-                  savedValue: settingsTextBoxController.savedEndpoint,
-                  compareOrigin: compareOriginEndpoint,
-                  labelText: 'MIRV Cloud Api'),
-              _textFieldtile(
-                  controller: settingsTextBoxController.keycloakEndpointController,
-                  savedValue: settingsTextBoxController.savedKeycloakEndpoint,
-                  compareOrigin: compareOriginKeycloakEndpoint,
-                  labelText: 'Keycloak Endpoint'),
-              _textFieldtile(
-                  controller: settingsTextBoxController.keycloakRealmController,
-                  savedValue: settingsTextBoxController.savedKeycloakRealm,
-                  compareOrigin: compareOriginKeycloakRealm,
-                  labelText: 'Keycloak Realm'),
-              _textFieldtile(
-                  controller: settingsTextBoxController.keycloakClientController,
-                  savedValue: settingsTextBoxController.savedKeycloakClient,
-                  compareOrigin: compareOriginKeycloakClient,
-                  labelText: 'Keycloak Client'),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (!await mirvApi.testEndpoint(settingsTextBoxController.endpointController.value.text)) {
-                      Get.dialog(
-                        AlertDialog(
-                          title: const Text('Invalid Input'),
-                          content: const Text('Invalid Endpoint'),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('Okay'))
-                          ],
-                        ),
-                      );
-                    } else if (!await mirvApi.testEndpoint(settingsTextBoxController.keycloakEndpointController.value.text)) {
-                      Get.dialog(
-                        AlertDialog(
-                          title: const Text('Invalid Input'),
-                          content: const Text('Invalid Keycloak Endpoint'),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('Okay'))
-                          ],
-                        ),
-                      );
-                    } else {
-                      authService.setMirvEndpoint(settingsTextBoxController.endpointController.value.text);
-                      authService.setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.value.text);
+      body: Stack(
+        children: [
+          Scrollbar(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: ListView(
+                children: [
+                  _textFieldtile(
+                      controller: settingsTextBoxController.endpointController,
+                      savedValue: settingsTextBoxController.savedEndpoint,
+                      compareOrigin: compareOriginEndpoint,
+                      labelText: 'MIRV Cloud Api'),
+                  _textFieldtile(
+                      controller: settingsTextBoxController.keycloakEndpointController,
+                      savedValue: settingsTextBoxController.savedKeycloakEndpoint,
+                      compareOrigin: compareOriginKeycloakEndpoint,
+                      labelText: 'Keycloak Endpoint'),
+                  _textFieldtile(
+                      controller: settingsTextBoxController.keycloakRealmController,
+                      savedValue: settingsTextBoxController.savedKeycloakRealm,
+                      compareOrigin: compareOriginKeycloakRealm,
+                      labelText: 'Keycloak Realm'),
+                  _textFieldtile(
+                      controller: settingsTextBoxController.keycloakClientController,
+                      savedValue: settingsTextBoxController.savedKeycloakClient,
+                      compareOrigin: compareOriginKeycloakClient,
+                      labelText: 'Keycloak Client'),
+                  Obx(
+                    () => ElevatedButton(
+                        onPressed: compareOriginEndpoint.value &&
+                                compareOriginKeycloakEndpoint.value &&
+                                compareOriginKeycloakRealm.value &&
+                                compareOriginKeycloakClient.value
+                            ? null
+                            : () async {
+                                //pop ups
+                                loading.value = true;
+                                if (!await mirvApi.testEndpoint(settingsTextBoxController.endpointController.value.text)) {
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: const Text('Invalid Input'),
+                                      content: const Text('Invalid Endpoint'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: const Text('Okay'))
+                                      ],
+                                    ),
+                                  );
+                                } else if (!await mirvApi
+                                    .testEndpoint(settingsTextBoxController.keycloakEndpointController.value.text)) {
+                                  authService.setMirvEndpoint(settingsTextBoxController.endpointController.value.text);
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: const Text('Invalid Input'),
+                                      content: const Text('Invalid Keycloak Endpoint'),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            child: const Text('Okay'))
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  authService.setMirvEndpoint(settingsTextBoxController.endpointController.value.text);
+                                  authService
+                                      .setKeycloakEndpoint(settingsTextBoxController.keycloakEndpointController.value.text);
 
-                      authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.value.text);
-                      authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.value.text);
-                      settingsTextBoxController.savedEndpoint.value = authService.getMirvEndpoint();
-                      settingsTextBoxController.savedKeycloakEndpoint.value = authService.getKeycloakEndpoint();
-                      settingsTextBoxController.savedKeycloakRealm.value = authService.getKeycloakRealm();
-                      settingsTextBoxController.savedKeycloakClient.value = authService.getKeycloakClient();
+                                  authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.value.text);
+                                  authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.value.text);
+                                  //setting saved variable
+                                  settingsTextBoxController.savedEndpoint.value = authService.getMirvEndpoint();
+                                  settingsTextBoxController.savedKeycloakEndpoint.value = authService.getKeycloakEndpoint();
+                                  settingsTextBoxController.savedKeycloakRealm.value = authService.getKeycloakRealm();
+                                  settingsTextBoxController.savedKeycloakClient.value = authService.getKeycloakClient();
 
-                      compareOriginEndpoint.value = true;
-                      compareOriginKeycloakEndpoint.value = true;
-                      compareOriginKeycloakRealm.value = true;
-                      compareOriginKeycloakClient.value = true;
-                    }
-                  },
-                  child: const Text('Save'))
-            ],
+                                  compareOriginEndpoint.value = true;
+                                  compareOriginKeycloakEndpoint.value = true;
+                                  compareOriginKeycloakRealm.value = true;
+                                  compareOriginKeycloakClient.value = true;
+                                }
+                                loading.value = false;
+                              },
+                        child: const Text('Save')),
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+          Obx(() => loading.value
+              ? Center(
+                  child: Container(
+                      color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+              : const SizedBox.shrink())
+        ],
       ),
     );
   }
