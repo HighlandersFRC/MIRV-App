@@ -31,7 +31,7 @@ class GarageOperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // _mirvGarageApi.startGarageMetricUpdates(garage_id);
+    _mirvGarageApi.startGarageMetricUpdates(garage_id);
     return Scaffold(
       appBar: (GarageAppBar(
         garageMetricsObs: _mirvGarageApi.garageMetricsObs,
@@ -43,7 +43,8 @@ class GarageOperationPage extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Colors.grey,
               ),
-              child: Obx (() => GarageOperationMap(
+              child: Obx(
+                () => GarageOperationMap(
                   locationStream: locationStream,
                   garageMetrics: _mirvGarageApi.garageMetricsObs.value!,
                 ),

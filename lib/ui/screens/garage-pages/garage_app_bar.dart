@@ -16,13 +16,7 @@ class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(actions: [
-      Obx(
-        () => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GarageStatusBar(garageMetrics: garageMetricsObs.value!),
-        ),
-      ),
+    return AppBar(title: Obx(() => GarageStatusBar(garageMetrics: garageMetricsObs.value!)), actions: [
       ElevatedButton(
         onPressed: () => showDialog(
           context: context,

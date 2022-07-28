@@ -157,19 +157,18 @@ class MirvApi {
         "${authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
         additionalHeaders: {'Content-Type': 'application/json'});
 
-    // setStateInFunction(function: function);
     return response.statusCode == 200;
   }
 
-  // void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
-  //   garageMetricsUpdatesTimer = Timer.periodic(Duration(seconds: seconds), (timer) {
-  //     getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
-  //   });
-  // }
+  void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
+    garageMetricsUpdatesTimer = Timer.periodic(Duration(seconds: seconds), (timer) {
+      getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
+    });
+  }
 
-  // void stopGarageMetricUpdates() {
-  //   garageMetricsUpdatesTimer?.cancel();
-  // }
+  void stopGarageMetricUpdates() {
+    garageMetricsUpdatesTimer?.cancel();
+  }
 
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
@@ -183,15 +182,9 @@ class MirvApi {
       state = GarageStateType.retracted_unlatched;
     } else if (command == GarageCommands.deploy) {
       state = GarageStateType.deployed;
-    } else if (command == GarageCommands.disable) {
-      state = GarageStateType.disabled;
-    } else if (command == GarageCommands.enable) {
-      state = GarageStateType.enabled;
     } else {
       state = GarageStateType.unavailable;
     }
     garageMetricsObs.value = tempGarageMetrics?.copyWith(state: state);
   }
-
-
 }

@@ -1,1 +1,1 @@
-enum GarageStateType { retracted_unlatched, retracted_latched, deployed, disabled, unavailable, enabled }
+enum GarageStateType { retracted_unlatched, retracted_latched, deployed, unavailable,}

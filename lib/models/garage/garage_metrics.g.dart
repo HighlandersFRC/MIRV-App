@@ -34,7 +34,6 @@ const _$GarageStateTypeEnumMap = {
   GarageStateType.retracted_unlatched: 'retracted_unlatched',
   GarageStateType.retracted_latched: 'retracted_latched',
   GarageStateType.deployed: 'deployed',
-  GarageStateType.disabled: 'disabled',
   GarageStateType.unavailable: 'unavailable',
 };
 

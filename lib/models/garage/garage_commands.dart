@@ -31,14 +31,6 @@ Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
   ],
   GarageStateType.deployed: [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
-    Pair(GarageCommands.disable, Image.asset('assets/images/disabled.png')),
-  ],
-  GarageStateType.disabled: [
-    Pair(GarageCommands.enable, Image.asset('assets/images/enabled.png')),
-  ],
-  GarageStateType.enabled: [
-    Pair(GarageCommands.disable, Image.asset('assets/images/disabled.png')),
-    Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
   ],
   GarageStateType.retracted_unlatched: [
     Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),
