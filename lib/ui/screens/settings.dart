@@ -116,128 +116,23 @@ class SettingsPage extends StatelessWidget {
                   savedValue: settingsTextBoxController.savedEndpoint,
                   compareOrigin: compareOriginEndpoint,
                   labelText: 'MIRV Cloud Api'),
-              // ListTile(
-              //   title: Obx(
-              //     () => TextField(
-              //       controller: settingsTextBoxController.endpointController.value,
-              //       onChanged: (text) {
-              //         compareOriginEndpoint.value = settingsTextBoxController.savedEndpoint.value == text;
-              //       },
-              //       decoration: InputDecoration(
-              //         labelText: 'MIRV Cloud Endpoint:',
-              //         enabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: compareOriginEndpoint.value ? Colors.blue : Colors.red)),
-              //       ),
-              //     ),
-              //   ),
-              //   trailing: Obx(
-              //     () => ElevatedButton(
-              //         style: ButtonStyle(
-              //           backgroundColor:
-              //               MaterialStateProperty.all<Color>(compareOriginEndpoint.value ? Colors.grey : Colors.blue),
-              //         ),
-              //         onPressed: () {
-              //           compareOriginEndpoint.value
-              //               ? null
-              //               : settingsTextBoxController.endpointController.value.text = SettingsDefaults.endpoint;
-              //         },
-              //         child: Text('Reset')),
-              //   ),
-              // ),
-              // ListTile(
-              //   title: TextField(
-              //     controller: settingsTextBoxController.keycloakEndpointController.value,
-              //     decoration: InputDecoration(
-              //       labelText: 'Keycloak Endpoint:',
-              //       enabledBorder: UnderlineInputBorder(
-              //           borderSide: BorderSide(
-              //               color: settingsTextBoxController.savedKeycloakEndpoint.value ==
-              //                       settingsTextBoxController.keycloakEndpointController.value.text
-              //                   ? Colors.blue
-              //                   : Colors.red)),
-              //     ),
-              //     onChanged: (_) {
-              //       compareOriginKeycloakEndpoint.value = true;
-              //     },
-              //   ),
-              //   trailing: Obx(
-              //     () => ElevatedButton(
-              //         style: ButtonStyle(
-              //           backgroundColor:
-              //               MaterialStateProperty.all<Color>(compareOriginKeycloakEndpoint.value ? Colors.blue : Colors.grey),
-              //         ),
-              //         onPressed: () {
-              //           compareOriginKeycloakEndpoint.value
-              //               ? settingsTextBoxController.keycloakEndpointController.value.text = SettingsDefaults.keycloakEndpoint
-              //               : null;
-              //         },
-              //         child: Text('Reset')),
-              //   ),
-              // ),
-              // ListTile(
-              //   title: TextField(
-              //     controller: settingsTextBoxController.keycloakRealmController.value,
-              //     decoration: InputDecoration(
-              //       labelText: 'Keycloak Realm:',
-              //       enabledBorder: UnderlineInputBorder(
-              //           borderSide: BorderSide(
-              //               color: settingsTextBoxController.savedKeycloakRealm.value ==
-              //                       settingsTextBoxController.keycloakRealmController.value.text
-              //                   ? Colors.blue
-              //                   : Colors.red)),
-              //     ),
-              //     onChanged: (_) {
-              //       compareOriginKeycloakRealm.value = true;
-              //     },
-              //   ),
-              //   trailing: Obx(
-              //     () => ElevatedButton(
-              //         style: ButtonStyle(
-              //           backgroundColor:
-              //               MaterialStateProperty.all<Color>(compareOriginKeycloakRealm.value ? Colors.blue : Colors.grey),
-              //         ),
-              //         onPressed: () {
-              //           compareOriginKeycloakRealm.value
-              //               ? settingsTextBoxController.keycloakRealmController.value.text = SettingsDefaults.keycloakRealm
-              //               : null;
-              //         },
-              //         child: Text('Reset')),
-              //   ),
-              // ),
-              // ListTile(
-              //   title: TextField(
-              //     controller: settingsTextBoxController.keycloakClientController.value,
-              //     decoration: InputDecoration(
-              //       labelText: 'Keycloak Client:',
-              //       enabledBorder: UnderlineInputBorder(
-              //         borderSide: BorderSide(
-              //             color: settingsTextBoxController.savedKeycloakClient.value ==
-              //                     settingsTextBoxController.keycloakClientController.value.text
-              //                 ? Colors.blue
-              //                 : Colors.red),
-              //       ),
-              //     ),
-              //     onChanged: (_) {
-              //       settingsTextBoxController.savedKeycloakClient.value ==
-              //               settingsTextBoxController.keycloakClientController.value.text
-              //           ? compareOriginKeycloakClient.value = true
-              //           : compareOriginKeycloakClient.value = false;
-              //     },
-              //   ),
-              //   trailing: Obx(
-              //     () => ElevatedButton(
-              //         style: ButtonStyle(
-              //           backgroundColor:
-              //               MaterialStateProperty.all<Color>(compareOriginKeycloakClient.value ? Colors.blue : Colors.grey),
-              //         ),
-              //         onPressed: () {
-              //           compareOriginKeycloakClient.value
-              //               ? settingsTextBoxController.keycloakClientController.value.text = SettingsDefaults.keycloakClient
-              //               : null;
-              //         },
-              //         child: Text('Reset')),
-              //   ),
-              // ),
+                  _textFieldtile(
+                  controller: settingsTextBoxController.keycloakEndpointController,
+                  savedValue: settingsTextBoxController.savedKeycloakEndpoint,
+                  compareOrigin: compareOriginKeycloakEndpoint,
+                  labelText: 'Keycloak Endpoint'),
+                  _textFieldtile(
+                  controller: settingsTextBoxController.keycloakRealmController,
+                  savedValue: settingsTextBoxController.savedKeycloakRealm,
+                  compareOrigin: compareOriginKeycloakRealm,
+                  labelText: 'Keycloak Realm'),
+                  _textFieldtile(
+                  controller: settingsTextBoxController.keycloakClientController,
+                  savedValue: settingsTextBoxController.savedKeycloakClient,
+                  compareOrigin: compareOriginKeycloakClient,
+                  labelText: 'Keycloak Client'),
+                  
+
               ElevatedButton(
                   onPressed: () async {
                     if (!await mirvApi.testEndpoint(settingsTextBoxController.endpointController.value.text)) {
@@ -258,7 +153,7 @@ class SettingsPage extends StatelessWidget {
                       Get.dialog(
                         AlertDialog(
                           title: Text('Invalid Input'),
-                          content: Text('Invalid Endpoint'),
+                          content: Text('Invalid Keycloak Endpoint'),
                           actions: [
                             TextButton(
                                 onPressed: () {
