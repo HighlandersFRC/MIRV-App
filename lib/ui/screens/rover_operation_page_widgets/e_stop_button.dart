@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
@@ -41,10 +42,31 @@ class EStopButton extends StatelessWidget {
           ),
           onPressed: isEnabled == true
               ? () {
-                  sendCommand(RoverGeneralCommands.eStop);
+                 Get.dialog(
+                    AlertDialog(
+                      title: const Text('E Stop'),
+                      content: Text('Would you like to E Stop?'),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              sendCommand(RoverGeneralCommands.eStop);
+                              Get.back();
+                            },
+                            child: const Text('Yes')),
+                        TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text('No'))
+                      ],
+                    ),
+                  );
                 }
               : null,
           child: const Icon(Icons.warning_amber_rounded, size: 64, color: Colors.red),
         ));
   }
+
+
+ 
 }
