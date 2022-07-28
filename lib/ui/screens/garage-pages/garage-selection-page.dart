@@ -7,7 +7,6 @@ import 'package:mirv/models/place.dart';
 import 'package:location/location.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
-import 'package:mirv/ui/screens/garage-pages/garage_selection_map.dart';
 
 class SelectedGarageController extends GetxController {
   Rx<String> selectedGarageId = "".obs;
@@ -91,8 +90,7 @@ class GarageSelectionPage extends StatelessWidget {
       body: Row(
         children: [
           Obx(
-            () => SizedBox(
-              width: selectedGarageController.isGarageListMinimized.value ? 150 : 300,
+            () => Expanded(
               child: Stack(
                 children: [
                   RefreshIndicator(
@@ -201,26 +199,6 @@ class GarageSelectionPage extends StatelessWidget {
             color: Colors.black,
             width: 5,
           ),
-          Expanded(
-              child: Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                      height: 70,
-                      child: GarageSearchBar(
-                          selectedGarageController: selectedGarageController, typeAheadController: typeAheadController)),
-                  Expanded(
-                    child: Obx(
-                      // ignore: invalid_use_of_protected_member
-                      () => (GarageSelectionMap(
-                          garageList.value, selectedGarageController.selectedGarageId, selectedGarageController)),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ))
         ],
       ),
     );
