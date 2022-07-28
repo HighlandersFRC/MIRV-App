@@ -14,7 +14,7 @@ class RoverMetrics with _$RoverMetrics {
     required String rover_id,
     required RoverStateType state, //Rover StateType
     required DeviceStatusType status, //RoverStatusType
-    @Default(-1) int battery_voltage,
+    @Default(-1) double battery_voltage,
     required int battery_percent,
     required RoverMetricHealth health,
     required RoverMetricTelemetry telemetry,

@@ -25,7 +25,7 @@ mixin _$RoverMetrics {
       throw _privateConstructorUsedError; //Rover StateType
   DeviceStatusType get status =>
       throw _privateConstructorUsedError; //RoverStatusType
-  int get battery_voltage => throw _privateConstructorUsedError;
+  double get battery_voltage => throw _privateConstructorUsedError;
   int get battery_percent => throw _privateConstructorUsedError;
   RoverMetricHealth get health => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $RoverMetricsCopyWith<$Res> {
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
-      int battery_voltage,
+      double battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
       RoverMetricTelemetry telemetry});
@@ -88,7 +88,7 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
@@ -130,7 +130,7 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
-      int battery_voltage,
+      double battery_voltage,
       int battery_percent,
       RoverMetricHealth health,
       RoverMetricTelemetry telemetry});
@@ -178,7 +178,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
@@ -220,7 +220,7 @@ class _$_RoverMetrics implements _RoverMetrics {
 //RoverStatusType
   @override
   @JsonKey()
-  final int battery_voltage;
+  final double battery_voltage;
   @override
   final int battery_percent;
   @override
@@ -277,7 +277,7 @@ abstract class _RoverMetrics implements RoverMetrics {
       {required final String rover_id,
       required final RoverStateType state,
       required final DeviceStatusType status,
-      final int battery_voltage,
+      final double battery_voltage,
       required final int battery_percent,
       required final RoverMetricHealth health,
       required final RoverMetricTelemetry telemetry}) = _$_RoverMetrics;
@@ -292,7 +292,7 @@ abstract class _RoverMetrics implements RoverMetrics {
   @override //Rover StateType
   DeviceStatusType get status => throw _privateConstructorUsedError;
   @override //RoverStatusType
-  int get battery_voltage => throw _privateConstructorUsedError;
+  double get battery_voltage => throw _privateConstructorUsedError;
   @override
   int get battery_percent => throw _privateConstructorUsedError;
   @override
