@@ -22,6 +22,7 @@ class MirvApi {
   Rx<GarageMetrics?> garageMetricsObs = Rx<GarageMetrics?>(null);
   AuthService authService = AuthService();
   Rx<GarageCommandType?> garageCommandsObs = Rx<GarageCommandType?>(null);
+  final Duration _duration = const Duration(seconds: 5);
 
   MirvApi() {
     authService.init();
@@ -161,7 +162,14 @@ class MirvApi {
   }
 
   void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
-    garageMetricsUpdatesTimer = Timer.periodic(Duration(seconds: seconds), (timer) {
+    garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
+      getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
+    });
+  }
+
+  Future<void> resetGarageMetricsUpdates(String garage_id, {int seconds = 5}) async {
+    garageMetricsUpdatesTimer?.cancel();
+    garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
       getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
     });
   }

@@ -48,6 +48,7 @@ class GarageOperationPage extends StatelessWidget {
                   garageMetrics: _mirvGarageApi.garageMetricsObs.value!,
                   sendCommand: _mirvGarageApi.sendGarageCommand,
                   changeGarageState: _mirvGarageApi.updateGarageState,
+                  resetGarageState: _mirvGarageApi.resetGarageMetricsUpdates(garage_id),
                 ),
               ),
             ),
