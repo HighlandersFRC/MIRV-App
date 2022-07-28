@@ -43,7 +43,6 @@ class GarageCommandList extends StatelessWidget {
                 onPressed: () {
                   sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
                   changeGarageState(garageMetrics.garage_id, garageCommandList[index].first);
-                  changeGarageState(garageMetrics.garage_id, garageCommandList[index].first);
                 },
               )),
             ),
