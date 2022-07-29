@@ -3,7 +3,7 @@ description: Rover control application
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -29,7 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
 
   freezed_annotation: ^2.0.3
   json_annotation: ^4.5.0
@@ -55,10 +54,9 @@ dependencies:
   flutter_typeahead: ^4.0.0
 
   google_fonts: ^3.0.1
-
+  fluttertoast: ^8.0.9
   flutter_webrtc: ^0.8.10
   settings_ui: ^2.0.2
-  fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
   ionicons: ^0.1.2
 
@@ -68,19 +66,16 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.9.3
 
-flutter_icons: 
+flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/rover_app_icon.png"
-
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

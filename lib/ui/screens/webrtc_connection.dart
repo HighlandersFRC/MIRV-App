@@ -17,8 +17,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
-
 class JoystickValue extends Observable {
   final double x;
   final double y;
@@ -282,14 +280,10 @@ class WebRTCConnection {
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-          Fluttertoast.showToast(
-            msg: "Connected",
-          );
+          get_pkg.Get.snackbar("Connected", '');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          Fluttertoast.showToast(
-            msg: "Connecting",
-          );
+          get_pkg.Get.snackbar("Connecting", '');
           break;
         case null:
           //most times this case is here when loading or connecting
@@ -304,14 +298,10 @@ class WebRTCConnection {
           _showReconnectDialog('Invalid Data Channel State', rover_id);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
-          Fluttertoast.showToast(
-            msg: "Connection",
-          );
+          get_pkg.Get.snackbar("Connection", '');
           break;
         case RTCDataChannelState.RTCDataChannelOpen:
-          Fluttertoast.showToast(
-            msg: "Connected",
-          );
+          get_pkg.Get.snackbar("Connected", '');
           break;
         case null:
           break;

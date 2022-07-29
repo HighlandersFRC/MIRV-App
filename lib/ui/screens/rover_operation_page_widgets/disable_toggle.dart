@@ -63,7 +63,7 @@ class ToggleDisable extends StatelessWidget {
                   default:
                 }
               },
-        child: enabled == true ? const Icon(Ionicons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
+        child: enabled == true ? const Icon(Icons.power_sharp, size: 52.5) : const Icon(Icons.play_circle_outline, size: 70),
       ),
     );
   }

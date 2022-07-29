@@ -57,20 +57,20 @@ class AuthService {
     return sessionStorageService.saveKeycloakClient(keyCloakClient);
   }
 
-  String? getMirvEndpoint() {
-    return sessionStorageService.retrieveMirvEndpoint();
+  String getMirvEndpoint() {
+    return sessionStorageService.retrieveMirvEndpoint() ?? '';
   }
 
-  String? getKeycloakEndpoint() {
-    return sessionStorageService.retrieveKeycloakEndpoint();
+  String getKeycloakEndpoint() {
+    return sessionStorageService.retrieveKeycloakEndpoint() ?? '';
   }
 
-  String? getKeycloakRealm() {
-    return sessionStorageService.retrieveKeycloakRealm();
+  String getKeycloakRealm() {
+    return sessionStorageService.retrieveKeycloakRealm() ?? '';
   }
 
-  String? getKeycloakClient() {
-    return sessionStorageService.retrieveKeycloakClient();
+  String getKeycloakClient() {
+    return sessionStorageService.retrieveKeycloakClient() ?? '';
   }
 
   String? getKeycloakAccessToken() {

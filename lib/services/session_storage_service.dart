@@ -15,7 +15,6 @@ class SessionStorageService {
 //call init everytime with class
   init() async {
     _prefs = await SharedPreferences.getInstance();
-
     if (retrieveMirvEndpoint() == null) {
       saveMirvEndpoint('http://20.9.96.89:8080');
     }
