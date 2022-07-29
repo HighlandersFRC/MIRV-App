@@ -97,27 +97,30 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               peerConnectionState: peerConnectionState,
             ),
           ),
-          ElevatedButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        return Navigator.pop(context);
-                      },
-                      child: const Text('Close'),
-                    )
-                  ],
-                );
-              },
-            ),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
-            child: const Text(
-              " Status ",
-              textScaleFactor: 2.5,
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: ElevatedButton(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          return Navigator.pop(context);
+                        },
+                        child: const Text('Close'),
+                      )
+                    ],
+                  );
+                },
+              ),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+              child: const Text(
+                " Status ",
+                textScaleFactor: 2.5,
+              ),
             ),
           )
         ]);

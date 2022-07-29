@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/info_page.dart';
 import 'package:mirv/ui/screens/login_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.info_outline_rounded),
               onTap: () {
                 Get.to(const InfoPage());
-              })
+              }),
         ],
       ),
     );

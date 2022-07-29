@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/models/rover_health_type.dart';
@@ -15,13 +16,13 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics?.health.sensors, "sensors"),
-        HealthContainer(roverMetrics?.health.electronics, "electronics"),
-        HealthContainer(roverMetrics?.health.drivetrain, "drivetrain"),
-        HealthContainer(roverMetrics?.health.garage, "garage"),
-        HealthContainer(roverMetrics?.health.intake, "intake"),
-        HealthContainer(roverMetrics?.health.power, "power"),
-        HealthContainer(roverMetrics?.health.general, "general"),
+        HealthContainer(roverMetrics?.health.sensors, "Sensors"),
+        HealthContainer(roverMetrics?.health.electronics, "Electronics"),
+        HealthContainer(roverMetrics?.health.drivetrain, "Drivetrain"),
+        HealthContainer(roverMetrics?.health.garage, "Garage"),
+        HealthContainer(roverMetrics?.health.intake, "Intake"),
+        HealthContainer(roverMetrics?.health.power, "Power"),
+        HealthContainer(roverMetrics?.health.general, "General"),
       ],
     );
   }
@@ -29,81 +30,141 @@ class StatusPage extends StatelessWidget {
 
 class HealthContainer extends StatelessWidget {
   late final RoverHealthType roverHealthType;
+  final RoverMetrics? roverMetrics;
+
   final String name;
-  HealthContainer(RoverHealthType? roverHealthTypeTemp, this.name, {Key? key}) : super(key: key) {
+  HealthContainer(RoverHealthType? roverHealthTypeTemp, this.name, {Key? key, this.roverMetrics}) : super(key: key) {
     roverHealthType = roverHealthTypeTemp ?? RoverHealthType.unavailable;
   }
 
   @override
   Widget build(BuildContext context) {
+    // var healthWidgetList = <Widget>[HealthContainer(roverMetrics?.health, name)];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          height: 150,
-          width: 1500,
-          padding: const EdgeInsets.only(top: 0),
-          decoration: BoxDecoration(
-            backgroundBlendMode: BlendMode.colorBurn,
-            boxShadow: [
-              BoxShadow(
-                color: roverHealthType.color1,
-                spreadRadius: -5,
-                blurRadius: 20,
-                offset: const Offset(-5, 5),
-              ),
-              const BoxShadow(
-                  color: Color.fromARGB(255, 250, 250, 250), offset: Offset(10, -10), blurRadius: 55, spreadRadius: 5),
-            ],
-            gradient: LinearGradient(
-              begin: Alignment.center,
-              end: Alignment.bottomLeft,
-              colors: [
-                roverHealthType.color4,
-                roverHealthType.color3,
-                roverHealthType.color2,
-                roverHealthType.color1,
+        //   Container(
+        // height: 150,
+        // width: 1500,
+        //     padding: const EdgeInsets.only(top: 0),
+        //     color: Colors.green,
+        //     child:
+
+        ElevatedButton(
+          onPressed: () {
+            Get.dialog(AlertDialog(
+              title: Text('$name Status'),
+              content: Text('Rover is ${roverHealthType.toString().replaceAll('RoverHealthType.', '')}.'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('Close')),
               ],
+            ));
+
+            // if (HealthContainer == HealthContainer(roverMetrics?.health.sensors, 'sensors')) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Sensor Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer == roverMetrics?.health.electronics) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Electronic Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer == roverMetrics?.health.drivetrain) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Drivetrain Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer == roverMetrics?.health.garage) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Garage Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer == roverMetrics?.health.intake) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Intake Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer == roverMetrics?.health.power) {
+            //   Get.dialog(AlertDialog(
+            //     title: const Text('Power Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // } else if (HealthContainer ==roverMetrics?.health.general) {
+            //    Get.dialog(AlertDialog(
+            //     title: const Text('General Status'),
+            //     content: Text('Rover is ${roverHealthType.toString()}'),
+            //     actions: [
+            //       TextButton(
+            //           onPressed: () {
+            //             Get.back();
+            //           },
+            //           child: const Text('Close')),
+            //     ],
+            //   ));
+            // }
+          },
+          style: ButtonStyle(
+            backgroundColor: roverHealthType.color1,
+            shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(),
             ),
-            borderRadius: const BorderRadius.all(
-              Radius.elliptical(30, 25),
+            fixedSize: MaterialStateProperty.all(
+              const Size(150, 150),
             ),
+            alignment: Alignment.center,
           ),
-          child: ElevatedButton(
-            onPressed: () {
-              // ignore: todo
-              // TODO: Make these not buttons
-            },
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(30, 25),
-                  ),
-                ),
-              ),
-              fixedSize: MaterialStateProperty.all(
-                const Size(20, 20),
-              ),
-              overlayColor: MaterialStateProperty.all(roverHealthType.color5),
-              alignment: Alignment.center,
-              shadowColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 0, 0, 0),
-              ),
-              backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 128, 123, 123),
-              ),
-              foregroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 0, 0, 0),
-              ),
-            ),
-            child: Text(
-              name,
-              style: GoogleFonts.play(),
-              textScaleFactor: 1.9,
-            ),
+          child: Text(
+            name,
           ),
         ),
+        //   ),
       ],
     );
   }
