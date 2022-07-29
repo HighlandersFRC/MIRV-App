@@ -42,7 +42,7 @@ class SelectedRoverController extends GetxController {
     } else {
       switch (value) {
         case DeviceStatusType.available:
-          return Colors.white;
+          return tileColor;
 
         case DeviceStatusType.unavailable:
           return Colors.grey;
@@ -199,9 +199,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         padding: const EdgeInsets.all(4.0),
                         child: Obx(
                           () => ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    selectedRoverController.isConnectButtonEnabled.value ? primaryColor : Colors.grey)),
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
                                     Get.to(RoverOperationPage(roverList.firstWhere(

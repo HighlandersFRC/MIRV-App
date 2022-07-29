@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
 import 'package:location/location.dart';
@@ -32,9 +33,9 @@ class SelectedGarageController extends GetxController {
     String garage_id,
   ) {
     if (selectedGarageId.value == garage_id) {
-      return Colors.blue;
+      return primaryColor;
     } else {
-      return Colors.white;
+      return tileColor;
     }
   }
 }
@@ -66,7 +67,6 @@ class GarageSelectionPage extends StatelessWidget {
     selectedGarageController.isGarageListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: const Text(
           "Garage Selection",
@@ -135,16 +135,16 @@ class GarageSelectionPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
-                                  Get.to(() => (GarageOperationPage(
-                                        garageList.firstWhere(
-                                          (element) => selectedGarageController.selectedGarageId.value == element.garage_id,
-                                        ),
-                                      )));
+                                  Get.to(
+                                    () => (GarageOperationPage(
+                                      garageList.firstWhere(
+                                        (element) => selectedGarageController.selectedGarageId.value == element.garage_id,
+                                      ),
+                                    )),
+                                  );
                                 }
                               : null,
                           child: Row(
