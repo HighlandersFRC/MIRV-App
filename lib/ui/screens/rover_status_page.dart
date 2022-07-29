@@ -39,17 +39,9 @@ class HealthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var healthWidgetList = <Widget>[HealthContainer(roverMetrics?.health, name)];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        //   Container(
-        // height: 150,
-        // width: 1500,
-        //     padding: const EdgeInsets.only(top: 0),
-        //     color: Colors.green,
-        //     child:
-
         ElevatedButton(
           onPressed: () {
             Get.dialog(AlertDialog(
@@ -63,98 +55,15 @@ class HealthContainer extends StatelessWidget {
                     child: const Text('Close')),
               ],
             ));
-
-            // if (HealthContainer == HealthContainer(roverMetrics?.health.sensors, 'sensors')) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Sensor Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer == roverMetrics?.health.electronics) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Electronic Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer == roverMetrics?.health.drivetrain) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Drivetrain Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer == roverMetrics?.health.garage) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Garage Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer == roverMetrics?.health.intake) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Intake Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer == roverMetrics?.health.power) {
-            //   Get.dialog(AlertDialog(
-            //     title: const Text('Power Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // } else if (HealthContainer ==roverMetrics?.health.general) {
-            //    Get.dialog(AlertDialog(
-            //     title: const Text('General Status'),
-            //     content: Text('Rover is ${roverHealthType.toString()}'),
-            //     actions: [
-            //       TextButton(
-            //           onPressed: () {
-            //             Get.back();
-            //           },
-            //           child: const Text('Close')),
-            //     ],
-            //   ));
-            // }
           },
           style: ButtonStyle(
             backgroundColor: roverHealthType.color1,
             shape: MaterialStateProperty.all(
-              const RoundedRectangleBorder(),
-            ),
+              const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+            ),),
             fixedSize: MaterialStateProperty.all(
               const Size(150, 150),
             ),
@@ -164,7 +73,6 @@ class HealthContainer extends StatelessWidget {
             name,
           ),
         ),
-        //   ),
       ],
     );
   }
