@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 const errorColor = Color(0xFFFF2800);
 const onErrorColor = Color.fromARGB(255, 255, 193, 182);
 
-const secondaryColor = Color(0xFFF27F0C);
-const secondaryColorLight = Color(0xFFF7ad19);
-const secondaryColordark = Color.fromARGB(255, 196, 83, 12);
-const primaryColor = Color(0xFF429EBD);
-const primaryColorLight = Color(0xFF9FE7F5);
-const primaryColordark = Color(0xFF053F5C);
+const primaryColor = Color(0xFFF27F0C);
+const primaryColorLight = Color(0xFFF7ad19);
+const primaryColordark = Color.fromARGB(255, 196, 83, 12);
+const secondaryColor = Color(0xFF429EBD);
+const secondaryColorLight = Color(0xFF9FE7F5);
+const secondaryColordark = Color(0xFF053F5C);
 
-const backgroundColor = Colors.grey;
+const backgroundColor = Color(0xFF053F5C);
 const loadingColor = Colors.grey;
-const surface = primaryColor;
-const onSuface = fontColor;
+const surface = primaryColordark;
+const onSuface = primaryColor;
 
 const fontColor = Colors.white;
 const fontFamily = 'Georgia';
 
 final ThemeData overallTheme = ThemeData(
+  appBarTheme: AppBarTheme(
+    centerTitle: true,
+  ),
   fontFamily: fontFamily,
   colorScheme: const ColorScheme(
       brightness: Brightness.dark,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover_metrics.dart';
 import 'package:location/location.dart';
@@ -37,7 +38,7 @@ class SelectedRoverController extends GetxController {
     RoverStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
-      return Colors.blue;
+      return secondaryColor;
     } else {
       switch (value) {
         case RoverStatusType.available:
@@ -107,7 +108,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     selectedRoverController.isRoverListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: const Text(
           "Rover Selection",
@@ -195,7 +195,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                           () => ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all<Color>(
-                                    selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
+                                    selectedRoverController.isConnectButtonEnabled.value ? primaryColor : Colors.grey)),
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
                                     Get.to(RoverOperationPage(roverList.firstWhere(

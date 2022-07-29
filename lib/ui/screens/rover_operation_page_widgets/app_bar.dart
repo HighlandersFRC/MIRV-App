@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover_state_type.dart';
 import 'package:mirv/models/rover_metrics.dart';
 
@@ -47,6 +48,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+        foregroundColor: Color.fromARGB(0, 255, 255, 255),
         leadingWidth: 200,
         leading: Container(
           child: Padding(
@@ -114,7 +117,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               },
             ),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(secondaryColor)),
             child: const Text(
               " Status ",
               textScaleFactor: 2.5,
