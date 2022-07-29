@@ -22,18 +22,19 @@ import 'package:rxdart/subjects.dart';
 import 'webrtc_connection.dart';
 
 class RoverOperationPage extends StatelessWidget {
- final RoverMetrics roverMetrics;
+  final RoverMetrics roverMetrics;
 
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
 
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
-  final BehaviorSubject<LatLng> locationStream =
-      BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
+  final BehaviorSubject<LatLng> locationStream = BehaviorSubject<LatLng>.seeded(
+      const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
 
   @override
   Widget build(BuildContext context) {
-    webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
+    webRTCConnection.roverMetricsObs.listen((val) =>
+        manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
     // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
@@ -98,7 +99,8 @@ class RoverOperationPage extends StatelessWidget {
             Obx(() => Positioned(
                   bottom: 20,
                   left: manualOperation.value ? 650 : 400,
-                  child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
+                  child: Obx(() =>
+                      TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
             Obx(
               () => Positioned(
@@ -138,16 +140,20 @@ class RoverOperationPage extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(50, 50, 50, 0.5)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Color.fromRGBO(50, 50, 50, 0.5)),
                               shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
+                                  const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(16))))),
                           child: const Icon(
                             CupertinoIcons.antenna_radiowaves_left_right,
                             size: 50,
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                            webRTCConnection.sendRoverCommand(
+                                RoverGeneralCommands.enableRemoteOperation);
                           },
                         ),
                       ))),
@@ -155,7 +161,9 @@ class RoverOperationPage extends StatelessWidget {
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(
-                        color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+                        color: const Color.fromRGBO(51, 53, 42, 42),
+                        child:
+                            const Center(child: CircularProgressIndicator())))
                 : const SizedBox.shrink())
           ],
         ),

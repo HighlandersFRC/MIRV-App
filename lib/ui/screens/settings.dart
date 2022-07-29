@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -78,7 +79,7 @@ class SettingsPage extends StatelessWidget {
           },
           decoration: InputDecoration(
             labelText: labelText,
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: compareOrigin.value ? Colors.blue : Colors.red)),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: compareOrigin.value ? secondaryColor : Colors.red)),
           ),
         ),
       ),
@@ -244,9 +245,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           Obx(() => loading.value
-              ? Center(
-                  child: Container(
-                      color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+              ? Center(child: Container(color: loadingColor, child: const Center(child: CircularProgressIndicator())))
               : const SizedBox.shrink())
         ],
       ),

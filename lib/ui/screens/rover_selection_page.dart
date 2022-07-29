@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
@@ -37,11 +38,11 @@ class SelectedRoverController extends GetxController {
     DeviceStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
-      return Colors.blue;
+      return secondaryColor;
     } else {
       switch (value) {
         case DeviceStatusType.available:
-          return Colors.white;
+          return tileColor;
 
         case DeviceStatusType.unavailable:
           return Colors.grey;
@@ -113,7 +114,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     selectedRoverController.isRoverListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: const Text(
           "Rover Selection",
@@ -199,9 +199,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         padding: const EdgeInsets.all(4.0),
                         child: Obx(
                           () => ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    selectedRoverController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
                                 ? () {
                                     Get.to(RoverOperationPage(roverList.firstWhere(

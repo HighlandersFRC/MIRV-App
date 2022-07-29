@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/home_page.dart';
@@ -46,42 +47,46 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+        foregroundColor: Color.fromARGB(0, 255, 255, 255),
         leadingWidth: 200,
-        leading: Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton.icon(
-            icon: const Icon(Icons.call_end_rounded, size: 30, color: Color.fromARGB(255, 255, 255, 255)),
-            label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
+        leading: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.call_end_rounded, size: 30, color: Color.fromARGB(255, 255, 255, 255)),
+              label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
                 ),
+                backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
               ),
-              backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
-            ),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Disconnect?'),
-                  content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () {
-                          stopCall();
-                          Navigator.pop(context);
-                          get_pkg.Get.offAll(() => const HomePage());
-                        },
-                        child: const Text('Yes')),
-                    TextButton(
-                        onPressed: () {
-                          return Navigator.pop(context);
-                        },
-                        child: const Text('No'))
-                  ],
-                );
-              },
+              onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Disconnect?'),
+                    content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () {
+                            stopCall();
+                            Navigator.pop(context);
+                            get_pkg.Get.offAll(() => const HomePage());
+                          },
+                          child: const Text('Yes')),
+                      TextButton(
+                          onPressed: () {
+                            return Navigator.pop(context);
+                          },
+                          child: const Text('No'))
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -94,30 +99,27 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               peerConnectionState: peerConnectionState,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: ElevatedButton(
-              onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          return Navigator.pop(context);
-                        },
-                        child: const Text('Close'),
-                      )
-                    ],
-                  );
-                },
-              ),
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
-              child: const Text(
-                " Status ",
-                textScaleFactor: 2.5,
-              ),
+          ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        return Navigator.pop(context);
+                      },
+                      child: const Text('Close'),
+                    )
+                  ],
+                );
+              },
+            ),
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(secondaryColor)),
+            child: const Text(
+              " Status ",
+              textScaleFactor: 2.5,
             ),
           )
         ]);
