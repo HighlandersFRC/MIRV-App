@@ -16,13 +16,12 @@ class DeviceHealth with _$DeviceHealth {
 
 enum DeviceHealthType { healthy, unhealthy, degraded, unavailable }
 
-extension RoverHealthTypeColor1 on DeviceHealthType {
-  Color get color1 {
-    var invalid1 = const Color.fromARGB(215, 115, 115, 115);
-    var healthy1 = const Color.fromARGB(215, 0, 125, 0);
-    var unhealthy1 = const Color.fromARGB(215, 135, 145, 0);
-    var degraded1 = const Color.fromARGB(215, 120, 0, 0);
-
+extension DeviceHealthTypeColor1 on DeviceHealthType {
+  MaterialStateProperty<Color> get color1 {
+    var invalid1 = MaterialStateProperty.all(Color.fromARGB(125, 103, 109, 105));
+    var healthy1 = MaterialStateProperty.all(Color.fromARGB(125, 21, 117, 58));
+    var unhealthy1 = MaterialStateProperty.all(Color.fromARGB(163, 238, 205, 19));
+    var degraded1 = MaterialStateProperty.all(Color.fromARGB(124, 190, 18, 18));
     switch (this) {
       case DeviceHealthType.healthy:
         return healthy1;

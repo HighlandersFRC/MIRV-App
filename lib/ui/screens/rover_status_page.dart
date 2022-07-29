@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/models/device_health.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-import 'package:mirv/models/rover_health_type.dart';
 
 class StatusPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -30,12 +29,12 @@ class StatusPage extends StatelessWidget {
 }
 
 class HealthContainer extends StatelessWidget {
-  late final RoverHealthType roverHealthType;
-  final RoverMetrics? roverMetrics;
   late DeviceHealth subsystemHealth;
+  late final DeviceHealthType deviceHealthType;
 
   final String name;
-  HealthContainer(this.subsystemHealth, this.name, {Key? key, this.roverMetrics}) : super(key: key) {}
+  HealthContainer(this.subsystemHealth, this.name, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +44,7 @@ class HealthContainer extends StatelessWidget {
           onPressed: () {
             Get.dialog(AlertDialog(
               title: Text('$name Status'),
-              content: Text('Rover is ${roverHealthType.toString().replaceAll('RoverHealthType.', '')}.'),
+              content: Text('Rover is ${subsystemHealth.toString().replaceAll('RoverHealthType.', '')}.'),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -56,7 +55,7 @@ class HealthContainer extends StatelessWidget {
             ));
           },
           style: ButtonStyle(
-            backgroundColor: roverHealthType.color1,
+            backgroundColor: deviceHealthType.color1,
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
