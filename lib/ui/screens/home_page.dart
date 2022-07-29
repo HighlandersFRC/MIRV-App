@@ -9,7 +9,6 @@ import 'package:mirv/ui/screens/rover_selection_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {
-  
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class HomePage extends StatelessWidget {
               title: const Text('Garage Selection Page'),
               leading: const Icon(Icons.people),
               onTap: () {
-                Get.to(LoginPage(GarageSelectionPage( )));
+                Get.to(LoginPage(GarageSelectionPage()));
               }),
           ListTile(
               title: const Text('Settings'),

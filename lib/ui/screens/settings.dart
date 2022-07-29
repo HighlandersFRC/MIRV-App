@@ -61,6 +61,9 @@ class SettingsPage extends StatelessWidget {
 
   late GarageMetrics garageMetrics;
 
+  
+  late MirvApi mirvApi = MirvApi();
+
   ListTile _textFieldtile(
       {required Rx<TextEditingController> controller,
       required Rx<String> savedValue,

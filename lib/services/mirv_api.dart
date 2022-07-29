@@ -97,15 +97,6 @@ class MirvApi {
     return (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
   }
 
-  Future<bool> testEndpoint(String endpoint) async {
-    try {
-      var response = await http.get(Uri.parse(endpoint)).timeout(const Duration(seconds: 2));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<http.StreamedResponse> startRoverConnection(String rover_id, RTCSessionDescription? des) async {
     String? token = _getCurrentAuthToken();
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};

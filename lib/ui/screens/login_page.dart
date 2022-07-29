@@ -68,7 +68,9 @@ class LoginController extends GetxController {
 }
 
 class LoginPage extends StatelessWidget {
-  LoginController controller = LoginController();
+  late LoginController controller = LoginController(pageRoute);
+  final Widget pageRoute;
+  LoginPage(this.pageRoute);
   Rx<bool> _isObscure = true.obs;
 
   @override
