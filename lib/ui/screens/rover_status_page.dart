@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:mirv/models/device_health.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_health_type.dart';
-import 'package:mirv/models/rover_metrics.dart';
 
 class StatusPage extends StatelessWidget {
-  final RoverMetrics? roverMetrics;
+  final RoverMetrics roverMetrics;
   const StatusPage(this.roverMetrics, {Key? key}) : super(key: key);
 
   @override
@@ -16,13 +17,13 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics?.health.sensors, "Sensors"),
-        HealthContainer(roverMetrics?.health.electronics, "Electronics"),
-        HealthContainer(roverMetrics?.health.drivetrain, "Drivetrain"),
-        HealthContainer(roverMetrics?.health.garage, "Garage"),
-        HealthContainer(roverMetrics?.health.intake, "Intake"),
-        HealthContainer(roverMetrics?.health.power, "Power"),
-        HealthContainer(roverMetrics?.health.general, "General"),
+        HealthContainer(roverMetrics.subsystems.sensors, "sensors"),
+        HealthContainer(roverMetrics.subsystems.electronics, "electronics"),
+        HealthContainer(roverMetrics.subsystems.drivetrain, "drivetrain"),
+        HealthContainer(roverMetrics.subsystems.garage, "garage"),
+        HealthContainer(roverMetrics.subsystems.intake, "intake"),
+        HealthContainer(roverMetrics.subsystems.power, "power"),
+        HealthContainer(roverMetrics.subsystems.general, "general"),
       ],
     );
   }
@@ -31,12 +32,10 @@ class StatusPage extends StatelessWidget {
 class HealthContainer extends StatelessWidget {
   late final RoverHealthType roverHealthType;
   final RoverMetrics? roverMetrics;
+  late DeviceHealth subsystemHealth;
 
   final String name;
-  HealthContainer(RoverHealthType? roverHealthTypeTemp, this.name, {Key? key, this.roverMetrics}) : super(key: key) {
-    roverHealthType = roverHealthTypeTemp ?? RoverHealthType.unavailable;
-  }
-
+  HealthContainer(this.subsystemHealth, this.name, {Key? key, this.roverMetrics}) : super(key: key) {}
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,10 +59,11 @@ class HealthContainer extends StatelessWidget {
             backgroundColor: roverHealthType.color1,
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-            ),),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+            ),
             fixedSize: MaterialStateProperty.all(
               const Size(150, 150),
             ),

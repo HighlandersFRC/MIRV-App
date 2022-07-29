@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
 
@@ -58,7 +59,10 @@ class SettingsPage extends StatelessWidget {
 
   AuthService authService = AuthService();
 
-  final MirvApi mirvApi = MirvApi();
+  late GarageMetrics garageMetrics;
+
+  
+  late MirvApi mirvApi = MirvApi();
 
   ListTile _textFieldtile(
       {required Rx<TextEditingController> controller,

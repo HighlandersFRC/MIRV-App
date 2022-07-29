@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 
 part 'rover_command.freezed.dart';
 part 'rover_command.g.dart';

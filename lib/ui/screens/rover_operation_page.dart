@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/constants/theme_data.dart';
-import 'package:mirv/models/pi_lit.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -23,23 +22,18 @@ import 'package:rxdart/subjects.dart';
 import 'webrtc_connection.dart';
 
 class RoverOperationPage extends StatelessWidget {
-  final RoverMetrics roverMetrics;
+ final RoverMetrics roverMetrics;
 
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
 
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
-  final List<PiLit> piLitMarkers = [
-    const PiLit(id: 'piLit1', description: 'Pi-lit device', location: LatLng(40.47399235127373, -104.96957682073116)),
-    const PiLit(id: 'piLit2', description: 'Pi-lit device', location: LatLng(40.474025762131475, -104.9695798382163)),
-    const PiLit(id: 'piLit3', description: 'Pi-lit device', location: LatLng(40.47405381703737, -104.96958520263433)),
-    const PiLit(id: 'piLit4', description: 'Pi-lit device', location: LatLng(40.47408365724258, -104.96959090232849))
-  ];
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
-  late Rx<bool> manualOperation = true.obs;
+  late Rx<bool> manualOperation = false.obs;
 
   @override
   Widget build(BuildContext context) {
+    webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
     // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
@@ -52,8 +46,6 @@ class RoverOperationPage extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            // ignore: todo
-            // TODO: This throws exception
             Center(
               child: Container(
                 decoration: const BoxDecoration(
@@ -116,8 +108,7 @@ class RoverOperationPage extends StatelessWidget {
                 width: 300,
                 child: RoverOperationMap(
                   locationStream: locationStream,
-                  piLitMarkers: piLitMarkers,
-                  selectedRoverMetrics: roverMetrics,
+                  roverMetrics: roverMetrics,
                 ),
               ),
             ),
