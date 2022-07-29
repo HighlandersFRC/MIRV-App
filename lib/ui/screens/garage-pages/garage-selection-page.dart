@@ -135,7 +135,6 @@ class GarageSelectionPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
                                   Get.to(

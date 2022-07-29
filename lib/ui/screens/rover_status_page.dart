@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/models/device_health.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-import 'package:mirv/models/rover_health_type.dart';
+// import 'package:mirv/models/device_health';
 
 class StatusPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -30,7 +30,7 @@ class StatusPage extends StatelessWidget {
 }
 
 class HealthContainer extends StatelessWidget {
-  late final RoverHealthType roverHealthType;
+  // late final RoverHealthType roverHealthType;
   final RoverMetrics? roverMetrics;
   late DeviceHealth subsystemHealth;
 
@@ -45,7 +45,7 @@ class HealthContainer extends StatelessWidget {
           onPressed: () {
             Get.dialog(AlertDialog(
               title: Text('$name Status'),
-              content: Text('Rover is ${roverHealthType.toString().replaceAll('RoverHealthType.', '')}.'),
+              // content: Text('Rover is ${roverHealthType.toString().replaceAll('RoverHealthType.', '')}.'),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -56,7 +56,7 @@ class HealthContainer extends StatelessWidget {
             ));
           },
           style: ButtonStyle(
-            backgroundColor: roverHealthType.color1,
+            // backgroundColor: roverHealthType.color1,
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
