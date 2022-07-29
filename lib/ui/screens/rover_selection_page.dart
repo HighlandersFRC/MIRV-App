@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
@@ -60,7 +59,7 @@ class RoverSelectionPage extends StatefulWidget {
 
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final selectedRoverController = Get.put(SelectedRoverController());
-   late GarageMetrics garageMetrics;
+  late GarageMetrics garageMetrics;
 
   late MirvApi mirvApi = MirvApi();
   Location location = Location();
@@ -76,29 +75,33 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
   double roverListWidth = 300;
 
-  Icon _batteryIcon(int batteryLevel, {int? alertLevel}) {
+  Icon _batteryIcon(int? batteryLevel, {int? alertLevel}) {
+    double size = 40;
+    if (batteryLevel == null) {
+      return Icon(Icons.battery_unknown_rounded, size: size);
+    }
     double divisor = 100 / 7;
     int result = (batteryLevel / divisor).ceil();
     if (alertLevel != null && batteryLevel < alertLevel) {
-      return const Icon(Icons.battery_alert_rounded);
+      return Icon(Icons.battery_alert_rounded, size: size);
     }
     switch (result) {
       case 0:
-        return const Icon(Icons.battery_0_bar_rounded);
+        return Icon(Icons.battery_0_bar_rounded, size: size);
       case 1:
-        return const Icon(Icons.battery_1_bar_rounded);
+        return Icon(Icons.battery_1_bar_rounded, size: size);
       case 2:
-        return const Icon(Icons.battery_2_bar_rounded);
+        return Icon(Icons.battery_2_bar_rounded, size: size);
       case 3:
-        return const Icon(Icons.battery_3_bar_rounded);
+        return Icon(Icons.battery_3_bar_rounded, size: size);
       case 4:
-        return const Icon(Icons.battery_4_bar_rounded);
+        return Icon(Icons.battery_4_bar_rounded, size: size);
       case 5:
-        return const Icon(Icons.battery_5_bar_rounded);
+        return Icon(Icons.battery_5_bar_rounded, size: size);
       case 6:
-        return const Icon(Icons.battery_6_bar_rounded);
+        return Icon(Icons.battery_6_bar_rounded, size: size);
       default:
-        return const Icon(Icons.battery_full_rounded);
+        return Icon(Icons.battery_full_rounded, size: size);
     }
   }
 
@@ -177,7 +180,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                _batteryIcon(roverList[index].battery_percent, alertLevel: 20),
+                                                _batteryIcon(roverList[index].battery_percent),
                                               ],
                                             ),
                                     ),

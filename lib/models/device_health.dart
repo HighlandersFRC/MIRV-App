@@ -1,4 +1,18 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/material.dart';
+
+part 'device_health.freezed.dart';
+part 'device_health.g.dart';
+
+@freezed
+class DeviceHealth with _$DeviceHealth {
+  const factory DeviceHealth({
+    @Default(DeviceHealthType.unavailable) DeviceHealthType health,
+    String? details,
+  }) = _DeviceHealth;
+
+  factory DeviceHealth.fromJson(Map<String, dynamic> json) => _$DeviceHealthFromJson(json);
+}
 
 enum DeviceHealthType { healthy, unhealthy, degraded, unavailable }
 

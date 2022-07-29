@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/pair.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
 
 part 'garage_commands.freezed.dart';
 part 'garage_commands.g.dart';
@@ -21,8 +20,6 @@ class GarageCommands {
   static const unlock = GarageCommand(GarageCommandType.unlock);
   static const retract = GarageCommand(GarageCommandType.retract);
   static const deploy = GarageCommand(GarageCommandType.deploy);
-  static const enable = GarageCommand(GarageCommandType.enable);
-  static const disable = GarageCommand(GarageCommandType.disable);
 }
 
 Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
@@ -37,4 +34,6 @@ Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
   ],
   GarageStateType.unavailable: [],
+  GarageStateType.in_motion_retract: [],
+  GarageStateType.in_motion_deploy: [],
 };

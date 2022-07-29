@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mirv/Blocs/autocomplete/garage_search_bar.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
-import 'package:mirv/models/garage/garage_status_type.dart';
 import 'package:mirv/models/place.dart';
 import 'package:location/location.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -32,18 +30,11 @@ class SelectedGarageController extends GetxController {
 
   Color garageTileColor(
     String garage_id,
-    GarageStatusType value,
   ) {
     if (selectedGarageId.value == garage_id) {
       return Colors.blue;
     } else {
-      switch (value) {
-        case GarageStatusType.available:
-          return Colors.white;
-
-        case GarageStatusType.unavailable:
-          return Colors.grey;
-      }
+      return Colors.white;
     }
   }
 }
@@ -109,18 +100,14 @@ class GarageSelectionPage extends StatelessWidget {
                                   ? ListTile(
                                       tileColor: selectedGarageController.garageTileColor(
                                         garageList[index].garage_id,
-                                        garageList[index].status,
                                       ),
                                       title: Text(garageList[index].garage_id.toString()),
                                       onTap: () {
-                                        if (garageList[index].status == GarageStatusType.available) {
-                                          selectedGarageController.setSelectedGarageId((garageList[index].garage_id).toString());
-                                        }
+                                        selectedGarageController.setSelectedGarageId((garageList[index].garage_id).toString());
                                       })
                                   : ListTile(
                                       tileColor: selectedGarageController.garageTileColor(
                                         garageList[index].garage_id,
-                                        garageList[index].status,
                                       ),
                                       title: selectedGarageController.isGarageListMinimized.value
                                           ? Text(garageList[index].garage_id.toString())
@@ -131,9 +118,7 @@ class GarageSelectionPage extends StatelessWidget {
                                           ? const SizedBox()
                                           : Text('State: ${garageList[index].state.toString()}'),
                                       onTap: () {
-                                        if (garageList[index].status == GarageStatusType.available) {
-                                          selectedGarageController.setSelectedGarageId((garageList[index].garage_id).toString());
-                                        }
+                                        selectedGarageController.setSelectedGarageId((garageList[index].garage_id).toString());
                                       },
                                     ),
                             ),
