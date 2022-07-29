@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_widget.dart';
 
 // ignore: must_be_immutable

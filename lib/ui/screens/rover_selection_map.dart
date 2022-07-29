@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_status_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class RoverSelectionMap extends StatefulWidget {
@@ -113,7 +113,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
               ),
               icon: mapMarker,
               onTap: () {
-                rover.status == RoverStatusType.unavailable
+                rover.status == DeviceStatusType.unavailable
                     ? null
                     :
                     // widget.selectedMarkerId.value = rover.rover_id;
