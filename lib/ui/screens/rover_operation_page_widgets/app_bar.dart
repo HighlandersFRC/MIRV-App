@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/constants/theme_data.dart';
-import 'package:mirv/models/rover_state_type.dart';
-import 'package:mirv/models/rover_metrics.dart';
 
+import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OpPgAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
+  const OpPgAppBar(
+      {Key? key,
+      required this.roverMetrics,
+      required this.stopCall,
+      required this.peerConnectionState})
       : super(key: key);
 
   final RoverMetrics roverMetrics;
@@ -55,7 +59,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: ElevatedButton.icon(
-              icon: const Icon(Icons.call_end_rounded, size: 30, color: Color.fromARGB(255, 255, 255, 255)),
+              icon: const Icon(Icons.call_end_rounded,
+                  size: 30, color: Color.fromARGB(255, 255, 255, 255)),
               label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
@@ -63,14 +68,16 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
+                backgroundColor:
+                    MaterialStateProperty.all(Colors.redAccent.shade700),
               ),
               onPressed: () => showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Disconnect?'),
-                    content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
+                    content: Text(
+                        'Would  you like to discconect from ${roverMetrics.rover_id}'),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
@@ -105,7 +112,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
+                  content: AspectRatio(
+                      aspectRatio: 1.5, child: StatusPage(roverMetrics)),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -117,7 +125,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               },
             ),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(secondaryColor)),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(secondaryColor)),
             child: const Text(
               " Status ",
               textScaleFactor: 2.5,

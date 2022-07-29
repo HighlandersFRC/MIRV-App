@@ -1,5 +1,5 @@
 {
-    "commandType": "e_stop",
+    "command": "e_stop",
     "subsystem": "general",
     "runtimeType": "generalCommand"
 }

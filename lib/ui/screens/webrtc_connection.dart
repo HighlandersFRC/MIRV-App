@@ -6,9 +6,10 @@ import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/models/rover_state_type.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
@@ -25,7 +26,9 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  MirvApi mirvApi = MirvApi();
+  late GarageMetrics garageMetrics;
+
+  late MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
   get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
 

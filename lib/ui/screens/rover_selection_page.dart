@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:location/location.dart';
-import 'package:mirv/models/rover_status_type.dart';
+import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
@@ -35,16 +35,16 @@ class SelectedRoverController extends GetxController {
 
   Color roverTileColor(
     String rover_id,
-    RoverStatusType value,
+    DeviceStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
       return secondaryColor;
     } else {
       switch (value) {
-        case RoverStatusType.available:
+        case DeviceStatusType.available:
           return Colors.white;
 
-        case RoverStatusType.unavailable:
+        case DeviceStatusType.unavailable:
           return Colors.grey;
       }
     }
@@ -60,7 +60,9 @@ class RoverSelectionPage extends StatefulWidget {
 
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final selectedRoverController = Get.put(SelectedRoverController());
-  MirvApi mirvApi = MirvApi();
+  late GarageMetrics garageMetrics;
+
+  late MirvApi mirvApi = MirvApi();
   Location location = Location();
   final TextEditingController typeAheadController = TextEditingController();
 
@@ -74,29 +76,33 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
   double roverListWidth = 300;
 
-  Icon _batteryIcon(int batteryLevel, {int? alertLevel}) {
+  Icon _batteryIcon(int? batteryLevel, {int? alertLevel}) {
+    double size = 40;
+    if (batteryLevel == null) {
+      return Icon(Icons.battery_unknown_rounded, size: size);
+    }
     double divisor = 100 / 7;
     int result = (batteryLevel / divisor).ceil();
     if (alertLevel != null && batteryLevel < alertLevel) {
-      return const Icon(Icons.battery_alert_rounded);
+      return Icon(Icons.battery_alert_rounded, size: size);
     }
     switch (result) {
       case 0:
-        return const Icon(Icons.battery_0_bar_rounded);
+        return Icon(Icons.battery_0_bar_rounded, size: size);
       case 1:
-        return const Icon(Icons.battery_1_bar_rounded);
+        return Icon(Icons.battery_1_bar_rounded, size: size);
       case 2:
-        return const Icon(Icons.battery_2_bar_rounded);
+        return Icon(Icons.battery_2_bar_rounded, size: size);
       case 3:
-        return const Icon(Icons.battery_3_bar_rounded);
+        return Icon(Icons.battery_3_bar_rounded, size: size);
       case 4:
-        return const Icon(Icons.battery_4_bar_rounded);
+        return Icon(Icons.battery_4_bar_rounded, size: size);
       case 5:
-        return const Icon(Icons.battery_5_bar_rounded);
+        return Icon(Icons.battery_5_bar_rounded, size: size);
       case 6:
-        return const Icon(Icons.battery_6_bar_rounded);
+        return Icon(Icons.battery_6_bar_rounded, size: size);
       default:
-        return const Icon(Icons.battery_full_rounded);
+        return Icon(Icons.battery_full_rounded, size: size);
     }
   }
 
@@ -146,7 +152,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       ),
                                       title: Text(roverList[index].rover_id.toString()),
                                       onTap: () {
-                                        if (roverList[index].status == RoverStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       })
@@ -165,7 +171,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Text(
                                               'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state}'),
                                       onTap: () {
-                                        if (roverList[index].status == RoverStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       },
@@ -174,7 +180,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                _batteryIcon(roverList[index].battery_percent, alertLevel: 20),
+                                                _batteryIcon(roverList[index].battery_percent),
                                               ],
                                             ),
                                     ),

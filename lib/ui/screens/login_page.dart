@@ -4,14 +4,10 @@ import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
-class LoginBinding implements Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => LoginController());
-  }
-}
-
 class LoginController extends GetxController {
+  final Widget pageRoute;
+  LoginController(this.pageRoute);
+
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   AuthService authService = AuthService();
@@ -45,7 +41,7 @@ class LoginController extends GetxController {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       if (code == 200) {
         Get.snackbar('Login', 'Login successfully');
-        Get.off(const RoverSelectionPage());
+        Get.off(pageRoute);
       } else if (code == 401 || code == 403) {
         Get.snackbar('Login', 'Invalid username or password');
       } else {
@@ -58,7 +54,7 @@ class LoginController extends GetxController {
     isCurrentTokenValid().then((isValid) {
       isLoading.value = false;
       if (isValid) {
-        Get.off(const RoverSelectionPage());
+        Get.off(pageRoute);
       }
     });
   }
@@ -73,7 +69,9 @@ class LoginController extends GetxController {
 }
 
 class LoginPage extends StatelessWidget {
-  LoginController controller = LoginController();
+  late LoginController controller = LoginController(pageRoute);
+  final Widget pageRoute;
+  LoginPage(this.pageRoute);
   Rx<bool> _isObscure = true.obs;
 
   @override
