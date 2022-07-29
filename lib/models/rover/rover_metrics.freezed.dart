@@ -21,14 +21,13 @@ RoverMetrics _$RoverMetricsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$RoverMetrics {
   String get rover_id => throw _privateConstructorUsedError;
-  RoverStateType get state =>
-      throw _privateConstructorUsedError; //Rover StateType
-  DeviceStatusType get status =>
-      throw _privateConstructorUsedError; //RoverStatusType
-  double get battery_voltage => throw _privateConstructorUsedError;
-  int get battery_percent => throw _privateConstructorUsedError;
-  RoverMetricHealth get health => throw _privateConstructorUsedError;
+  RoverStateType get state => throw _privateConstructorUsedError;
+  DeviceStatusType get status => throw _privateConstructorUsedError;
+  double? get battery_voltage => throw _privateConstructorUsedError;
+  int? get battery_percent => throw _privateConstructorUsedError;
+  RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
+  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,13 +44,15 @@ abstract class $RoverMetricsCopyWith<$Res> {
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
-      double battery_voltage,
-      int battery_percent,
-      RoverMetricHealth health,
-      RoverMetricTelemetry telemetry});
+      double? battery_voltage,
+      int? battery_percent,
+      RoverMetricHealth subsystems,
+      RoverMetricTelemetry telemetry,
+      RoverPiLits pi_lits});
 
-  $RoverMetricHealthCopyWith<$Res> get health;
+  $RoverMetricHealthCopyWith<$Res> get subsystems;
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
+  $RoverPiLitsCopyWith<$Res> get pi_lits;
 }
 
 /// @nodoc
@@ -69,8 +70,9 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
     Object? status = freezed,
     Object? battery_voltage = freezed,
     Object? battery_percent = freezed,
-    Object? health = freezed,
+    Object? subsystems = freezed,
     Object? telemetry = freezed,
+    Object? pi_lits = freezed,
   }) {
     return _then(_value.copyWith(
       rover_id: rover_id == freezed
@@ -88,26 +90,30 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
-              as int,
-      health: health == freezed
-          ? _value.health
-          : health // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subsystems: subsystems == freezed
+          ? _value.subsystems
+          : subsystems // ignore: cast_nullable_to_non_nullable
               as RoverMetricHealth,
       telemetry: telemetry == freezed
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
               as RoverMetricTelemetry,
+      pi_lits: pi_lits == freezed
+          ? _value.pi_lits
+          : pi_lits // ignore: cast_nullable_to_non_nullable
+              as RoverPiLits,
     ));
   }
 
   @override
-  $RoverMetricHealthCopyWith<$Res> get health {
-    return $RoverMetricHealthCopyWith<$Res>(_value.health, (value) {
-      return _then(_value.copyWith(health: value));
+  $RoverMetricHealthCopyWith<$Res> get subsystems {
+    return $RoverMetricHealthCopyWith<$Res>(_value.subsystems, (value) {
+      return _then(_value.copyWith(subsystems: value));
     });
   }
 
@@ -115,6 +121,13 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
   $RoverMetricTelemetryCopyWith<$Res> get telemetry {
     return $RoverMetricTelemetryCopyWith<$Res>(_value.telemetry, (value) {
       return _then(_value.copyWith(telemetry: value));
+    });
+  }
+
+  @override
+  $RoverPiLitsCopyWith<$Res> get pi_lits {
+    return $RoverPiLitsCopyWith<$Res>(_value.pi_lits, (value) {
+      return _then(_value.copyWith(pi_lits: value));
     });
   }
 }
@@ -130,15 +143,18 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
-      double battery_voltage,
-      int battery_percent,
-      RoverMetricHealth health,
-      RoverMetricTelemetry telemetry});
+      double? battery_voltage,
+      int? battery_percent,
+      RoverMetricHealth subsystems,
+      RoverMetricTelemetry telemetry,
+      RoverPiLits pi_lits});
 
   @override
-  $RoverMetricHealthCopyWith<$Res> get health;
+  $RoverMetricHealthCopyWith<$Res> get subsystems;
   @override
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
+  @override
+  $RoverPiLitsCopyWith<$Res> get pi_lits;
 }
 
 /// @nodoc
@@ -159,8 +175,9 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
     Object? status = freezed,
     Object? battery_voltage = freezed,
     Object? battery_percent = freezed,
-    Object? health = freezed,
+    Object? subsystems = freezed,
     Object? telemetry = freezed,
+    Object? pi_lits = freezed,
   }) {
     return _then(_$_RoverMetrics(
       rover_id: rover_id == freezed
@@ -178,19 +195,23 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
-              as int,
-      health: health == freezed
-          ? _value.health
-          : health // ignore: cast_nullable_to_non_nullable
+              as int?,
+      subsystems: subsystems == freezed
+          ? _value.subsystems
+          : subsystems // ignore: cast_nullable_to_non_nullable
               as RoverMetricHealth,
       telemetry: telemetry == freezed
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
               as RoverMetricTelemetry,
+      pi_lits: pi_lits == freezed
+          ? _value.pi_lits
+          : pi_lits // ignore: cast_nullable_to_non_nullable
+              as RoverPiLits,
     ));
   }
 }
@@ -202,10 +223,11 @@ class _$_RoverMetrics implements _RoverMetrics {
       {required this.rover_id,
       required this.state,
       required this.status,
-      this.battery_voltage = -1,
-      required this.battery_percent,
-      required this.health,
-      required this.telemetry});
+      this.battery_voltage,
+      this.battery_percent,
+      required this.subsystems,
+      required this.telemetry,
+      required this.pi_lits});
 
   factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) =>
       _$$_RoverMetricsFromJson(json);
@@ -214,23 +236,22 @@ class _$_RoverMetrics implements _RoverMetrics {
   final String rover_id;
   @override
   final RoverStateType state;
-//Rover StateType
   @override
   final DeviceStatusType status;
-//RoverStatusType
   @override
-  @JsonKey()
-  final double battery_voltage;
+  final double? battery_voltage;
   @override
-  final int battery_percent;
+  final int? battery_percent;
   @override
-  final RoverMetricHealth health;
+  final RoverMetricHealth subsystems;
   @override
   final RoverMetricTelemetry telemetry;
+  @override
+  final RoverPiLits pi_lits;
 
   @override
   String toString() {
-    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, health: $health, telemetry: $telemetry)';
+    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits)';
   }
 
   @override
@@ -245,8 +266,10 @@ class _$_RoverMetrics implements _RoverMetrics {
                 .equals(other.battery_voltage, battery_voltage) &&
             const DeepCollectionEquality()
                 .equals(other.battery_percent, battery_percent) &&
-            const DeepCollectionEquality().equals(other.health, health) &&
-            const DeepCollectionEquality().equals(other.telemetry, telemetry));
+            const DeepCollectionEquality()
+                .equals(other.subsystems, subsystems) &&
+            const DeepCollectionEquality().equals(other.telemetry, telemetry) &&
+            const DeepCollectionEquality().equals(other.pi_lits, pi_lits));
   }
 
   @JsonKey(ignore: true)
@@ -258,8 +281,9 @@ class _$_RoverMetrics implements _RoverMetrics {
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(battery_voltage),
       const DeepCollectionEquality().hash(battery_percent),
-      const DeepCollectionEquality().hash(health),
-      const DeepCollectionEquality().hash(telemetry));
+      const DeepCollectionEquality().hash(subsystems),
+      const DeepCollectionEquality().hash(telemetry),
+      const DeepCollectionEquality().hash(pi_lits));
 
   @JsonKey(ignore: true)
   @override
@@ -277,10 +301,11 @@ abstract class _RoverMetrics implements RoverMetrics {
       {required final String rover_id,
       required final RoverStateType state,
       required final DeviceStatusType status,
-      final double battery_voltage,
-      required final int battery_percent,
-      required final RoverMetricHealth health,
-      required final RoverMetricTelemetry telemetry}) = _$_RoverMetrics;
+      final double? battery_voltage,
+      final int? battery_percent,
+      required final RoverMetricHealth subsystems,
+      required final RoverMetricTelemetry telemetry,
+      required final RoverPiLits pi_lits}) = _$_RoverMetrics;
 
   factory _RoverMetrics.fromJson(Map<String, dynamic> json) =
       _$_RoverMetrics.fromJson;
@@ -289,16 +314,18 @@ abstract class _RoverMetrics implements RoverMetrics {
   String get rover_id => throw _privateConstructorUsedError;
   @override
   RoverStateType get state => throw _privateConstructorUsedError;
-  @override //Rover StateType
+  @override
   DeviceStatusType get status => throw _privateConstructorUsedError;
-  @override //RoverStatusType
-  double get battery_voltage => throw _privateConstructorUsedError;
   @override
-  int get battery_percent => throw _privateConstructorUsedError;
+  double? get battery_voltage => throw _privateConstructorUsedError;
   @override
-  RoverMetricHealth get health => throw _privateConstructorUsedError;
+  int? get battery_percent => throw _privateConstructorUsedError;
+  @override
+  RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
   @override
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
+  @override
+  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
@@ -311,13 +338,13 @@ RoverMetricHealth _$RoverMetricHealthFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoverMetricHealth {
-  DeviceHealthType get electronics => throw _privateConstructorUsedError;
-  DeviceHealthType get drivetrain => throw _privateConstructorUsedError;
-  DeviceHealthType get intake => throw _privateConstructorUsedError;
-  DeviceHealthType get sensors => throw _privateConstructorUsedError;
-  DeviceHealthType get garage => throw _privateConstructorUsedError;
-  DeviceHealthType get power => throw _privateConstructorUsedError;
-  DeviceHealthType get general => throw _privateConstructorUsedError;
+  DeviceHealth get electronics => throw _privateConstructorUsedError;
+  DeviceHealth get drivetrain => throw _privateConstructorUsedError;
+  DeviceHealth get intake => throw _privateConstructorUsedError;
+  DeviceHealth get sensors => throw _privateConstructorUsedError;
+  DeviceHealth get garage => throw _privateConstructorUsedError;
+  DeviceHealth get power => throw _privateConstructorUsedError;
+  DeviceHealth get general => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -331,13 +358,21 @@ abstract class $RoverMetricHealthCopyWith<$Res> {
           RoverMetricHealth value, $Res Function(RoverMetricHealth) then) =
       _$RoverMetricHealthCopyWithImpl<$Res>;
   $Res call(
-      {DeviceHealthType electronics,
-      DeviceHealthType drivetrain,
-      DeviceHealthType intake,
-      DeviceHealthType sensors,
-      DeviceHealthType garage,
-      DeviceHealthType power,
-      DeviceHealthType general});
+      {DeviceHealth electronics,
+      DeviceHealth drivetrain,
+      DeviceHealth intake,
+      DeviceHealth sensors,
+      DeviceHealth garage,
+      DeviceHealth power,
+      DeviceHealth general});
+
+  $DeviceHealthCopyWith<$Res> get electronics;
+  $DeviceHealthCopyWith<$Res> get drivetrain;
+  $DeviceHealthCopyWith<$Res> get intake;
+  $DeviceHealthCopyWith<$Res> get sensors;
+  $DeviceHealthCopyWith<$Res> get garage;
+  $DeviceHealthCopyWith<$Res> get power;
+  $DeviceHealthCopyWith<$Res> get general;
 }
 
 /// @nodoc
@@ -363,32 +398,81 @@ class _$RoverMetricHealthCopyWithImpl<$Res>
       electronics: electronics == freezed
           ? _value.electronics
           : electronics // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       drivetrain: drivetrain == freezed
           ? _value.drivetrain
           : drivetrain // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       intake: intake == freezed
           ? _value.intake
           : intake // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       sensors: sensors == freezed
           ? _value.sensors
           : sensors // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       power: power == freezed
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       general: general == freezed
           ? _value.general
           : general // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
     ));
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get electronics {
+    return $DeviceHealthCopyWith<$Res>(_value.electronics, (value) {
+      return _then(_value.copyWith(electronics: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get drivetrain {
+    return $DeviceHealthCopyWith<$Res>(_value.drivetrain, (value) {
+      return _then(_value.copyWith(drivetrain: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get intake {
+    return $DeviceHealthCopyWith<$Res>(_value.intake, (value) {
+      return _then(_value.copyWith(intake: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get sensors {
+    return $DeviceHealthCopyWith<$Res>(_value.sensors, (value) {
+      return _then(_value.copyWith(sensors: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get garage {
+    return $DeviceHealthCopyWith<$Res>(_value.garage, (value) {
+      return _then(_value.copyWith(garage: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get power {
+    return $DeviceHealthCopyWith<$Res>(_value.power, (value) {
+      return _then(_value.copyWith(power: value));
+    });
+  }
+
+  @override
+  $DeviceHealthCopyWith<$Res> get general {
+    return $DeviceHealthCopyWith<$Res>(_value.general, (value) {
+      return _then(_value.copyWith(general: value));
+    });
   }
 }
 
@@ -400,13 +484,28 @@ abstract class _$$_RoverMetricHealthCopyWith<$Res>
       __$$_RoverMetricHealthCopyWithImpl<$Res>;
   @override
   $Res call(
-      {DeviceHealthType electronics,
-      DeviceHealthType drivetrain,
-      DeviceHealthType intake,
-      DeviceHealthType sensors,
-      DeviceHealthType garage,
-      DeviceHealthType power,
-      DeviceHealthType general});
+      {DeviceHealth electronics,
+      DeviceHealth drivetrain,
+      DeviceHealth intake,
+      DeviceHealth sensors,
+      DeviceHealth garage,
+      DeviceHealth power,
+      DeviceHealth general});
+
+  @override
+  $DeviceHealthCopyWith<$Res> get electronics;
+  @override
+  $DeviceHealthCopyWith<$Res> get drivetrain;
+  @override
+  $DeviceHealthCopyWith<$Res> get intake;
+  @override
+  $DeviceHealthCopyWith<$Res> get sensors;
+  @override
+  $DeviceHealthCopyWith<$Res> get garage;
+  @override
+  $DeviceHealthCopyWith<$Res> get power;
+  @override
+  $DeviceHealthCopyWith<$Res> get general;
 }
 
 /// @nodoc
@@ -434,31 +533,31 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
       electronics: electronics == freezed
           ? _value.electronics
           : electronics // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       drivetrain: drivetrain == freezed
           ? _value.drivetrain
           : drivetrain // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       intake: intake == freezed
           ? _value.intake
           : intake // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       sensors: sensors == freezed
           ? _value.sensors
           : sensors // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       power: power == freezed
           ? _value.power
           : power // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
       general: general == freezed
           ? _value.general
           : general // ignore: cast_nullable_to_non_nullable
-              as DeviceHealthType,
+              as DeviceHealth,
     ));
   }
 }
@@ -467,38 +566,38 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_RoverMetricHealth implements _RoverMetricHealth {
   const _$_RoverMetricHealth(
-      {this.electronics = DeviceHealthType.unavailable,
-      this.drivetrain = DeviceHealthType.unavailable,
-      this.intake = DeviceHealthType.unavailable,
-      this.sensors = DeviceHealthType.unavailable,
-      this.garage = DeviceHealthType.unavailable,
-      this.power = DeviceHealthType.unavailable,
-      this.general = DeviceHealthType.unavailable});
+      {this.electronics = const DeviceHealth(),
+      this.drivetrain = const DeviceHealth(),
+      this.intake = const DeviceHealth(),
+      this.sensors = const DeviceHealth(),
+      this.garage = const DeviceHealth(),
+      this.power = const DeviceHealth(),
+      this.general = const DeviceHealth()});
 
   factory _$_RoverMetricHealth.fromJson(Map<String, dynamic> json) =>
       _$$_RoverMetricHealthFromJson(json);
 
   @override
   @JsonKey()
-  final DeviceHealthType electronics;
+  final DeviceHealth electronics;
   @override
   @JsonKey()
-  final DeviceHealthType drivetrain;
+  final DeviceHealth drivetrain;
   @override
   @JsonKey()
-  final DeviceHealthType intake;
+  final DeviceHealth intake;
   @override
   @JsonKey()
-  final DeviceHealthType sensors;
+  final DeviceHealth sensors;
   @override
   @JsonKey()
-  final DeviceHealthType garage;
+  final DeviceHealth garage;
   @override
   @JsonKey()
-  final DeviceHealthType power;
+  final DeviceHealth power;
   @override
   @JsonKey()
-  final DeviceHealthType general;
+  final DeviceHealth general;
 
   @override
   String toString() {
@@ -547,31 +646,31 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
 
 abstract class _RoverMetricHealth implements RoverMetricHealth {
   const factory _RoverMetricHealth(
-      {final DeviceHealthType electronics,
-      final DeviceHealthType drivetrain,
-      final DeviceHealthType intake,
-      final DeviceHealthType sensors,
-      final DeviceHealthType garage,
-      final DeviceHealthType power,
-      final DeviceHealthType general}) = _$_RoverMetricHealth;
+      {final DeviceHealth electronics,
+      final DeviceHealth drivetrain,
+      final DeviceHealth intake,
+      final DeviceHealth sensors,
+      final DeviceHealth garage,
+      final DeviceHealth power,
+      final DeviceHealth general}) = _$_RoverMetricHealth;
 
   factory _RoverMetricHealth.fromJson(Map<String, dynamic> json) =
       _$_RoverMetricHealth.fromJson;
 
   @override
-  DeviceHealthType get electronics => throw _privateConstructorUsedError;
+  DeviceHealth get electronics => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get drivetrain => throw _privateConstructorUsedError;
+  DeviceHealth get drivetrain => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get intake => throw _privateConstructorUsedError;
+  DeviceHealth get intake => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get sensors => throw _privateConstructorUsedError;
+  DeviceHealth get sensors => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get garage => throw _privateConstructorUsedError;
+  DeviceHealth get garage => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get power => throw _privateConstructorUsedError;
+  DeviceHealth get power => throw _privateConstructorUsedError;
   @override
-  DeviceHealthType get general => throw _privateConstructorUsedError;
+  DeviceHealth get general => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>

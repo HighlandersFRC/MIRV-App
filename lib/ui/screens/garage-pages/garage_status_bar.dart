@@ -1,10 +1,8 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
-import 'package:mirv/services/mirv_api.dart';
 
 class GarageStatusBar extends StatelessWidget {
   GarageStatusBar({
@@ -12,7 +10,6 @@ class GarageStatusBar extends StatelessWidget {
     required this.garageMetrics,
   }) : super(key: key);
   final GarageMetrics garageMetrics;
-
 
   StatelessWidget _stateDescription(GarageStateType state) {
     switch (state) {
@@ -24,6 +21,10 @@ class GarageStatusBar extends StatelessWidget {
         return const Text("State: Deployed", textScaleFactor: 1);
       case GarageStateType.unavailable:
         return const Text("State: Unavailable", textScaleFactor: 1);
+      case GarageStateType.in_motion_retract:
+        return const Text("State: Retraction in progress", textScaleFactor: 1);
+      case GarageStateType.in_motion_deploy:
+        return const Text("State: Deploy in progress", textScaleFactor: 1);
     }
   }
 

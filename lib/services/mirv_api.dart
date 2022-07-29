@@ -121,37 +121,37 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
-  // Future<GarageMetrics> getGarageMetrics(String garage_id) async {
-  //   var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
-  //   return GarageMetrics.fromJson(json.decode(response.body));
-  // }
-
-  // Future<List<GarageMetrics>> getGarages() async {
-  //   var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
-  //   return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
-  // }
-
-  Future<GarageMetrics> getGarageMetrics(String garageID) async {
-    String? token = _getCurrentAuthToken();
-    GarageMetrics garageMetrics =
-        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
-    print(json.encode(garageMetrics.toJson()));
-    garageMetricsObs.value;
-
-    return garageMetrics = garageMetrics;
+  Future<GarageMetrics> getGarageMetrics(String garage_id) async {
+    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
+    return GarageMetrics.fromJson(json.decode(response.body));
   }
 
   Future<List<GarageMetrics>> getGarages() async {
-    String? token = _getCurrentAuthToken();
-    List<GarageMetrics> garages;
-    GarageMetrics garageMetrics =
-        const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
-    String response = '[${json.encode(garageMetrics.toJson())}]';
-    garageMetricsObs.value = garageMetrics;
-
-    garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();
-    return garages;
+    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
+    return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
   }
+
+  // Future<GarageMetrics> getGarageMetrics(String garageID) async {
+  //   String? token = _getCurrentAuthToken();
+  //   GarageMetrics garageMetrics =
+  //       const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
+  //   print(json.encode(garageMetrics.toJson()));
+  //   garageMetricsObs.value;
+
+  //   return garageMetrics = garageMetrics;
+  // }
+
+  // Future<List<GarageMetrics>> getGarages() async {
+  //   String? token = _getCurrentAuthToken();
+  //   List<GarageMetrics> garages;
+  //   GarageMetrics garageMetrics =
+  //       const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
+  //   String response = '[${json.encode(garageMetrics.toJson())}]';
+  //   garageMetricsObs.value = garageMetrics;
+
+  //   garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();
+  //   return garages;
+  // }
 
   Future<bool> sendGarageCommand(String garage_id, GarageCommand command) async {
     var response = await makeAuthenticatedPostRequest(

@@ -1,1 +1,0 @@
-enum GarageStatusType { available, unavailable }
