@@ -20,18 +20,31 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
 
-  initialize() async {
-    await authService.init();
-
+  initialize() {
     savedEndpoint = (authService.getMirvEndpoint()).obs;
     savedKeycloakEndpoint = (authService.getKeycloakEndpoint()).obs;
     savedKeycloakRealm = (authService.getKeycloakRealm()).obs;
     savedKeycloakClient = (authService.getKeycloakClient()).obs;
 
-    endpointController.value.text = savedEndpoint.value;
-    keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
-    keycloakRealmController.value.text = savedKeycloakRealm.value;
-    keycloakClientController.value.text = savedKeycloakClient.value;
+    if (endpointController.value.text != savedEndpoint.value) {
+      endpointController.value.text = savedEndpoint.value;
+    }
+    if (keycloakEndpointController.value.text != savedKeycloakEndpoint.value) {
+      keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
+    }
+    if (keycloakRealmController.value.text != savedKeycloakRealm.value) {
+      keycloakRealmController.value.text = savedKeycloakRealm.value;
+    }
+    if (keycloakClientController.value.text != savedKeycloakClient.value) {
+      keycloakClientController.value.text = savedKeycloakClient.value;
+    }
+  }
+
+  @override
+  void onInit() async {
+    await authService.init();
+    initialize();
+    super.onInit();
   }
 
   @override
@@ -55,14 +68,13 @@ class SettingsPage extends StatelessWidget {
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
   SettingsPage({Key? key}) : super(key: key) {
-    settingsTextBoxController.initialize();
+    // settingsTextBoxController.initialize();
   }
 
   AuthService authService = AuthService();
 
   late GarageMetrics garageMetrics;
 
-  
   late MirvApi mirvApi = MirvApi();
 
   ListTile _textFieldtile(
@@ -83,19 +95,19 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
       ),
-      trailing: Obx(
-        () => ElevatedButton(
-          onPressed: compareOrigin.value
-              ? null
-              : () {
-                  if (!compareOrigin.value) {
-                    controller.value.text = savedValue.value;
-                    compareOrigin.value = true;
-                  }
-                },
-          child: const Text('Reset'),
-        ),
+      trailing: // Obx(() =>
+          ElevatedButton(
+        onPressed: compareOrigin.value
+            ? null
+            : () {
+                if (!compareOrigin.value) {
+                  controller.value.text = savedValue.value;
+                  compareOrigin.value = true;
+                }
+              },
+        child: const Text('Reset'),
       ),
+      // ),
     );
   }
 
