@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
@@ -21,10 +19,10 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakClient = ''.obs;
 
   initialize() {
-    savedEndpoint = (authService.getMirvEndpoint()).obs;
-    savedKeycloakEndpoint = (authService.getKeycloakEndpoint()).obs;
-    savedKeycloakRealm = (authService.getKeycloakRealm()).obs;
-    savedKeycloakClient = (authService.getKeycloakClient()).obs;
+    savedEndpoint.value = (authService.getMirvEndpoint());
+    savedKeycloakEndpoint.value = (authService.getKeycloakEndpoint());
+    savedKeycloakRealm.value = (authService.getKeycloakRealm());
+    savedKeycloakClient.value = (authService.getKeycloakClient());
 
     if (endpointController.value.text != savedEndpoint.value) {
       endpointController.value.text = savedEndpoint.value;
@@ -95,19 +93,19 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
       ),
-      trailing: // Obx(() =>
-          ElevatedButton(
-        onPressed: compareOrigin.value
-            ? null
-            : () {
-                if (!compareOrigin.value) {
-                  controller.value.text = savedValue.value;
-                  compareOrigin.value = true;
-                }
-              },
-        child: const Text('Reset'),
+      trailing: Obx(
+        () => ElevatedButton(
+          onPressed: compareOrigin.value
+              ? null
+              : () {
+                  if (!compareOrigin.value) {
+                    controller.value.text = savedValue.value;
+                    compareOrigin.value = true;
+                  }
+                },
+          child: const Text('Reset'),
+        ),
       ),
-      // ),
     );
   }
 
