@@ -108,10 +108,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     selectedRoverController.isRoverListMinimized.value = width < 600;
