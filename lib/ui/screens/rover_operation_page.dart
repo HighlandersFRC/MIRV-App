@@ -32,6 +32,7 @@ class RoverOperationPage extends StatelessWidget {
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
+  late bool showMap;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +55,10 @@ class RoverOperationPage extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: loadingColor,
-                ),
-                child: CenterPanel(height: 450, locationStream: locationStream, periodicMetricUpdates: null, roverMetrics: roverMetrics, width: 800)
-              ),
+                  decoration: const BoxDecoration(
+                    color: loadingColor,
+                  ),
+                  child: CenterPanel(locationStream: locationStream, periodicMetricUpdates: null, roverMetrics: roverMetrics)),
             ),
             Positioned(
               top: 30,

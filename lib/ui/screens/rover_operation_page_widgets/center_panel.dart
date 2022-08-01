@@ -14,74 +14,81 @@ class CenterPanel extends StatelessWidget {
     Key? key,
     required this.periodicMetricUpdates,
     required this.locationStream,
-    required this.width,
-    required this.height,
     required this.roverMetrics,
   }) : super(key: key);
 
   final dynamic periodicMetricUpdates;
+  get_pkg.Rx<bool> showMapObs = false.obs;
   bool showMap = false;
   final BehaviorSubject<LatLng> locationStream;
-  final double width;
-  final double height;
   final RoverMetrics roverMetrics;
   late get_pkg.Rx<bool> manualOperation = false.obs;
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
+  GestureDoubleTapCallback? onDoubleTap;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
-          width: width,
-          height: height * 4 / 5,
-          child: showMap
-              ? Stack(children: [
-                  Positioned.fill(
-                    child: RoverOperationMap(
-                      locationStream: locationStream,
-                      roverMetrics: roverMetrics,
-                    ),
-                  ),
-                  get_pkg.Obx(() => Positioned(
-                        bottom: 20,
-                        left: manualOperation.value ? 300 : 50,
-                        height: 160,
-                        width: 300,
-                        child: GestureDetector(
-                          onDoubleTap: () {
-                            showMap = false;
-                          },
-                          child: RTCVideoView(webRTCConnection.localRenderer.value),
-                        ),
-                      ))
-                ])
-              : AspectRatio(
-                  aspectRatio: 1,
-                  child: Stack(
-                    children: [
+          width: 800,
+          height: 450 * 4 / 5,
+          child: get_pkg.Obx(
+            () => showMapObs.value
+                ? AspectRatio(
+                    aspectRatio: 1,
+                    child: Stack(children: [
                       Positioned.fill(
-                        child: RTCVideoView(webRTCConnection.localRenderer.value),
+                        child: RoverOperationMap(
+                          locationStream: locationStream,
+                          roverMetrics: roverMetrics,
+                        ),
                       ),
-                      get_pkg.Obx(
-                        () => Positioned(
-                            bottom: 5,
+                      get_pkg.Obx(() => Positioned(
+                            bottom: 0,
                             left: manualOperation.value ? 300 : 50,
                             height: 160,
                             width: 300,
                             child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
                               onDoubleTap: () {
-                                print ('double tapped');
+                                showMapObs.value = false;
+                                print('double tapped');
                               },
-                              child: RoverOperationMap(
-                                locationStream: locationStream,
-                                roverMetrics: roverMetrics,
-                              ),
-                            )),
-                      ),
-                    ],
+                              child: RTCVideoView(webRTCConnection.localRenderer.value),
+                            ),
+                          ))
+                    ]),
+                  )
+                : AspectRatio(
+                    aspectRatio: 1,
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: RTCVideoView(webRTCConnection.localRenderer.value),
+                        ),
+                        get_pkg.Obx(
+                          () => Positioned(
+                              bottom: 0,
+                              left: manualOperation.value ? 300 : 50,
+                              height: 160,
+                              width: 300,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onDoubleTap: () {
+                                  showMapObs.value = true;
+                                  print('double tapped');
+                                },
+                                child: RoverOperationMap(
+                                  locationStream: locationStream,
+                                  roverMetrics: roverMetrics,
+                                ),
+                              )),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+          ),
         ),
       ],
     );
