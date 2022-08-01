@@ -30,7 +30,7 @@ class StatusPage extends StatelessWidget {
 
 class HealthContainer extends StatelessWidget {
   late DeviceHealth subsystemHealth;
-  late final DeviceHealthType deviceHealthType;
+  late final DeviceHealthType deviceHealthType = subsystemHealth.health;
 
   final String name;
   HealthContainer(this.subsystemHealth, this.name, {Key? key}) : super(key: key);
