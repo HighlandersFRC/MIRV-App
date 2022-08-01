@@ -39,7 +39,13 @@ class JoystickOverlay extends StatelessWidget {
     return Row(
       children: [
         Container(
-          child: JoystickView(opacity: 0.5, size: 300),
+          child: JoystickView(
+            opacity: 0.5,
+            size: 300,
+            onDirectionChanged: (x, y) {
+              print("$x, $y");
+            },
+          ),
         ),
         // JoystickWidget(
         //   roverMetrics: roverMetrics,
