@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -33,19 +35,27 @@ class SelectedRoverController extends GetxController {
     if (rovers.where((element) => element.rover_id == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
   }
 
+  Color roverTileIconColor(String roverId) {
+    if (selectedRoverId.value == roverId) {
+      return fontColor;
+    } else {
+      return secondaryColor;
+    }
+  }
+
   Color roverTileColor(
     String rover_id,
     DeviceStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
-      return secondaryColor;
+      return tileColorSelected;
     } else {
       switch (value) {
         case DeviceStatusType.available:
-          return tileColor;
+          return tileColorAvailible;
 
         case DeviceStatusType.unavailable:
-          return Colors.grey;
+          return tileColorUnavailible;
       }
     }
   }
@@ -61,6 +71,7 @@ class RoverSelectionPage extends StatefulWidget {
 class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final selectedRoverController = Get.put(SelectedRoverController());
   late GarageMetrics garageMetrics;
+  final double batteryIconSize = 40;
 
   late MirvApi mirvApi = MirvApi();
   final TextEditingController typeAheadController = TextEditingController();
@@ -75,33 +86,39 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
 
   double roverListWidth = 300;
 
-  Icon _batteryIcon(int? batteryLevel, {int? alertLevel}) {
-    double size = 40;
-    if (batteryLevel == null) {
-      return Icon(Icons.battery_unknown_rounded, size: size);
-    }
+  IconData _batteryIcon(
+    int? batteryLevel, {
+    int? alertLevel,
+  }) {
+    final String roverId;
     double divisor = 100 / 7;
+
+    if (batteryLevel == null) {
+      return Icons.battery_unknown_rounded;
+    }
+
     int result = (batteryLevel / divisor).ceil();
+
     if (alertLevel != null && batteryLevel < alertLevel) {
-      return Icon(Icons.battery_alert_rounded, size: size);
+      return Icons.battery_alert_rounded;
     }
     switch (result) {
       case 0:
-        return Icon(Icons.battery_0_bar_rounded, size: size);
+        return Icons.battery_0_bar_rounded;
       case 1:
-        return Icon(Icons.battery_1_bar_rounded, size: size);
+        return Icons.battery_1_bar_rounded;
       case 2:
-        return Icon(Icons.battery_2_bar_rounded, size: size);
+        return Icons.battery_2_bar_rounded;
       case 3:
-        return Icon(Icons.battery_3_bar_rounded, size: size);
+        return Icons.battery_3_bar_rounded;
       case 4:
-        return Icon(Icons.battery_4_bar_rounded, size: size);
+        return Icons.battery_4_bar_rounded;
       case 5:
-        return Icon(Icons.battery_5_bar_rounded, size: size);
+        return Icons.battery_5_bar_rounded;
       case 6:
-        return Icon(Icons.battery_6_bar_rounded, size: size);
+        return Icons.battery_6_bar_rounded;
       default:
-        return Icon(Icons.battery_full_rounded, size: size);
+        return Icons.battery_full_rounded;
     }
   }
 
@@ -145,6 +162,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                             child: Obx(
                               () => selectedRoverController.isRoverListMinimized.value
                                   ? ListTile(
+                                      iconColor: Colors.amber,
+                                      // selectedRoverController.roverTileIconColor(
+                                      //   roverList[index].rover_id,
+                                      // ),
                                       tileColor: selectedRoverController.roverTileColor(
                                         roverList[index].rover_id,
                                         roverList[index].status,
@@ -179,7 +200,9 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                _batteryIcon(roverList[index].battery_percent),
+                                                Icon(_batteryIcon(roverList[index].battery_percent, alertLevel: 10),
+                                                    size: batteryIconSize,
+                                                    color: selectedRoverController.roverTileIconColor(roverList[index].rover_id))
                                               ],
                                             ),
                                     ),
