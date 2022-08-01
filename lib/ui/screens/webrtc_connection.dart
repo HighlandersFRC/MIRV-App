@@ -148,6 +148,7 @@ class WebRTCConnection {
         roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
         recentStatusMessage = DateTime.now();
       } catch (e) {
+        // ignore: avoid_print
         print("Failed to process status message: $message");
       }
     } else {
@@ -195,7 +196,7 @@ class WebRTCConnection {
       return false;
     } else {
       count++;
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       return await _waitForGatheringComplete(count);
     }
   }

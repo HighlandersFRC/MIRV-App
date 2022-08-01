@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
@@ -143,11 +144,11 @@ class RoverOperationPage extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(50, 50, 50, 0.5)),
+                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
                               shape: MaterialStateProperty.all(
                                   const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
                           child: const Icon(
-                            CupertinoIcons.antenna_radiowaves_left_right,
+                            Ionicons.game_controller_outline,
                             size: 50,
                             color: Colors.white,
                           ),
