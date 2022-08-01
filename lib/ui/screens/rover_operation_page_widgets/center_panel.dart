@@ -1,32 +1,32 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:get/get.dart' as get_pkg;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry_data_table.dart';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
+import 'package:rxdart/rxdart.dart';
 
 class CenterPanel extends StatelessWidget {
-  const CenterPanel(
-      {Key? key,
-      required this.periodicMetricUpdates,
-      required this.localRenderer,
-      required this.showMap,
-      required this.locationStream,
-      required this.piLitMarkers,
-      required this.width,
-      required this.height,
-      required this.selectedRoverMetrics})
-      : super(key: key);
+  CenterPanel({
+    Key? key,
+    required this.periodicMetricUpdates,
+    required this.locationStream,
+    required this.width,
+    required this.height,
+    required this.roverMetrics,
+  }) : super(key: key);
 
   final dynamic periodicMetricUpdates;
-  final RTCVideoRenderer localRenderer;
-  final bool showMap;
+  bool showMap = false;
   final BehaviorSubject<LatLng> locationStream;
-  final List<PiLit> piLitMarkers;
   final double width;
   final double height;
-  final RoverMetrics selectedRoverMetrics;
+  final RoverMetrics roverMetrics;
+  late get_pkg.Rx<bool> manualOperation = false.obs;
+  late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
 
   @override
   Widget build(BuildContext context) {
@@ -36,34 +36,53 @@ class CenterPanel extends StatelessWidget {
           width: width,
           height: height * 4 / 5,
           child: showMap
-              ? RoverOperationMap(
-                  locationStream: locationStream,
-                  roverMetrics: selectedRoverMetrics,
-                )
+              ? Stack(children: [
+                  Positioned.fill(
+                    child: RoverOperationMap(
+                      locationStream: locationStream,
+                      roverMetrics: roverMetrics,
+                    ),
+                  ),
+                  get_pkg.Obx(() => Positioned(
+                        bottom: 20,
+                        left: manualOperation.value ? 300 : 50,
+                        height: 160,
+                        width: 300,
+                        child: GestureDetector(
+                          onDoubleTap: () {
+                            showMap = false;
+                          },
+                          child: RTCVideoView(webRTCConnection.localRenderer.value),
+                        ),
+                      ))
+                ])
               : AspectRatio(
                   aspectRatio: 1,
                   child: Stack(
                     children: [
                       Positioned.fill(
-                        child: RTCVideoView(
-                          localRenderer,
-                          // mirror: true,
-                        ),
+                        child: RTCVideoView(webRTCConnection.localRenderer.value),
+                      ),
+                      get_pkg.Obx(
+                        () => Positioned(
+                            bottom: 5,
+                            left: manualOperation.value ? 300 : 50,
+                            height: 160,
+                            width: 300,
+                            child: GestureDetector(
+                              onDoubleTap: () {
+                                print ('double tapped');
+                              },
+                              child: RoverOperationMap(
+                                locationStream: locationStream,
+                                roverMetrics: roverMetrics,
+                              ),
+                            )),
                       ),
                     ],
                   ),
                 ),
         ),
-        StreamBuilder<RoverMetrics>(
-            stream: periodicMetricUpdates,
-            builder: (context, snapshot) {
-              return SizedBox(
-                  height: height / 5,
-                  width: width,
-                  child: snapshot.data != null
-                      ? TelemeteryDataTable(roverMetrics: snapshot.data!.telemetry)
-                      : const Text('Waiting on data'));
-            }),
       ],
     );
   }

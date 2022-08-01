@@ -13,6 +13,7 @@ import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
@@ -56,7 +57,7 @@ class RoverOperationPage extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: loadingColor,
                 ),
-                child: RTCVideoView(webRTCConnection.localRenderer.value),
+                child: CenterPanel(height: 450, locationStream: locationStream, periodicMetricUpdates: null, roverMetrics: roverMetrics, width: 800)
               ),
             ),
             Positioned(
@@ -105,18 +106,18 @@ class RoverOperationPage extends StatelessWidget {
                   left: manualOperation.value ? 650 : 400,
                   child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
-            Obx(
-              () => Positioned(
-                bottom: 20,
-                left: manualOperation.value ? 300 : 50,
-                height: 160,
-                width: 300,
-                child: RoverOperationMap(
-                  locationStream: locationStream,
-                  roverMetrics: roverMetrics,
-                ),
-              ),
-            ),
+            // Obx(
+            //   () => Positioned(
+            //     bottom: 20,
+            //     left: manualOperation.value ? 300 : 50,
+            //     height: 160,
+            //     width: 300,
+            //     child: RoverOperationMap(
+            //       locationStream: locationStream,
+            //       roverMetrics: roverMetrics,
+            //     ),
+            //   ),
+            // ),
             Obx(
               () => manualOperation.value
                   ? Positioned(
