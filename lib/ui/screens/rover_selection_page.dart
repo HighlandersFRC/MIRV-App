@@ -38,14 +38,14 @@ class SelectedRoverController extends GetxController {
     DeviceStatusType value,
   ) {
     if (selectedRoverId.value == rover_id) {
-      return secondaryColor;
+      return tileColorSelected;
     } else {
       switch (value) {
         case DeviceStatusType.available:
-          return tileColor;
+          return tileColorAvailible;
 
         case DeviceStatusType.unavailable:
-          return Colors.grey;
+          return tileColorUnavailible;
       }
     }
   }
