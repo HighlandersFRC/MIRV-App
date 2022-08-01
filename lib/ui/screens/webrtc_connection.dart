@@ -78,7 +78,7 @@ class WebRTCConnection {
   }
 
   sendRoverCommand(RoverCommand command) {
-    print("Sending rover command: ${json.encode(command.toJson())}");
+    // print("Sending rover command: ${json.encode(command.toJson())}");
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));

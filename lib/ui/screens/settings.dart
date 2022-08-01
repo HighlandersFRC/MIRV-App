@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
@@ -20,18 +18,31 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
 
-  initialize() async {
+  initialize() {
+    savedEndpoint.value = (authService.getMirvEndpoint());
+    savedKeycloakEndpoint.value = (authService.getKeycloakEndpoint());
+    savedKeycloakRealm.value = (authService.getKeycloakRealm());
+    savedKeycloakClient.value = (authService.getKeycloakClient());
+
+    if (endpointController.value.text != savedEndpoint.value) {
+      endpointController.value.text = savedEndpoint.value;
+    }
+    if (keycloakEndpointController.value.text != savedKeycloakEndpoint.value) {
+      keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
+    }
+    if (keycloakRealmController.value.text != savedKeycloakRealm.value) {
+      keycloakRealmController.value.text = savedKeycloakRealm.value;
+    }
+    if (keycloakClientController.value.text != savedKeycloakClient.value) {
+      keycloakClientController.value.text = savedKeycloakClient.value;
+    }
+  }
+
+  @override
+  void onInit() async {
     await authService.init();
-
-    savedEndpoint = (authService.getMirvEndpoint()).obs;
-    savedKeycloakEndpoint = (authService.getKeycloakEndpoint()).obs;
-    savedKeycloakRealm = (authService.getKeycloakRealm()).obs;
-    savedKeycloakClient = (authService.getKeycloakClient()).obs;
-
-    endpointController.value.text = savedEndpoint.value;
-    keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
-    keycloakRealmController.value.text = savedKeycloakRealm.value;
-    keycloakClientController.value.text = savedKeycloakClient.value;
+    initialize();
+    super.onInit();
   }
 
   @override
@@ -55,14 +66,13 @@ class SettingsPage extends StatelessWidget {
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
   SettingsPage({Key? key}) : super(key: key) {
-    settingsTextBoxController.initialize();
+    // settingsTextBoxController.initialize();
   }
 
   AuthService authService = AuthService();
 
   late GarageMetrics garageMetrics;
 
-  
   late MirvApi mirvApi = MirvApi();
 
   ListTile _textFieldtile(

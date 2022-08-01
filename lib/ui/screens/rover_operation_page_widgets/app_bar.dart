@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:mirv/constants/theme_data.dart';
@@ -74,6 +75,13 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                       TextButton(
                           onPressed: () {
                             stopCall();
+
+                            SystemChrome.setPreferredOrientations([
+                              DeviceOrientation.landscapeRight,
+                              DeviceOrientation.landscapeLeft,
+                              DeviceOrientation.portraitUp,
+                              DeviceOrientation.portraitDown,
+                            ]);
                             Navigator.pop(context);
                             get_pkg.Get.offAll(() => const HomePage());
                           },

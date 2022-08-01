@@ -44,7 +44,6 @@ dependencies:
   get: ^4.6.5
   google_maps_flutter: ^2.1.8
   url_launcher_android: ^6.0.17
-  location: ^4.4.0
   flutter_polyline_points: ^1.0.0
   rxdart: ^0.27.4
   observable: ^0.24.0
@@ -81,19 +80,20 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-  - assets/images/lock.png
-  - assets/images/up_arrow.png
-  - assets/images/down_arrow.png
-  - assets/images/unlock.png
-  - assets/images/garage_icon_2.png
-  - assets/images/home.png
-  - assets/images/ramp.png
-  - assets/images/cancel.png
-  - assets/images/pi_lit_outline_up.png
-  - assets/images/pi_lit_outline_down.png
-  - assets/images/pi_lit_icon.png
-  - assets/images/rover_app_icon.png
-  - assets/images/rover_icon.png
+    - assets/images/lock.png
+    - assets/images/up_arrow.png
+    - assets/images/down_arrow.png
+    - assets/images/unlock.png
+    - assets/images/garage_icon_2.png
+    - assets/images/home.png
+    - assets/images/ramp.png
+    - assets/images/cancel.png
+    - assets/images/pi_lit_outline_up.png
+    - assets/images/pi_lit_outline_down.png
+    - assets/images/pi_lit_icon.png
+    - assets/images/rover_app_icon.png
+    - assets/images/rover_icon.png
+    - assets/images/mars-rover.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

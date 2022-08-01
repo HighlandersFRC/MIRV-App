@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
-import 'package:location/location.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 
@@ -47,7 +46,6 @@ class GarageSelectionPage extends StatelessWidget {
   final selectedGarageController = Get.put(SelectedGarageController());
 
   late MirvApi? mirvGarageApi = MirvApi();
-  Location location = Location();
   int? groupValue = 0;
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
   final TextEditingController typeAheadController = TextEditingController();
@@ -135,7 +133,6 @@ class GarageSelectionPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
                                   Get.to(

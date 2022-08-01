@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-import 'package:location/location.dart';
 import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
@@ -63,7 +63,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   late GarageMetrics garageMetrics;
 
   late MirvApi mirvApi = MirvApi();
-  Location location = Location();
   final TextEditingController typeAheadController = TextEditingController();
 
   int? groupValue = 0;

@@ -9,9 +9,14 @@ import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-  Padding _homeListTile(String title, IconData? icon, pageRoute) {
+
+  Padding _homeListTile(
+    String title,
+    IconData? icon,
+    pageRoute,
+  ) {
     return Padding(
-      padding: const EdgeInsets.all(35),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: ListTile(
           title: Text(
             title,
@@ -26,19 +31,56 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    double height = MediaQuery.of(context).size.height;
+
+    Rx<bool> isHomePageListMinimized = false.obs;
+    isHomePageListMinimized.value = width < 600;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           "MIRV App Home",
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Row(
         children: [
-          _homeListTile('Rover Selection Page', Icons.people, LoginPage(RoverSelectionPage())),
-          _homeListTile('Garage Selection Page', Icons.people, LoginPage(GarageSelectionPage())),
-          _homeListTile('Settings', Icons.settings, SettingsPage()),
-          _homeListTile('About', Icons.info_outline_rounded, InfoPage())
+          SizedBox(
+            width: isHomePageListMinimized.value ? width : width / 2,
+            child: Column(
+              children: [
+                _homeListTile(
+                  'Rover Selection Page',
+                  Icons.people,
+                  LoginPage(RoverSelectionPage()),
+                ),
+                _homeListTile(
+                  'Garage Selection Page',
+                  Icons.people,
+                  LoginPage(GarageSelectionPage()),
+                ),
+                _homeListTile(
+                  'Settings',
+                  Icons.settings,
+                  SettingsPage(),
+                ),
+                _homeListTile(
+                  'About',
+                  Icons.info_outline_rounded,
+                  InfoPage(),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: isHomePageListMinimized.value
+                ? const SizedBox()
+                : SizedBox(
+                    child: Image.asset(
+                      'assets/images/mars-rover.png',
+                    ),
+                  ),
+          ),
         ],
       ),
     );
