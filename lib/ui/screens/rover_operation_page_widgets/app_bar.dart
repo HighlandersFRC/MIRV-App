@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
       : super(key: key);
 
-  final RoverMetrics roverMetrics;
+  final Rx<RoverMetrics> roverMetrics;
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
@@ -34,7 +36,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
       case RoverStateType.connected_idle_docked:
         return const Text("Docked");
       case RoverStateType.e_stop:
-        return const Text("E-Stopped"); //hexagon?
+        return const Text("E-Stopped");
       case RoverStateType.remote_operation:
         return const Text("Controlling");
       default:
@@ -60,7 +62,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                 ),
                 backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
@@ -70,7 +72,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Disconnect?'),
-                    content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
+                    content: Text('Would  you like to discconect from ${roverMetrics.value.rover_id}'),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
@@ -98,12 +100,13 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-        title: _stateText(roverMetrics.state),
+        title: _stateText(roverMetrics.value.state),
         actions: [
+          Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RoverStatusBar(
-              roverMetrics: roverMetrics,
+              roverMetrics: roverMetrics.value,
               peerConnectionState: peerConnectionState,
             ),
           ),
@@ -112,7 +115,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
+                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics.value)),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -124,7 +127,6 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               },
             ),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(secondaryColor)),
             child: const Text(
               " Status ",
               textScaleFactor: 2.5,

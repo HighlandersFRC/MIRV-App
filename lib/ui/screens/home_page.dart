@@ -52,11 +52,11 @@ class HomePage extends StatelessWidget {
                 _homeListTile(
                   'Rover Selection Page',
                   Icons.people,
-                  LoginPage(RoverSelectionPage()),
+                  LoginPage(const RoverSelectionPage()),
                 ),
                 _homeListTile(
                   'Garage Selection Page',
-                  Icons.people,
+                  Icons.garage_rounded,
                   LoginPage(GarageSelectionPage()),
                 ),
                 _homeListTile(

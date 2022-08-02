@@ -32,9 +32,9 @@ class SelectedGarageController extends GetxController {
     String garage_id,
   ) {
     if (selectedGarageId.value == garage_id) {
-      return primaryColor;
+      return tileColorSelected;
     } else {
-      return tileColor;
+      return tileColorAvailible ;
     }
   }
 }
