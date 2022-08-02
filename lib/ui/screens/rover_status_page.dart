@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/models/device_health.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-// import 'package:mirv/models/device_health';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class StatusPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -17,25 +17,25 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics.subsystems.sensors, "sensors"),
-        HealthContainer(roverMetrics.subsystems.electronics, "electronics"),
-        HealthContainer(roverMetrics.subsystems.drivetrain, "drivetrain"),
-        HealthContainer(roverMetrics.subsystems.garage, "garage"),
-        HealthContainer(roverMetrics.subsystems.intake, "intake"),
-        HealthContainer(roverMetrics.subsystems.power, "power"),
-        HealthContainer(roverMetrics.subsystems.general, "general"),
+        HealthContainer(roverMetrics.subsystems.sensors, "Sensors"),
+        HealthContainer(roverMetrics.subsystems.electronics, "Electronics"),
+        HealthContainer(roverMetrics.subsystems.drivetrain, "Drivetrain"),
+        HealthContainer(roverMetrics.subsystems.garage, "Garage"),
+        HealthContainer(roverMetrics.subsystems.intake, "Intake"),
+        HealthContainer(roverMetrics.subsystems.power, "Power"),
+        HealthContainer(roverMetrics.subsystems.general, "General"),
       ],
     );
   }
 }
 
 class HealthContainer extends StatelessWidget {
-  // late final RoverHealthType roverHealthType;
-  final RoverMetrics? roverMetrics;
   late DeviceHealth subsystemHealth;
+  late final DeviceHealthType deviceHealthType = subsystemHealth.health;
 
   final String name;
-  HealthContainer(this.subsystemHealth, this.name, {Key? key, this.roverMetrics}) : super(key: key) {}
+  HealthContainer(this.subsystemHealth, this.name, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +45,9 @@ class HealthContainer extends StatelessWidget {
           onPressed: () {
             Get.dialog(AlertDialog(
               title: Text('$name Status'),
-              // content: Text('Rover is ${roverHealthType.toString().replaceAll('RoverHealthType.', '')}.'),
+              content: Text(subsystemHealth.details != null
+                  ? ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')} \n \n Details: ${subsystemHealth.details}'
+                  : ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')}'),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -56,7 +58,7 @@ class HealthContainer extends StatelessWidget {
             ));
           },
           style: ButtonStyle(
-            // backgroundColor: roverHealthType.color1,
+            backgroundColor: deviceHealthType.color1,
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
