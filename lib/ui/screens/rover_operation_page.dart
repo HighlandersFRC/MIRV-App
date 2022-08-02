@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +35,8 @@ class RoverOperationPage extends StatelessWidget {
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
+  late double? _left = 50;
+  late double? _bottom = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -107,23 +111,49 @@ class RoverOperationPage extends StatelessWidget {
                   left: manualOperation.value ? 650 : 400,
                   child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
-            Obx(
-              () => Positioned(
-                  bottom: 20,
-                  left: manualOperation.value ? 300 : 50,
-                  height: 160,
-                  width: 300,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onDoubleTap: () {
-                      print('double tapped');
-                    },
-                    child: RoverOperationMap(
-                      locationStream: locationStream,
-                      roverMetrics: roverMetrics,
-                    ),
-                  )),
-            ),
+            // Obx(
+            //   () =>
+            Positioned(
+                bottom: _bottom,
+                left: _left,
+                height: 160,
+                width: 300,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onPanUpdate: (details) {
+                    _left = max(0, _left! + details.delta.dx);
+                    _bottom = max(0, _bottom! + details.delta.dy);
+                  },
+                  onDoubleTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: AspectRatio(
+                            aspectRatio: 1.5,
+                            child: RoverOperationMap(
+                              locationStream: locationStream,
+                              roverMetrics: roverMetrics,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                return Navigator.pop(context);
+                              },
+                              child: const Text('Close'),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: RoverOperationMap(
+                    locationStream: locationStream,
+                    roverMetrics: roverMetrics,
+                  ),
+                )),
+            // ),
             Obx(
               () => manualOperation.value
                   ? Positioned(
