@@ -55,10 +55,11 @@ class RoverOperationPage extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                  decoration: const BoxDecoration(
-                    color: loadingColor,
-                  ),
-                  child: CenterPanel(locationStream: locationStream, periodicMetricUpdates: null, roverMetrics: roverMetrics)),
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                ),
+                child: RTCVideoView(webRTCConnection.localRenderer.value),
+              ),
             ),
             Positioned(
               top: 30,
@@ -106,18 +107,23 @@ class RoverOperationPage extends StatelessWidget {
                   left: manualOperation.value ? 650 : 400,
                   child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
-            // Obx(
-            //   () => Positioned(
-            //     bottom: 20,
-            //     left: manualOperation.value ? 300 : 50,
-            //     height: 160,
-            //     width: 300,
-            //     child: RoverOperationMap(
-            //       locationStream: locationStream,
-            //       roverMetrics: roverMetrics,
-            //     ),
-            //   ),
-            // ),
+            Obx(
+              () => Positioned(
+                  bottom: 20,
+                  left: manualOperation.value ? 300 : 50,
+                  height: 160,
+                  width: 300,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onDoubleTap: () {
+                      print('double tapped');
+                    },
+                    child: RoverOperationMap(
+                      locationStream: locationStream,
+                      roverMetrics: roverMetrics,
+                    ),
+                  )),
+            ),
             Obx(
               () => manualOperation.value
                   ? Positioned(

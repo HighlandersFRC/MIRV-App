@@ -30,47 +30,50 @@ class CenterPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: 800,
-          height: 450 * 4 / 5,
+        Positioned.fill(
           child: get_pkg.Obx(
             () => showMapObs.value
-                ? AspectRatio(
-                    aspectRatio: 1,
-                    child: Stack(children: [
-                      Positioned.fill(
-                        child: RoverOperationMap(
-                          locationStream: locationStream,
-                          roverMetrics: roverMetrics,
-                        ),
-                      ),
-                      get_pkg.Obx(() => Positioned(
-                            bottom: 0,
-                            left: manualOperation.value ? 300 : 50,
-                            height: 160,
-                            width: 300,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onDoubleTap: () {
-                                showMapObs.value = false;
-                                print('double tapped');
-                              },
-                              child: RTCVideoView(webRTCConnection.localRenderer.value),
-                            ),
-                          ))
-                    ]),
+                ?
+                // AspectRatio(
+                //     aspectRatio: 1,
+                //     child: Stack(children: [
+                SizedBox(
+                    width: 800,
+                    height: 668,
+                    child: RoverOperationMap(
+                      locationStream: locationStream,
+                      roverMetrics: roverMetrics,
+                    ),
                   )
+                // get_pkg.Obx(() => Positioned(
+                //       bottom: 0,
+                //       left: manualOperation.value ? 300 : 50,
+                //       height: 160,
+                //       width: 300,
+                //       child: GestureDetector(
+                //         behavior: HitTestBehavior.translucent,
+                //         onDoubleTap: () {
+                //           showMapObs.value = false;
+                //           print('double tapped');
+                //         },
+                //         child: RTCVideoView(webRTCConnection.localRenderer.value),
+                //       ),
+                //     ))
+                //   ]),
+                // )
                 : AspectRatio(
                     aspectRatio: 1,
                     child: Stack(
                       children: [
-                        Positioned.fill(
+                        SizedBox(
+                          width: 800,
+                          height: 668,
                           child: RTCVideoView(webRTCConnection.localRenderer.value),
                         ),
                         get_pkg.Obx(
                           () => Positioned(
-                              bottom: 0,
-                              left: manualOperation.value ? 300 : 50,
+                              bottom: 20,
+                              left: manualOperation.value ? 20 : 20,
                               height: 160,
                               width: 300,
                               child: GestureDetector(
