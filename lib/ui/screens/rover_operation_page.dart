@@ -46,7 +46,7 @@ class RoverOperationPage extends StatelessWidget {
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
-          roverMetrics: webRTCConnection.roverMetricsObs.value,
+          roverMetrics: webRTCConnection.roverMetricsObs,
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
         ),
@@ -54,9 +54,6 @@ class RoverOperationPage extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: loadingColor,
-                ),
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
             ),
@@ -101,11 +98,6 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Obx(() => Positioned(
-                  bottom: 20,
-                  left: manualOperation.value ? 650 : 400,
-                  child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
-                )),
             Obx(
               () => Positioned(
                 bottom: 20,
@@ -132,8 +124,7 @@ class RoverOperationPage extends StatelessWidget {
                     )
                   : Positioned(
                       bottom: 20,
-                      left: 20,
-                      right: 20,
+                      right: 15,
                       child: Center(
                           child: Container(
                         height: 80,
@@ -144,9 +135,13 @@ class RoverOperationPage extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                              shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))))),
+                            backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                            shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                              ),
+                            ),
+                          ),
                           child: const Icon(
                             Ionicons.game_controller_outline,
                             size: 50,

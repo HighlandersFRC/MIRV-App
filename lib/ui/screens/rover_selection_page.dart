@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/constants/theme_data.dart';
