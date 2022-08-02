@@ -16,11 +16,11 @@ class SelectedGarageController extends GetxController {
     selectedGarageId.listen((selectedGarageId) => isConnectButtonEnabled.value = (selectedGarageId != ""));
   }
 
-  setSelectedGarageId(String garage_id) {
-    if (garage_id == selectedGarageId.value) {
-      selectedGarageId.trigger(garage_id);
+  setSelectedGarageId(String garageId) {
+    if (garageId == selectedGarageId.value) {
+      selectedGarageId.trigger(garageId);
     } else {
-      selectedGarageId.value = garage_id;
+      selectedGarageId.value = garageId;
     }
   }
 
@@ -29,12 +29,12 @@ class SelectedGarageController extends GetxController {
   }
 
   Color garageTileColor(
-    String garage_id,
+    String garageId,
   ) {
-    if (selectedGarageId.value == garage_id) {
+    if (selectedGarageId.value == garageId) {
       return tileColorSelected;
     } else {
-      return tileColorAvailible ;
+      return tileColorAvailible;
     }
   }
 }
@@ -61,7 +61,6 @@ class GarageSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _refreshGaragesList();
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     selectedGarageController.isGarageListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,

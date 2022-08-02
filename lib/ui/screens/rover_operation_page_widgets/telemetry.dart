@@ -11,13 +11,14 @@ class TelemetryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Row(children: [
-        const Icon(Icons.speed, 
+        const Icon(
+          Icons.speed,
           color: primaryColor,
-        
         ),
         const SizedBox(width: 5),
         Text("${roverMetrics.telemetry.speed} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
       ]),
+      const Text('  |  ', style: TextStyle(color: fontColor, fontSize: 30)),
       Row(children: [
         const Icon(
           Icons.compass_calibration,
