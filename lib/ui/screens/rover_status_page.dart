@@ -46,8 +46,8 @@ class HealthContainer extends StatelessWidget {
             Get.dialog(AlertDialog(
               title: Text('$name Status'),
               content: Text(subsystemHealth.details != null
-                  ? '$name Status: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')} \n Details: ${subsystemHealth.details}'
-                  : 'Garage Status: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')}'),
+                  ? 'Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')} \n \n Details: ${subsystemHealth.details}'
+                  : 'Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')}'),
               actions: [
                 TextButton(
                     onPressed: () {
