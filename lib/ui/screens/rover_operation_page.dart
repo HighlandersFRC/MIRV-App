@@ -36,11 +36,18 @@ class RoverOperationPage extends StatelessWidget {
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
-  late double? _left = 50;
-  late double? _bottom = 20;
+  final double? _left = 50;
+  final double? _bottom = 20;
+  
+  late Rx<double?> _leftObs = Rx<double?>(null);
+  late Rx<double?> _bottomObs = Rx<double?>(null);
+
+
 
   @override
   Widget build(BuildContext context) {
+    _leftObs.value = _left;
+    _bottomObs.value = _bottom;
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
@@ -112,49 +119,52 @@ class RoverOperationPage extends StatelessWidget {
                   left: manualOperation.value ? 650 : 400,
                   child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
-            // Obx(
-            //   () =>
-            Positioned(
-                bottom: _bottom,
-                left: _left,
-                height: 160,
-                width: 300,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onPanUpdate: (details) {
-                    _left = max(0, _left! + details.delta.dx);
-                    _bottom = max(0, _bottom! + details.delta.dy);
-                  },
-                  onDoubleTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: AspectRatio(
-                            aspectRatio: 1.5,
-                            child: RoverOperationMap(
-                              locationStream: locationStream,
-                              roverMetrics: roverMetrics,
+            Obx(
+              () =>  
+              Positioned(
+                  left: _leftObs.value,
+                  bottom: _bottomObs.value,
+                  height: 160,
+                  width: 300,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.deferToChild,
+                    onPanUpdate: (details) {
+                      _leftObs.value = max(0, _left! + details.delta.dy);
+                      _bottomObs.value = max(0, _bottom! + details.delta.dy);
+                      print('PANNINGPANNINGPANNINGPANNING');
+                    },
+                    onDoubleTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: AspectRatio(
+                              aspectRatio: 1.5,
+                              child: RoverOperationMap(
+                                locationStream: locationStream,
+                                roverMetrics: roverMetrics,
+                              ),
                             ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                return Navigator.pop(context);
-                              },
-                              child: const Text('Close'),
-                            )
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: RoverOperationMap(
-                    locationStream: locationStream,
-                    roverMetrics: roverMetrics,
-                  ),
-                )),
-            // ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  return Navigator.pop(context);
+                                },
+                                child: const Text('Close'),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                      child: RoverOperationMap(
+                        locationStream: locationStream,
+                        roverMetrics: roverMetrics,
+                      ),
+                   
+                  )),
+            
+            ),
             Obx(
               () => manualOperation.value
                   ? Positioned(
