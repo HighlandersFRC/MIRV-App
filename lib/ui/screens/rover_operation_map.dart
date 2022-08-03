@@ -106,7 +106,6 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
         infoWindow: InfoWindow(
           //popup info
           title: widget.roverMetrics.rover_id,
-          snippet: 'My Custom Subtitle',
         ),
         icon: roverMarker,
         onTap: () async {

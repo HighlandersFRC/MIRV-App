@@ -122,7 +122,7 @@ class SettingsPage extends StatelessWidget {
               child: const Text('Back')),
           TextButton(
               onPressed: () {
-                Get.offAll(const HomePage());
+                Get.offAll(HomePage());
               },
               child: const Text('Continue'))
         ],
@@ -154,7 +154,7 @@ class SettingsPage extends StatelessWidget {
               if (variableList.isNotEmpty) {
                 _unsavedDialog(variableList);
               } else {
-                Get.offAll(const HomePage());
+                Get.offAll(HomePage());
               }
             }),
         title: const Text(

@@ -18,6 +18,9 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
       telemetry: RoverMetricTelemetry.fromJson(
           json['telemetry'] as Map<String, dynamic>),
       pi_lits: RoverPiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
+      garage: json['garage'] == null
+          ? null
+          : Garage.fromJson(json['garage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
@@ -30,6 +33,7 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
       'subsystems': instance.subsystems,
       'telemetry': instance.telemetry,
       'pi_lits': instance.pi_lits,
+      'garage': instance.garage,
     };
 
 const _$RoverStateTypeEnumMap = {
@@ -138,5 +142,16 @@ _$_PiLit _$$_PiLitFromJson(Map<String, dynamic> json) => _$_PiLit(
 
 Map<String, dynamic> _$$_PiLitToJson(_$_PiLit instance) => <String, dynamic>{
       'pi_lit_id': instance.pi_lit_id,
+      'location': instance.location,
+    };
+
+_$_Garage _$$_GarageFromJson(Map<String, dynamic> json) => _$_Garage(
+      garage_id: json['garage_id'] as String,
+      location:
+          DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_GarageToJson(_$_Garage instance) => <String, dynamic>{
+      'garage_id': instance.garage_id,
       'location': instance.location,
     };
