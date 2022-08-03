@@ -54,7 +54,7 @@ class CommandList extends StatelessWidget {
                               fixedSize: MaterialStateProperty.all(const Size(64, 64)),
                               shape: MaterialStateProperty.all(
                                 const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
                                 ),
                               ),
                               shadowColor: MaterialStateProperty.all(const Color.fromARGB(49, 0, 0, 0)),

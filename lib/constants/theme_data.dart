@@ -15,18 +15,17 @@ const loadingColor = Colors.grey;
 const surface = primaryColordark;
 const onSuface = primaryColor;
 
-const tileColor = secondaryColor;
+const tileColorAvailible = Color.fromARGB(255, 59, 59, 59);
+const tileColorSelected = secondaryColor;
+const tileColorUnavailible = backgroundColor;
 
 const fontColor = Colors.white;
 const fontFamily = 'Georgia';
-const double homeFontSize = 18
-;
 
-
-
+const double homeFontSize = 18;
 
 final ThemeData overallTheme = ThemeData(
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     centerTitle: true,
   ),
   fontFamily: fontFamily,

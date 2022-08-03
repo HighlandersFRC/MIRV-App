@@ -42,13 +42,10 @@ class ToggleDisable extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all(
             const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
           ),
-          shadowColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 0, 0)),
-          overlayColor: MaterialStateProperty.all(const Color.fromARGB(255, 255, 17, 0)),
-          foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 250, 250, 250)),
-          backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
+          backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 120, 120, 120)),
         ),
         onPressed: enabled == null
             ? null

@@ -11,16 +11,17 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   Padding _homeListTile(
+    double height,
     String title,
     IconData? icon,
     pageRoute,
   ) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+      padding: EdgeInsets.symmetric(vertical: height / 20, horizontal: 5),
       child: ListTile(
           title: Text(
             title,
-            style: TextStyle(fontSize: homeFontSize),
+            style: const TextStyle(fontSize: homeFontSize),
           ),
           leading: Icon(icon),
           onTap: () {
@@ -48,26 +49,31 @@ class HomePage extends StatelessWidget {
           SizedBox(
             width: isHomePageListMinimized.value ? width : width / 2,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _homeListTile(
+                  height,
                   'Rover Selection Page',
                   Icons.people,
-                  LoginPage(RoverSelectionPage()),
+                  LoginPage(const RoverSelectionPage()),
                 ),
                 _homeListTile(
+                  height,
                   'Garage Selection Page',
-                  Icons.people,
+                  Icons.garage_rounded,
                   LoginPage(GarageSelectionPage()),
                 ),
                 _homeListTile(
+                  height,
                   'Settings',
                   Icons.settings,
                   SettingsPage(),
                 ),
                 _homeListTile(
+                  height,
                   'About',
                   Icons.info_outline_rounded,
-                  InfoPage(),
+                  const InfoPage(),
                 )
               ],
             ),

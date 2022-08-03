@@ -10,8 +10,10 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/models/ui_connection_state.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -148,6 +150,7 @@ class WebRTCConnection {
         roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
         recentStatusMessage = DateTime.now();
       } catch (e) {
+        // ignore: avoid_print
         print("Failed to process status message: $message");
       }
     } else {
@@ -155,13 +158,32 @@ class WebRTCConnection {
     }
   }
 
-  messagesDuration(String rover_id) {
+  messagesDuration(String roverId) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       if (recentStatusMessage == null) return;
       final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
       if (messageDifference >= 10) {
-        stopCall();
-        _showReconnectDialog('No Heartbeat Messages Received', rover_id);
+        get_pkg.Get.dialog(
+            barrierDismissible: false,
+            AlertDialog(
+              title: const Text('Failed Connection'),
+              content: const Text('No Heartbeat Messages Received'),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      get_pkg.Get.back();
+                    },
+                    child: const Text('back')),
+                TextButton(
+                    onPressed: () {
+                      stopCall();
+                      get_pkg.Get.back();
+                      get_pkg.Get.offAll(() => const HomePage());
+                    },
+                    child: const Text('Disconnect and Go to Home page'))
+              ],
+            ));
+        timer?.cancel();
       }
     });
   }
@@ -195,12 +217,12 @@ class WebRTCConnection {
       return false;
     } else {
       count++;
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       return await _waitForGatheringComplete(count);
     }
   }
 
-  Future<void> _negotiateRemoteConnection(String rover_id) async {
+  Future<void> _negotiateRemoteConnection(String roverId) async {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
@@ -210,15 +232,14 @@ class WebRTCConnection {
         .then((success) async {
           if (!success && peerConnection != null) {
             await stopCall();
-            return _showReconnectDialog('Connection timed out', rover_id);
+            return _showReconnectDialog(error: 'Connection timed out', roverId: roverId);
           } else if (!success) {
             return;
           }
           try {
-            // _startNotificationsFromWebRTC(rover_id);
             var des = await peerConnection!.getLocalDescription();
 
-            http.StreamedResponse response = await mirvApi.startRoverConnection(rover_id, des);
+            http.StreamedResponse response = await mirvApi.startRoverConnection(roverId, des);
 
             String data = "";
             if (response.statusCode == 200) {
@@ -235,58 +256,60 @@ class WebRTCConnection {
 
               loading.value = false;
             } else {
-              _showReconnectDialog('Failed to comunicate with rover', rover_id);
+              _showReconnectDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog('Failed to negotiate connection: $e', rover_id);
+            _showReconnectDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
           }
         });
   }
 
-  _showReconnectDialog(
-    String error,
-    String rover_id,
-  ) {
-    get_pkg.Get.dialog(AlertDialog(
-      title: const Text('Failed Connection'),
-      content: Text('$error'),
-      actions: <Widget>[
-        TextButton(
-            onPressed: () {
-              makeCall(rover_id);
-              get_pkg.Get.back();
-            },
-            child: const Text('Reconnect?')),
-        TextButton(
-            onPressed: () {
-              get_pkg.Get.back();
-              get_pkg.Get.offAll(() => const HomePage());
-            },
-            child: const Text('Home page'))
-      ],
-    ));
+  _showReconnectDialog({
+    required String error,
+    required String roverId,
+  }) {
+    get_pkg.Get.dialog(
+        barrierDismissible: true,
+        AlertDialog(
+          title: const Text('Failed Connection'),
+          content: Text('$error'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  makeCall(roverId);
+                  get_pkg.Get.back();
+                },
+                child: const Text('Reconnect?')),
+            TextButton(
+                onPressed: () {
+                  get_pkg.Get.back();
+                  get_pkg.Get.offAll(() => const HomePage());
+                },
+                child: const Text('Home page'))
+          ],
+        ));
   }
 
   //public Commands
-  _startNotificationsFromWebRTC(String rover_id) {
+
+  _startNotificationsFromWebRTC(String roverId) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+        case null:
           stopCall();
-          _showReconnectDialog('Invalid Connection State', rover_id);
+
+          _showReconnectDialog(error: 'Invalid Connection State', roverId: roverId);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-          get_pkg.Get.snackbar("Connected", '');
+          get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          get_pkg.Get.snackbar("Connecting", '');
-          break;
-        case null:
-          //most times this case is here when loading or connecting
+          get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
           break;
       }
     });
@@ -295,13 +318,13 @@ class WebRTCConnection {
       switch (dcs) {
         case RTCDataChannelState.RTCDataChannelClosing:
         case RTCDataChannelState.RTCDataChannelClosed:
-          _showReconnectDialog('Invalid Data Channel State', rover_id);
+          _showReconnectDialog(error: 'Invalid Data Channel State', roverId: roverId);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
-          get_pkg.Get.snackbar("Connection", '');
+          get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
           break;
         case RTCDataChannelState.RTCDataChannelOpen:
-          get_pkg.Get.snackbar("Connected", '');
+          get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
           break;
         case null:
           break;
@@ -319,7 +342,7 @@ class WebRTCConnection {
     heartbeatTimer?.cancel();
   }
 
-  Future<void> makeCall(String rover_id) async {
+  Future<void> makeCall(String roverId) async {
     try {
       loading.value = true;
       var configuration = <String, dynamic>{
@@ -356,10 +379,12 @@ class WebRTCConnection {
       stream.getTracks().forEach((element) {
         peerConnection!.addTrack(element, stream);
       });
-      await _negotiateRemoteConnection(rover_id);
+      await _negotiateRemoteConnection(roverId);
+      _startNotificationsFromWebRTC(roverId);
       _startHeartbeatMessages();
+      messagesDuration(roverId);
     } catch (e) {
-      _showReconnectDialog('Failed to create connection: $e', rover_id);
+      _showReconnectDialog(error: 'Failed to create connection: $e', roverId: roverId);
     }
   }
 
