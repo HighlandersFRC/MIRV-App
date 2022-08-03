@@ -113,11 +113,6 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Obx(() => Positioned(
-                  bottom: 20,
-                  left: manualOperation.value ? 650 : 400,
-                  child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
-                )),
             
               Positioned(
                   left: 20,
