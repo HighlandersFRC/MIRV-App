@@ -19,6 +19,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   Set<Marker> markers = {};
   BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
   BitmapDescriptor roverMarker = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor garageMarker = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() async {
     var tempMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
@@ -30,9 +31,11 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
 
   void setMarkerIcon() async {
     var roverMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon_new.png');
+    var garageMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon_2.png');
 
     setState(() {
       roverMarker = roverMapMarker;
+      garageMarker = garageMapMarker;
     });
   }
 
@@ -98,23 +101,35 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
       }),
     };
 
-    var marker = Marker(
-        //add first marker
-        markerId: MarkerId(widget.roverMetrics.rover_id),
-        position:
-            LatLng(widget.roverMetrics.telemetry.location.lat, widget.roverMetrics.telemetry.location.long), //position of marker
+    var roverMarkers = Marker(
+      //add first marker
+      markerId: MarkerId(widget.roverMetrics.rover_id),
+      position:
+          LatLng(widget.roverMetrics.telemetry.location.lat, widget.roverMetrics.telemetry.location.long), //position of marker
+      infoWindow: InfoWindow(
+        //popup info
+        title: widget.roverMetrics.rover_id,
+      ),
+      icon: roverMarker,
+    );
+
+    if (widget.roverMetrics.garage == null) {
+      null;
+    } else {
+      var garageMarkers = Marker(
+        //add first markers
+        markerId: MarkerId(widget.roverMetrics.garage!.garage_id),
+        position: widget.roverMetrics.garage?.location.latLng, //position of marker
         infoWindow: InfoWindow(
           //popup info
-          title: widget.roverMetrics.rover_id,
+          title: widget.roverMetrics.garage?.garage_id,
         ),
-        icon: roverMarker,
-        onTap: () async {
-          mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-              target: LatLng(widget.roverMetrics.telemetry.location.lat, widget.roverMetrics.telemetry.location.long),
-              zoom: await mapController!.getZoomLevel())));
-        });
+        icon: garageMarker,
+      );
+      markers.add(garageMarkers);
+    }
 
-    markers.add(marker);
+    markers.add(roverMarkers);
 
     return markers;
   }
