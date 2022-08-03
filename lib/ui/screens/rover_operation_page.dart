@@ -121,7 +121,9 @@ class RoverOperationPage extends StatelessWidget {
                             color: const Color.fromRGBO(50, 50, 50, 0.5),
                           ),
                           child: IconButton(
-                            icon: const Icon(CupertinoIcons.xmark_octagon),
+                            icon: const Icon(
+                              CupertinoIcons.game_controller_solid,
+                            ),
                             iconSize: 60,
                             color: Colors.red,
                             onPressed: () {
@@ -145,7 +147,7 @@ class RoverOperationPage extends StatelessWidget {
                                   ),
                                 )),
                             child: const Icon(
-                              Ionicons.game_controller_outline,
+                              CupertinoIcons.game_controller,
                               size: 50,
                               color: Colors.white,
                             ),
