@@ -112,24 +112,19 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
       ),
       icon: roverMarker,
     );
+    markers.add(roverMarkers);
 
-    if (widget.roverMetrics.garage == null) {
-      null;
-    } else {
+    if (widget.roverMetrics.garage != null) {
       var garageMarkers = Marker(
-        //add first markers
         markerId: MarkerId(widget.roverMetrics.garage!.garage_id),
         position: widget.roverMetrics.garage?.location.latLng, //position of marker
         infoWindow: InfoWindow(
-          //popup info
           title: widget.roverMetrics.garage?.garage_id,
         ),
         icon: garageMarker,
       );
       markers.add(garageMarkers);
     }
-
-    markers.add(roverMarkers);
 
     return markers;
   }
