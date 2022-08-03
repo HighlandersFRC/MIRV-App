@@ -16,7 +16,6 @@ import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/center_panel.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
