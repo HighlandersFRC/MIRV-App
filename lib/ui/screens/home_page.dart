@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                 ? const SizedBox()
                 : SizedBox(
                     child: Image.asset(
-                      'assets/images/mars-rover.png',
+                      'assets/images/mars_rover_new.png',
                     ),
                   ),
           ),

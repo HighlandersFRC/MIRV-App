@@ -37,11 +37,9 @@ class RoverOperationPage extends StatelessWidget {
   late bool showMap;
   final double? _left = 50;
   final double? _bottom = 20;
-  
+
   late Rx<double?> _leftObs = Rx<double?>(null);
   late Rx<double?> _bottomObs = Rx<double?>(null);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,84 +111,86 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            
-              Positioned(
-                  left: 20,
-                  bottom: 20,
-                  height: 240,
-                  width: 450,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.deferToChild,
-                    onDoubleTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: AspectRatio(
-                              aspectRatio: 1.5,
-                              child: RoverOperationMap(
-                                locationStream: locationStream,
-                                roverMetrics: roverMetrics,
-                              ),
+            Positioned(
+                left: 20,
+                bottom: 20,
+                height: 200,
+                width: 375,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.deferToChild,
+                  onDoubleTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: AspectRatio(
+                            aspectRatio: 1.5,
+                            child: RoverOperationMap(
+                              locationStream: locationStream,
+                              roverMetrics: roverMetrics,
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  return Navigator.pop(context);
-                                },
-                                child: const Text('Close'),
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    },
-                      child: RoverOperationMap(
-                        locationStream: locationStream,
-                        roverMetrics: roverMetrics,
-                      ),
-                   
-                  )),
-            
-            Obx(
-              () => manualOperation.value
-                  ? Positioned(
-                      bottom: 20,
-                      left: 20,
-                      right: 20,
-                      child: JoystickOverlay(
-                        roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        onJoystickChanged: webRTCConnection.onJoystickChanged,
-                        sendRoverCommand: webRTCConnection.sendRoverCommand,
-                      ),
-                    )
-                  : Positioned(
-                      bottom: 20,
-                      right: 15,
-                      child: Center(
-                          child: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16.0),
-                          color: const Color.fromARGB(0, 50, 50, 50),
-                        ),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                              shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)),),)),
-                          child: const Icon(
-                            Ionicons.game_controller_outline,
-                            size: 50,
-                            color: Colors.white,
                           ),
-                          onPressed: () {
-                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
-                          },
-                        ),
-                      ))),
-            ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                return Navigator.pop(context);
+                              },
+                              child: const Text('Close'),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: RoverOperationMap(
+                    locationStream: locationStream,
+                    roverMetrics: roverMetrics,
+                  ),
+                )),
+            Obx(() => manualOperation.value
+                ? Positioned(
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    child: JoystickOverlay(
+                      roverMetrics: webRTCConnection.roverMetricsObs.value,
+                      onJoystickChanged: webRTCConnection.onJoystickChanged,
+                      sendRoverCommand: webRTCConnection.sendRoverCommand,
+                    ),
+                  )
+                :  webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                    ? Positioned(
+                        bottom: 20,
+                        right: 15,
+                        child: Center(
+                            child: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            color: const Color.fromARGB(0, 50, 50, 50),
+                          ),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                                shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                )),
+                            child: const Icon(Ionicons.game_controller_outline, size: 50, color: Colors.white),
+                            onPressed: () {
+                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                            },
+                          ),
+                        ))) 
+                        
+                        : 
+                    const ElevatedButton(
+                        child: null,
+                        onPressed: null,
+                      )
+                    ),
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(

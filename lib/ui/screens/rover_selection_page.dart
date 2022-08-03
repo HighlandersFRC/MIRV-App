@@ -186,7 +186,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       subtitle: selectedRoverController.isRoverListMinimized.value
                                           ? const SizedBox()
                                           : Text(
-                                              'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state}'),
+                                              'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state.toString().replaceAll('RoverStateType.', 'State: ')}'),
                                       onTap: () {
                                         if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
