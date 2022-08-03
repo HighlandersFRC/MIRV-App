@@ -28,6 +28,7 @@ mixin _$RoverMetrics {
   RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
   RoverPiLits get pi_lits => throw _privateConstructorUsedError;
+  Garage? get garage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,11 +49,13 @@ abstract class $RoverMetricsCopyWith<$Res> {
       int? battery_percent,
       RoverMetricHealth subsystems,
       RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits});
+      RoverPiLits pi_lits,
+      Garage? garage});
 
   $RoverMetricHealthCopyWith<$Res> get subsystems;
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
   $RoverPiLitsCopyWith<$Res> get pi_lits;
+  $GarageCopyWith<$Res>? get garage;
 }
 
 /// @nodoc
@@ -73,6 +76,7 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
     Object? subsystems = freezed,
     Object? telemetry = freezed,
     Object? pi_lits = freezed,
+    Object? garage = freezed,
   }) {
     return _then(_value.copyWith(
       rover_id: rover_id == freezed
@@ -107,6 +111,10 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
           ? _value.pi_lits
           : pi_lits // ignore: cast_nullable_to_non_nullable
               as RoverPiLits,
+      garage: garage == freezed
+          ? _value.garage
+          : garage // ignore: cast_nullable_to_non_nullable
+              as Garage?,
     ));
   }
 
@@ -130,6 +138,17 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       return _then(_value.copyWith(pi_lits: value));
     });
   }
+
+  @override
+  $GarageCopyWith<$Res>? get garage {
+    if (_value.garage == null) {
+      return null;
+    }
+
+    return $GarageCopyWith<$Res>(_value.garage!, (value) {
+      return _then(_value.copyWith(garage: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -147,7 +166,8 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       int? battery_percent,
       RoverMetricHealth subsystems,
       RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits});
+      RoverPiLits pi_lits,
+      Garage? garage});
 
   @override
   $RoverMetricHealthCopyWith<$Res> get subsystems;
@@ -155,6 +175,8 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
   $RoverMetricTelemetryCopyWith<$Res> get telemetry;
   @override
   $RoverPiLitsCopyWith<$Res> get pi_lits;
+  @override
+  $GarageCopyWith<$Res>? get garage;
 }
 
 /// @nodoc
@@ -178,6 +200,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
     Object? subsystems = freezed,
     Object? telemetry = freezed,
     Object? pi_lits = freezed,
+    Object? garage = freezed,
   }) {
     return _then(_$_RoverMetrics(
       rover_id: rover_id == freezed
@@ -212,6 +235,10 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
           ? _value.pi_lits
           : pi_lits // ignore: cast_nullable_to_non_nullable
               as RoverPiLits,
+      garage: garage == freezed
+          ? _value.garage
+          : garage // ignore: cast_nullable_to_non_nullable
+              as Garage?,
     ));
   }
 }
@@ -227,7 +254,8 @@ class _$_RoverMetrics implements _RoverMetrics {
       this.battery_percent,
       required this.subsystems,
       required this.telemetry,
-      required this.pi_lits});
+      required this.pi_lits,
+      this.garage});
 
   factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) =>
       _$$_RoverMetricsFromJson(json);
@@ -248,10 +276,12 @@ class _$_RoverMetrics implements _RoverMetrics {
   final RoverMetricTelemetry telemetry;
   @override
   final RoverPiLits pi_lits;
+  @override
+  final Garage? garage;
 
   @override
   String toString() {
-    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits)';
+    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits, garage: $garage)';
   }
 
   @override
@@ -269,7 +299,8 @@ class _$_RoverMetrics implements _RoverMetrics {
             const DeepCollectionEquality()
                 .equals(other.subsystems, subsystems) &&
             const DeepCollectionEquality().equals(other.telemetry, telemetry) &&
-            const DeepCollectionEquality().equals(other.pi_lits, pi_lits));
+            const DeepCollectionEquality().equals(other.pi_lits, pi_lits) &&
+            const DeepCollectionEquality().equals(other.garage, garage));
   }
 
   @JsonKey(ignore: true)
@@ -283,7 +314,8 @@ class _$_RoverMetrics implements _RoverMetrics {
       const DeepCollectionEquality().hash(battery_percent),
       const DeepCollectionEquality().hash(subsystems),
       const DeepCollectionEquality().hash(telemetry),
-      const DeepCollectionEquality().hash(pi_lits));
+      const DeepCollectionEquality().hash(pi_lits),
+      const DeepCollectionEquality().hash(garage));
 
   @JsonKey(ignore: true)
   @override
@@ -305,7 +337,8 @@ abstract class _RoverMetrics implements RoverMetrics {
       final int? battery_percent,
       required final RoverMetricHealth subsystems,
       required final RoverMetricTelemetry telemetry,
-      required final RoverPiLits pi_lits}) = _$_RoverMetrics;
+      required final RoverPiLits pi_lits,
+      final Garage? garage}) = _$_RoverMetrics;
 
   factory _RoverMetrics.fromJson(Map<String, dynamic> json) =
       _$_RoverMetrics.fromJson;
@@ -326,6 +359,8 @@ abstract class _RoverMetrics implements RoverMetrics {
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
   @override
   RoverPiLits get pi_lits => throw _privateConstructorUsedError;
+  @override
+  Garage? get garage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
@@ -1220,5 +1255,161 @@ abstract class _PiLit implements PiLit {
   @override
   @JsonKey(ignore: true)
   _$$_PiLitCopyWith<_$_PiLit> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Garage _$GarageFromJson(Map<String, dynamic> json) {
+  return _Garage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Garage {
+  String get garage_id => throw _privateConstructorUsedError;
+  DeviceLocation get location => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $GarageCopyWith<Garage> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GarageCopyWith<$Res> {
+  factory $GarageCopyWith(Garage value, $Res Function(Garage) then) =
+      _$GarageCopyWithImpl<$Res>;
+  $Res call({String garage_id, DeviceLocation location});
+
+  $DeviceLocationCopyWith<$Res> get location;
+}
+
+/// @nodoc
+class _$GarageCopyWithImpl<$Res> implements $GarageCopyWith<$Res> {
+  _$GarageCopyWithImpl(this._value, this._then);
+
+  final Garage _value;
+  // ignore: unused_field
+  final $Res Function(Garage) _then;
+
+  @override
+  $Res call({
+    Object? garage_id = freezed,
+    Object? location = freezed,
+  }) {
+    return _then(_value.copyWith(
+      garage_id: garage_id == freezed
+          ? _value.garage_id
+          : garage_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      location: location == freezed
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as DeviceLocation,
+    ));
+  }
+
+  @override
+  $DeviceLocationCopyWith<$Res> get location {
+    return $DeviceLocationCopyWith<$Res>(_value.location, (value) {
+      return _then(_value.copyWith(location: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_GarageCopyWith<$Res> implements $GarageCopyWith<$Res> {
+  factory _$$_GarageCopyWith(_$_Garage value, $Res Function(_$_Garage) then) =
+      __$$_GarageCopyWithImpl<$Res>;
+  @override
+  $Res call({String garage_id, DeviceLocation location});
+
+  @override
+  $DeviceLocationCopyWith<$Res> get location;
+}
+
+/// @nodoc
+class __$$_GarageCopyWithImpl<$Res> extends _$GarageCopyWithImpl<$Res>
+    implements _$$_GarageCopyWith<$Res> {
+  __$$_GarageCopyWithImpl(_$_Garage _value, $Res Function(_$_Garage) _then)
+      : super(_value, (v) => _then(v as _$_Garage));
+
+  @override
+  _$_Garage get _value => super._value as _$_Garage;
+
+  @override
+  $Res call({
+    Object? garage_id = freezed,
+    Object? location = freezed,
+  }) {
+    return _then(_$_Garage(
+      garage_id: garage_id == freezed
+          ? _value.garage_id
+          : garage_id // ignore: cast_nullable_to_non_nullable
+              as String,
+      location: location == freezed
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as DeviceLocation,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Garage implements _Garage {
+  const _$_Garage({required this.garage_id, required this.location});
+
+  factory _$_Garage.fromJson(Map<String, dynamic> json) =>
+      _$$_GarageFromJson(json);
+
+  @override
+  final String garage_id;
+  @override
+  final DeviceLocation location;
+
+  @override
+  String toString() {
+    return 'Garage(garage_id: $garage_id, location: $location)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Garage &&
+            const DeepCollectionEquality().equals(other.garage_id, garage_id) &&
+            const DeepCollectionEquality().equals(other.location, location));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(garage_id),
+      const DeepCollectionEquality().hash(location));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_GarageCopyWith<_$_Garage> get copyWith =>
+      __$$_GarageCopyWithImpl<_$_Garage>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_GarageToJson(this);
+  }
+}
+
+abstract class _Garage implements Garage {
+  const factory _Garage(
+      {required final String garage_id,
+      required final DeviceLocation location}) = _$_Garage;
+
+  factory _Garage.fromJson(Map<String, dynamic> json) = _$_Garage.fromJson;
+
+  @override
+  String get garage_id => throw _privateConstructorUsedError;
+  @override
+  DeviceLocation get location => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_GarageCopyWith<_$_Garage> get copyWith =>
       throw _privateConstructorUsedError;
 }
