@@ -116,6 +116,7 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
+ 
   Future<GarageMetrics> getGarageMetrics(String garage_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
     return GarageMetrics.fromJson(json.decode(response.body));

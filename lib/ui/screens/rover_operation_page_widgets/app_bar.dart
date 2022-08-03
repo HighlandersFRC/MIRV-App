@@ -77,27 +77,27 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onPressed: () {
                           stopCall();
 
-                          SystemChrome.setPreferredOrientations([
-                            DeviceOrientation.landscapeRight,
-                            DeviceOrientation.landscapeLeft,
-                            DeviceOrientation.portraitUp,
-                            DeviceOrientation.portraitDown,
-                          ]);
-                          Navigator.pop(context);
-                          get_pkg.Get.offAll(() => const HomePage());
-                        },
-                        child: const Text('Yes')),
-                    TextButton(
-                        onPressed: () {
-                          return Navigator.pop(context);
-                        },
-                        child: const Text('No'))
-                  ],
-                );
-              },
+                            SystemChrome.setPreferredOrientations([
+                              DeviceOrientation.landscapeRight,
+                              DeviceOrientation.landscapeLeft,
+                              DeviceOrientation.portraitUp,
+                              DeviceOrientation.portraitDown,
+                            ]);
+                            Navigator.pop(context);
+                            get_pkg.Get.offAll(() => HomePage());
+                          },
+                          child: const Text('Yes')),
+                      TextButton(
+                          onPressed: () {
+                            return Navigator.pop(context);
+                          },
+                          child: const Text('No'))
+                    ],
+                  );
+                },
+              ),
             ),
           ),
-        ),
         title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),

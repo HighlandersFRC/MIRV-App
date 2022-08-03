@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,9 +32,17 @@ class RoverOperationPage extends StatelessWidget {
   final BehaviorSubject<LatLng> locationStream =
       BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
+  late bool showMap;
+  final double? _left = 50;
+  final double? _bottom = 20;
+
+  late Rx<double?> _leftObs = Rx<double?>(null);
+  late Rx<double?> _bottomObs = Rx<double?>(null);
 
   @override
   Widget build(BuildContext context) {
+    _leftObs.value = _left;
+    _bottomObs.value = _bottom;
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
@@ -52,6 +62,9 @@ class RoverOperationPage extends StatelessWidget {
           children: [
             Center(
               child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                ),
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
             ),
@@ -96,67 +109,97 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Obx(
-              () => Positioned(
+            Positioned(
+                left: 20,
                 bottom: 20,
-                left: manualOperation.value ? 300 : 50,
-                height: 160,
-                width: 300,
-                child: RoverOperationMap(
-                  locationStream: locationStream,
-                  roverMetrics: roverMetrics,
-                ),
-              ),
-            ),
-            Obx(
-              () => Positioned(
-                  bottom: 15,
-                  right: 10,
-                  child: manualOperation.value
-                      ? Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color.fromRGBO(50, 50, 50, 0.5),
-                          ),
-                          child: IconButton(
-                            icon: const Icon(
-                              CupertinoIcons.game_controller_solid,
+                height: 200,
+                width: 375,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.deferToChild,
+                  onDoubleTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: AspectRatio(
+                            aspectRatio: 1.5,
+                            child: RoverOperationMap(
+                              locationStream: locationStream,
+                              roverMetrics: roverMetrics,
                             ),
-                            iconSize: 60,
-                            color: Colors.red,
-                            onPressed: () {
-                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.disableRemoteOperation);
-                            },
-                          ))
-                      : Center(
-                          child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color.fromARGB(0, 50, 50, 50),
                           ),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                                shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                )),
-                            child: const Icon(
-                              CupertinoIcons.game_controller,
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
-                            },
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                return Navigator.pop(context);
+                              },
+                              child: const Text('Close'),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: RoverOperationMap(
+                    locationStream: locationStream,
+                    roverMetrics: roverMetrics,
+                  ),
+                )),
+            Obx(() => Positioned(
+                bottom: 15,
+                right: 10,
+                child: manualOperation.value
+                    ? Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          color: const Color.fromRGBO(50, 50, 50, 0.5),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(
+                            CupertinoIcons.game_controller_solid,
                           ),
-                        ))),
-            ),
+                          iconSize: 60,
+                          color: Colors.red,
+                          onPressed: () {
+                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.disableRemoteOperation);
+                          },
+                        ))
+                    : webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                        ? Positioned(
+                            bottom: 20,
+                            right: 15,
+                            child: Center(
+                                child: Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                color: const Color.fromARGB(0, 50, 50, 50),
+                              ),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                                    shape: MaterialStateProperty.all(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      ),
+                                    )),
+                                child: const Icon(
+                                  CupertinoIcons.game_controller,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                                },
+                              ),
+                            )))
+                        : const ElevatedButton(
+                            child: null,
+                            onPressed: null,
+                          ))),
             Obx(() => manualOperation.value
                 ? Positioned(
                     bottom: 20,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/services/auth_service.dart';
-import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class LoginController extends GetxController {
   final Widget pageRoute;
@@ -11,13 +9,6 @@ class LoginController extends GetxController {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   AuthService authService = AuthService();
-  final Rx<bool> isLoading = true.obs;
-
-  // @override
-  // void onInit() async {
-  //   // Simulating obtaining the user name from some local storage
-  //   super.onInit();
-  // }
 
   Future<void> init() async {
     await authService.init();
@@ -50,39 +41,25 @@ class LoginController extends GetxController {
     });
   }
 
-  void validateToken() {
-    isCurrentTokenValid().then((isValid) {
-      isLoading.value = false;
-      if (isValid) {
-        Get.off(pageRoute);
-      }
-    });
-  }
-
   Future<int> attemptLogIn(String username, String password) async {
     return authService.authenticateUser(username, password);
-  }
-
-  Future<bool> isCurrentTokenValid() async {
-    return authService.validateToken();
   }
 }
 
 class LoginPage extends StatelessWidget {
   late LoginController controller = LoginController(pageRoute);
   final Widget pageRoute;
-  LoginPage(this.pageRoute);
-  Rx<bool> _isObscure = true.obs;
+  final Rx<bool> _isObscure = true.obs;
+  LoginPage(this.pageRoute, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    controller.init().then((val) => controller.validateToken());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Log In Page"),
       ),
-      body: ListView(children: [
-        Stack(children: <Widget>[
+      body: ListView(
+        children: [
           Container(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -118,43 +95,8 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
-          Obx(() => controller.isLoading.value
-              ? Container(
-                  color: loadingColor,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : Container()),
-        ]),
-      ]),
+        ],
+      ),
     );
-    // body: Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: Column(
-    //     children: <Widget>[
-    //       TextField(
-    //         controller: _usernameController,
-    //         decoration: InputDecoration(labelText: 'Username'),
-    //       ),
-    //       TextField(
-    //         controller: _passwordController,
-    //         obscureText: true,
-    //         decoration: InputDecoration(labelText: 'Password'),
-    //       ),
-    //       ElevatedButton(
-    //           onPressed: () async {
-    //             var username = _usernameController.text;
-    //             var statusCode = await attemptLogIn(username, _passwordController.text);
-    //             if (statusCode == 200) {
-    //               Get.offAll(const HomePage());
-    //             } else {
-    //               displayDialog(context, "Something went wrong", "No account was found matching that username and password");
-    //             }
-    //           },
-    //           child: Text("Log In")),
-    //     ],
-    //   ),
-    // ));
   }
 }

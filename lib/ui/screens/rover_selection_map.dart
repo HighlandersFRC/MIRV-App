@@ -26,15 +26,13 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
   void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
+    mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon_new.png');
   }
 
   GoogleMapController? _mapController;
   late StreamSubscription locationSubscription;
   late StreamSubscription boundsSubscription;
 
-  Set<Polygon> _polygons = HashSet<Polygon>();
-  List<LatLng> polygonLatLngs = <LatLng>[];
   double radius = 10.0;
   StreamController<Place?> selectedLocation = StreamController<Place?>();
   double zoom = 16.0;
@@ -49,23 +47,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         _mapController?.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: place.geometry.getLatLng(), zoom: await _mapController!.getZoomLevel())));
       }
-    });
-
-    setState(() {
-      const String polygonIdVal = 'polygon_id_polygon_1';
-      _polygons.add(Polygon(
-        polygonId: const PolygonId(polygonIdVal),
-        points: const <LatLng>[
-          LatLng(40.47395664499516, -104.96979609131813),
-          LatLng(40.4738780911155, -104.96969819068909),
-          LatLng(40.47413619637505, -104.96932670474051),
-          LatLng(40.47420760872223, -104.9694299697876),
-          LatLng(40.47395664499516, -104.96979609131813),
-        ],
-        strokeWidth: 2,
-        strokeColor: Colors.yellow,
-        fillColor: Colors.yellow.withOpacity(0.15),
-      ));
     });
 
     widget.selectedRoverId.listen((rover_id) {
@@ -93,7 +74,6 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
           zoom: 14,
         ),
         markers: getMarkers(),
-        polygons: _polygons,
         onMapCreated: (GoogleMapController controller) {
           _mapController = controller;
         },

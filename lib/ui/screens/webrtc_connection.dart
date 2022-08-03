@@ -99,7 +99,7 @@ class WebRTCConnection {
             TextButton(
                 onPressed: () {
                   get_pkg.Get.back();
-                  get_pkg.Get.offAll(() => const HomePage());
+                  get_pkg.Get.offAll(() => HomePage());
                 },
                 child: const Text('Home page'))
           ],
@@ -206,7 +206,7 @@ class WebRTCConnection {
                     onPressed: () {
                       stopCall();
                       get_pkg.Get.back();
-                      get_pkg.Get.offAll(() => const HomePage());
+                      get_pkg.Get.offAll(() => HomePage());
                     },
                     child: const Text('Disconnect and Go to Home page'))
               ],
@@ -310,10 +310,10 @@ class WebRTCConnection {
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-         // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-         // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
           break;
       }
     });
@@ -326,10 +326,10 @@ class WebRTCConnection {
           _showReconnectDialog(error: 'Invalid Data Channel State', roverId: roverId);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
-         // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
           break;
         case RTCDataChannelState.RTCDataChannelOpen:
-         // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
           break;
         case null:
           break;
