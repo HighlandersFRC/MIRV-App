@@ -29,7 +29,7 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   }
 
   void setMarkerIcon() async {
-    var roverMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
+    var roverMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon_new.png');
 
     setState(() {
       roverMarker = roverMapMarker;
