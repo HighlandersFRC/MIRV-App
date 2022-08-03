@@ -129,8 +129,8 @@ class RoverOperationPage extends StatelessWidget {
                   child: GestureDetector(
                     behavior: HitTestBehavior.deferToChild,
                     onPanUpdate: (details) {
-                      _leftObs.value = max(0, _left! + details.delta.dy);
-                      _bottomObs.value = max(0, _bottom! + details.delta.dy);
+                      _leftObs.value = max(0, _leftObs.value! + details.delta.dy);
+                      _bottomObs.value = max(0, _bottomObs.value! + details.delta.dy);
                       print('PANNINGPANNINGPANNINGPANNING');
                     },
                     onDoubleTap: () {
