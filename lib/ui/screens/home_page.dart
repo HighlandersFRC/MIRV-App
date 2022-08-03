@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/info_page.dart';
 import 'package:mirv/ui/screens/login_page.dart';
@@ -8,14 +9,19 @@ import 'package:mirv/ui/screens/rover_selection_page.dart';
 import 'package:mirv/ui/screens/settings.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final AuthService authService = AuthService();
+
+  HomePage({Key? key}) : super(key: key) {
+    authService.init();
+  }
 
   Padding _homeListTile(
     double height,
     String title,
     IconData? icon,
-    pageRoute,
-  ) {
+    pageRoute, {
+    bool validateLogin: false,
+  }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: height / 20, horizontal: 5),
       child: ListTile(
@@ -24,10 +30,22 @@ class HomePage extends StatelessWidget {
             style: const TextStyle(fontSize: homeFontSize),
           ),
           leading: Icon(icon),
-          onTap: () {
-            Get.to(pageRoute);
+          onTap: () async {
+            if (validateLogin) {
+              if (await isCurrentTokenValid()) {
+                Get.to(pageRoute);
+              } else {
+                Get.to(LoginPage(pageRoute));
+              }
+            } else {
+              Get.to(pageRoute);
+            }
           }),
     );
+  }
+
+  Future<bool> isCurrentTokenValid() async {
+    return authService.validateToken();
   }
 
   @override
@@ -55,13 +73,15 @@ class HomePage extends StatelessWidget {
                   height,
                   'Rover Selection Page',
                   Icons.people,
-                  LoginPage(const RoverSelectionPage()),
+                  const RoverSelectionPage(),
+                  validateLogin: true,
                 ),
                 _homeListTile(
                   height,
                   'Garage Selection Page',
                   Icons.garage_rounded,
-                  LoginPage(GarageSelectionPage()),
+                  GarageSelectionPage(),
+                  validateLogin: true,
                 ),
                 _homeListTile(
                   height,

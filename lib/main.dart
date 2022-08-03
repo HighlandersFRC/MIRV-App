@@ -12,6 +12,6 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
   }
   runApp(
-    GetMaterialApp(title: 'MIRV Mobile App', home: const HomePage(), theme: overallTheme),
+    GetMaterialApp(title: 'MIRV Mobile App', home: HomePage(), theme: overallTheme),
   );
 }
