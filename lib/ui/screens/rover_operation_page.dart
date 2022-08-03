@@ -119,20 +119,14 @@ class RoverOperationPage extends StatelessWidget {
                   left: manualOperation.value ? 650 : 400,
                   child: Obx(() => TelemetryWidget(webRTCConnection.roverMetricsObs.value)),
                 )),
-            Obx(
-              () =>  
+            
               Positioned(
-                  left: _leftObs.value,
-                  bottom: _bottomObs.value,
-                  height: 160,
-                  width: 300,
+                  left: 20,
+                  bottom: 20,
+                  height: 240,
+                  width: 450,
                   child: GestureDetector(
                     behavior: HitTestBehavior.deferToChild,
-                    onPanUpdate: (details) {
-                      _leftObs.value = max(0, _leftObs.value! + details.delta.dy);
-                      _bottomObs.value = max(0, _bottomObs.value! + details.delta.dy);
-                      print('PANNINGPANNINGPANNINGPANNING');
-                    },
                     onDoubleTap: () {
                       showDialog(
                         context: context,
@@ -164,7 +158,6 @@ class RoverOperationPage extends StatelessWidget {
                    
                   )),
             
-            ),
             Obx(
               () => manualOperation.value
                   ? Positioned(
