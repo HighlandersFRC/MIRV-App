@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
+import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-import 'package:mirv/ui/screens/app_bar_theme.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   const OpPgAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
       : super(key: key);
 
-  final RoverMetrics roverMetrics;
+  final Rx<RoverMetrics> roverMetrics;
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
-  Text _stateText(RoverStateType? roverState) {
+  String _stateText(RoverStateType? roverState) {
     switch (roverState) {
       case RoverStateType.disconnected:
-        return const Text("Disconnected");
+        return "Disconnected";
       case RoverStateType.autonomous:
-        return const Text("Autonomous");
+        return "Autonomous";
       case RoverStateType.disconnected_fault:
-        return const Text("Disconnected with Error");
+        return "Disconnected with Error";
       case RoverStateType.connected_disabled:
-        return const Text("Disabled");
+        return "Disabled";
       case RoverStateType.connected_fault:
-        return const Text("Connected with Error");
+        return "Connected with Error";
       case RoverStateType.connected_idle_roaming:
-        return const Text("Awaiting Orders");
+        return "Awaiting Orders";
       case RoverStateType.connected_idle_docked:
-        return const Text("Docked");
+        return "Docked";
       case RoverStateType.e_stop:
-        return const Text("E-Stopped"); //hexagon?
+        return "E-Stopped";
       case RoverStateType.remote_operation:
-        return const Text("Controlling");
+        return "Controlling";
       default:
-        return const Text("No Data");
+        return "No Data";
     }
   }
 
@@ -47,6 +50,8 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+        backgroundColor: Color.fromARGB(0, 255, 255, 255),
+        foregroundColor: Color.fromARGB(0, 255, 255, 255),
         leadingWidth: 200,
         leading: Container(
           child: Padding(
@@ -57,7 +62,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                 ),
                 backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
@@ -67,11 +72,18 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Disconnect?'),
-                    content: Text('Would  you like to discconect from ${roverMetrics.rover_id}'),
+                    content: Text('Would  you like to discconect from ${roverMetrics.value.rover_id}'),
                     actions: <Widget>[
                       TextButton(
                           onPressed: () {
                             stopCall();
+
+                            SystemChrome.setPreferredOrientations([
+                              DeviceOrientation.landscapeRight,
+                              DeviceOrientation.landscapeLeft,
+                              DeviceOrientation.portraitUp,
+                              DeviceOrientation.portraitDown,
+                            ]);
                             Navigator.pop(context);
                             get_pkg.Get.offAll(() => const HomePage());
                           },
@@ -88,13 +100,13 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-        backgroundColor: AppThemeColor.backgroundColor,
-        title: _stateText(roverMetrics.state),
+        title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
+          Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: RoverStatusBar(
-              roverMetrics: roverMetrics,
+              roverMetrics: roverMetrics.value,
               peerConnectionState: peerConnectionState,
             ),
           ),
@@ -103,7 +115,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics)),
+                  content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics.value)),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -115,7 +127,6 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                 );
               },
             ),
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
             child: const Text(
               " Status ",
               textScaleFactor: 2.5,

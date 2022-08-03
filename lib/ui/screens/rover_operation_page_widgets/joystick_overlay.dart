@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:mirv/control_pad/views/joystick_view.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_widget.dart';
 
 // ignore: must_be_immutable
 class JoystickOverlay extends StatelessWidget {
@@ -37,12 +37,31 @@ class JoystickOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        JoystickWidget(
-          roverMetrics: roverMetrics,
-          onJoystickChanged: onJoystickChanged,
-          axisType: GamepadAxisType.left,
+        Container(
+          child: JoystickView(
+            opacity: 0.5,
+            size: 300,
+            onDirectionChanged: (x, y) {
+              print("$x, $y");
+            },
+          ),
         ),
+        // JoystickWidget(
+        //   roverMetrics: roverMetrics,
+        //   onJoystickChanged: onJoystickChanged,
+        //   axisType: GamepadAxisType.left,
+        // ),
         const Spacer(),
+
+        Container(
+          child: JoystickView(opacity: 0.5, size: 300),
+        ),
+        // JoystickWidget(
+        //   roverMetrics: roverMetrics,
+        //   onJoystickChanged: onJoystickChanged,
+        //   axisType: GamepadAxisType.right,
+        // ),
+
         Padding(
             padding: const EdgeInsets.only(right: 50),
             child: Container(
@@ -61,11 +80,6 @@ class JoystickOverlay extends StatelessWidget {
                 },
               ),
             )),
-        JoystickWidget(
-          roverMetrics: roverMetrics,
-          onJoystickChanged: onJoystickChanged,
-          axisType: GamepadAxisType.right,
-        ),
       ],
     );
   }

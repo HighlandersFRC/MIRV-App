@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
@@ -119,7 +120,7 @@ class LoginPage extends StatelessWidget {
           ),
           Obx(() => controller.isLoading.value
               ? Container(
-                  color: Colors.black.withOpacity(0.5),
+                  color: loadingColor,
                   child: const Center(
                     child: CircularProgressIndicator(),
                   ),

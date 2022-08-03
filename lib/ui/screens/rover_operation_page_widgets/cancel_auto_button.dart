@@ -39,7 +39,7 @@ class CancelAuto extends StatelessWidget {
             shape: MaterialStateProperty.all(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(25),
+                  Radius.circular(20),
                 ),
               ),
             ),

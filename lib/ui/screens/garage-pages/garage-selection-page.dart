@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
-import 'package:location/location.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 
@@ -16,11 +16,11 @@ class SelectedGarageController extends GetxController {
     selectedGarageId.listen((selectedGarageId) => isConnectButtonEnabled.value = (selectedGarageId != ""));
   }
 
-  setSelectedGarageId(String garage_id) {
-    if (garage_id == selectedGarageId.value) {
-      selectedGarageId.trigger(garage_id);
+  setSelectedGarageId(String garageId) {
+    if (garageId == selectedGarageId.value) {
+      selectedGarageId.trigger(garageId);
     } else {
-      selectedGarageId.value = garage_id;
+      selectedGarageId.value = garageId;
     }
   }
 
@@ -29,12 +29,12 @@ class SelectedGarageController extends GetxController {
   }
 
   Color garageTileColor(
-    String garage_id,
+    String garageId,
   ) {
-    if (selectedGarageId.value == garage_id) {
-      return Colors.blue;
+    if (selectedGarageId.value == garageId) {
+      return tileColorSelected;
     } else {
-      return Colors.white;
+      return tileColorAvailible;
     }
   }
 }
@@ -46,7 +46,6 @@ class GarageSelectionPage extends StatelessWidget {
   final selectedGarageController = Get.put(SelectedGarageController());
 
   late MirvApi? mirvGarageApi = MirvApi();
-  Location location = Location();
   int? groupValue = 0;
   RxList<GarageMetrics> garageList = <GarageMetrics>[].obs;
   final TextEditingController typeAheadController = TextEditingController();
@@ -62,11 +61,9 @@ class GarageSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _refreshGaragesList();
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     selectedGarageController.isGarageListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: AppBar(
         title: const Text(
           "Garage Selection",
@@ -135,16 +132,15 @@ class GarageSelectionPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  selectedGarageController.isConnectButtonEnabled.value ? Colors.blue : Colors.grey)),
                           onPressed: selectedGarageController.isConnectButtonEnabled.value
                               ? () {
-                                  Get.to(() => (GarageOperationPage(
-                                        garageList.firstWhere(
-                                          (element) => selectedGarageController.selectedGarageId.value == element.garage_id,
-                                        ),
-                                      )));
+                                  Get.to(
+                                    () => (GarageOperationPage(
+                                      garageList.firstWhere(
+                                        (element) => selectedGarageController.selectedGarageId.value == element.garage_id,
+                                      ),
+                                    )),
+                                  );
                                 }
                               : null,
                           child: Row(

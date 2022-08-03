@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
-import 'package:mirv/models/garage/garage_state_type.dart';
-import 'package:mirv/models/pair.dart';
-import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/services/mirv_api.dart';
-
 class GarageCommandList extends StatelessWidget {
-  GarageCommandList({
+  const GarageCommandList({
     Key? key,
     required this.garageMetrics,
     required this.sendCommand,
@@ -19,7 +14,6 @@ class GarageCommandList extends StatelessWidget {
   final Function(String, GarageCommand) sendCommand;
   final Function(String, GarageCommand) changeGarageState;
   final Future<void> resetGarageState;
-  late MirvApi _mirvGarageApi = MirvApi();
 
   @override
   Widget build(BuildContext context) {

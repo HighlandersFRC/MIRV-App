@@ -81,23 +81,22 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
   }
 
   Set<Marker> getMarkers(mapMarker) {
-    //markers to place on map
-    // var markers = {
-    //   ...widget.roverMetrics.pi_lits.deployed_pi_lits.map((piLit) {
-    //     return Marker(
-    //       //add first marker
-    //       markerId: MarkerId(piLit.pi_lit_id),
-    //       position: piLit.location.latLng, //position of marker
-    //       infoWindow: InfoWindow(
-    //         //popup info
-    //         title: piLit.pi_lit_id,
-    //         snippet: 'Pi-lit device',
-    //       ),
-    //       icon: mapMarker,
-    //     );
-    //     //add more markers here
-    //   }),
-    // };
+    var markers = {
+      ...widget.roverMetrics.pi_lits.deployed_pi_lits.map((piLit) {
+        return Marker(
+          //add first marker
+          markerId: MarkerId(piLit.pi_lit_id),
+          position: piLit.location.latLng, //position of marker
+          infoWindow: InfoWindow(
+            //popup info
+            title: piLit.pi_lit_id,
+            snippet: 'Pi-lit device',
+          ),
+          icon: mapMarker,
+        );
+        //add more markers here
+      }),
+    };
 
     var marker = Marker(
         //add first marker

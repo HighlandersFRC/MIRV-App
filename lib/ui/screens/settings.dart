@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/mirv_api.dart';
-import 'package:mirv/ui/screens/app_bar_theme.dart';
+
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 
@@ -19,18 +18,31 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
 
-  initialize() async {
+  initialize() {
+    savedEndpoint.value = (authService.getMirvEndpoint());
+    savedKeycloakEndpoint.value = (authService.getKeycloakEndpoint());
+    savedKeycloakRealm.value = (authService.getKeycloakRealm());
+    savedKeycloakClient.value = (authService.getKeycloakClient());
+
+    if (endpointController.value.text != savedEndpoint.value) {
+      endpointController.value.text = savedEndpoint.value;
+    }
+    if (keycloakEndpointController.value.text != savedKeycloakEndpoint.value) {
+      keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
+    }
+    if (keycloakRealmController.value.text != savedKeycloakRealm.value) {
+      keycloakRealmController.value.text = savedKeycloakRealm.value;
+    }
+    if (keycloakClientController.value.text != savedKeycloakClient.value) {
+      keycloakClientController.value.text = savedKeycloakClient.value;
+    }
+  }
+
+  @override
+  void onInit() async {
     await authService.init();
-
-    savedEndpoint = (authService.getMirvEndpoint()).obs;
-    savedKeycloakEndpoint = (authService.getKeycloakEndpoint()).obs;
-    savedKeycloakRealm = (authService.getKeycloakRealm()).obs;
-    savedKeycloakClient = (authService.getKeycloakClient()).obs;
-
-    endpointController.value.text = savedEndpoint.value;
-    keycloakEndpointController.value.text = savedKeycloakEndpoint.value;
-    keycloakRealmController.value.text = savedKeycloakRealm.value;
-    keycloakClientController.value.text = savedKeycloakClient.value;
+    initialize();
+    super.onInit();
   }
 
   @override
@@ -54,14 +66,13 @@ class SettingsPage extends StatelessWidget {
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
   SettingsPage({Key? key}) : super(key: key) {
-    settingsTextBoxController.initialize();
+    // settingsTextBoxController.initialize();
   }
 
   AuthService authService = AuthService();
 
   late GarageMetrics garageMetrics;
 
-  
   late MirvApi mirvApi = MirvApi();
 
   ListTile _textFieldtile(
@@ -78,7 +89,7 @@ class SettingsPage extends StatelessWidget {
           },
           decoration: InputDecoration(
             labelText: labelText,
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: compareOrigin.value ? Colors.blue : Colors.red)),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: compareOrigin.value ? secondaryColor : Colors.red)),
           ),
         ),
       ),
@@ -123,9 +134,6 @@ class SettingsPage extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: AppThemeColor.foregroundColor,
-        shadowColor: AppThemeColor.shadowColor,
-        backgroundColor: AppThemeColor.backgroundColor,
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -247,9 +255,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           Obx(() => loading.value
-              ? Center(
-                  child: Container(
-                      color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+              ? Center(child: Container(color: loadingColor, child: const Center(child: CircularProgressIndicator())))
               : const SizedBox.shrink())
         ],
       ),

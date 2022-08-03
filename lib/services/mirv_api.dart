@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
-import 'package:mirv/models/pair.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:http/http.dart' as http;
