@@ -19,28 +19,28 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
-  Text _stateText(RoverStateType? roverState) {
+  String _stateText(RoverStateType? roverState) {
     switch (roverState) {
       case RoverStateType.disconnected:
-        return const Text("Disconnected");
+        return "Disconnected";
       case RoverStateType.autonomous:
-        return const Text("Autonomous");
+        return "Autonomous";
       case RoverStateType.disconnected_fault:
-        return const Text("Disconnected with Error");
+        return "Disconnected with Error";
       case RoverStateType.connected_disabled:
-        return const Text("Disabled");
+        return "Disabled";
       case RoverStateType.connected_fault:
-        return const Text("Connected with Error");
+        return "Connected with Error";
       case RoverStateType.connected_idle_roaming:
-        return const Text("Awaiting Orders");
+        return "Awaiting Orders";
       case RoverStateType.connected_idle_docked:
-        return const Text("Docked");
+        return "Docked";
       case RoverStateType.e_stop:
-        return const Text("E-Stopped");
+        return "E-Stopped";
       case RoverStateType.remote_operation:
-        return const Text("Controlling");
+        return "Controlling";
       default:
-        return const Text("No Data");
+        return "No Data";
     }
   }
 
@@ -100,7 +100,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-        title: _stateText(roverMetrics.value.state),
+        title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(

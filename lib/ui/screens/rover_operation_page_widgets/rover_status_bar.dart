@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/device_health.dart';
 import 'package:mirv/models/ui_connection_state.dart';
@@ -17,6 +19,7 @@ class RoverStatusBar extends StatelessWidget {
   final RoverMetrics? roverMetrics;
   final Rx<RTCPeerConnectionState?> peerConnectionState;
   late Rx<UIConnectionState> uiConnectionState;
+  final double iconSize = 40;
 
   setEnum(rtcPeerConnectionState) {
     switch (rtcPeerConnectionState) {
@@ -35,33 +38,33 @@ class RoverStatusBar extends StatelessWidget {
     }
   }
 
-  Icon _batteryIcon(int? batteryLevel, {int? alertLevel}) {
+  IconData _batteryIcon(int? batteryLevel, {int? alertLevel}) {
     double size = 40;
     if (batteryLevel == null) {
-      return Icon(Icons.battery_unknown_rounded, size: size);
+      return Icons.battery_unknown_rounded;
     }
     double divisor = 100 / 7;
     int result = (batteryLevel / divisor).ceil();
     if (alertLevel != null && batteryLevel < alertLevel) {
-      return Icon(Icons.battery_alert_rounded, size: size);
+      return Icons.battery_alert_rounded;
     }
     switch (result) {
       case 0:
-        return Icon(Icons.battery_0_bar_rounded, size: size);
+        return Icons.battery_0_bar_rounded;
       case 1:
-        return Icon(Icons.battery_1_bar_rounded, size: size);
+        return Icons.battery_1_bar_rounded;
       case 2:
-        return Icon(Icons.battery_2_bar_rounded, size: size);
+        return Icons.battery_2_bar_rounded;
       case 3:
-        return Icon(Icons.battery_3_bar_rounded, size: size);
+        return Icons.battery_3_bar_rounded;
       case 4:
-        return Icon(Icons.battery_4_bar_rounded, size: size);
+        return Icons.battery_4_bar_rounded;
       case 5:
-        return Icon(Icons.battery_5_bar_rounded, size: size);
+        return Icons.battery_5_bar_rounded;
       case 6:
-        return Icon(Icons.battery_6_bar_rounded, size: size);
+        return Icons.battery_6_bar_rounded;
       default:
-        return Icon(Icons.battery_full_rounded, size: size);
+        return Icons.battery_full_rounded;
     }
   }
 
@@ -92,22 +95,15 @@ class RoverStatusBar extends StatelessWidget {
               Obx(
                 () => Icon(Icons.circle, color: uiConnectionState.value.iconColor, size: 35),
               ),
-              _batteryIcon(roverMetrics!.battery_percent, alertLevel: 20),
-              Text("${roverMetrics!.battery_percent}%", style: TextStyle(fontSize: 20)),
-
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.circle), //enconder
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.handyman), //mechanical
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.general.health, healthIconChoice: Icons.sensors),
-
-              //lidar
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.drivetrain.health, healthIconChoice: Icons.camera_alt), //camera
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.intake.health, healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.sensors.health, healthIconChoice: Icons.gps_fixed), //gps
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.garage.health, healthIconChoice: Icons.garage), //garage
+              Icon(_batteryIcon(roverMetrics!.battery_percent, alertLevel: 20), size: iconSize, color: primaryColor),
+              Text("${roverMetrics!.battery_percent}%", style: const TextStyle(fontSize: 20, color: fontColor)),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.bolt),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.power.health, healthIconChoice: Icons.power),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.general.health, healthIconChoice: Icons.smart_toy_outlined),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.drivetrain.health, healthIconChoice: Icons.handyman),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.intake.health, healthIconChoice: Icons.rotate_90_degrees_ccw),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.sensors.health, healthIconChoice: Icons.sensors),
+              _healthIcon(roverHealthType: roverMetrics!.subsystems.garage.health, healthIconChoice: Icons.garage),
             ]
           : [],
     );

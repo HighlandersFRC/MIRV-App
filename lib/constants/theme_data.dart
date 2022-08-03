@@ -25,7 +25,7 @@ const fontFamily = 'Georgia';
 const double homeFontSize = 18;
 
 final ThemeData overallTheme = ThemeData(
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     centerTitle: true,
   ),
   fontFamily: fontFamily,

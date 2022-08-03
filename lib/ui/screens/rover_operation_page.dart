@@ -183,13 +183,9 @@ class RoverOperationPage extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                            shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                              ),
-                            ),
-                          ),
+                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                              shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)),),)),
                           child: const Icon(
                             Ionicons.game_controller_outline,
                             size: 50,
