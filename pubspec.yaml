@@ -91,10 +91,8 @@ flutter:
     - assets/images/pi_lit_outline_up.png
     - assets/images/pi_lit_outline_down.png
     - assets/images/pi_lit_icon.png
-    - assets/images/rover_app_icon.png
-    - assets/images/rover_icon.png
     - assets/images/rover_icon_new.png
-    - assets/images/mars-rover.png
+    - assets/images/rover_app_icon.png
     - assets/images/mars_rover_new.png
 
   # To add assets to your application, add an assets section, like this:
