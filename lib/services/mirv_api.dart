@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
@@ -177,9 +178,17 @@ class MirvApi {
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
     GarageStateType? state = tempGarageMetrics?.state;
+    SizedBox sizedBox =  SizedBox(
+      width: 200.0,
+      height: 300.0,
+      child: Image.asset(
+                      'assets/images/mars_rover_new.png',
+                    ),
+    );
     Rx<GarageStateType?> roverStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
       state = GarageStateType.retracted_unlatched;
+      sizedBox;
     } else if (command == GarageCommands.lock) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.retract) {

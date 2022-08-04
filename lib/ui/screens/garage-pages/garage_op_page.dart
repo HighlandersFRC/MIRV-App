@@ -6,6 +6,7 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_app_bar.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_image_states.dart';
 import 'package:mirv/ui/screens/garage-pages/list_garage_commands.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/subjects.dart';
@@ -51,6 +52,13 @@ class GarageOperationPage extends StatelessWidget {
               ),
             ),
           ),
+          Obx (() =>
+            Positioned(
+              height: 650,
+              right: 450,
+              width: 310,
+              child: StateImages(garageMetrics: _mirvGarageApi.garageMetricsObs.value!)),
+          )
         ],
       ),
     );
