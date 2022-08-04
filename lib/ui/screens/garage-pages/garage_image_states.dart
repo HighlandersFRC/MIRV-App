@@ -10,25 +10,24 @@ class StateImages extends StatelessWidget {
    StateImages({
     Key? key,
     required this.garageMetrics
-  }) : super(key: key) {
-  }
+  }) : super(key: key);
 
   Image? updateImage(GarageStateType? garageState) {
     switch (garageState) {
       case GarageStateType.deployed:
-        return Image.asset('assets/images/mars_rover_new.png');
+        return Image.asset('assets/images/deployed.png');
       case GarageStateType.in_motion_deploy:
         return Image.asset('assets/images/down_arrow.png');
       case GarageStateType.in_motion_retract:
         return Image.asset('assets/images/up_arrow.png');
       case GarageStateType.retracted_latched:
-        return Image.asset('assets/images/lock.png');
+        return Image.asset('assets/images/retracted_latched.png');
       case GarageStateType.retracted_unlatched:
-        return Image.asset('assets/images/unlock.png');
+        return Image.asset('assets/images/retracted_unlatched.png');
       case GarageStateType.unavailable:
         return Image.asset('assets/images/cancel.png');
       default:
-        return Image.asset('assets/images/mars_rover_new.png');
+        return Image.asset('assets/images/deployed.png');
     }
   }
 

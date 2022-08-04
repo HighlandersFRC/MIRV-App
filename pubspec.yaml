@@ -81,6 +81,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/lock.png
+    - assets/images/deployed.png
+    - assets/images/retracted_latched.png
+    - assets/images/retracted_unlatched.png 
     - assets/images/up_arrow.png
     - assets/images/down_arrow.png
     - assets/images/unlock.png
