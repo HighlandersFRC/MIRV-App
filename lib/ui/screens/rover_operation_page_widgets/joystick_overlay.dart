@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
+import 'package:mirv/control_pad/views/horizontal_joystick_view.dart';
 import 'package:mirv/control_pad/views/joystick_view.dart';
+import 'package:mirv/control_pad/views/vertical_joystick_view.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
@@ -40,9 +42,10 @@ class JoystickOverlay extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 30.0),
           child: Container(
-            child: JoystickView(
-              opacity: 0.5,
+            child: VerticalJoystickView(
+              opacity: 0.8,
               size: 300,
+              interval: Duration(milliseconds: 100),
               // onDirectionChanged: (x, y) {
               //   print("$x, $y");
               // },
@@ -59,7 +62,11 @@ class JoystickOverlay extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 30.0),
           child: Container(
-            child: JoystickView(opacity: 0.5, size: 300),
+            child: HorizontalJoystickView(
+              opacity: 0.8,
+              size: 300,
+              interval: Duration(milliseconds: 100),
+            ),
           ),
         ),
         // JoystickWidget(
