@@ -18,10 +18,10 @@ enum DeviceHealthType { healthy, unhealthy, degraded, unavailable }
 
 extension DeviceHealthTypeColor1 on DeviceHealthType {
   MaterialStateProperty<Color> get color1 {
-    var invalid1 = MaterialStateProperty.all(Color.fromARGB(125, 103, 109, 105));
-    var healthy1 = MaterialStateProperty.all(Color.fromARGB(125, 21, 117, 58));
-    var unhealthy1 = MaterialStateProperty.all(Color.fromARGB(163, 238, 205, 19));
-    var degraded1 = MaterialStateProperty.all(Color.fromARGB(124, 190, 18, 18));
+    var invalid1 = MaterialStateProperty.all(Color.fromARGB(255, 103, 109, 105));
+    var healthy1 = MaterialStateProperty.all(Color.fromARGB(255, 21, 117, 58));
+    var unhealthy1 = MaterialStateProperty.all(Color.fromARGB(200, 238, 205, 19));
+    var degraded1 = MaterialStateProperty.all(Color.fromARGB(255, 190, 18, 18));
     switch (this) {
       case DeviceHealthType.healthy:
         return healthy1;
