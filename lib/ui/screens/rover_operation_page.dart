@@ -1,14 +1,10 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
@@ -20,7 +16,6 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'webrtc_connection.dart';
@@ -31,20 +26,11 @@ class RoverOperationPage extends StatelessWidget {
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
 
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
-  final BehaviorSubject<LatLng> locationStream =
-      BehaviorSubject<LatLng>.seeded(const LatLng(40.474019558671344, -104.96957447379826));
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
-  final double? _left = 50;
-  final double? _bottom = 20;
-
-  late Rx<double?> _leftObs = Rx<double?>(null);
-  late Rx<double?> _bottomObs = Rx<double?>(null);
 
   @override
   Widget build(BuildContext context) {
-    _leftObs.value = _left;
-    _bottomObs.value = _bottom;
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();
@@ -52,7 +38,8 @@ class RoverOperationPage extends StatelessWidget {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
-    // webRTCConnection.roverMetricsObs.listen((value) => manualOperation.value = value.state == RoverStateType.remote_operation);
+
+    var roverOperationMap = RoverOperationMap(webRTCConnection.roverMetricsObs);
     return Obx(
       () => Scaffold(
         appBar: OpPgAppBar(
@@ -125,10 +112,7 @@ class RoverOperationPage extends StatelessWidget {
                         return AlertDialog(
                           content: AspectRatio(
                             aspectRatio: 1.5,
-                            child: RoverOperationMap(
-                              locationStream: locationStream,
-                              roverMetrics: roverMetrics,
-                            ),
+                            child: roverOperationMap,
                           ),
                           actions: [
                             TextButton(
@@ -142,10 +126,7 @@ class RoverOperationPage extends StatelessWidget {
                       },
                     );
                   },
-                  child: RoverOperationMap(
-                    locationStream: locationStream,
-                    roverMetrics: roverMetrics,
-                  ),
+                  child: roverOperationMap,
                 )),
             Obx(() => manualOperation.value
                 ? Positioned(
@@ -158,7 +139,7 @@ class RoverOperationPage extends StatelessWidget {
                       sendRoverCommand: webRTCConnection.sendRoverCommand,
                     ),
                   )
-                :  webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                : webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
                     ? Positioned(
                         bottom: 20,
                         right: 15,
@@ -183,14 +164,11 @@ class RoverOperationPage extends StatelessWidget {
                               webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
                             },
                           ),
-                        ))) 
-                        
-                        : 
-                    const ElevatedButton(
+                        )))
+                    : const ElevatedButton(
                         child: null,
                         onPressed: null,
-                      )
-                    ),
+                      )),
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(
