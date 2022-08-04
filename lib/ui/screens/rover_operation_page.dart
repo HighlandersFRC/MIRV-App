@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
@@ -12,12 +10,10 @@ import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
-import 'package:rxdart/subjects.dart';
 
 import 'webrtc_connection.dart';
 
@@ -43,7 +39,7 @@ class RoverOperationPage extends StatelessWidget {
     var roverOperationMap = RoverOperationMap(webRTCConnection.roverMetricsObs);
     return Obx(
       () => Scaffold(
-        appBar: OpPgAppBar(
+        appBar: OperationPageAppBar(
           roverMetrics: webRTCConnection.roverMetricsObs,
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
@@ -192,7 +188,18 @@ class RoverOperationPage extends StatelessWidget {
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(
-                        color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+                        color: const Color.fromRGBO(51, 53, 42, 42),
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text("Connecting to ${roverMetrics.rover_id}"),
+                            ),
+                            const CircularProgressIndicator(),
+                          ],
+                        ))))
                 : const SizedBox.shrink())
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/icons/custom_icons_icons.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/info_page.dart';
@@ -21,6 +22,8 @@ class HomePage extends StatelessWidget {
     IconData? icon,
     pageRoute, {
     bool validateLogin: false,
+    double iconSize = 25,
+    Image? image,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -32,7 +35,7 @@ class HomePage extends StatelessWidget {
           title,
           style: const TextStyle(fontSize: homeFontSize),
         ),
-        leading: Icon(icon),
+        leading: icon != null ? Icon(icon, size: iconSize) : image,
         onTap: () async {
           if (validateLogin) {
             if (await isCurrentTokenValid()) {
@@ -73,19 +76,15 @@ class HomePage extends StatelessWidget {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _homeListTile(
-                  height,
-                  'Rover Selection Page',
-                  Icons.people,
-                  const RoverSelectionPage(),
-                  validateLogin: true,
-                ),
+                _homeListTile(height, 'Rover Selection Page', null, const RoverSelectionPage(),
+                    validateLogin: true, image: Image.asset('assets/images/rover_icon_home_page.png', scale: 3)),
                 _homeListTile(
                   height,
                   'Garage Selection Page',
-                  Icons.garage_rounded,
+                  CustomIcons.warehouse,
                   GarageSelectionPage(),
                   validateLogin: true,
+                  iconSize: 20,
                 ),
                 _homeListTile(
                   height,

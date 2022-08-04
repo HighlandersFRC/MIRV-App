@@ -43,9 +43,9 @@ class JoystickOverlay extends StatelessWidget {
             child: JoystickView(
               opacity: 0.5,
               size: 300,
-              onDirectionChanged: (x, y) {
-                print("$x, $y");
-              },
+              // onDirectionChanged: (x, y) {
+              //   print("$x, $y");
+              // },
             ),
           ),
         ),

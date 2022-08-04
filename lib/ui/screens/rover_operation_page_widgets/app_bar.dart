@@ -8,11 +8,12 @@ import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/home_page.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/status_dot.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
-class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OpPgAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
+class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const OperationPageAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
       : super(key: key);
 
   final Rx<RoverMetrics> roverMetrics;
@@ -52,61 +53,55 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         backgroundColor: Color.fromARGB(0, 255, 255, 255),
         foregroundColor: Color.fromARGB(0, 255, 255, 255),
-        leadingWidth: 200,
-        leading: Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton.icon(
-            icon: const Icon(Icons.call_end_rounded, size: 30, color: fontColor),
-            label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
-            // style: ButtonStyle(
-            //   shape: MaterialStateProperty.all(
-            //     RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.all(Radius.circular(20)),
-            //     ),
-            //   ),
-            //   // backgroundColor: MaterialStateProperty.all(Colors.redAccent.shade700),
-            // ),
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Disconnect?'),
-                  content: Text('Would  you like to discconect from ${roverMetrics.value.rover_id}'),
-                  actions: <Widget>[
-                    TextButton(
-                        onPressed: () {
-                          stopCall();
+        leadingWidth: 250,
+        leading: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5, right: 10, top: 1, bottom: 1),
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.call_end_rounded, size: 30, color: fontColor),
+                label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Disconnect?'),
+                      content: Text('Would  you like to discconect from ${roverMetrics.value.rover_id}'),
+                      actions: <Widget>[
+                        TextButton(
+                            onPressed: () {
+                              stopCall();
 
-                          SystemChrome.setPreferredOrientations([
-                            DeviceOrientation.landscapeRight,
-                            DeviceOrientation.landscapeLeft,
-                            DeviceOrientation.portraitUp,
-                            DeviceOrientation.portraitDown,
-                          ]);
-                          Navigator.pop(context);
-                          get_pkg.Get.offAll(() => HomePage());
-                        },
-                        child: const Text('Yes')),
-                    TextButton(
-                        onPressed: () {
-                          return Navigator.pop(context);
-                        },
-                        child: const Text('No'))
-                  ],
-                );
-              },
+                              SystemChrome.setPreferredOrientations([
+                                DeviceOrientation.landscapeRight,
+                                DeviceOrientation.landscapeLeft,
+                                DeviceOrientation.portraitUp,
+                                DeviceOrientation.portraitDown,
+                              ]);
+                              Navigator.pop(context);
+                              get_pkg.Get.offAll(() => HomePage());
+                            },
+                            child: const Text('Yes')),
+                        TextButton(
+                            onPressed: () {
+                              return Navigator.pop(context);
+                            },
+                            child: const Text('No'))
+                      ],
+                    );
+                  },
+                ),
+              ),
             ),
-          ),
+            StatusDot(peerConnectionState),
+          ],
         ),
         title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RoverStatusBar(
-              roverMetrics: roverMetrics.value,
-              peerConnectionState: peerConnectionState,
-            ),
+            child: RoverStatusBar(roverMetrics: roverMetrics.value),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
