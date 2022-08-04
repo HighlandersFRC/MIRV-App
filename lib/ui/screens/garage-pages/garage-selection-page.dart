@@ -68,12 +68,6 @@ class GarageSelectionPage extends StatelessWidget {
         title: const Text(
           "Garage Selection",
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: IconButton(onPressed: _refreshGaragesList, icon: const Icon(Icons.refresh_rounded, size: 45)),
-          ),
-        ],
       ),
       body: Row(
         children: [

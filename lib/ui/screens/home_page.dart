@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     authService.init();
   }
 
-  Padding _homeListTile(
+  Widget _homeListTile(
     double height,
     String title,
     IconData? icon,
@@ -23,24 +23,28 @@ class HomePage extends StatelessWidget {
     bool validateLogin: false,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: height / 20, horizontal: 5),
+      padding: EdgeInsets.symmetric(
+        vertical: 10, //height / 20,
+        horizontal: 5,
+      ),
       child: ListTile(
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: homeFontSize),
-          ),
-          leading: Icon(icon),
-          onTap: () async {
-            if (validateLogin) {
-              if (await isCurrentTokenValid()) {
-                Get.to(pageRoute);
-              } else {
-                Get.to(LoginPage(pageRoute));
-              }
-            } else {
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: homeFontSize),
+        ),
+        leading: Icon(icon),
+        onTap: () async {
+          if (validateLogin) {
+            if (await isCurrentTokenValid()) {
               Get.to(pageRoute);
+            } else {
+              Get.to(LoginPage(pageRoute));
             }
-          }),
+          } else {
+            Get.to(pageRoute);
+          }
+        },
+      ),
     );
   }
 
@@ -67,7 +71,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             width: isHomePageListMinimized.value ? width : width / 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _homeListTile(
                   height,
