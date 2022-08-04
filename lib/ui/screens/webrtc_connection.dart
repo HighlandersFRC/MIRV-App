@@ -178,7 +178,7 @@ class WebRTCConnection {
                     onPressed: () {
                       stopCall();
                       get_pkg.Get.back();
-                      get_pkg.Get.offAll(() => const HomePage());
+                      get_pkg.Get.offAll(() => HomePage());
                     },
                     child: const Text('Disconnect and Go to Home page'))
               ],
@@ -284,7 +284,7 @@ class WebRTCConnection {
             TextButton(
                 onPressed: () {
                   get_pkg.Get.back();
-                  get_pkg.Get.offAll(() => const HomePage());
+                  get_pkg.Get.offAll(() => HomePage());
                 },
                 child: const Text('Home page'))
           ],

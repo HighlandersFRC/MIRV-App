@@ -85,7 +85,7 @@ class OpPgAppBar extends StatelessWidget implements PreferredSizeWidget {
                               DeviceOrientation.portraitDown,
                             ]);
                             Navigator.pop(context);
-                            get_pkg.Get.offAll(() => const HomePage());
+                            get_pkg.Get.offAll(() => HomePage());
                           },
                           child: const Text('Yes')),
                       TextButton(

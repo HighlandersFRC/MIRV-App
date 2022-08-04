@@ -19,6 +19,7 @@ class RoverMetrics with _$RoverMetrics {
     required RoverMetricHealth subsystems,
     required RoverMetricTelemetry telemetry,
     required RoverPiLits pi_lits,
+    Garage? garage,
   }) = _RoverMetrics;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
@@ -70,4 +71,14 @@ class PiLit with _$PiLit {
   }) = _PiLit;
 
   factory PiLit.fromJson(Map<String, dynamic> json) => _$PiLitFromJson(json);
+}
+
+@freezed
+class Garage with _$Garage {
+  const factory Garage({
+    required String garage_id,
+    required DeviceLocation location,
+  }) = _Garage;
+
+  factory Garage.fromJson(Map<String, dynamic> json) => _$GarageFromJson(json);
 }
