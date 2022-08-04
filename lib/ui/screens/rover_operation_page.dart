@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
@@ -121,6 +122,61 @@ class RoverOperationPage extends StatelessWidget {
                   },
                   child: roverOperationMap,
                 )),
+            Obx(() => Positioned(
+                bottom: 15,
+                right: 10,
+                child: manualOperation.value
+                    ? Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          color: const Color.fromRGBO(50, 50, 50, 0.5),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(
+                            CupertinoIcons.game_controller_solid,
+                          ),
+                          iconSize: 60,
+                          color: Colors.red,
+                          onPressed: () {
+                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.disableRemoteOperation);
+                          },
+                        ))
+                    : webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                        ? Positioned(
+                            bottom: 20,
+                            right: 15,
+                            child: Center(
+                                child: Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                color: const Color.fromARGB(0, 50, 50, 50),
+                              ),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                                    shape: MaterialStateProperty.all(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      ),
+                                    )),
+                                child: const Icon(
+                                  CupertinoIcons.game_controller,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                                },
+                              ),
+                            )))
+                        : const ElevatedButton(
+                            child: null,
+                            onPressed: null,
+                          ))),
             Obx(() => manualOperation.value
                 ? Positioned(
                     bottom: 20,
@@ -132,36 +188,7 @@ class RoverOperationPage extends StatelessWidget {
                       sendRoverCommand: webRTCConnection.sendRoverCommand,
                     ),
                   )
-                : webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
-                    ? Positioned(
-                        bottom: 20,
-                        right: 15,
-                        child: Center(
-                            child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color.fromARGB(0, 50, 50, 50),
-                          ),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                                shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                )),
-                            child: const Icon(Ionicons.game_controller_outline, size: 50, color: Colors.white),
-                            onPressed: () {
-                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
-                            },
-                          ),
-                        )))
-                    : const ElevatedButton(
-                        child: null,
-                        onPressed: null,
-                      )),
+                : const SizedBox.shrink()),
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(
