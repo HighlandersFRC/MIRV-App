@@ -80,7 +80,7 @@ class WebRTCConnection {
     localRenderer.value = val;
   }
 
-  _showReconnectDialog({
+  _showFailedConnectionDialog({
     required String error,
     required String roverId,
   }) {
@@ -90,12 +90,6 @@ class WebRTCConnection {
           title: const Text('Failed Connection'),
           content: Text('$error'),
           actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  makeCall(roverId);
-                  get_pkg.Get.back();
-                },
-                child: const Text('Reconnect?')),
             TextButton(
                 onPressed: () {
                   get_pkg.Get.back();
@@ -262,7 +256,7 @@ class WebRTCConnection {
         .then((success) async {
           if (!success && peerConnection != null) {
             await stopCall();
-            return _showReconnectDialog(error: 'Connection timed out', roverId: roverId);
+            return _showFailedConnectionDialog(error: 'Connection timed out', roverId: roverId);
           } else if (!success) {
             return;
           }
@@ -287,11 +281,11 @@ class WebRTCConnection {
               loading.value = false;
             } else {
               stopCall();
-              _showReconnectDialog(error: 'Failed to comunicate with rover', roverId: roverId);
+              _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
+            _showFailedConnectionDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
           }
         });
   }
@@ -306,7 +300,7 @@ class WebRTCConnection {
         case null:
           stopCall();
 
-          _showReconnectDialog(error: 'Invalid Connection State', roverId: roverId);
+          _showFailedConnectionDialog(error: 'Invalid Connection State', roverId: roverId);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
@@ -323,7 +317,7 @@ class WebRTCConnection {
         case RTCDataChannelState.RTCDataChannelClosing:
         case RTCDataChannelState.RTCDataChannelClosed:
           stopCall();
-          _showReconnectDialog(error: 'Invalid Data Channel State', roverId: roverId);
+          _showFailedConnectionDialog(error: 'Invalid Data Channel State', roverId: roverId);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
           // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
@@ -396,7 +390,7 @@ class WebRTCConnection {
       // messagesDuration(roverId);
     } catch (e) {
       stopCall();
-      _showReconnectDialog(error: 'Failed to create connection: $e', roverId: roverId);
+      _showFailedConnectionDialog(error: 'Failed to create connection: $e', roverId: roverId);
     }
   }
 
