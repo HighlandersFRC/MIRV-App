@@ -37,13 +37,16 @@ class JoystickOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          child: JoystickView(
-            opacity: 0.5,
-            size: 300,
-            onDirectionChanged: (x, y) {
-              print("$x, $y");
-            },
+        Padding(
+          padding: const EdgeInsets.only(left: 30.0),
+          child: Container(
+            child: JoystickView(
+              opacity: 0.5,
+              size: 300,
+              onDirectionChanged: (x, y) {
+                print("$x, $y");
+              },
+            ),
           ),
         ),
         // JoystickWidget(
@@ -53,33 +56,17 @@ class JoystickOverlay extends StatelessWidget {
         // ),
         const Spacer(),
 
-        Container(
-          child: JoystickView(opacity: 0.5, size: 300),
+        Padding(
+          padding: const EdgeInsets.only(right: 30.0),
+          child: Container(
+            child: JoystickView(opacity: 0.5, size: 300),
+          ),
         ),
         // JoystickWidget(
         //   roverMetrics: roverMetrics,
         //   onJoystickChanged: onJoystickChanged,
         //   axisType: GamepadAxisType.right,
         // ),
-
-        Padding(
-            padding: const EdgeInsets.only(right: 50),
-            child: Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                color: const Color.fromRGBO(50, 50, 50, 0.5),
-              ),
-              child: IconButton(
-                icon: const Icon(CupertinoIcons.xmark_octagon),
-                iconSize: 60,
-                color: Colors.red,
-                onPressed: () {
-                  sendRoverCommand(RoverGeneralCommands.disableRemoteOperation);
-                },
-              ),
-            )),
       ],
     );
   }
