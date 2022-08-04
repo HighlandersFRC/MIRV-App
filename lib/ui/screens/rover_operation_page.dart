@@ -84,13 +84,6 @@ class RoverOperationPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: Obx(() => CancelAuto(
-                        roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        sendCommand: webRTCConnection.sendRoverCommand,
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
                   child: Obx(() => EStopButton(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
