@@ -101,9 +101,9 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   RoverStateType.connected_idle_roaming: [
     // Pair(RoverGeneralCommands.disable, "Disable"),
     // Pair(RoverGeneralCommands.eStop, "E-Stop"),
-    Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
-    Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
+    // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
+    Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
     // Pair(RoverIntakeCommands.disable, "Disable Intake"),
     // Pair(RoverIntakeCommands.reset, "Reset Intake"),
     // Pair(RoverIntakeCommands.intake, "Intake w/ Intake"),

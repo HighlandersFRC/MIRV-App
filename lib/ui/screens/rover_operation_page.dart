@@ -14,6 +14,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/piLit-dialog.dart';
 
 import 'webrtc_connection.dart';
 
@@ -59,12 +60,17 @@ class RoverOperationPage extends StatelessWidget {
               height: 450,
               width: 150,
               left: 10,
-              child: Scrollbar(
-                child: CommandList(
-                  state: webRTCConnection.roverMetricsObs.value.state,
-                  sendCommand: webRTCConnection.sendRoverCommand,
+              child: Column(children: [
+                webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                    ? PiLitDialogButton(roverMetrics: webRTCConnection.roverMetricsObs.value)
+                    : const SizedBox.shrink(),
+                Expanded(
+                  child: CommandList(
+                    state: webRTCConnection.roverMetricsObs.value.state,
+                    sendCommand: webRTCConnection.sendRoverCommand,
+                  ),
                 ),
-              ),
+              ]),
             ),
             Positioned(
               top: 0,
@@ -88,7 +94,8 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Obx(() => Positioned(
+            Obx(
+              () => Positioned(
                 left: manualOperation.value ? 400 : 20,
                 bottom: 20,
                 height: 200,
@@ -117,7 +124,9 @@ class RoverOperationPage extends StatelessWidget {
                     );
                   },
                   child: roverOperationMap,
-                ))),
+                ),
+              ),
+            ),
             Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
                 ? Positioned(
                     bottom: 20,
