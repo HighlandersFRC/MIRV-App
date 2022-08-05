@@ -10,6 +10,10 @@ _$GeneralRoverCommand _$$GeneralRoverCommandFromJson(
         Map<String, dynamic> json) =>
     _$GeneralRoverCommand(
       $enumDecode(_$RoverCommandTypeGeneralEnumMap, json['command']),
+      commandParameters: json['commandParameters'] == null
+          ? null
+          : RoverCommandParameters.fromJson(
+              json['commandParameters'] as Map<String, dynamic>),
       subsystem:
           $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
               RoverSubsystemType.general,
@@ -20,6 +24,7 @@ Map<String, dynamic> _$$GeneralRoverCommandToJson(
         _$GeneralRoverCommand instance) =>
     <String, dynamic>{
       'command': _$RoverCommandTypeGeneralEnumMap[instance.command],
+      'commandParameters': instance.commandParameters,
       'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
       'runtimeType': instance.$type,
     };
@@ -44,9 +49,9 @@ const _$RoverSubsystemTypeEnumMap = {
   RoverSubsystemType.intake: 'intake',
   RoverSubsystemType.drivetrain: 'drivetrain',
   RoverSubsystemType.movement: 'movement',
-  RoverSubsystemType.conveyor: 'conveyor',
-  RoverSubsystemType.sensors: 'sensors',
   RoverSubsystemType.heartbeat: 'heartbeat',
+  RoverSubsystemType.pi_lit: 'pi_lit',
+  RoverSubsystemType.garage: 'garage',
 };
 
 _$HeartbeatRoverCommand _$$HeartbeatRoverCommandFromJson(
@@ -55,7 +60,7 @@ _$HeartbeatRoverCommand _$$HeartbeatRoverCommandFromJson(
       $enumDecode(_$RoverCommandTypeHeartbeatEnumMap, json['command']),
       subsystem:
           $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.general,
+              RoverSubsystemType.heartbeat,
       $type: json['runtimeType'] as String?,
     );
 
@@ -96,6 +101,32 @@ const _$RoverCommandTypeIntakeEnumMap = {
   RoverCommandTypeIntake.deposit: 'deposit',
   RoverCommandTypeIntake.switch_left: 'switch_left',
   RoverCommandTypeIntake.switch_right: 'switch_right',
+};
+
+_$GarageRoverCommand _$$GarageRoverCommandFromJson(Map<String, dynamic> json) =>
+    _$GarageRoverCommand(
+      $enumDecode(_$GarageCommandTypeEnumMap, json['command']),
+      subsystem:
+          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
+              RoverSubsystemType.garage,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$GarageRoverCommandToJson(
+        _$GarageRoverCommand instance) =>
+    <String, dynamic>{
+      'command': _$GarageCommandTypeEnumMap[instance.command],
+      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
+      'runtimeType': instance.$type,
+    };
+
+const _$GarageCommandTypeEnumMap = {
+  GarageCommandType.lock: 'lock',
+  GarageCommandType.unlock: 'unlock',
+  GarageCommandType.retract: 'retract',
+  GarageCommandType.deploy: 'deploy',
+  GarageCommandType.lights_on: 'lights_on',
+  GarageCommandType.lights_off: 'lights_off',
 };
 
 _$DrivetrainRoverCommand _$$DrivetrainRoverCommandFromJson(
@@ -149,6 +180,30 @@ const _$RoverCommandTypeMovementEnumMap = {
   RoverCommandTypeMovement.to_location: 'to_location',
 };
 
+_$PiLitRoverCommand _$$PiLitRoverCommandFromJson(Map<String, dynamic> json) =>
+    _$PiLitRoverCommand(
+      $enumDecode(_$RoverCommandTypePiLitEnumMap, json['command']),
+      subsystem:
+          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
+              RoverSubsystemType.pi_lit,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$PiLitRoverCommandToJson(_$PiLitRoverCommand instance) =>
+    <String, dynamic>{
+      'command': _$RoverCommandTypePiLitEnumMap[instance.command],
+      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
+      'runtimeType': instance.$type,
+    };
+
+const _$RoverCommandTypePiLitEnumMap = {
+  RoverCommandTypePiLit.off: 'off',
+  RoverCommandTypePiLit.idle: 'idle',
+  RoverCommandTypePiLit.sequential: 'sequential',
+  RoverCommandTypePiLit.reverse_sequential: 'reverse_sequential',
+  RoverCommandTypePiLit.parallel: 'parallel',
+};
+
 _$RoverCommandParametersDrivetrain _$$RoverCommandParametersDrivetrainFromJson(
         Map<String, dynamic> json) =>
     _$RoverCommandParametersDrivetrain(
@@ -180,3 +235,29 @@ Map<String, dynamic> _$$RoverCommandParametersMovementToJson(
       'long': instance.long,
       'runtimeType': instance.$type,
     };
+
+_$RoverCommandParametersPiLitPlacement
+    _$$RoverCommandParametersPiLitPlacementFromJson(
+            Map<String, dynamic> json) =>
+        _$RoverCommandParametersPiLitPlacement(
+          DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
+          $enumDecode(_$PiLitFormationTypeEnumMap, json['formation']),
+          $type: json['runtimeType'] as String?,
+        );
+
+Map<String, dynamic> _$$RoverCommandParametersPiLitPlacementToJson(
+        _$RoverCommandParametersPiLitPlacement instance) =>
+    <String, dynamic>{
+      'location': instance.location,
+      'formation': _$PiLitFormationTypeEnumMap[instance.formation],
+      'runtimeType': instance.$type,
+    };
+
+const _$PiLitFormationTypeEnumMap = {
+  PiLitFormationType.taper_right_5: 'taper_right_5',
+  PiLitFormationType.taper_left_5: 'taper_left_5',
+  PiLitFormationType.spear_7: 'spear_7',
+  PiLitFormationType.front_back_3: 'front_back_3',
+  PiLitFormationType.back_3: 'back_3',
+  PiLitFormationType.front_back_obstructed_3: 'front_back_obstructed_3',
+};

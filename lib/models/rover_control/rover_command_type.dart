@@ -1,4 +1,4 @@
-enum RoverSubsystemType { general, intake, drivetrain, movement, conveyor, sensors, heartbeat }
+enum RoverSubsystemType { general, intake, drivetrain, movement, heartbeat, pi_lit, garage }
 // ignore: todo
 // TODO: enhanced enum, integer sub_command, maps to different enum
 
@@ -20,6 +20,8 @@ enum RoverCommandTypeGeneral {
 enum RoverCommandTypeHeartbeat { heartbeat }
 
 enum RoverCommandTypeIntake { disable, reset, intake, store, deposit, switch_left, switch_right }
+
+enum RoverCommandTypePiLit { off, idle, sequential, reverse_sequential, parallel }
 
 enum RoverCommandTypeDrivetrain { arcade, tank }
 

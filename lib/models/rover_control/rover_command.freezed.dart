@@ -22,10 +22,14 @@ RoverCommand _$RoverCommandFromJson(Map<String, dynamic> json) {
       return HeartbeatRoverCommand.fromJson(json);
     case 'intakeCommand':
       return IntakeRoverCommand.fromJson(json);
+    case 'garageCommand':
+      return GarageRoverCommand.fromJson(json);
     case 'drivetrainCommand':
       return DrivetrainRoverCommand.fromJson(json);
     case 'movementCommand':
       return MovementRoverCommand.fromJson(json);
+    case 'piLitCommand':
+      return PiLitRoverCommand.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'RoverCommand',
@@ -39,7 +43,9 @@ mixin _$RoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -48,6 +54,9 @@ mixin _$RoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -57,12 +66,17 @@ mixin _$RoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -70,6 +84,8 @@ mixin _$RoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -80,12 +96,17 @@ mixin _$RoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -93,6 +114,8 @@ mixin _$RoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -103,6 +126,9 @@ mixin _$RoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -111,8 +137,10 @@ mixin _$RoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -120,8 +148,10 @@ mixin _$RoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -129,8 +159,10 @@ mixin _$RoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -176,7 +208,12 @@ abstract class _$$GeneralRoverCommandCopyWith<$Res>
           $Res Function(_$GeneralRoverCommand) then) =
       __$$GeneralRoverCommandCopyWithImpl<$Res>;
   @override
-  $Res call({RoverCommandTypeGeneral command, RoverSubsystemType subsystem});
+  $Res call(
+      {RoverCommandTypeGeneral command,
+      RoverCommandParameters? commandParameters,
+      RoverSubsystemType subsystem});
+
+  $RoverCommandParametersCopyWith<$Res>? get commandParameters;
 }
 
 /// @nodoc
@@ -193,6 +230,7 @@ class __$$GeneralRoverCommandCopyWithImpl<$Res>
   @override
   $Res call({
     Object? command = freezed,
+    Object? commandParameters = freezed,
     Object? subsystem = freezed,
   }) {
     return _then(_$GeneralRoverCommand(
@@ -200,11 +238,27 @@ class __$$GeneralRoverCommandCopyWithImpl<$Res>
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as RoverCommandTypeGeneral,
+      commandParameters: commandParameters == freezed
+          ? _value.commandParameters
+          : commandParameters // ignore: cast_nullable_to_non_nullable
+              as RoverCommandParameters?,
       subsystem: subsystem == freezed
           ? _value.subsystem
           : subsystem // ignore: cast_nullable_to_non_nullable
               as RoverSubsystemType,
     ));
+  }
+
+  @override
+  $RoverCommandParametersCopyWith<$Res>? get commandParameters {
+    if (_value.commandParameters == null) {
+      return null;
+    }
+
+    return $RoverCommandParametersCopyWith<$Res>(_value.commandParameters!,
+        (value) {
+      return _then(_value.copyWith(commandParameters: value));
+    });
   }
 }
 
@@ -212,7 +266,9 @@ class __$$GeneralRoverCommandCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GeneralRoverCommand implements GeneralRoverCommand {
   const _$GeneralRoverCommand(this.command,
-      {this.subsystem = RoverSubsystemType.general, final String? $type})
+      {this.commandParameters,
+      this.subsystem = RoverSubsystemType.general,
+      final String? $type})
       : $type = $type ?? 'generalCommand';
 
   factory _$GeneralRoverCommand.fromJson(Map<String, dynamic> json) =>
@@ -220,6 +276,8 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
 
   @override
   final RoverCommandTypeGeneral command;
+  @override
+  final RoverCommandParameters? commandParameters;
   @override
   @JsonKey()
   final RoverSubsystemType subsystem;
@@ -229,7 +287,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
 
   @override
   String toString() {
-    return 'RoverCommand.generalCommand(command: $command, subsystem: $subsystem)';
+    return 'RoverCommand.generalCommand(command: $command, commandParameters: $commandParameters, subsystem: $subsystem)';
   }
 
   @override
@@ -238,6 +296,8 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
         (other.runtimeType == runtimeType &&
             other is _$GeneralRoverCommand &&
             const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality()
+                .equals(other.commandParameters, commandParameters) &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem));
   }
 
@@ -246,6 +306,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(commandParameters),
       const DeepCollectionEquality().hash(subsystem));
 
   @JsonKey(ignore: true)
@@ -258,7 +319,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -267,6 +330,9 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -276,15 +342,20 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) {
-    return generalCommand(command, subsystem);
+    return generalCommand(command, commandParameters, subsystem);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -292,6 +363,8 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -302,15 +375,20 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) {
-    return generalCommand?.call(command, subsystem);
+    return generalCommand?.call(command, commandParameters, subsystem);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -318,6 +396,8 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -328,10 +408,13 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) {
     if (generalCommand != null) {
-      return generalCommand(command, subsystem);
+      return generalCommand(command, commandParameters, subsystem);
     }
     return orElse();
   }
@@ -342,8 +425,10 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) {
     return generalCommand(this);
   }
@@ -354,8 +439,10 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) {
     return generalCommand?.call(this);
   }
@@ -366,8 +453,10 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) {
     if (generalCommand != null) {
@@ -384,12 +473,15 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
 
 abstract class GeneralRoverCommand implements RoverCommand {
   const factory GeneralRoverCommand(final RoverCommandTypeGeneral command,
-      {final RoverSubsystemType subsystem}) = _$GeneralRoverCommand;
+      {final RoverCommandParameters? commandParameters,
+      final RoverSubsystemType subsystem}) = _$GeneralRoverCommand;
 
   factory GeneralRoverCommand.fromJson(Map<String, dynamic> json) =
       _$GeneralRoverCommand.fromJson;
 
   RoverCommandTypeGeneral get command => throw _privateConstructorUsedError;
+  RoverCommandParameters? get commandParameters =>
+      throw _privateConstructorUsedError;
   @override
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
@@ -441,7 +533,7 @@ class __$$HeartbeatRoverCommandCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
   const _$HeartbeatRoverCommand(this.command,
-      {this.subsystem = RoverSubsystemType.general, final String? $type})
+      {this.subsystem = RoverSubsystemType.heartbeat, final String? $type})
       : $type = $type ?? 'heartbeatCommand';
 
   factory _$HeartbeatRoverCommand.fromJson(Map<String, dynamic> json) =>
@@ -487,7 +579,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -496,6 +590,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -505,6 +602,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) {
     return heartbeatCommand(command, subsystem);
   }
@@ -513,7 +613,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -521,6 +623,8 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -531,6 +635,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) {
     return heartbeatCommand?.call(command, subsystem);
   }
@@ -539,7 +646,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -547,6 +656,8 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -557,6 +668,9 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) {
     if (heartbeatCommand != null) {
@@ -571,8 +685,10 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) {
     return heartbeatCommand(this);
   }
@@ -583,8 +699,10 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) {
     return heartbeatCommand?.call(this);
   }
@@ -595,8 +713,10 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) {
     if (heartbeatCommand != null) {
@@ -716,7 +836,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -725,6 +847,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -734,6 +859,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) {
     return intakeCommand(command, subsystem);
   }
@@ -742,7 +870,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -750,6 +880,8 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -760,6 +892,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) {
     return intakeCommand?.call(command, subsystem);
   }
@@ -768,7 +903,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -776,6 +913,8 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -786,6 +925,9 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) {
     if (intakeCommand != null) {
@@ -800,8 +942,10 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) {
     return intakeCommand(this);
   }
@@ -812,8 +956,10 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) {
     return intakeCommand?.call(this);
   }
@@ -824,8 +970,10 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) {
     if (intakeCommand != null) {
@@ -853,6 +1001,263 @@ abstract class IntakeRoverCommand implements RoverCommand {
   @override
   @JsonKey(ignore: true)
   _$$IntakeRoverCommandCopyWith<_$IntakeRoverCommand> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$GarageRoverCommandCopyWith<$Res>
+    implements $RoverCommandCopyWith<$Res> {
+  factory _$$GarageRoverCommandCopyWith(_$GarageRoverCommand value,
+          $Res Function(_$GarageRoverCommand) then) =
+      __$$GarageRoverCommandCopyWithImpl<$Res>;
+  @override
+  $Res call({GarageCommandType command, RoverSubsystemType subsystem});
+}
+
+/// @nodoc
+class __$$GarageRoverCommandCopyWithImpl<$Res>
+    extends _$RoverCommandCopyWithImpl<$Res>
+    implements _$$GarageRoverCommandCopyWith<$Res> {
+  __$$GarageRoverCommandCopyWithImpl(
+      _$GarageRoverCommand _value, $Res Function(_$GarageRoverCommand) _then)
+      : super(_value, (v) => _then(v as _$GarageRoverCommand));
+
+  @override
+  _$GarageRoverCommand get _value => super._value as _$GarageRoverCommand;
+
+  @override
+  $Res call({
+    Object? command = freezed,
+    Object? subsystem = freezed,
+  }) {
+    return _then(_$GarageRoverCommand(
+      command == freezed
+          ? _value.command
+          : command // ignore: cast_nullable_to_non_nullable
+              as GarageCommandType,
+      subsystem: subsystem == freezed
+          ? _value.subsystem
+          : subsystem // ignore: cast_nullable_to_non_nullable
+              as RoverSubsystemType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$GarageRoverCommand implements GarageRoverCommand {
+  const _$GarageRoverCommand(this.command,
+      {this.subsystem = RoverSubsystemType.garage, final String? $type})
+      : $type = $type ?? 'garageCommand';
+
+  factory _$GarageRoverCommand.fromJson(Map<String, dynamic> json) =>
+      _$$GarageRoverCommandFromJson(json);
+
+  @override
+  final GarageCommandType command;
+  @override
+  @JsonKey()
+  final RoverSubsystemType subsystem;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommand.garageCommand(command: $command, subsystem: $subsystem)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GarageRoverCommand &&
+            const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality().equals(other.subsystem, subsystem));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(subsystem));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$GarageRoverCommandCopyWith<_$GarageRoverCommand> get copyWith =>
+      __$$GarageRoverCommandCopyWithImpl<_$GarageRoverCommand>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
+        generalCommand,
+    required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)
+        intakeCommand,
+    required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        drivetrainCommand,
+    required TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
+  }) {
+    return garageCommand(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
+  }) {
+    return garageCommand?.call(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
+    required TResult orElse(),
+  }) {
+    if (garageCommand != null) {
+      return garageCommand(command, subsystem);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
+    required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
+    required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
+    required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
+  }) {
+    return garageCommand(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+  }) {
+    return garageCommand?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+    required TResult orElse(),
+  }) {
+    if (garageCommand != null) {
+      return garageCommand(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GarageRoverCommandToJson(this);
+  }
+}
+
+abstract class GarageRoverCommand implements RoverCommand {
+  const factory GarageRoverCommand(final GarageCommandType command,
+      {final RoverSubsystemType subsystem}) = _$GarageRoverCommand;
+
+  factory GarageRoverCommand.fromJson(Map<String, dynamic> json) =
+      _$GarageRoverCommand.fromJson;
+
+  GarageCommandType get command => throw _privateConstructorUsedError;
+  @override
+  RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$GarageRoverCommandCopyWith<_$GarageRoverCommand> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -969,7 +1374,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -978,6 +1385,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -987,6 +1397,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) {
     return drivetrainCommand(command, commandParameters, subsystem);
   }
@@ -995,7 +1408,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -1003,6 +1418,8 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -1013,6 +1430,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) {
     return drivetrainCommand?.call(command, commandParameters, subsystem);
   }
@@ -1021,7 +1441,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -1029,6 +1451,8 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -1039,6 +1463,9 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) {
     if (drivetrainCommand != null) {
@@ -1053,8 +1480,10 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) {
     return drivetrainCommand(this);
   }
@@ -1065,8 +1494,10 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) {
     return drivetrainCommand?.call(this);
   }
@@ -1077,8 +1508,10 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) {
     if (drivetrainCommand != null) {
@@ -1224,7 +1657,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         generalCommand,
     required TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
@@ -1233,6 +1668,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)
         intakeCommand,
     required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
@@ -1242,6 +1680,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)
         movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
   }) {
     return movementCommand(command, commandParameters, subsystem);
   }
@@ -1250,7 +1691,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -1258,6 +1701,8 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -1268,6 +1713,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
   }) {
     return movementCommand?.call(command, commandParameters, subsystem);
   }
@@ -1276,7 +1724,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
-            RoverCommandTypeGeneral command, RoverSubsystemType subsystem)?
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         generalCommand,
     TResult Function(
             RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
@@ -1284,6 +1734,8 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     TResult Function(
             RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
         intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
     TResult Function(
             RoverCommandTypeDrivetrain command,
             RoverCommandParameters commandParameters,
@@ -1294,6 +1746,9 @@ class _$MovementRoverCommand implements MovementRoverCommand {
             RoverCommandParameters commandParameters,
             RoverSubsystemType subsystem)?
         movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
     required TResult orElse(),
   }) {
     if (movementCommand != null) {
@@ -1308,8 +1763,10 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     required TResult Function(GeneralRoverCommand value) generalCommand,
     required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
     required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
     required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
     required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
   }) {
     return movementCommand(this);
   }
@@ -1320,8 +1777,10 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
   }) {
     return movementCommand?.call(this);
   }
@@ -1332,8 +1791,10 @@ class _$MovementRoverCommand implements MovementRoverCommand {
     TResult Function(GeneralRoverCommand value)? generalCommand,
     TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
     TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
     TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
     TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
     required TResult orElse(),
   }) {
     if (movementCommand != null) {
@@ -1367,6 +1828,262 @@ abstract class MovementRoverCommand implements RoverCommand {
       throw _privateConstructorUsedError;
 }
 
+/// @nodoc
+abstract class _$$PiLitRoverCommandCopyWith<$Res>
+    implements $RoverCommandCopyWith<$Res> {
+  factory _$$PiLitRoverCommandCopyWith(
+          _$PiLitRoverCommand value, $Res Function(_$PiLitRoverCommand) then) =
+      __$$PiLitRoverCommandCopyWithImpl<$Res>;
+  @override
+  $Res call({RoverCommandTypePiLit command, RoverSubsystemType subsystem});
+}
+
+/// @nodoc
+class __$$PiLitRoverCommandCopyWithImpl<$Res>
+    extends _$RoverCommandCopyWithImpl<$Res>
+    implements _$$PiLitRoverCommandCopyWith<$Res> {
+  __$$PiLitRoverCommandCopyWithImpl(
+      _$PiLitRoverCommand _value, $Res Function(_$PiLitRoverCommand) _then)
+      : super(_value, (v) => _then(v as _$PiLitRoverCommand));
+
+  @override
+  _$PiLitRoverCommand get _value => super._value as _$PiLitRoverCommand;
+
+  @override
+  $Res call({
+    Object? command = freezed,
+    Object? subsystem = freezed,
+  }) {
+    return _then(_$PiLitRoverCommand(
+      command == freezed
+          ? _value.command
+          : command // ignore: cast_nullable_to_non_nullable
+              as RoverCommandTypePiLit,
+      subsystem: subsystem == freezed
+          ? _value.subsystem
+          : subsystem // ignore: cast_nullable_to_non_nullable
+              as RoverSubsystemType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PiLitRoverCommand implements PiLitRoverCommand {
+  const _$PiLitRoverCommand(this.command,
+      {this.subsystem = RoverSubsystemType.pi_lit, final String? $type})
+      : $type = $type ?? 'piLitCommand';
+
+  factory _$PiLitRoverCommand.fromJson(Map<String, dynamic> json) =>
+      _$$PiLitRoverCommandFromJson(json);
+
+  @override
+  final RoverCommandTypePiLit command;
+  @override
+  @JsonKey()
+  final RoverSubsystemType subsystem;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommand.piLitCommand(command: $command, subsystem: $subsystem)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PiLitRoverCommand &&
+            const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality().equals(other.subsystem, subsystem));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(subsystem));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$PiLitRoverCommandCopyWith<_$PiLitRoverCommand> get copyWith =>
+      __$$PiLitRoverCommandCopyWithImpl<_$PiLitRoverCommand>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
+        generalCommand,
+    required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)
+        intakeCommand,
+    required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        drivetrainCommand,
+    required TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        movementCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+        piLitCommand,
+  }) {
+    return piLitCommand(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
+  }) {
+    return piLitCommand?.call(command, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeMovement command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        movementCommand,
+    TResult Function(
+            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+        piLitCommand,
+    required TResult orElse(),
+  }) {
+    if (piLitCommand != null) {
+      return piLitCommand(command, subsystem);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
+    required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
+    required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
+    required TResult Function(MovementRoverCommand value) movementCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
+  }) {
+    return piLitCommand(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+  }) {
+    return piLitCommand?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(MovementRoverCommand value)? movementCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+    required TResult orElse(),
+  }) {
+    if (piLitCommand != null) {
+      return piLitCommand(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PiLitRoverCommandToJson(this);
+  }
+}
+
+abstract class PiLitRoverCommand implements RoverCommand {
+  const factory PiLitRoverCommand(final RoverCommandTypePiLit command,
+      {final RoverSubsystemType subsystem}) = _$PiLitRoverCommand;
+
+  factory PiLitRoverCommand.fromJson(Map<String, dynamic> json) =
+      _$PiLitRoverCommand.fromJson;
+
+  RoverCommandTypePiLit get command => throw _privateConstructorUsedError;
+  @override
+  RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$PiLitRoverCommandCopyWith<_$PiLitRoverCommand> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 RoverCommandParameters _$RoverCommandParametersFromJson(
     Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -1374,6 +2091,8 @@ RoverCommandParameters _$RoverCommandParametersFromJson(
       return RoverCommandParametersDrivetrain.fromJson(json);
     case 'movement':
       return RoverCommandParametersMovement.fromJson(json);
+    case 'piLitPlacement':
+      return RoverCommandParametersPiLitPlacement.fromJson(json);
 
     default:
       throw CheckedFromJsonException(
@@ -1390,18 +2109,25 @@ mixin _$RoverCommandParameters {
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) movement,
+    required TResult Function(
+            DeviceLocation location, PiLitFormationType formation)
+        piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1410,18 +2136,24 @@ mixin _$RoverCommandParameters {
     required TResult Function(RoverCommandParametersDrivetrain value)
         drivetrain,
     required TResult Function(RoverCommandParametersMovement value) movement,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -1538,6 +2270,9 @@ class _$RoverCommandParametersDrivetrain
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) movement,
+    required TResult Function(
+            DeviceLocation location, PiLitFormationType formation)
+        piLitPlacement,
   }) {
     return drivetrain(x, y);
   }
@@ -1547,6 +2282,8 @@ class _$RoverCommandParametersDrivetrain
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
   }) {
     return drivetrain?.call(x, y);
   }
@@ -1556,6 +2293,8 @@ class _$RoverCommandParametersDrivetrain
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
     required TResult orElse(),
   }) {
     if (drivetrain != null) {
@@ -1570,6 +2309,8 @@ class _$RoverCommandParametersDrivetrain
     required TResult Function(RoverCommandParametersDrivetrain value)
         drivetrain,
     required TResult Function(RoverCommandParametersMovement value) movement,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
   }) {
     return drivetrain(this);
   }
@@ -1579,6 +2320,8 @@ class _$RoverCommandParametersDrivetrain
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
   }) {
     return drivetrain?.call(this);
   }
@@ -1588,6 +2331,8 @@ class _$RoverCommandParametersDrivetrain
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
     required TResult orElse(),
   }) {
     if (drivetrain != null) {
@@ -1710,6 +2455,9 @@ class _$RoverCommandParametersMovement
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) movement,
+    required TResult Function(
+            DeviceLocation location, PiLitFormationType formation)
+        piLitPlacement,
   }) {
     return movement(lat, long);
   }
@@ -1719,6 +2467,8 @@ class _$RoverCommandParametersMovement
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
   }) {
     return movement?.call(lat, long);
   }
@@ -1728,6 +2478,8 @@ class _$RoverCommandParametersMovement
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
     required TResult orElse(),
   }) {
     if (movement != null) {
@@ -1742,6 +2494,8 @@ class _$RoverCommandParametersMovement
     required TResult Function(RoverCommandParametersDrivetrain value)
         drivetrain,
     required TResult Function(RoverCommandParametersMovement value) movement,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
   }) {
     return movement(this);
   }
@@ -1751,6 +2505,8 @@ class _$RoverCommandParametersMovement
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
   }) {
     return movement?.call(this);
   }
@@ -1760,6 +2516,8 @@ class _$RoverCommandParametersMovement
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
     required TResult orElse(),
   }) {
     if (movement != null) {
@@ -1786,5 +2544,203 @@ abstract class RoverCommandParametersMovement
   double get long => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$RoverCommandParametersMovementCopyWith<_$RoverCommandParametersMovement>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RoverCommandParametersPiLitPlacementCopyWith<$Res> {
+  factory _$$RoverCommandParametersPiLitPlacementCopyWith(
+          _$RoverCommandParametersPiLitPlacement value,
+          $Res Function(_$RoverCommandParametersPiLitPlacement) then) =
+      __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>;
+  $Res call({DeviceLocation location, PiLitFormationType formation});
+
+  $DeviceLocationCopyWith<$Res> get location;
+}
+
+/// @nodoc
+class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
+    extends _$RoverCommandParametersCopyWithImpl<$Res>
+    implements _$$RoverCommandParametersPiLitPlacementCopyWith<$Res> {
+  __$$RoverCommandParametersPiLitPlacementCopyWithImpl(
+      _$RoverCommandParametersPiLitPlacement _value,
+      $Res Function(_$RoverCommandParametersPiLitPlacement) _then)
+      : super(
+            _value, (v) => _then(v as _$RoverCommandParametersPiLitPlacement));
+
+  @override
+  _$RoverCommandParametersPiLitPlacement get _value =>
+      super._value as _$RoverCommandParametersPiLitPlacement;
+
+  @override
+  $Res call({
+    Object? location = freezed,
+    Object? formation = freezed,
+  }) {
+    return _then(_$RoverCommandParametersPiLitPlacement(
+      location == freezed
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as DeviceLocation,
+      formation == freezed
+          ? _value.formation
+          : formation // ignore: cast_nullable_to_non_nullable
+              as PiLitFormationType,
+    ));
+  }
+
+  @override
+  $DeviceLocationCopyWith<$Res> get location {
+    return $DeviceLocationCopyWith<$Res>(_value.location, (value) {
+      return _then(_value.copyWith(location: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$RoverCommandParametersPiLitPlacement
+    implements RoverCommandParametersPiLitPlacement {
+  const _$RoverCommandParametersPiLitPlacement(this.location, this.formation,
+      {final String? $type})
+      : $type = $type ?? 'piLitPlacement';
+
+  factory _$RoverCommandParametersPiLitPlacement.fromJson(
+          Map<String, dynamic> json) =>
+      _$$RoverCommandParametersPiLitPlacementFromJson(json);
+
+  @override
+  final DeviceLocation location;
+  @override
+  final PiLitFormationType formation;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommandParameters.piLitPlacement(location: $location, formation: $formation)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RoverCommandParametersPiLitPlacement &&
+            const DeepCollectionEquality().equals(other.location, location) &&
+            const DeepCollectionEquality().equals(other.formation, formation));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(location),
+      const DeepCollectionEquality().hash(formation));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$RoverCommandParametersPiLitPlacementCopyWith<
+          _$RoverCommandParametersPiLitPlacement>
+      get copyWith => __$$RoverCommandParametersPiLitPlacementCopyWithImpl<
+          _$RoverCommandParametersPiLitPlacement>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(double x, double y) drivetrain,
+    required TResult Function(double lat, double long) movement,
+    required TResult Function(
+            DeviceLocation location, PiLitFormationType formation)
+        piLitPlacement,
+  }) {
+    return piLitPlacement(location, formation);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
+  }) {
+    return piLitPlacement?.call(location, formation);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? movement,
+    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+        piLitPlacement,
+    required TResult orElse(),
+  }) {
+    if (piLitPlacement != null) {
+      return piLitPlacement(location, formation);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RoverCommandParametersDrivetrain value)
+        drivetrain,
+    required TResult Function(RoverCommandParametersMovement value) movement,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
+  }) {
+    return piLitPlacement(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+  }) {
+    return piLitPlacement?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersMovement value)? movement,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+    required TResult orElse(),
+  }) {
+    if (piLitPlacement != null) {
+      return piLitPlacement(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RoverCommandParametersPiLitPlacementToJson(this);
+  }
+}
+
+abstract class RoverCommandParametersPiLitPlacement
+    implements RoverCommandParameters {
+  const factory RoverCommandParametersPiLitPlacement(
+          final DeviceLocation location, final PiLitFormationType formation) =
+      _$RoverCommandParametersPiLitPlacement;
+
+  factory RoverCommandParametersPiLitPlacement.fromJson(
+          Map<String, dynamic> json) =
+      _$RoverCommandParametersPiLitPlacement.fromJson;
+
+  DeviceLocation get location => throw _privateConstructorUsedError;
+  PiLitFormationType get formation => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$$RoverCommandParametersPiLitPlacementCopyWith<
+          _$RoverCommandParametersPiLitPlacement>
       get copyWith => throw _privateConstructorUsedError;
 }

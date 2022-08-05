@@ -2,6 +2,8 @@ import 'dart:math' as _math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mirv/control_pad/joystick_update_controller.dart';
+import 'package:mirv/services/joystick_controller.dart';
 
 import 'circle_view.dart';
 
@@ -56,15 +58,17 @@ class JoystickView extends StatelessWidget {
   /// Defaults to [true]
   final bool showArrows;
 
-  JoystickView(
-      {this.size,
+  const JoystickView(
+      {Key? key,
+      this.size,
       this.iconsColor = Colors.white54,
       this.backgroundColor = Colors.blueGrey,
       this.innerCircleColor = Colors.blueGrey,
       this.opacity,
       this.onDirectionChanged,
       this.interval,
-      this.showArrows = true});
+      this.showArrows = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
