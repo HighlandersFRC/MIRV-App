@@ -95,19 +95,15 @@ class RoverStatusBar extends StatelessWidget {
               _batteryIcon(roverMetrics!.battery_percent, alertLevel: 20),
               Text("${roverMetrics!.battery_percent}%", style: TextStyle(fontSize: 20)),
 
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.circle), //enconder
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.handyman), //mechanical
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.general.health, healthIconChoice: Icons.sensors),
+              _healthIcon(roverHealthType: roverMetrics!.health.electronics, healthIconChoice: Icons.circle), //enconder
+              _healthIcon(roverHealthType: roverMetrics!.health.drivetrain, healthIconChoice: Icons.handyman), //mechanical
+              _healthIcon(roverHealthType: roverMetrics!.health.general, healthIconChoice: Icons.sensors),
 
               //lidar
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.drivetrain.health, healthIconChoice: Icons.camera_alt), //camera
-              _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.intake.health, healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.sensors.health, healthIconChoice: Icons.gps_fixed), //gps
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.garage.health, healthIconChoice: Icons.garage), //garage
+              _healthIcon(roverHealthType: roverMetrics!.health.drivetrain, healthIconChoice: Icons.camera_alt), //camera
+              _healthIcon(roverHealthType: roverMetrics!.health.intake, healthIconChoice: Icons.rotate_90_degrees_ccw), //imu
+              _healthIcon(roverHealthType: roverMetrics!.health.sensors, healthIconChoice: Icons.gps_fixed), //gps
+              _healthIcon(roverHealthType: roverMetrics!.health.garage, healthIconChoice: Icons.garage), //garage
             ]
           : [],
     );

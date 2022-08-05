@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
+import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
@@ -145,7 +146,8 @@ class WebRTCConnection {
   void _onDataChannelMessage(RTCDataChannelMessage message) {
     if (message.type == MessageType.text) {
       try {
-        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text))
+            .copyWith(state: RoverStateType.remote_operation, status: DeviceStatusType.available);
         recentStatusMessage = DateTime.now();
       } catch (e) {
         print("Failed to process status message: $message");

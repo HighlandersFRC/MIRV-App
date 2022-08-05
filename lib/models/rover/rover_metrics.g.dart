@@ -13,11 +13,10 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
       status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
       battery_voltage: (json['battery_voltage'] as num?)?.toDouble(),
       battery_percent: json['battery_percent'] as int?,
-      subsystems: RoverMetricHealth.fromJson(
-          json['subsystems'] as Map<String, dynamic>),
+      health:
+          RoverMetricHealth.fromJson(json['health'] as Map<String, dynamic>),
       telemetry: RoverMetricTelemetry.fromJson(
           json['telemetry'] as Map<String, dynamic>),
-      pi_lits: RoverPiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
@@ -27,9 +26,8 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
       'status': _$DeviceStatusTypeEnumMap[instance.status],
       'battery_voltage': instance.battery_voltage,
       'battery_percent': instance.battery_percent,
-      'subsystems': instance.subsystems,
+      'health': instance.health,
       'telemetry': instance.telemetry,
-      'pi_lits': instance.pi_lits,
     };
 
 const _$RoverStateTypeEnumMap = {
@@ -51,40 +49,44 @@ const _$DeviceStatusTypeEnumMap = {
 
 _$_RoverMetricHealth _$$_RoverMetricHealthFromJson(Map<String, dynamic> json) =>
     _$_RoverMetricHealth(
-      electronics: json['electronics'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['electronics'] as Map<String, dynamic>),
-      drivetrain: json['drivetrain'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['drivetrain'] as Map<String, dynamic>),
-      intake: json['intake'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['intake'] as Map<String, dynamic>),
-      sensors: json['sensors'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['sensors'] as Map<String, dynamic>),
-      garage: json['garage'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['garage'] as Map<String, dynamic>),
-      power: json['power'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['power'] as Map<String, dynamic>),
-      general: json['general'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['general'] as Map<String, dynamic>),
+      electronics:
+          $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['electronics']) ??
+              DeviceHealthType.unavailable,
+      drivetrain:
+          $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['drivetrain']) ??
+              DeviceHealthType.unavailable,
+      intake: $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['intake']) ??
+          DeviceHealthType.unavailable,
+      sensors:
+          $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['sensors']) ??
+              DeviceHealthType.unavailable,
+      garage: $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['garage']) ??
+          DeviceHealthType.unavailable,
+      power: $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['power']) ??
+          DeviceHealthType.unavailable,
+      general:
+          $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['general']) ??
+              DeviceHealthType.unavailable,
     );
 
 Map<String, dynamic> _$$_RoverMetricHealthToJson(
         _$_RoverMetricHealth instance) =>
     <String, dynamic>{
-      'electronics': instance.electronics,
-      'drivetrain': instance.drivetrain,
-      'intake': instance.intake,
-      'sensors': instance.sensors,
-      'garage': instance.garage,
-      'power': instance.power,
-      'general': instance.general,
+      'electronics': _$DeviceHealthTypeEnumMap[instance.electronics],
+      'drivetrain': _$DeviceHealthTypeEnumMap[instance.drivetrain],
+      'intake': _$DeviceHealthTypeEnumMap[instance.intake],
+      'sensors': _$DeviceHealthTypeEnumMap[instance.sensors],
+      'garage': _$DeviceHealthTypeEnumMap[instance.garage],
+      'power': _$DeviceHealthTypeEnumMap[instance.power],
+      'general': _$DeviceHealthTypeEnumMap[instance.general],
     };
+
+const _$DeviceHealthTypeEnumMap = {
+  DeviceHealthType.healthy: 'healthy',
+  DeviceHealthType.unhealthy: 'unhealthy',
+  DeviceHealthType.degraded: 'degraded',
+  DeviceHealthType.unavailable: 'unavailable',
+};
 
 _$_RoverMetricTelemetry _$$_RoverMetricTelemetryFromJson(
         Map<String, dynamic> json) =>

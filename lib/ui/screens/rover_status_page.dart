@@ -15,20 +15,20 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics.subsystems.sensors, "sensors"),
-        HealthContainer(roverMetrics.subsystems.electronics, "electronics"),
-        HealthContainer(roverMetrics.subsystems.drivetrain, "drivetrain"),
-        HealthContainer(roverMetrics.subsystems.garage, "garage"),
-        HealthContainer(roverMetrics.subsystems.intake, "intake"),
-        HealthContainer(roverMetrics.subsystems.power, "power"),
-        HealthContainer(roverMetrics.subsystems.general, "general"),
+        HealthContainer(roverMetrics.health.sensors, "sensors"),
+        HealthContainer(roverMetrics.health.electronics, "electronics"),
+        HealthContainer(roverMetrics.health.drivetrain, "drivetrain"),
+        HealthContainer(roverMetrics.health.garage, "garage"),
+        HealthContainer(roverMetrics.health.intake, "intake"),
+        HealthContainer(roverMetrics.health.power, "power"),
+        HealthContainer(roverMetrics.health.general, "general"),
       ],
     );
   }
 }
 
 class HealthContainer extends StatelessWidget {
-  late DeviceHealth subsystemHealth;
+  late DeviceHealthType subsystemHealth;
   final String name;
   HealthContainer(this.subsystemHealth, this.name, {Key? key}) : super(key: key);
 
@@ -45,7 +45,7 @@ class HealthContainer extends StatelessWidget {
             backgroundBlendMode: BlendMode.colorBurn,
             boxShadow: [
               BoxShadow(
-                color: subsystemHealth.health.color1,
+                color: subsystemHealth.color1,
                 spreadRadius: -5,
                 blurRadius: 20,
                 offset: const Offset(-5, 5),
@@ -57,10 +57,10 @@ class HealthContainer extends StatelessWidget {
               begin: Alignment.center,
               end: Alignment.bottomLeft,
               colors: [
-                subsystemHealth.health.color4,
-                subsystemHealth.health.color3,
-                subsystemHealth.health.color2,
-                subsystemHealth.health.color1,
+                subsystemHealth.color4,
+                subsystemHealth.color3,
+                subsystemHealth.color2,
+                subsystemHealth.color1,
               ],
             ),
             borderRadius: const BorderRadius.all(
@@ -83,7 +83,7 @@ class HealthContainer extends StatelessWidget {
               fixedSize: MaterialStateProperty.all(
                 const Size(20, 20),
               ),
-              overlayColor: MaterialStateProperty.all(subsystemHealth.health.color5),
+              overlayColor: MaterialStateProperty.all(subsystemHealth.color5),
               alignment: Alignment.center,
               shadowColor: MaterialStateProperty.all(
                 const Color.fromARGB(0, 0, 0, 0),

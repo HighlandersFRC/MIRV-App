@@ -8,11 +8,13 @@ import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mirv/models/device_location.dart';
+import 'package:mirv/models/device_status_type.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/pair.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:http/http.dart' as http;
@@ -89,12 +91,15 @@ class MirvApi {
 
   Future<RoverMetrics> getRoverMetrics(String rover_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers/$rover_id");
-    return RoverMetrics.fromJson(json.decode(response.body));
+    return RoverMetrics.fromJson(json.decode(response.body))
+        .copyWith(state: RoverStateType.remote_operation, status: DeviceStatusType.available);
   }
 
   Future<List<RoverMetrics>> getRovers() async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers");
-    return (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
+    return (json.decode(response.body) as List)
+        .map((i) => RoverMetrics.fromJson(i).copyWith(state: RoverStateType.remote_operation, status: DeviceStatusType.available))
+        .toList();
   }
 
   Future<http.StreamedResponse> startRoverConnection(String rover_id, RTCSessionDescription? des) async {

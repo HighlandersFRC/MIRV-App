@@ -14,7 +14,7 @@ class StatusPageGarage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(garageMetrics.health, "General"),
+        HealthContainer(garageMetrics.health.health, "General"),
       ],
     );
   }

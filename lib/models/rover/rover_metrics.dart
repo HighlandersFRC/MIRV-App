@@ -16,9 +16,9 @@ class RoverMetrics with _$RoverMetrics {
     required DeviceStatusType status,
     double? battery_voltage,
     int? battery_percent,
-    required RoverMetricHealth subsystems,
+    required RoverMetricHealth health,
     required RoverMetricTelemetry telemetry,
-    required RoverPiLits pi_lits,
+    // required RoverPiLits pi_lits,
   }) = _RoverMetrics;
 
   factory RoverMetrics.fromJson(Map<String, dynamic> json) => _$RoverMetricsFromJson(json);
@@ -27,13 +27,13 @@ class RoverMetrics with _$RoverMetrics {
 @freezed
 class RoverMetricHealth with _$RoverMetricHealth {
   const factory RoverMetricHealth({
-    @Default(DeviceHealth()) DeviceHealth electronics,
-    @Default(DeviceHealth()) DeviceHealth drivetrain,
-    @Default(DeviceHealth()) DeviceHealth intake,
-    @Default(DeviceHealth()) DeviceHealth sensors,
-    @Default(DeviceHealth()) DeviceHealth garage,
-    @Default(DeviceHealth()) DeviceHealth power,
-    @Default(DeviceHealth()) DeviceHealth general,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType electronics,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType drivetrain,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType intake,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType sensors,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType garage,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType power,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType general,
   }) = _RoverMetricHealth;
 
   factory RoverMetricHealth.fromJson(Map<String, dynamic> json) => _$RoverMetricHealthFromJson(json);
