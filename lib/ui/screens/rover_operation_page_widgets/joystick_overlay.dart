@@ -12,69 +12,33 @@ import 'package:mirv/services/joystick_controller.dart';
 
 // ignore: must_be_immutable
 class JoystickOverlay extends StatelessWidget {
-  final RoverMetrics roverMetrics;
-  final Function(GamepadAxisType, double, double) onJoystickChanged;
-  final Function(RoverCommand) sendRoverCommand;
-  late JoystickMode joystickMode;
-  late final bool? isEnabled;
-  JoystickController controller = JoystickController();
-  JoystickOverlay({
+  final JoystickController joystickController;
+  const JoystickOverlay({
     Key? key,
-    required this.roverMetrics,
-    required this.onJoystickChanged,
-    required this.sendRoverCommand,
-  }) : super(key: key) {
-    isEnabled = _cancelState(roverMetrics.state);
-  }
-
-  bool _cancelState(RoverStateType? roverState) {
-    switch (roverState) {
-      case RoverStateType.connected_idle_roaming:
-        return true;
-      default:
-        return false;
-    }
-  }
+    required this.joystickController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    controller.drivetrainCommandStream.listen((cmd) {
-      print(cmd);
-    });
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 30.0),
-          child: Container(
-            child: VerticalJoystickView(
-              controller,
-              opacity: 0.8,
-              size: 300,
-            ),
+          child: VerticalJoystickView(
+            joystickController,
+            opacity: 0.8,
+            size: 300,
           ),
         ),
-        // JoystickWidget(
-        //   roverMetrics: roverMetrics,
-        //   onJoystickChanged: onJoystickChanged,
-        //   axisType: GamepadAxisType.left,
-        // ),
         const Spacer(),
-
         Padding(
           padding: const EdgeInsets.only(right: 30.0),
-          child: Container(
-            child: HorizontalJoystickView(
-              controller,
-              opacity: 0.8,
-              size: 300,
-            ),
+          child: HorizontalJoystickView(
+            joystickController,
+            opacity: 0.8,
+            size: 300,
           ),
         ),
-        // JoystickWidget(
-        //   roverMetrics: roverMetrics,
-        //   onJoystickChanged: onJoystickChanged,
-        //   axisType: GamepadAxisType.right,
-        // ),
       ],
     );
   }

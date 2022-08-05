@@ -157,12 +157,8 @@ class RoverOperationPage extends StatelessWidget {
                     bottom: 20,
                     left: 20,
                     right: 20,
-                    child: Container(
-                      child: JoystickOverlay(
-                        roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        onJoystickChanged: webRTCConnection.onJoystickChanged,
-                        sendRoverCommand: webRTCConnection.sendRoverCommand,
-                      ),
+                    child: JoystickOverlay(
+                      joystickController: webRTCConnection.joystickController,
                     ),
                   )
                 : const SizedBox.shrink()),
