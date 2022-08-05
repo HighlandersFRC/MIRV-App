@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_commands.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lits_deploy_commands%20.dart';
 
 class PiLitCommandController extends GetxController {
   Rx<String> selectedPiLitCommand = "".obs;
@@ -16,11 +18,11 @@ class PiLitCommandController extends GetxController {
     selectedPiLitCommand.listen((selectedPiLitCommand) => isDeployButtonEnabled.value = (selectedPiLitCommand != ""));
   }
 
-  setselectedPiLitCommand(String rover_id) {
-    if (rover_id == selectedPiLitCommand.value) {
-      selectedPiLitCommand.trigger(rover_id);
+  setselectedPiLitCommand(String piLitCommand) {
+    if (piLitCommand == selectedPiLitCommand.value) {
+      selectedPiLitCommand.trigger(piLitCommand);
     } else {
-      selectedPiLitCommand.value = rover_id;
+      selectedPiLitCommand.value = piLitCommand;
     }
   }
 
@@ -36,7 +38,7 @@ class PiLitCommandController extends GetxController {
     }
   }
 
-  Color? roverTileColor(
+  Color? piLitCommandTileColor(
     String piLitCommand,
     bool piLitAmount,
   ) {
@@ -56,13 +58,14 @@ class PiLitCommandController extends GetxController {
 
 class PiLitDialogButton extends StatelessWidget {
   final RoverMetrics roverMetrics;
+  final Function(RoverCommand) sendCommand;
   PiLitDialogButton({
     Key? key,
     required this.roverMetrics,
+    required this.sendCommand,
   }) : super(key: key);
 
-  final int piLitAmount = 6;
-  //(roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left);
+  late int piLitAmount = roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left;
 
   @override
   Widget build(BuildContext context) {
@@ -122,63 +125,16 @@ class PiLitDialogButton extends StatelessWidget {
         AlertDialog(
           title: const Text('PiLit Controll'),
           content: Row(
-            children: [
+            children: [Container(
+                  width: 150,
+              child:PiLitCommandList(
+                sendCommand: sendCommand,
+              ),),
               Container(
-                width: 150,
-                child: ListView(
-                  children: [
-                    const Text('Pilit Light type'),
-                    ListTile(title: const Text('on'), onTap: () {}),
-                    ListTile(title: const Text('off'), onTap: () {}),
-                    ListTile(title: const Text('parrallel'), onTap: () {}),
-                    ListTile(title: const Text('sequential'), onTap: () {}),
-                    ListTile(title: const Text('reverse squential'), onTap: () {})
-                  ],
-                ),
-              ),
-              Container(
-                width: 150,
-                child: ListView(
-                  children: [
-                    const Text('Pilit Configuration'),
-                    ListTile(
-                        title: const Text('7 PiLit Spear'),
-                        onTap: piLitAmount >= 7
-                            ? () {
-                                print('pilit: click 7');
-                              }
-                            : null),
-                    ListTile(
-                        title: const Text('5 PiLit Taper'),
-                        onTap: piLitAmount >= 5
-                            ? () {
-                                print('pilit: click 5');
-                              }
-                            : null),
-                    ListTile(
-                        title: const Text('3 Pilit type '),
-                        onTap: piLitAmount >= 3
-                            ? () {
-                                print('pilit: click 31');
-                              }
-                            : null),
-                    ListTile(
-                        title: const Text('3 Pilit type '),
-                        onTap: piLitAmount >= 3
-                            ? () {
-                                print('pilit: click 32');
-                              }
-                            : null),
-                    ListTile(
-                        title: const Text('3 Pilit type '),
-                        onTap: piLitAmount >= 3
-                            ? () {
-                                print('pilit: click 33');
-                              }
-                            : null)
-                  ],
-                ),
-              ),
+                  width: 150,
+                  child: PiLitDeployCommandList(
+                    sendCommand: sendCommand,
+                  )),
               Expanded(
                   child: Container(
                 child: const Text('Map'),

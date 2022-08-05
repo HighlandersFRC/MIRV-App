@@ -111,6 +111,15 @@ class RoverPiLitCommands {
   static const parallel = RoverCommand.piLitCommand(RoverCommandTypePiLit.parallel);
 }
 
+//TODO:make new commands for rover pilit placement
+class RoverPiLitDeployCommands {
+  static const piLit7Spear = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const piLit5Taper = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const piLit3Type1 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const piLit3Type2 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const piLit3Type3 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+}
+
 class RoverDrivetrainCommands {
   static DrivetrainRoverCommand drivetrainCommand(RoverCommandTypeDrivetrain command, double x, double y) {
     return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
@@ -122,6 +131,22 @@ class RoverMovementCommands {
     return MovementRoverCommand(command, RoverCommandParameters.movement(lat, long));
   }
 }
+
+List<Pair<RoverCommand, String>> piLitCommandsList = [
+  Pair(RoverPiLitCommands.off, 'Off'),
+  Pair(RoverPiLitCommands.idle, 'Idle'),
+  Pair(RoverPiLitCommands.sequential, 'Sequential'),
+  Pair(RoverPiLitCommands.reverseSequential, 'Reverse Sequential'),
+  Pair(RoverPiLitCommands.parallel, 'Parallel'),
+];
+
+List<Pair<RoverCommand, String>> piLitDeployCommandsList = [
+  Pair(RoverPiLitDeployCommands.piLit7Spear, 'piLit7Spear'),
+  Pair(RoverPiLitDeployCommands.piLit5Taper, 'piLit5Taper'),
+  Pair(RoverPiLitDeployCommands.piLit3Type1, 'piLit3Type1'),
+  Pair(RoverPiLitDeployCommands.piLit3Type2, 'piLit3Type2'),
+  Pair(RoverPiLitDeployCommands.piLit3Type3, 'piLit3Type3'),
+];
 
 Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   RoverStateType.disconnected: [
