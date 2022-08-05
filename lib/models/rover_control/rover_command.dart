@@ -70,7 +70,6 @@ class RoverGeneralCommands {
   static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
   static const cancel = RoverCommand.generalCommand(RoverCommandTypeGeneral.cancel);
   static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
-  // static const deployPiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
   static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
   static const enableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable_remote_operation);
   static const disableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable_remote_operation);

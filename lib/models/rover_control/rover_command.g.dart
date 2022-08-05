@@ -249,10 +249,9 @@ Map<String, dynamic> _$$RoverCommandParametersPiLitPlacementToJson(
     };
 
 const _$PiLitFormationTypeEnumMap = {
+  PiLitFormationType.taper_right_3: 'taper_right_3',
+  PiLitFormationType.taper_left_3: 'taper_left_3',
   PiLitFormationType.taper_right_5: 'taper_right_5',
   PiLitFormationType.taper_left_5: 'taper_left_5',
   PiLitFormationType.spear_7: 'spear_7',
-  PiLitFormationType.front_back_3: 'front_back_3',
-  PiLitFormationType.back_3: 'back_3',
-  PiLitFormationType.front_back_obstructed_3: 'front_back_obstructed_3',
 };

@@ -15,7 +15,7 @@ class RoverMetrics with _$RoverMetrics {
     required RoverStateType state,
     required DeviceStatusType status,
     double? battery_voltage,
-    int? battery_percent,
+    int battery_percent,
     required RoverMetricHealth subsystems,
     required RoverMetricTelemetry telemetry,
     required RoverPiLits pi_lits,
