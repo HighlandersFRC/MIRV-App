@@ -16,10 +16,10 @@ class SessionStorageService {
   init() async {
     _prefs = await SharedPreferences.getInstance();
     if (retrieveMirvEndpoint() == null) {
-      saveMirvEndpoint('http://52.185.107.69:8080');
+      saveMirvEndpoint('http://20.241.196.236:8080');
     }
     if (retrieveKeycloakEndpoint() == null) {
-      saveKeycloakEndpoint('http://52.185.91.226:8080');
+      saveKeycloakEndpoint('http://20.232.252.236:8080');
     }
     if (retrieveKeycloakRealm() == null) {
       saveKeycloakRealm('vtti');

@@ -103,6 +103,8 @@ flutter:
     - assets/images/mars_rover_new.png
     - assets/images/garage_down.png
     - assets/images/garage_up.png
+    - assets/images/closeup_locked_garage.png
+    - assets/images/closeup_unlocked_garage.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
