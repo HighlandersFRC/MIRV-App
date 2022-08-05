@@ -6,28 +6,25 @@ import 'package:mirv/models/rover_control/rover_command.dart';
 
 class StateImages extends StatelessWidget {
   final GarageMetrics garageMetrics;
-  
-   StateImages({
-    Key? key,
-    required this.garageMetrics
-  }) : super(key: key);
+
+  StateImages({Key? key, required this.garageMetrics}) : super(key: key);
 
   Image? updateImage(GarageStateType? garageState) {
     switch (garageState) {
       case GarageStateType.deployed:
         return Image.asset('assets/images/deployed.png');
       case GarageStateType.in_motion_deploy:
-        return Image.asset('assets/images/down_arrow.png');
+        return Image.asset('assets/images/garage_down.png');
       case GarageStateType.in_motion_retract:
-        return Image.asset('assets/images/up_arrow.png');
+        return Image.asset('assets/images/garage_up.png');
       case GarageStateType.retracted_latched:
         return Image.asset('assets/images/retracted_latched.png');
       case GarageStateType.retracted_unlatched:
         return Image.asset('assets/images/retracted_unlatched.png');
       case GarageStateType.unavailable:
-        return Image.asset('assets/images/cancel.png');
+        return Image.asset('assets/images/garage_unavailable.png');
       default:
-        return Image.asset('assets/images/deployed.png');
+        return Image.asset('assets/images/default_garage.png');
     }
   }
 
