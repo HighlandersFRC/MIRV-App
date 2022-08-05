@@ -114,12 +114,12 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   ],
   RoverStateType.autonomous: [
     // Pair(RoverGeneralCommands.eStop, "E-Stop"),
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/cancel.png')),
+    Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
     // Pair(RoverGeneralCommands.cancel, "Cancel Current Command"),
   ],
   RoverStateType.remote_operation: [
     // Pair(RoverGeneralCommands.eStop, "E-Stop"),
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/cancel.png')),
+    Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
     // Pair(RoverGeneralCommands.cancel, "Cancel Current Command"),
   ],
   RoverStateType.connected_idle_docked: [

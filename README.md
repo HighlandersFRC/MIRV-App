@@ -4,6 +4,35 @@ Repository for MIRV mobile app code
 Demo project tutorial: [100ms.live](https://www.100ms.live/blog/flutter-webrtc#access-camera-and-microphone-on-ios)
 
 
+## Command Examples
+```
+----------------- RoverGeneralCommands -----------------
+eStop: {"command":"e_stop","subsystem":"general","runtimeType":"generalCommand"}
+disable: {"command":"disable","subsystem":"general","runtimeType":"generalCommand"}
+enable: {"command":"enable","subsystem":"general","runtimeType":"generalCommand"}
+deploy: {"command":"deploy","subsystem":"general","runtimeType":"generalCommand"}
+cancel: {"command":"cancel","subsystem":"general","runtimeType":"generalCommand"}
+stow: {"command":"stow","subsystem":"general","runtimeType":"generalCommand"}
+deployPiLits: {"command":"deploy_pi_lits","subsystem":"general","runtimeType":"generalCommand"}
+retrievePiLits: {"command":"retrieve_pi_lits","subsystem":"general","runtimeType":"generalCommand"}
+enableRemoteOperation: {"command":"enable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}
+disableRemoteOperation: {"command":"disable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}
+----------------- RoverHeartbeatCommands -----------------
+heartbeat: {"command":"heartbeat","subsystem":"heartbeat","runtimeType":"heartbeatCommand"}
+----------------- RoverDrivetrainCommands -----------------
+disable: {"command":"disable","subsystem":"intake","runtimeType":"intakeCommand"}
+reset: {"command":"reset","subsystem":"intake","runtimeType":"intakeCommand"}
+intake: {"command":"intake","subsystem":"intake","runtimeType":"intakeCommand"}
+store: {"command":"store","subsystem":"intake","runtimeType":"intakeCommand"}
+deposit: {"command":"deposit","subsystem":"intake","runtimeType":"intakeCommand"}
+switchLeft: {"command":"switch_left","subsystem":"intake","runtimeType":"intakeCommand"}
+switchRight: {"command":"switch_right","subsystem":"intake","runtimeType":"intakeCommand"}
+----------------- RoverDrivetrainCommands -----------------
+drivetrainCommand: {"command":"arcade","commandParameters":{"x":0.0,"y":0.0,"runtimeType":"drivetrain"},"subsystem":"drivetrain","runtimeType":"drivetrainCommand"}
+----------------- RoverMovementCommands -----------------
+movementCommand: {"command":"to_location","commandParameters":{"lat":39.0,"long":-105.0,"runtimeType":"movement"},"subsystem":"movement","runtimeType":"movementCommand"}
+✓ Counter value should be incremented
+```
 
 ## Development Environment (Windows)
 
