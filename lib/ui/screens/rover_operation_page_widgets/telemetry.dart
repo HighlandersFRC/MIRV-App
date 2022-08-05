@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/icons/custom_icons_icons.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 
 class TelemetryWidget extends StatelessWidget {
@@ -15,16 +16,14 @@ class TelemetryWidget extends StatelessWidget {
           Icons.speed,
           color: primaryColor,
         ),
-        const SizedBox(width: 5),
         Text("${roverMetrics.telemetry.speed} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
       ]),
-      const Text('  |  ', style: TextStyle(color: fontColor, fontSize: 30)),
+      const SizedBox(width: 10),
       Row(children: [
         const Icon(
-          Icons.compass_calibration,
+          CustomIcons.compass,
           color: primaryColor,
         ),
-        const SizedBox(width: 5),
         Text("${roverMetrics.telemetry.heading}\u00B0", style: const TextStyle(fontSize: 20, color: fontColor)),
       ])
     ]);

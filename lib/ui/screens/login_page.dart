@@ -31,7 +31,6 @@ class LoginController extends GetxController {
   void login() {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       if (code == 200) {
-        Get.snackbar('Login', 'Login successfully');
         Get.off(pageRoute);
       } else if (code == 401 || code == 403) {
         Get.snackbar('Login', 'Invalid username or password');

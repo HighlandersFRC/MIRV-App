@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1+4
+version: 1.2.0+5
 
 environment:
   sdk: ">=2.17.0-266.8.beta <3.0.0"
@@ -97,6 +97,7 @@ flutter:
     - assets/images/pi_lit_outline_down.png
     - assets/images/pi_lit_icon.png
     - assets/images/rover_icon_new.png
+    - assets/images/rover_icon_home_page.png
     - assets/images/rover_app_icon.png
     - assets/images/rover_app_icon_larger.png
     - assets/images/mars_rover_new.png
@@ -114,6 +115,10 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
+  fonts:
+      - family: CustomIcons
+        fonts:
+          - asset: fonts/CustomIcons.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

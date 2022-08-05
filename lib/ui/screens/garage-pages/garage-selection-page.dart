@@ -68,12 +68,6 @@ class GarageSelectionPage extends StatelessWidget {
         title: const Text(
           "Garage Selection",
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: IconButton(onPressed: _refreshGaragesList, icon: const Icon(Icons.refresh_rounded, size: 45)),
-          ),
-        ],
       ),
       body: Row(
         children: [
@@ -109,11 +103,12 @@ class GarageSelectionPage extends StatelessWidget {
                                       title: selectedGarageController.isGarageListMinimized.value
                                           ? Text(garageList[index].garage_id.toString())
                                           : Text(
-                                              "garage ${garageList[index].garage_id}",
+                                              "Garage ${garageList[index].garage_id}",
                                             ),
                                       subtitle: selectedGarageController.isGarageListMinimized.value
                                           ? const SizedBox()
-                                          : Text('State: ${garageList[index].state.toString()}'),
+                                          : Text(
+                                              'State: ${garageList[index].state.toString().replaceAll('GarageStateType.', '')}'),
                                       onTap: () {
                                         selectedGarageController.setSelectedGarageId((garageList[index].garage_id).toString());
                                       },

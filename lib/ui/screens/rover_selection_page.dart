@@ -131,12 +131,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
         title: const Text(
           "Rover Selection",
         ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: IconButton(onPressed: _refreshRoversList, icon: const Icon(Icons.refresh_rounded, size: 45)),
-          ),
-        ],
       ),
       body: Row(
         children: [
@@ -186,7 +180,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       subtitle: selectedRoverController.isRoverListMinimized.value
                                           ? const SizedBox()
                                           : Text(
-                                              'Battery ${roverList[index].battery_percent.toString()} \n ${roverList[index].state.toString().replaceAll('RoverStateType.', 'State: ')}'),
+                                              'Battery: ${roverList[index].battery_percent.toString()}% \n${roverList[index].state.toString().replaceAll('RoverStateType.', 'State: ')}'),
                                       onTap: () {
                                         if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());

@@ -3,20 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/cancel_auto_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
-import 'package:rxdart/subjects.dart';
 
 import 'webrtc_connection.dart';
 
@@ -42,7 +39,7 @@ class RoverOperationPage extends StatelessWidget {
     var roverOperationMap = RoverOperationMap(webRTCConnection.roverMetricsObs);
     return Obx(
       () => Scaffold(
-        appBar: OpPgAppBar(
+        appBar: OperationPageAppBar(
           roverMetrics: webRTCConnection.roverMetricsObs,
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
@@ -91,8 +88,8 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Positioned(
-                left: 20,
+            Obx(() => Positioned(
+                left: manualOperation.value ? 400 : 20,
                 bottom: 20,
                 height: 200,
                 width: 375,
@@ -120,52 +117,66 @@ class RoverOperationPage extends StatelessWidget {
                     );
                   },
                   child: roverOperationMap,
-                )),
+                ))),
+            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                ? Positioned(
+                    bottom: 20,
+                    right: 15,
+                    child: Center(
+                        child: Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16.0),
+                        color: const Color.fromARGB(0, 50, 50, 50),
+                      ),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                            shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                              ),
+                            )),
+                        child: const Icon(
+                          CupertinoIcons.game_controller,
+                          size: 50,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                        },
+                      ),
+                    )))
+                : const ElevatedButton(
+                    child: null,
+                    onPressed: null,
+                  )),
             Obx(() => manualOperation.value
                 ? Positioned(
                     bottom: 20,
                     left: 20,
                     right: 20,
                     child: JoystickOverlay(
-                      roverMetrics: webRTCConnection.roverMetricsObs.value,
-                      onJoystickChanged: webRTCConnection.onJoystickChanged,
-                      sendRoverCommand: webRTCConnection.sendRoverCommand,
+                      joystickController: webRTCConnection.joystickController,
                     ),
                   )
-                : webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
-                    ? Positioned(
-                        bottom: 20,
-                        right: 15,
-                        child: Center(
-                            child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color.fromARGB(0, 50, 50, 50),
-                          ),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                                shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                )),
-                            child: const Icon(Ionicons.game_controller_outline, size: 50, color: Colors.white),
-                            onPressed: () {
-                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
-                            },
-                          ),
-                        )))
-                    : const ElevatedButton(
-                        child: null,
-                        onPressed: null,
-                      )),
+                : const SizedBox.shrink()),
             Obx(() => webRTCConnection.loading.value
                 ? Center(
                     child: Container(
-                        color: const Color.fromRGBO(51, 53, 42, 42), child: const Center(child: CircularProgressIndicator())))
+                        color: const Color.fromRGBO(51, 53, 42, 42),
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text("Connecting to ${roverMetrics.rover_id}"),
+                            ),
+                            const CircularProgressIndicator(),
+                          ],
+                        ))))
                 : const SizedBox.shrink())
           ],
         ),

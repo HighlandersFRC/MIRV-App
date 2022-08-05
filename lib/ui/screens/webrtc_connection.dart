@@ -59,6 +59,7 @@ class WebRTCConnection {
   bool inCalling = false;
   get_pkg.Rx<bool> loading = false.obs;
 
+  Timer? peerConnectionTimer;
   Timer? timerJoy;
   Timer? timer;
   Timer? heartbeatTimer;
@@ -68,7 +69,7 @@ class WebRTCConnection {
 
   WebRTCConnection(this.roverMetrics) {
     init();
-    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    peerConnectionTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       peerConnectionState.value = peerConnection?.connectionState;
     });
   }
@@ -77,6 +78,26 @@ class WebRTCConnection {
     RTCVideoRenderer val = localRenderer.value;
     await val.initialize();
     localRenderer.value = val;
+  }
+
+  _showFailedConnectionDialog({
+    required String error,
+    required String roverId,
+  }) {
+    get_pkg.Get.dialog(
+        barrierDismissible: true,
+        AlertDialog(
+          title: const Text('Failed Connection'),
+          content: Text('$error'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () {
+                  get_pkg.Get.back();
+                  get_pkg.Get.offAll(() => HomePage());
+                },
+                child: const Text('Home page'))
+          ],
+        ));
   }
 
   sendRoverCommand(RoverCommand command) {
@@ -158,6 +179,7 @@ class WebRTCConnection {
     }
   }
 
+//shows pop up if inactive for over 10 seconds
   messagesDuration(String roverId) {
     timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
       if (recentStatusMessage == null) return;
@@ -197,6 +219,7 @@ class WebRTCConnection {
     }
   }
 
+//?
   void _onDataChannelState(RTCDataChannelState? state) {
     switch (state) {
       case RTCDataChannelState.RTCDataChannelClosed:
@@ -208,6 +231,7 @@ class WebRTCConnection {
     }
   }
 
+//checks connection state  until it is connected up to 1.5 minutes
   Future<bool> _waitForGatheringComplete(int count) async {
     if (peerConnection == null) {
       return false;
@@ -232,7 +256,7 @@ class WebRTCConnection {
         .then((success) async {
           if (!success && peerConnection != null) {
             await stopCall();
-            return _showReconnectDialog(error: 'Connection timed out', roverId: roverId);
+            return _showFailedConnectionDialog(error: 'Connection timed out', roverId: roverId);
           } else if (!success) {
             return;
           }
@@ -256,43 +280,17 @@ class WebRTCConnection {
 
               loading.value = false;
             } else {
-              _showReconnectDialog(error: 'Failed to comunicate with rover', roverId: roverId);
+              stopCall();
+              _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
           } catch (e) {
             stopCall();
-            _showReconnectDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
+            _showFailedConnectionDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
           }
         });
   }
 
-  _showReconnectDialog({
-    required String error,
-    required String roverId,
-  }) {
-    get_pkg.Get.dialog(
-        barrierDismissible: true,
-        AlertDialog(
-          title: const Text('Failed Connection'),
-          content: Text('$error'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  makeCall(roverId);
-                  get_pkg.Get.back();
-                },
-                child: const Text('Reconnect?')),
-            TextButton(
-                onPressed: () {
-                  get_pkg.Get.back();
-                  get_pkg.Get.offAll(() => HomePage());
-                },
-                child: const Text('Home page'))
-          ],
-        ));
-  }
-
-  //public Commands
-
+//starts listener for checking rover connection
   _startNotificationsFromWebRTC(String roverId) {
     peerConnectionState.listen((cs) {
       switch (cs) {
@@ -302,14 +300,14 @@ class WebRTCConnection {
         case null:
           stopCall();
 
-          _showReconnectDialog(error: 'Invalid Connection State', roverId: roverId);
+          _showFailedConnectionDialog(error: 'Invalid Connection State', roverId: roverId);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-          get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
           break;
       }
     });
@@ -318,18 +316,23 @@ class WebRTCConnection {
       switch (dcs) {
         case RTCDataChannelState.RTCDataChannelClosing:
         case RTCDataChannelState.RTCDataChannelClosed:
-          _showReconnectDialog(error: 'Invalid Data Channel State', roverId: roverId);
+          stopCall();
+          _showFailedConnectionDialog(error: 'Invalid Data Channel State', roverId: roverId);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
-          get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
           break;
         case RTCDataChannelState.RTCDataChannelOpen:
-          get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
           break;
         case null:
           break;
       }
     });
+  }
+
+  _stopNotificationsFromWebRTC() {
+    peerConnectionTimer?.cancel();
   }
 
   _startHeartbeatMessages() {
@@ -342,6 +345,7 @@ class WebRTCConnection {
     heartbeatTimer?.cancel();
   }
 
+  //public Commands
   Future<void> makeCall(String roverId) async {
     try {
       loading.value = true;
@@ -382,9 +386,11 @@ class WebRTCConnection {
       await _negotiateRemoteConnection(roverId);
       _startNotificationsFromWebRTC(roverId);
       _startHeartbeatMessages();
-      messagesDuration(roverId);
+      // TODO: add back when status messages are replying
+      // messagesDuration(roverId);
     } catch (e) {
-      _showReconnectDialog(error: 'Failed to create connection: $e', roverId: roverId);
+      stopCall();
+      _showFailedConnectionDialog(error: 'Failed to create connection: $e', roverId: roverId);
     }
   }
 
@@ -393,6 +399,8 @@ class WebRTCConnection {
     await peerConnection?.close();
     peerConnection = null;
     _stopHeartbeatMessages();
+    _stopNotificationsFromWebRTC();
+
     RTCVideoRenderer val = localRenderer.value;
     val.srcObject = null;
     localRenderer.value = val;
