@@ -2,7 +2,10 @@ import 'dart:math' as _math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mirv/control_pad/joystick_update_controller.dart';
 import 'package:mirv/control_pad/views/horizontal_view.dart';
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/services/joystick_controller.dart';
 
 import 'circle_view.dart';
 
@@ -57,15 +60,22 @@ class HorizontalJoystickView extends StatelessWidget {
   /// Defaults to [true]
   final bool showArrows;
 
-  HorizontalJoystickView(
-      {this.size,
+  final JoystickController controller;
+  late JoystickUpdateController updateController;
+
+  HorizontalJoystickView(this.controller,
+      {Key? key,
+      this.size,
       this.iconsColor = Colors.white54,
       this.backgroundColor = Colors.blueGrey,
       this.innerCircleColor = Colors.blueGrey,
       this.opacity,
       this.onDirectionChanged,
       this.interval = const Duration(milliseconds: 100),
-      this.showArrows = true});
+      this.showArrows = true})
+      : super(key: key) {
+    updateController = JoystickUpdateController(controller, GamepadAxisType.right);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +97,12 @@ class HorizontalJoystickView extends StatelessWidget {
                 backgroundColor,
               ),
               Positioned(
+                left: joystickInnerPosition.dx,
+                top: 0.0,
                 child: CircleView.joystickInnerCircle(
                   actualSize / 2,
                   innerCircleColor,
                 ),
-                left: joystickInnerPosition.dx,
-//                left: joystickInnerPosition.dx,
-                top: 0.0,
               ),
               if (showArrows) ...createArrows(),
             ],
@@ -108,6 +117,7 @@ class HorizontalJoystickView extends StatelessWidget {
               setState(() => lastPosition = details.localPosition);
             },
             onPanEnd: (details) {
+              updateController.updateJoystickVal(JoystickValue(0.0, 0.0));
               _callbackTimestamp = null;
               if (onDirectionChanged != null) {
                 onDirectionChanged!(0);
@@ -126,22 +136,22 @@ class HorizontalJoystickView extends StatelessWidget {
   List<Widget> createArrows() {
     return [
       Positioned(
+        left: 16.0,
+        top: 0.0,
+        bottom: 0.0,
         child: Icon(
           Icons.arrow_back,
           color: iconsColor,
         ),
-        left: 16.0,
-        top: 0.0,
-        bottom: 0.0,
       ),
       Positioned(
+        right: 16.0,
+        top: 0.0,
+        bottom: 0.0,
         child: Icon(
           Icons.arrow_forward,
           color: iconsColor,
         ),
-        right: 16.0,
-        top: 0.0,
-        bottom: 0.0,
       ),
     ];
   }
@@ -149,15 +159,16 @@ class HorizontalJoystickView extends StatelessWidget {
   DateTime? _processGesture(double size, double ignoreSize, Offset offset, DateTime? callbackTimestamp) {
     double middle = size / 2.0;
 
-    double distance = (middle - offset.dy);
+    double distance = (middle - offset.dx);
 
     double normalizedDistance = _math.max(_math.min(distance / (size / 2), 1.0), -1.0);
 
+    updateController.updateJoystickVal(JoystickValue(normalizedDistance, 0.0));
     DateTime? _callbackTimestamp = callbackTimestamp;
-    if (onDirectionChanged != null && _canCallOnDirectionChanged(callbackTimestamp)) {
-      _callbackTimestamp = DateTime.now();
-      onDirectionChanged!(normalizedDistance);
-    }
+    // if (onDirectionChanged != null && _canCallOnDirectionChanged(callbackTimestamp)) {
+    //   _callbackTimestamp = DateTime.now();
+    //   onDirectionChanged!(normalizedDistance);
+    // }
 
     return _callbackTimestamp;
   }

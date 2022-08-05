@@ -16,7 +16,7 @@ class RoverCommand with _$RoverCommand {
 
   const factory RoverCommand.heartbeatCommand(
     RoverCommandTypeHeartbeat command, {
-    @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
+    @Default(RoverSubsystemType.heartbeat) RoverSubsystemType subsystem,
   }) = HeartbeatRoverCommand;
 
   const factory RoverCommand.intakeCommand(
