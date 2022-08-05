@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/device_location.dart';
@@ -131,22 +132,6 @@ class RoverMovementCommands {
     return MovementRoverCommand(command, RoverCommandParameters.movement(lat, long));
   }
 }
-
-List<Pair<RoverCommand, String>> piLitCommandsList = [
-  Pair(RoverPiLitCommands.off, 'Off'),
-  Pair(RoverPiLitCommands.idle, 'Idle'),
-  Pair(RoverPiLitCommands.sequential, 'Sequential'),
-  Pair(RoverPiLitCommands.reverseSequential, 'Reverse Sequential'),
-  Pair(RoverPiLitCommands.parallel, 'Parallel'),
-];
-
-List<Pair<RoverCommand, String>> piLitDeployCommandsList = [
-  Pair(RoverPiLitDeployCommands.piLit7Spear, 'piLit7Spear'),
-  Pair(RoverPiLitDeployCommands.piLit5Taper, 'piLit5Taper'),
-  Pair(RoverPiLitDeployCommands.piLit3Type1, 'piLit3Type1'),
-  Pair(RoverPiLitDeployCommands.piLit3Type2, 'piLit3Type2'),
-  Pair(RoverPiLitDeployCommands.piLit3Type3, 'piLit3Type3'),
-];
 
 Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   RoverStateType.disconnected: [

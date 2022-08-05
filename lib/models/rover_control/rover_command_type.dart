@@ -23,6 +23,9 @@ enum RoverCommandTypeIntake { disable, reset, intake, store, deposit, switch_lef
 
 enum RoverCommandTypePiLit { off, idle, sequential, reverse_sequential, parallel }
 
+
+enum RoverCommandTypePiLitDeploy { piLit7Spear, piLit5Taper, piLit3Type1, piLit3Type2, piLit3Type3 }
+
 enum RoverCommandTypeDrivetrain { arcade, tank }
 
 enum RoverCommandTypeMovement { to_location }

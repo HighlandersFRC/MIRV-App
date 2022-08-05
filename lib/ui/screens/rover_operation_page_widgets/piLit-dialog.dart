@@ -7,54 +7,8 @@ import 'package:get/get.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_commands.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lits_deploy_commands%20.dart';
-
-class PiLitCommandController extends GetxController {
-  Rx<String> selectedPiLitCommand = "".obs;
-  Rx<bool> isDeployButtonEnabled = false.obs;
-
-  SelectedRoverController() {
-    selectedPiLitCommand.listen((selectedPiLitCommand) => isDeployButtonEnabled.value = (selectedPiLitCommand != ""));
-  }
-
-  setselectedPiLitCommand(String piLitCommand) {
-    if (piLitCommand == selectedPiLitCommand.value) {
-      selectedPiLitCommand.trigger(piLitCommand);
-    } else {
-      selectedPiLitCommand.value = piLitCommand;
-    }
-  }
-
-  verifyRoverId(List<RoverMetrics> rovers) {
-    if (rovers.where((element) => element.rover_id == selectedPiLitCommand.value).isEmpty) selectedPiLitCommand.value = "";
-  }
-
-  Color roverTileIconColor(String roverId) {
-    if (selectedPiLitCommand.value == roverId) {
-      return fontColor;
-    } else {
-      return secondaryColor;
-    }
-  }
-
-  Color? piLitCommandTileColor(
-    String piLitCommand,
-    bool piLitAmount,
-  ) {
-    if (selectedPiLitCommand.value == piLitCommand) {
-      return tileColorSelected;
-    } else {
-      switch (piLitAmount) {
-        case true:
-          return tileColorAvailible;
-
-        case false:
-          return tileColorUnavailible;
-      }
-    }
-  }
-}
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_commands_drop_down.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lits_deploy_commands_drop_down.dart';
 
 class PiLitDialogButton extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -66,6 +20,8 @@ class PiLitDialogButton extends StatelessWidget {
   }) : super(key: key);
 
   late int piLitAmount = roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left;
+  late PiLitDeployCommandDropdown piLitDeployCommandDropdown = PiLitDeployCommandDropdown(sendCommand: sendCommand);
+  late PiLitCommandDropdown piLitCommandDropdown = PiLitCommandDropdown(sendCommand: sendCommand);
 
   @override
   Widget build(BuildContext context) {
@@ -124,24 +80,38 @@ class PiLitDialogButton extends StatelessWidget {
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content: Row(
-            children: [Container(
+          content: Stack(
+            children: [
+              Positioned(
+                left: 30,
+                top: 30,
+                width: 150,
+                child: PiLitCommandDropdown(
+                  sendCommand: sendCommand,
+                ),
+              ),
+              Positioned(
+                  right: 30,
+                  top: 30,
                   width: 150,
-              child:PiLitCommandList(
-                sendCommand: sendCommand,
-              ),),
-              Container(
-                  width: 150,
-                  child: PiLitDeployCommandList(
+                  child: PiLitDeployCommandDropdown(
                     sendCommand: sendCommand,
                   )),
-              Expanded(
-                  child: Container(
-                child: const Text('Map'),
-              ))
+              Positioned(
+                  bottom: 30,
+                  child: Expanded(
+                    child: Container(child: const Text('Map')),
+                  )),
             ],
           ),
           actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                piLitDeployCommandDropdown.sendPiLitCommand();
+                piLitCommandDropdown.sendPiLitCommand();
+              },
+              child: const Text('Deploy Pi-Lits'),
+            ),
             TextButton(
                 onPressed: () {
                   Get.back();
