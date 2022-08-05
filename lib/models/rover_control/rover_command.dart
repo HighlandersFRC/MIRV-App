@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mirv/models/device_location.dart';
+import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/pair.dart';
+import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 
@@ -11,6 +14,7 @@ part 'rover_command.g.dart';
 class RoverCommand with _$RoverCommand {
   const factory RoverCommand.generalCommand(
     RoverCommandTypeGeneral command, {
+    RoverCommandParameters? commandParameters,
     @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
   }) = GeneralRoverCommand;
 
@@ -24,6 +28,11 @@ class RoverCommand with _$RoverCommand {
     @Default(RoverSubsystemType.intake) RoverSubsystemType subsystem,
   }) = IntakeRoverCommand;
 
+  const factory RoverCommand.garageCommand(
+    GarageCommandType command, {
+    @Default(RoverSubsystemType.garage) RoverSubsystemType subsystem,
+  }) = GarageRoverCommand;
+
   const factory RoverCommand.drivetrainCommand(
     RoverCommandTypeDrivetrain command,
     RoverCommandParameters commandParameters, {
@@ -36,6 +45,11 @@ class RoverCommand with _$RoverCommand {
     @Default(RoverSubsystemType.movement) RoverSubsystemType subsystem,
   }) = MovementRoverCommand;
 
+  const factory RoverCommand.piLitCommand(
+    RoverCommandTypePiLit command, {
+    @Default(RoverSubsystemType.pi_lit) RoverSubsystemType subsystem,
+  }) = PiLitRoverCommand;
+
   factory RoverCommand.fromJson(Map<String, dynamic> json) => _$RoverCommandFromJson(json);
 }
 
@@ -43,6 +57,8 @@ class RoverCommand with _$RoverCommand {
 class RoverCommandParameters with _$RoverCommandParameters {
   const factory RoverCommandParameters.drivetrain(double x, double y) = RoverCommandParametersDrivetrain;
   const factory RoverCommandParameters.movement(double lat, double long) = RoverCommandParametersMovement;
+  const factory RoverCommandParameters.piLitPlacement(DeviceLocation location, PiLitFormationType formation) =
+      RoverCommandParametersPiLitPlacement;
 
   factory RoverCommandParameters.fromJson(Map<String, dynamic> json) => _$RoverCommandParametersFromJson(json);
 }
@@ -54,10 +70,14 @@ class RoverGeneralCommands {
   static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
   static const cancel = RoverCommand.generalCommand(RoverCommandTypeGeneral.cancel);
   static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
-  static const deployPiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  // static const deployPiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
   static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
   static const enableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable_remote_operation);
   static const disableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable_remote_operation);
+  static GeneralRoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location) {
+    return GeneralRoverCommand(RoverCommandTypeGeneral.deploy_pi_lits,
+        commandParameters: RoverCommandParametersPiLitPlacement(location, formation));
+  }
 }
 
 class RoverHeartbeatCommands {
@@ -72,6 +92,23 @@ class RoverIntakeCommands {
   static const deposit = RoverCommand.intakeCommand(RoverCommandTypeIntake.deposit);
   static const switchLeft = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_left);
   static const switchRight = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_right);
+}
+
+class RoverGarageCommands {
+  static const lock = RoverCommand.garageCommand(GarageCommandType.lock);
+  static const unlock = RoverCommand.garageCommand(GarageCommandType.unlock);
+  static const retract = RoverCommand.garageCommand(GarageCommandType.retract);
+  static const deploy = RoverCommand.garageCommand(GarageCommandType.deploy);
+  static const lightsOn = RoverCommand.garageCommand(GarageCommandType.lights_on);
+  static const lightsOff = RoverCommand.garageCommand(GarageCommandType.lights_off);
+}
+
+class RoverPiLitCommands {
+  static const off = RoverCommand.piLitCommand(RoverCommandTypePiLit.off);
+  static const idle = RoverCommand.piLitCommand(RoverCommandTypePiLit.idle);
+  static const sequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.sequential);
+  static const reverseSequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.reverse_sequential);
+  static const parallel = RoverCommand.piLitCommand(RoverCommandTypePiLit.parallel);
 }
 
 class RoverDrivetrainCommands {
@@ -102,7 +139,7 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
     // Pair(RoverGeneralCommands.disable, "Disable"),
     // Pair(RoverGeneralCommands.eStop, "E-Stop"),
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
-    Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
+    // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
     // Pair(RoverIntakeCommands.disable, "Disable Intake"),
     // Pair(RoverIntakeCommands.reset, "Reset Intake"),
