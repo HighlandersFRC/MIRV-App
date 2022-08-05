@@ -2,7 +2,10 @@ import 'dart:math' as _math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mirv/control_pad/joystick_update_controller.dart';
 import 'package:mirv/control_pad/views/vertical_view.dart';
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/services/joystick_controller.dart';
 
 import 'circle_view.dart';
 
@@ -57,15 +60,22 @@ class VerticalJoystickView extends StatelessWidget {
   /// Defaults to [true]
   final bool showArrows;
 
-  VerticalJoystickView(
-      {this.size,
+  final JoystickController controller;
+  late JoystickUpdateController updateController;
+
+  VerticalJoystickView(this.controller,
+      {Key? key,
+      this.size,
       this.iconsColor = Colors.white54,
       this.backgroundColor = Colors.blueGrey,
       this.innerCircleColor = Colors.blueGrey,
       this.opacity,
       this.onDirectionChanged,
       this.interval = const Duration(milliseconds: 100),
-      this.showArrows = true});
+      this.showArrows = true})
+      : super(key: key) {
+    updateController = JoystickUpdateController(controller, GamepadAxisType.left);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +97,12 @@ class VerticalJoystickView extends StatelessWidget {
                 backgroundColor,
               ),
               Positioned(
+                top: joystickInnerPosition.dy,
+                left: 0.0,
                 child: CircleView.joystickInnerCircle(
                   actualSize / 2,
                   innerCircleColor,
                 ),
-                top: joystickInnerPosition.dy,
-//                left: joystickInnerPosition.dx,
-                left: 0.0,
               ),
               if (showArrows) ...createArrows(),
             ],
@@ -108,6 +117,7 @@ class VerticalJoystickView extends StatelessWidget {
               setState(() => lastPosition = details.localPosition);
             },
             onPanEnd: (details) {
+              updateController.updateJoystickVal(JoystickValue(0.0, 0.0));
               _callbackTimestamp = null;
               if (onDirectionChanged != null) {
                 onDirectionChanged!(0);
@@ -126,22 +136,22 @@ class VerticalJoystickView extends StatelessWidget {
   List<Widget> createArrows() {
     return [
       Positioned(
+        top: 16.0,
+        left: 0.0,
+        right: 0.0,
         child: Icon(
           Icons.arrow_upward,
           color: iconsColor,
         ),
-        top: 16.0,
-        left: 0.0,
-        right: 0.0,
       ),
       Positioned(
+        bottom: 16.0,
+        left: 0.0,
+        right: 0.0,
         child: Icon(
           Icons.arrow_downward,
           color: iconsColor,
         ),
-        bottom: 16.0,
-        left: 0.0,
-        right: 0.0,
       ),
     ];
   }
@@ -153,11 +163,12 @@ class VerticalJoystickView extends StatelessWidget {
 
     double normalizedDistance = _math.max(_math.min(distance / (size / 2), 1.0), -1.0);
 
+    updateController.updateJoystickVal(JoystickValue(0.0, normalizedDistance));
     DateTime? _callbackTimestamp = callbackTimestamp;
-    if (onDirectionChanged != null && _canCallOnDirectionChanged(callbackTimestamp)) {
-      _callbackTimestamp = DateTime.now();
-      onDirectionChanged!(normalizedDistance);
-    }
+    // if (onDirectionChanged != null) {
+    //   _callbackTimestamp = DateTime.now();
+    //   onDirectionChanged!(normalizedDistance);
+    // }
 
     return _callbackTimestamp;
   }

@@ -8,6 +8,7 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/services/joystick_controller.dart';
 
 // ignore: must_be_immutable
 class JoystickOverlay extends StatelessWidget {
@@ -16,7 +17,7 @@ class JoystickOverlay extends StatelessWidget {
   final Function(RoverCommand) sendRoverCommand;
   late JoystickMode joystickMode;
   late final bool? isEnabled;
-
+  JoystickController controller = JoystickController();
   JoystickOverlay({
     Key? key,
     required this.roverMetrics,
@@ -37,18 +38,18 @@ class JoystickOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.drivetrainCommandStream.listen((cmd) {
+      print(cmd);
+    });
     return Row(
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 30.0),
           child: Container(
             child: VerticalJoystickView(
+              controller,
               opacity: 0.8,
               size: 300,
-              interval: Duration(milliseconds: 100),
-              // onDirectionChanged: (x, y) {
-              //   print("$x, $y");
-              // },
             ),
           ),
         ),
@@ -63,9 +64,9 @@ class JoystickOverlay extends StatelessWidget {
           padding: const EdgeInsets.only(right: 30.0),
           child: Container(
             child: HorizontalJoystickView(
+              controller,
               opacity: 0.8,
               size: 300,
-              interval: Duration(milliseconds: 100),
             ),
           ),
         ),
