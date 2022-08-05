@@ -18,7 +18,7 @@ class StateImages extends StatelessWidget {
       case GarageStateType.in_motion_retract:
         return Image.asset('assets/images/garage_up.png');
       case GarageStateType.retracted_latched:
-        return Image.asset('assets/images/retracted_latched.png');
+        return Image.asset('assets/images/retracted_unavailable.png');
       case GarageStateType.retracted_unlatched:
         return Image.asset('assets/images/retracted_unlatched.png');
       case GarageStateType.unavailable:
