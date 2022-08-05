@@ -55,7 +55,7 @@ _$HeartbeatRoverCommand _$$HeartbeatRoverCommandFromJson(
       $enumDecode(_$RoverCommandTypeHeartbeatEnumMap, json['command']),
       subsystem:
           $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.general,
+              RoverSubsystemType.heartbeat,
       $type: json['runtimeType'] as String?,
     );
 

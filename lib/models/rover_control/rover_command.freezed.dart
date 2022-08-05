@@ -441,7 +441,7 @@ class __$$HeartbeatRoverCommandCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
   const _$HeartbeatRoverCommand(this.command,
-      {this.subsystem = RoverSubsystemType.general, final String? $type})
+      {this.subsystem = RoverSubsystemType.heartbeat, final String? $type})
       : $type = $type ?? 'heartbeatCommand';
 
   factory _$HeartbeatRoverCommand.fromJson(Map<String, dynamic> json) =>
