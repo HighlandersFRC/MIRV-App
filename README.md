@@ -5,34 +5,26 @@ Demo project tutorial: [100ms.live](https://www.100ms.live/blog/flutter-webrtc#a
 
 
 ## Command Examples
-```
------------------ RoverGeneralCommands -----------------
-eStop: {"command":"e_stop","subsystem":"general","runtimeType":"generalCommand"}
-disable: {"command":"disable","subsystem":"general","runtimeType":"generalCommand"}
-enable: {"command":"enable","subsystem":"general","runtimeType":"generalCommand"}
-deploy: {"command":"deploy","subsystem":"general","runtimeType":"generalCommand"}
-cancel: {"command":"cancel","subsystem":"general","runtimeType":"generalCommand"}
-stow: {"command":"stow","subsystem":"general","runtimeType":"generalCommand"}
-deployPiLits: {"command":"deploy_pi_lits","subsystem":"general","runtimeType":"generalCommand"}
-retrievePiLits: {"command":"retrieve_pi_lits","subsystem":"general","runtimeType":"generalCommand"}
-enableRemoteOperation: {"command":"enable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}
-disableRemoteOperation: {"command":"disable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}
------------------ RoverHeartbeatCommands -----------------
-heartbeat: {"command":"heartbeat","subsystem":"heartbeat","runtimeType":"heartbeatCommand"}
------------------ RoverDrivetrainCommands -----------------
-disable: {"command":"disable","subsystem":"intake","runtimeType":"intakeCommand"}
-reset: {"command":"reset","subsystem":"intake","runtimeType":"intakeCommand"}
-intake: {"command":"intake","subsystem":"intake","runtimeType":"intakeCommand"}
-store: {"command":"store","subsystem":"intake","runtimeType":"intakeCommand"}
-deposit: {"command":"deposit","subsystem":"intake","runtimeType":"intakeCommand"}
-switchLeft: {"command":"switch_left","subsystem":"intake","runtimeType":"intakeCommand"}
-switchRight: {"command":"switch_right","subsystem":"intake","runtimeType":"intakeCommand"}
------------------ RoverDrivetrainCommands -----------------
-drivetrainCommand: {"command":"arcade","commandParameters":{"x":0.0,"y":0.0,"runtimeType":"drivetrain"},"subsystem":"drivetrain","runtimeType":"drivetrainCommand"}
------------------ RoverMovementCommands -----------------
-movementCommand: {"command":"to_location","commandParameters":{"lat":39.0,"long":-105.0,"runtimeType":"movement"},"subsystem":"movement","runtimeType":"movementCommand"}
-✓ Counter value should be incremented
-```
+| Command Name             | Description                                                                       | Initial State                                 | Final State                                   | Example                                                                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| E-Stop                   | E-stop rover                                                                      | any                                           | e_stop                                        | {"command":"e_stop","subsystem":"general","runtimeType":"generalCommand"}                                                                                |
+| Disable                  | Soft stop: put rover in disabled state                                            | connected_idle_roaming, connected_idle_docked | connected_disabled                            | {"command":"disable","subsystem":"general","runtimeType":"generalCommand"}                                                                               |
+| Enable                   | Take rover out of disabled state, allow actions                                   | connected_disabled                            | connected_idle_roaming, connected_idle_docked | {"command":"enable","subsystem":"general","runtimeType":"generalCommand"}                                                                                |
+| Deploy                   | Deploy rover from garage                                                          | connected_idle_docked                         | connected_idle_roaming                        | {"command":"deploy","subsystem":"general","runtimeType":"generalCommand"}                                                                                |
+| Stow                     | Stow rover in garage. Return to garage, enter garage, and lift garage             | connected_idle_roaming                        | connected_idle_docked                         | {"command":"stow","subsystem":"general","runtimeType":"generalCommand"}                                                                                  |
+| Cancel                   | Stop autonomous command (pi-lit placement)                                        | autonomous                                    | connected_idle_roaming                        | {"command":"cancel","subsystem":"general","runtimeType":"generalCommand"}                                                                                |
+| Deploy Pi-Lits           | Deploy Pi-lits. Set formation and start location                                  | connected_idle_roaming                        | autonomous                                    | {"command":"deploy_pi_lits","subsystem":"general","runtimeType":"generalCommand"}                                                                        |
+| Retrieve Pi-lits         | Retrieve all placed Pi-lits                                                       | connected_idle_roaming                        | autonomous                                    | {"command":"retrieve_pi_lits","subsystem":"general","runtimeType":"generalCommand"}                                                                      |
+| Enable Remote Operation  | Enable direct user control (joysticks)                                            | connected_idle_roaming                        | remote_operation                              | {"command":"enable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}                                                               |
+| Disable Remote Operation | Disable direct user control                                                       | remote_operation                              | connected_idle_roaming                        | {"command":"disable_remote_operation","subsystem":"general","runtimeType":"generalCommand"}                                                              |
+| Heartbeat                | Used to ensure the connection is still open                                       | any                                           | any                                           | {"command":"heartbeat","subsystem":"heartbeat","runtimeType":"heartbeatCommand"}                                                                         |
+| Pickup 1 Pi-Lit          | Requires remote_operation, tell rover to find and pick up the nearese Pi-Lit      | remote_operation                              | remote_operation                              | {"command":"pickup_1_pi_lit","subsystem":"intake","runtimeType":"intakeCommand"}                                                                         |
+| Place 1 Pi-Lit           | Requires remote_operation, tell rover to place one Pi-Lit at its current location | remote_operation                              | remote_operation                              | {"command":"place_1_pi_lit","subsystem":"intake","runtimeType":"intakeCommand"}                                                                          |
+| Drive Rover              | Requires remote_oepration, drive rover with joysticks/gamepad                     | remote_operation                              | remote_operation                              | {"command":"arcade","commandParameters":{"x":0.0,"y":0.0,"runtimeType":"drivetrain"},"subsystem":"drivetrain","runtimeType":"drivetrainCommand"}         |
+| Move Rover               | Tell rover to navigate to a new location                                          | connected_idle_roaming                        | autonomous                                    | {"command":"to_location","commandParameters":{"lat":39.0,"long":-105.0,"runtimeType":"movement"},"subsystem":"movement","runtimeType":"movementCommand"} |
+
+### Notes:
+The runtimeType is not intended to be used, please ignore it.
 
 ## Development Environment (Windows)
 

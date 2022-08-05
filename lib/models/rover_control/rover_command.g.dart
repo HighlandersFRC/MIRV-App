@@ -89,13 +89,8 @@ Map<String, dynamic> _$$IntakeRoverCommandToJson(
     };
 
 const _$RoverCommandTypeIntakeEnumMap = {
-  RoverCommandTypeIntake.disable: 'disable',
-  RoverCommandTypeIntake.reset: 'reset',
-  RoverCommandTypeIntake.intake: 'intake',
-  RoverCommandTypeIntake.store: 'store',
-  RoverCommandTypeIntake.deposit: 'deposit',
-  RoverCommandTypeIntake.switch_left: 'switch_left',
-  RoverCommandTypeIntake.switch_right: 'switch_right',
+  RoverCommandTypeIntake.place_1_pi_lit: 'place_1_pi_lit',
+  RoverCommandTypeIntake.pickup_1_pi_lit: 'pickup_1_pi_lit',
 };
 
 _$DrivetrainRoverCommand _$$DrivetrainRoverCommandFromJson(

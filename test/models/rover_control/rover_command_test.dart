@@ -5,7 +5,7 @@ import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Counter value should be incremented', () {
+  test('Rover Command Examples', () {
     print("----------------- RoverGeneralCommands -----------------");
     print("eStop: ${json.encode(RoverGeneralCommands.eStop.toJson())}");
     print("disable: ${json.encode(RoverGeneralCommands.disable.toJson())}");
@@ -21,14 +21,9 @@ void main() {
     print("----------------- RoverHeartbeatCommands -----------------");
     print("heartbeat: ${json.encode(RoverHeartbeatCommands.heartbeat.toJson())}");
 
-    print("----------------- RoverDrivetrainCommands -----------------");
-    print("disable: ${json.encode(RoverIntakeCommands.disable.toJson())}");
-    print("reset: ${json.encode(RoverIntakeCommands.reset.toJson())}");
-    print("intake: ${json.encode(RoverIntakeCommands.intake.toJson())}");
-    print("store: ${json.encode(RoverIntakeCommands.store.toJson())}");
-    print("deposit: ${json.encode(RoverIntakeCommands.deposit.toJson())}");
-    print("switchLeft: ${json.encode(RoverIntakeCommands.switchLeft.toJson())}");
-    print("switchRight: ${json.encode(RoverIntakeCommands.switchRight.toJson())}");
+    print("----------------- RoverIntakeCommands -----------------");
+    print("pickupOnePiLit: ${json.encode(RoverIntakeCommands.pickupOnePiLit.toJson())}");
+    print("placeOnePiLit: ${json.encode(RoverIntakeCommands.placeOnePiLit.toJson())}");
 
     print("----------------- RoverDrivetrainCommands -----------------");
     print(
