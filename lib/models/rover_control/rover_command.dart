@@ -85,13 +85,8 @@ class RoverHeartbeatCommands {
 }
 
 class RoverIntakeCommands {
-  static const disable = RoverCommand.intakeCommand(RoverCommandTypeIntake.disable);
-  static const reset = RoverCommand.intakeCommand(RoverCommandTypeIntake.reset);
-  static const intake = RoverCommand.intakeCommand(RoverCommandTypeIntake.intake);
-  static const store = RoverCommand.intakeCommand(RoverCommandTypeIntake.store);
-  static const deposit = RoverCommand.intakeCommand(RoverCommandTypeIntake.deposit);
-  static const switchLeft = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_left);
-  static const switchRight = RoverCommand.intakeCommand(RoverCommandTypeIntake.switch_right);
+  static const placeOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.place_1_pi_lit);
+  static const pickupOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.pickup_1_pi_lit);
 }
 
 class RoverGarageCommands {
@@ -124,40 +119,25 @@ class RoverMovementCommands {
 }
 
 Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
-  RoverStateType.disconnected: [
-    // Pair(RoverGeneralCommands.connect, "Connect"), /// not a real command
-  ],
+  RoverStateType.disconnected: [],
   RoverStateType.e_stop: [],
   RoverStateType.disconnected_fault: [],
-  RoverStateType.connected_disabled: [
-    // Pair(RoverGeneralCommands.enable, "Enable"),
-  ],
+  RoverStateType.connected_disabled: [],
   RoverStateType.connected_fault: [
     // Pair(RoverGeneralCommands.recover, "Recover"), // not a real command
   ],
   RoverStateType.connected_idle_roaming: [
-    // Pair(RoverGeneralCommands.disable, "Disable"),
-    // Pair(RoverGeneralCommands.eStop, "E-Stop"),
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
     // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
-    // Pair(RoverIntakeCommands.disable, "Disable Intake"),
-    // Pair(RoverIntakeCommands.reset, "Reset Intake"),
-    // Pair(RoverIntakeCommands.intake, "Intake w/ Intake"),
-    // Pair(RoverIntakeCommands.store, "Store Intake"),
-    // Pair(RoverIntakeCommands.deposit, "Deposit w/ Intake"),
-    // Pair(RoverIntakeCommands.switchLeft, "Switch Left Intake"),
-    // Pair(RoverIntakeCommands.switchRight, "Switch Right Intake"),
   ],
   RoverStateType.autonomous: [
-    // Pair(RoverGeneralCommands.eStop, "E-Stop"),
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/cancel.png')),
-    // Pair(RoverGeneralCommands.cancel, "Cancel Current Command"),
+    Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
   ],
   RoverStateType.remote_operation: [
-    // Pair(RoverGeneralCommands.eStop, "E-Stop"),
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/cancel.png')),
-    // Pair(RoverGeneralCommands.cancel, "Cancel Current Command"),
+    Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
+    Pair(RoverIntakeCommands.placeOnePiLit, Image.asset('assets/images/pi_lit_outline_down.png')),
+    Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
   RoverStateType.connected_idle_docked: [
     Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
