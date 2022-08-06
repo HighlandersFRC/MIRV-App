@@ -12,7 +12,7 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
       state: $enumDecode(_$RoverStateTypeEnumMap, json['state']),
       status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
       battery_voltage: (json['battery_voltage'] as num?)?.toDouble(),
-      battery_percent: json['battery_percent'] as int?,
+      battery_percent: json['battery_percent'] as int,
       subsystems: RoverMetricHealth.fromJson(
           json['subsystems'] as Map<String, dynamic>),
       telemetry: RoverMetricTelemetry.fromJson(
