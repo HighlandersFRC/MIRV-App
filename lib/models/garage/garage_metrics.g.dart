@@ -11,9 +11,10 @@ _$_GarageMetrics _$$_GarageMetricsFromJson(Map<String, dynamic> json) =>
       garage_id: json['garage_id'] as String,
       linked_rover_id: json['linked_rover_id'] as String?,
       state: $enumDecode(_$GarageStateTypeEnumMap, json['state']),
-      health: json['health'] == null
-          ? const DeviceHealth()
-          : DeviceHealth.fromJson(json['health'] as Map<String, dynamic>),
+      lights_on: json['lights_on'] as bool? ?? false,
+      health: $enumDecodeNullable(_$DeviceHealthTypeEnumMap, json['health']) ??
+          DeviceHealthType.unavailable,
+      health_details: json['health_details'] as String?,
     );
 
 Map<String, dynamic> _$$_GarageMetricsToJson(_$_GarageMetrics instance) =>
@@ -21,7 +22,9 @@ Map<String, dynamic> _$$_GarageMetricsToJson(_$_GarageMetrics instance) =>
       'garage_id': instance.garage_id,
       'linked_rover_id': instance.linked_rover_id,
       'state': _$GarageStateTypeEnumMap[instance.state],
-      'health': instance.health,
+      'lights_on': instance.lights_on,
+      'health': _$DeviceHealthTypeEnumMap[instance.health],
+      'health_details': instance.health_details,
     };
 
 const _$GarageStateTypeEnumMap = {
@@ -31,4 +34,11 @@ const _$GarageStateTypeEnumMap = {
   GarageStateType.unavailable: 'unavailable',
   GarageStateType.in_motion_retract: 'in_motion_retract',
   GarageStateType.in_motion_deploy: 'in_motion_deploy',
+};
+
+const _$DeviceHealthTypeEnumMap = {
+  DeviceHealthType.healthy: 'healthy',
+  DeviceHealthType.unhealthy: 'unhealthy',
+  DeviceHealthType.degraded: 'degraded',
+  DeviceHealthType.unavailable: 'unavailable',
 };

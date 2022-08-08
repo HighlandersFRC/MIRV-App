@@ -23,4 +23,6 @@ const _$GarageCommandTypeEnumMap = {
   GarageCommandType.unlock: 'unlock',
   GarageCommandType.retract: 'retract',
   GarageCommandType.deploy: 'deploy',
+  GarageCommandType.lights_on: 'lights_on',
+  GarageCommandType.lights_off: 'lights_off',
 };

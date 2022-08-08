@@ -24,7 +24,7 @@ mixin _$RoverMetrics {
   RoverStateType get state => throw _privateConstructorUsedError;
   DeviceStatusType get status => throw _privateConstructorUsedError;
   double? get battery_voltage => throw _privateConstructorUsedError;
-  int? get battery_percent => throw _privateConstructorUsedError;
+  int get battery_percent => throw _privateConstructorUsedError;
   RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
   RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
   RoverPiLits get pi_lits => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $RoverMetricsCopyWith<$Res> {
       RoverStateType state,
       DeviceStatusType status,
       double? battery_voltage,
-      int? battery_percent,
+      int battery_percent,
       RoverMetricHealth subsystems,
       RoverMetricTelemetry telemetry,
       RoverPiLits pi_lits,
@@ -98,7 +98,7 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       subsystems: subsystems == freezed
           ? _value.subsystems
           : subsystems // ignore: cast_nullable_to_non_nullable
@@ -163,7 +163,7 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       RoverStateType state,
       DeviceStatusType status,
       double? battery_voltage,
-      int? battery_percent,
+      int battery_percent,
       RoverMetricHealth subsystems,
       RoverMetricTelemetry telemetry,
       RoverPiLits pi_lits,
@@ -222,7 +222,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
       battery_percent: battery_percent == freezed
           ? _value.battery_percent
           : battery_percent // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       subsystems: subsystems == freezed
           ? _value.subsystems
           : subsystems // ignore: cast_nullable_to_non_nullable
@@ -251,7 +251,7 @@ class _$_RoverMetrics implements _RoverMetrics {
       required this.state,
       required this.status,
       this.battery_voltage,
-      this.battery_percent,
+      required this.battery_percent,
       required this.subsystems,
       required this.telemetry,
       required this.pi_lits,
@@ -269,7 +269,7 @@ class _$_RoverMetrics implements _RoverMetrics {
   @override
   final double? battery_voltage;
   @override
-  final int? battery_percent;
+  final int battery_percent;
   @override
   final RoverMetricHealth subsystems;
   @override
@@ -334,7 +334,7 @@ abstract class _RoverMetrics implements RoverMetrics {
       required final RoverStateType state,
       required final DeviceStatusType status,
       final double? battery_voltage,
-      final int? battery_percent,
+      required final int battery_percent,
       required final RoverMetricHealth subsystems,
       required final RoverMetricTelemetry telemetry,
       required final RoverPiLits pi_lits,
@@ -352,7 +352,7 @@ abstract class _RoverMetrics implements RoverMetrics {
   @override
   double? get battery_voltage => throw _privateConstructorUsedError;
   @override
-  int? get battery_percent => throw _privateConstructorUsedError;
+  int get battery_percent => throw _privateConstructorUsedError;
   @override
   RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
   @override

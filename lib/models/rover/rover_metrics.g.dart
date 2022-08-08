@@ -12,7 +12,7 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
       state: $enumDecode(_$RoverStateTypeEnumMap, json['state']),
       status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
       battery_voltage: (json['battery_voltage'] as num?)?.toDouble(),
-      battery_percent: json['battery_percent'] as int?,
+      battery_percent: json['battery_percent'] as int,
       subsystems: RoverMetricHealth.fromJson(
           json['subsystems'] as Map<String, dynamic>),
       telemetry: RoverMetricTelemetry.fromJson(
@@ -128,10 +128,9 @@ Map<String, dynamic> _$$_RoverPiLitsToJson(_$_RoverPiLits instance) =>
 const _$PiLitStateTypeEnumMap = {
   PiLitStateType.off: 'off',
   PiLitStateType.idle: 'idle',
-  PiLitStateType.sequential_1: 'sequential_1',
-  PiLitStateType.sequential_2: 'sequential_2',
-  PiLitStateType.simultaneous: 'simultaneous',
-  PiLitStateType.steady_burn: 'steady_burn',
+  PiLitStateType.sequential: 'sequential',
+  PiLitStateType.sequential_reverse: 'sequential_reverse',
+  PiLitStateType.parallel: 'parallel',
 };
 
 _$_PiLit _$$_PiLitFromJson(Map<String, dynamic> json) => _$_PiLit(
