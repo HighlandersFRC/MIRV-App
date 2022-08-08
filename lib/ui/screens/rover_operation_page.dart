@@ -29,6 +29,7 @@ class RoverOperationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    manualOperation.value = webRTCConnection.roverMetricsObs.value.state == RoverStateType.remote_operation;
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverMetrics.rover_id);
     webRTCConnection.startJoystickUpdates();

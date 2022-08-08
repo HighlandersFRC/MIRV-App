@@ -163,7 +163,7 @@ class HorizontalJoystickView extends StatelessWidget {
 
     double normalizedDistance = _math.max(_math.min(distance / (size / 2), 1.0), -1.0);
 
-    updateController.updateJoystickVal(JoystickValue(normalizedDistance, 0.0));
+    updateController.updateJoystickVal(JoystickValue(-normalizedDistance, 0.0));
     DateTime? _callbackTimestamp = callbackTimestamp;
     // if (onDirectionChanged != null && _canCallOnDirectionChanged(callbackTimestamp)) {
     //   _callbackTimestamp = DateTime.now();
