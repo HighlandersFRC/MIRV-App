@@ -13,7 +13,7 @@ void main() {
     print("deploy: ${json.encode(RoverGeneralCommands.deploy.toJson())}");
     print("cancel: ${json.encode(RoverGeneralCommands.cancel.toJson())}");
     print("stow: ${json.encode(RoverGeneralCommands.stow.toJson())}");
-    print("deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits.toJson())}");
+    // print("deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits().toJson())}");
     print("retrievePiLits: ${json.encode(RoverGeneralCommands.retrievePiLits.toJson())}");
     print("enableRemoteOperation: ${json.encode(RoverGeneralCommands.enableRemoteOperation.toJson())}");
     print("disableRemoteOperation: ${json.encode(RoverGeneralCommands.disableRemoteOperation.toJson())}");

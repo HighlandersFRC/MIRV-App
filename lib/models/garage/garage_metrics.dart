@@ -11,7 +11,9 @@ class GarageMetrics with _$GarageMetrics {
     required String garage_id,
     String? linked_rover_id,
     required GarageStateType state,
-    @Default(DeviceHealth()) DeviceHealth health,
+    @Default(false) bool lights_on,
+    @Default(DeviceHealthType.unavailable) DeviceHealthType health,
+    String? health_details,
   }) = _GarageMetrics;
 
   factory GarageMetrics.fromJson(Map<String, dynamic> json) => _$GarageMetricsFromJson(json);
