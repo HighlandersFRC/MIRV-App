@@ -19,7 +19,7 @@ enum RoverCommandTypeGeneral {
 
 enum RoverCommandTypeHeartbeat { heartbeat }
 
-enum RoverCommandTypeIntake { disable, reset, intake, store, deposit, switch_left, switch_right }
+enum RoverCommandTypeIntake { place_1_pi_lit, pickup_1_pi_lit }
 
 enum RoverCommandTypeDrivetrain { arcade, tank }
 

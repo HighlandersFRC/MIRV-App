@@ -163,7 +163,7 @@ class VerticalJoystickView extends StatelessWidget {
 
     double normalizedDistance = _math.max(_math.min(distance / (size / 2), 1.0), -1.0);
 
-    updateController.updateJoystickVal(JoystickValue(0.0, normalizedDistance));
+    updateController.updateJoystickVal(JoystickValue(0.0, -normalizedDistance));
     DateTime? _callbackTimestamp = callbackTimestamp;
     // if (onDirectionChanged != null) {
     //   _callbackTimestamp = DateTime.now();
