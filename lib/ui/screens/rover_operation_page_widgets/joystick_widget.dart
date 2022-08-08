@@ -18,18 +18,11 @@ class JoystickWidget extends StatelessWidget {
     required this.onJoystickChanged,
     required this.axisType,
   }) : super(key: key) {
-    isEnabled = _cancelState(roverMetrics.state);
+    isEnabled = _cancelState(roverMetrics.state, roverMetrics.docked);
     joystickMode = _getJoystickMode(axisType);
   }
 
-  bool _cancelState(RoverStateType? roverState) {
-    switch (roverState) {
-      case RoverStateType.connected_idle_roaming:
-        return true;
-      default:
-        return false;
-    }
-  }
+  bool _cancelState(RoverStateType? roverState, bool docked) => roverState == RoverStateType.connected_idle && !docked;
 
   JoystickMode _getJoystickMode(GamepadAxisType axisType) {
     switch (axisType) {

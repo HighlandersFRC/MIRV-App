@@ -125,8 +125,10 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   RoverStateType.connected_fault: [
     // Pair(RoverGeneralCommands.recover, "Recover"), // not a real command
   ],
-  RoverStateType.connected_idle_roaming: [
+  RoverStateType.connected_idle: [
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
+    // TODO: Switch allowed commands based on docked boolean
+    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
     // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
@@ -137,8 +139,5 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
     Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
     Pair(RoverIntakeCommands.placeOnePiLit, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
-  ],
-  RoverStateType.connected_idle_docked: [
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
   ],
 };
