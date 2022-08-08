@@ -40,7 +40,7 @@ class GarageOperationPage extends StatelessWidget {
           Positioned(
             top: 30,
             height: 450,
-            left: 10,
+            left: 20,
             width: 110,
             child: Scrollbar(
               child: Obx(

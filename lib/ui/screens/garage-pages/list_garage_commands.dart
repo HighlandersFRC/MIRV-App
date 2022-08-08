@@ -34,8 +34,9 @@ class GarageCommandList extends StatelessWidget {
               ),
               child: ListTile(
                   title: IconButton(
+                padding: const EdgeInsets.all(3),
                 icon: garageCommandList[index].last,
-                iconSize: 100,
+                iconSize: 300,
                 onPressed: () {
                   sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
                   changeGarageState(garageMetrics.garage_id, garageCommandList[index].first);
