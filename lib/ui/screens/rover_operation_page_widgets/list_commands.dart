@@ -13,11 +13,11 @@ class CommandList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var commandList = roverCommandsByState[state];
+    var commandList = roverCommandsByState[state] ?? [];
     return Container(
         child: state != null
             ? ListView.builder(
-                itemCount: commandList!.length,
+                itemCount: commandList.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20, right: 2),

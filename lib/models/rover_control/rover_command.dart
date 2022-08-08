@@ -39,11 +39,11 @@ class RoverCommand with _$RoverCommand {
     @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
   }) = DrivetrainRoverCommand;
 
-  const factory RoverCommand.movementCommand(
-    RoverCommandTypeMovement command,
+  const factory RoverCommand.destinationCommand(
+    RoverCommandTypeDrivetrain command,
     RoverCommandParameters commandParameters, {
     @Default(RoverSubsystemType.movement) RoverSubsystemType subsystem,
-  }) = MovementRoverCommand;
+  }) = DrivetrainRoverCommandDestination;
 
   const factory RoverCommand.piLitCommand(
     RoverCommandTypePiLit command, {
@@ -56,7 +56,7 @@ class RoverCommand with _$RoverCommand {
 @freezed
 class RoverCommandParameters with _$RoverCommandParameters {
   const factory RoverCommandParameters.drivetrain(double x, double y) = RoverCommandParametersDrivetrain;
-  const factory RoverCommandParameters.movement(double lat, double long) = RoverCommandParametersMovement;
+  const factory RoverCommandParameters.destination(double lat, double long) = RoverCommandParametersDestination;
   const factory RoverCommandParameters.piLitPlacement(DeviceLocation location, PiLitFormationType formation) =
       RoverCommandParametersPiLitPlacement;
 
@@ -98,44 +98,40 @@ class RoverGarageCommands {
 }
 
 class RoverPiLitCommands {
-  static const off = RoverCommand.piLitCommand(RoverCommandTypePiLit.off);
   static const idle = RoverCommand.piLitCommand(RoverCommandTypePiLit.idle);
-  static const sequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.sequential);
-  static const reverseSequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.reverse_sequential);
-  static const parallel = RoverCommand.piLitCommand(RoverCommandTypePiLit.parallel);
+  static const sequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave);
+  static const reverseSequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave_reverse);
+  static const parallel = RoverCommand.piLitCommand(RoverCommandTypePiLit.simultaneous);
 }
 
 class RoverDrivetrainCommands {
   static DrivetrainRoverCommand drivetrainCommand(RoverCommandTypeDrivetrain command, double x, double y) {
     return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
   }
-}
 
-class RoverMovementCommands {
-  static MovementRoverCommand movementCommand(RoverCommandTypeMovement command, double lat, double long) {
-    return MovementRoverCommand(command, RoverCommandParameters.movement(lat, long));
+  static DrivetrainRoverCommand movementCommand(RoverCommandTypeDrivetrain command, double lat, double long) {
+    return DrivetrainRoverCommand(command, RoverCommandParameters.destination(lat, long));
   }
 }
 
-Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
-  RoverStateType.disconnected: [],
-  RoverStateType.e_stop: [],
-  RoverStateType.disconnected_fault: [],
-  RoverStateType.connected_disabled: [],
-  RoverStateType.connected_fault: [
-    // Pair(RoverGeneralCommands.recover, "Recover"), // not a real command
-  ],
-  RoverStateType.connected_idle: [
+Map<Pair<RoverStateType, bool>, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
+  // Pair(RoverStateType.disconnected, false): [],
+  // Pair(RoverStateType.e_stop, false): [],
+  // Pair(RoverStateType.disconnected_fault, false): [],
+  // Pair(RoverStateType.connected_disabled, false): [],
+  // Pair(RoverStateType.connected_fault, false): [],
+  Pair(RoverStateType.connected_idle, false): [
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
-    // TODO: Switch allowed commands based on docked boolean
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
     // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
-  RoverStateType.autonomous: [
+  Pair(RoverStateType.connected_idle, true): [
+    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+  ],
+  Pair(RoverStateType.autonomous, false): [
     Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
   ],
-  RoverStateType.remote_operation: [
+  Pair(RoverStateType.remote_operation, false): [
     Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
     Pair(RoverIntakeCommands.placeOnePiLit, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
