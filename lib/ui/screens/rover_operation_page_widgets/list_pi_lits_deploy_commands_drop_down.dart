@@ -1,31 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mirv/models/pi_lit_deploy_state_type.dart';
+
+import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
-class PiLitDeployCommandDropdown extends StatelessWidget {
-  PiLitDeployCommandDropdown({
-    Key? key,
-    required this.sendCommand,
-  }) : super(key: key);
-  final Function(RoverCommand) sendCommand;
+class PiLitFormationCommandDropdown extends StatelessWidget {
+  PiLitFormationCommandDropdown({Key? key, this.sendCommand, required this.piLitFormationType}) : super(key: key);
 
-  late Rx<PiLitDeployStateType> deployCommandKey;
+  final Function(RoverCommand)? sendCommand;
 
-  sendPiLitCommand() {
-    sendCommand(deployCommandKey.value.command);
-  }
+  final Rx<PiLitFormationType> piLitFormationType;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-        value: PiLitDeployStateType,
-        items: PiLitDeployStateType.values.map((piLitSDeplytateType) {
-          return DropdownMenuItem(value: piLitSDeplytateType, child: Text(piLitSDeplytateType.name));
-        }).toList(),
-        onChanged: (t) {
-          t != null ? deployCommandKey.value = t as PiLitDeployStateType : null;
-        });
+    return Obx(() => DropdownButton(
+          value: piLitFormationType.value,
+          items: PiLitFormationType.values.map((piLitFormationType) {
+            return DropdownMenuItem(value: piLitFormationType, child: Text(piLitFormationType.name));
+          }).toList(),
+          onChanged: (PiLitFormationType? t) {
+            if (t != null) {
+              piLitFormationType.value = t;
+              if (sendCommand != null) {
+                sendCommand!(t.command);
+              }
+            }
+          },
+        ));
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // PiLitDeployStateType.values.map((piLitSDeplytateType) {
+        // return DropdownMenuItem(value: piLitSDeplytateType, child: Text(piLitSDeplytateType.name));}).toList(),

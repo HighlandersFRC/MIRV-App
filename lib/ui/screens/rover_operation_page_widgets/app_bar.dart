@@ -98,7 +98,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
             StatusDot(peerConnectionState),
           ],
         ),
-        title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
+        title: Text(_stateText(roverMetrics.value.state, false ), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(

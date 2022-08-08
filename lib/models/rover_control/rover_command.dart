@@ -107,12 +107,12 @@ class RoverPiLitCommands {
 }
 
 //TODO:make new commands for rover pilit placement
-class RoverPiLitDeployCommands {
-  static const piLit7Spear = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
-  static const piLit5Taper = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
-  static const piLit3Type1 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
-  static const piLit3Type2 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
-  static const piLit3Type3 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+class RoverPiLitFormationCommands {
+  static const taper_right_3 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const taper_left_3 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const taper_right_5 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const taper_left_5 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
+  static const spear_7 = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy_pi_lits);
 }
 
 class RoverDrivetrainCommands {

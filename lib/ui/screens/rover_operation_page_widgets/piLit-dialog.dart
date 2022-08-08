@@ -4,6 +4,8 @@ import 'package:mirv/constants/theme_data.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/pi_lit_formation_type.dart';
+import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
@@ -11,18 +13,25 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_command
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lits_deploy_commands_drop_down.dart';
 
 class PiLitDialogButton extends StatelessWidget {
-  final RoverMetrics roverMetrics;
-  final Function(RoverCommand) sendCommand;
   PiLitDialogButton({
     Key? key,
     required this.roverMetrics,
     required this.sendCommand,
+    required this.piLitState,
+    // required this.piLitForamtionType,
   }) : super(key: key);
 
-  late int piLitAmount = roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left;
-  late PiLitDeployCommandDropdown piLitDeployCommandDropdown = PiLitDeployCommandDropdown(sendCommand: sendCommand);
-  late PiLitCommandDropdown piLitCommandDropdown = PiLitCommandDropdown(sendCommand: sendCommand);
+  final RoverMetrics roverMetrics;
+  final Rx<PiLitStateType> piLitState;
+  // final Rx<PiLitFormationType> piLitForamtionType;
 
+  final Function(RoverCommand) sendCommand;
+
+  late int piLitAmount = roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left;
+  //late PiLitDeployCommandDropdown piLitDeployCommandDropdown = PiLitDeployCommandDropdown(sendCommand: sendCommand);
+
+//put observable and pass it in
+// pass in function ()
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -80,35 +89,22 @@ class PiLitDialogButton extends StatelessWidget {
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content: Stack(
+          content: Row(
             children: [
-              Positioned(
-                left: 30,
-                top: 30,
-                width: 150,
-                child: PiLitCommandDropdown(
-                  sendCommand: sendCommand,
-                ),
+              PiLitCommandDropdown(
+                piLitState: piLitState,
               ),
-              Positioned(
-                  right: 30,
-                  top: 30,
-                  width: 150,
-                  child: PiLitDeployCommandDropdown(
-                    sendCommand: sendCommand,
-                  )),
-              Positioned(
-                  bottom: 30,
-                  child: Expanded(
-                    child: Container(child: const Text('Map')),
-                  )),
+              // PiLitFormationCommandDropdown(
+              //   piLitFormationType: piLitForamtionType,
+              // ),
+              Container(child: const Text('Map')),
             ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                piLitDeployCommandDropdown.sendPiLitCommand();
-                piLitCommandDropdown.sendPiLitCommand();
+                sendCommand(piLitState.value.command);
+                //piLitDeployCommandDropdown.sendPiLitCommand();
               },
               child: const Text('Deploy Pi-Lits'),
             ),

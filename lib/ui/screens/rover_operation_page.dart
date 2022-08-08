@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mirv/models/pi_lit_formation_type.dart';
+import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
@@ -14,6 +16,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/piLit-dialog.dart';
 
 import 'webrtc_connection.dart';
@@ -22,6 +25,9 @@ class RoverOperationPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
 
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
+
+  late Rx<PiLitStateType> piLitState = roverMetrics.pi_lits.state.obs;
+  // late Rx<PiLitFormationType> piLitFormationType = roverMetrics.pi_lits.state.obs;
 
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
   late Rx<bool> manualOperation = false.obs;
@@ -66,6 +72,7 @@ class RoverOperationPage extends StatelessWidget {
                     ? PiLitDialogButton(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
+                        piLitState: piLitState,
                       )
                     : const SizedBox.shrink(),
                 Expanded(
@@ -79,9 +86,9 @@ class RoverOperationPage extends StatelessWidget {
             Positioned(
               top: 0,
               height: 450,
-              right: -15,
-              width: 150,
-              child: Column(children: [
+              right: 15,
+              width: 175,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 20),
                   child: Obx(() => ToggleDisable(
@@ -95,7 +102,15 @@ class RoverOperationPage extends StatelessWidget {
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child:PiLitCommandDropdown(
+                        piLitState: piLitState,
+                        sendCommand: webRTCConnection.sendRoverCommand,
+                      ),
                 )
+               
               ]),
             ),
             Obx(() => Positioned(
