@@ -3,8 +3,7 @@ enum RoverStateType {
   disconnected_fault,
   e_stop,
   connected_disabled,
-  connected_idle_roaming,
-  connected_idle_docked,
+  connected_idle,
   connected_fault,
   autonomous,
   remote_operation

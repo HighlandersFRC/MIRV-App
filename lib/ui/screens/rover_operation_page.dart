@@ -62,7 +62,7 @@ class RoverOperationPage extends StatelessWidget {
               width: 150,
               left: 10,
               child: Column(children: [
-                webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle
                     ? PiLitDialogButton(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
@@ -98,8 +98,7 @@ class RoverOperationPage extends StatelessWidget {
                 )
               ]),
             ),
-            Obx(
-              () => Positioned(
+            Obx(() => Positioned(
                 left: manualOperation.value ? 400 : 20,
                 bottom: 20,
                 height: 200,
@@ -128,10 +127,9 @@ class RoverOperationPage extends StatelessWidget {
                     );
                   },
                   child: roverOperationMap,
-                ),
-              ),
-            ),
-            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle_roaming
+                ))),
+            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle &&
+                    !webRTCConnection.roverMetricsObs.value.docked
                 ? Positioned(
                     bottom: 20,
                     right: 15,
