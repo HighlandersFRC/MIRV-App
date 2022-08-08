@@ -23,6 +23,7 @@ mixin _$RoverMetrics {
   String get rover_id => throw _privateConstructorUsedError;
   RoverStateType get state => throw _privateConstructorUsedError;
   DeviceStatusType get status => throw _privateConstructorUsedError;
+  bool get docked => throw _privateConstructorUsedError;
   double? get battery_voltage => throw _privateConstructorUsedError;
   int get battery_percent => throw _privateConstructorUsedError;
   RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $RoverMetricsCopyWith<$Res> {
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
+      bool docked,
       double? battery_voltage,
       int battery_percent,
       RoverMetricHealth subsystems,
@@ -71,6 +73,7 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
     Object? rover_id = freezed,
     Object? state = freezed,
     Object? status = freezed,
+    Object? docked = freezed,
     Object? battery_voltage = freezed,
     Object? battery_percent = freezed,
     Object? subsystems = freezed,
@@ -91,6 +94,10 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as DeviceStatusType,
+      docked: docked == freezed
+          ? _value.docked
+          : docked // ignore: cast_nullable_to_non_nullable
+              as bool,
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
@@ -162,6 +169,7 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
+      bool docked,
       double? battery_voltage,
       int battery_percent,
       RoverMetricHealth subsystems,
@@ -195,6 +203,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
     Object? rover_id = freezed,
     Object? state = freezed,
     Object? status = freezed,
+    Object? docked = freezed,
     Object? battery_voltage = freezed,
     Object? battery_percent = freezed,
     Object? subsystems = freezed,
@@ -215,6 +224,10 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as DeviceStatusType,
+      docked: docked == freezed
+          ? _value.docked
+          : docked // ignore: cast_nullable_to_non_nullable
+              as bool,
       battery_voltage: battery_voltage == freezed
           ? _value.battery_voltage
           : battery_voltage // ignore: cast_nullable_to_non_nullable
@@ -250,6 +263,7 @@ class _$_RoverMetrics implements _RoverMetrics {
       {required this.rover_id,
       required this.state,
       required this.status,
+      required this.docked,
       this.battery_voltage,
       required this.battery_percent,
       required this.subsystems,
@@ -267,6 +281,8 @@ class _$_RoverMetrics implements _RoverMetrics {
   @override
   final DeviceStatusType status;
   @override
+  final bool docked;
+  @override
   final double? battery_voltage;
   @override
   final int battery_percent;
@@ -281,7 +297,7 @@ class _$_RoverMetrics implements _RoverMetrics {
 
   @override
   String toString() {
-    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits, garage: $garage)';
+    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, docked: $docked, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits, garage: $garage)';
   }
 
   @override
@@ -292,6 +308,7 @@ class _$_RoverMetrics implements _RoverMetrics {
             const DeepCollectionEquality().equals(other.rover_id, rover_id) &&
             const DeepCollectionEquality().equals(other.state, state) &&
             const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.docked, docked) &&
             const DeepCollectionEquality()
                 .equals(other.battery_voltage, battery_voltage) &&
             const DeepCollectionEquality()
@@ -310,6 +327,7 @@ class _$_RoverMetrics implements _RoverMetrics {
       const DeepCollectionEquality().hash(rover_id),
       const DeepCollectionEquality().hash(state),
       const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(docked),
       const DeepCollectionEquality().hash(battery_voltage),
       const DeepCollectionEquality().hash(battery_percent),
       const DeepCollectionEquality().hash(subsystems),
@@ -333,6 +351,7 @@ abstract class _RoverMetrics implements RoverMetrics {
       {required final String rover_id,
       required final RoverStateType state,
       required final DeviceStatusType status,
+      required final bool docked,
       final double? battery_voltage,
       required final int battery_percent,
       required final RoverMetricHealth subsystems,
@@ -349,6 +368,8 @@ abstract class _RoverMetrics implements RoverMetrics {
   RoverStateType get state => throw _privateConstructorUsedError;
   @override
   DeviceStatusType get status => throw _privateConstructorUsedError;
+  @override
+  bool get docked => throw _privateConstructorUsedError;
   @override
   double? get battery_voltage => throw _privateConstructorUsedError;
   @override

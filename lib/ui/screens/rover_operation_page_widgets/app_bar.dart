@@ -20,7 +20,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
-  String _stateText(RoverStateType? roverState) {
+  String _stateText(RoverStateType? roverState, bool docked) {
     switch (roverState) {
       case RoverStateType.disconnected:
         return "Disconnected";
@@ -32,10 +32,12 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
         return "Disabled";
       case RoverStateType.connected_fault:
         return "Connected with Error";
-      case RoverStateType.connected_idle_roaming:
-        return "Awaiting Orders";
-      case RoverStateType.connected_idle_docked:
-        return "Docked";
+      case RoverStateType.connected_idle:
+        if (docked) {
+          return "Docked";
+        } else {
+          return "Awaiting Orders";
+        }
       case RoverStateType.e_stop:
         return "E-Stopped";
       case RoverStateType.remote_operation:
