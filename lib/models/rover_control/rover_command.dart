@@ -109,7 +109,7 @@ class RoverDrivetrainCommands {
     return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
   }
 
-  static DrivetrainRoverCommand movementCommand(RoverCommandTypeDrivetrain command, double lat, double long) {
+  static DrivetrainRoverCommand destinationCommand(RoverCommandTypeDrivetrain command, double lat, double long) {
     return DrivetrainRoverCommand(command, RoverCommandParameters.destination(lat, long));
   }
 }

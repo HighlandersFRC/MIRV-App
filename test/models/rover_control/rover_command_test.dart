@@ -34,6 +34,6 @@ void main() {
 
     print("----------------- RoverMovementCommands -----------------");
     print(
-        "movementCommand: ${json.encode(RoverMovementCommands.movementCommand(RoverCommandTypeMovement.to_location, 39, -105).toJson())}");
+        "movementCommand: ${json.encode(RoverDrivetrainCommands.destinationCommand(RoverCommandTypeDrivetrain.to_location, 39, -105).toJson())}");
   });
 }

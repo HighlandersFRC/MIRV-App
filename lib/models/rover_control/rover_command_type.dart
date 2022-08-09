@@ -23,7 +23,7 @@ enum RoverCommandTypeIntake { place_1_pi_lit, pickup_1_pi_lit }
 
 enum RoverCommandTypePiLit { idle, wave, wave_reverse, simultaneous }
 
-enum RoverCommandTypeDrivetrain { arcade, tank }
+enum RoverCommandTypeDrivetrain { arcade, tank, to_location }
 
 enum RoverCommandTypeMovement { to_location }
 
