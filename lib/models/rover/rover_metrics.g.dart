@@ -127,11 +127,11 @@ Map<String, dynamic> _$$_RoverPiLitsToJson(_$_RoverPiLits instance) =>
     };
 
 const _$PiLitStateTypeEnumMap = {
-  PiLitStateType.off: 'off',
+  PiLitStateType.no_pi_lits: 'no_pi_lits',
   PiLitStateType.idle: 'idle',
-  PiLitStateType.sequential: 'sequential',
-  PiLitStateType.sequential_reverse: 'sequential_reverse',
-  PiLitStateType.parallel: 'parallel',
+  PiLitStateType.wave: 'wave',
+  PiLitStateType.wave_reverse: 'wave_reverse',
+  PiLitStateType.simultaneous: 'simultaneous',
 };
 
 _$_PiLit _$$_PiLitFromJson(Map<String, dynamic> json) => _$_PiLit(

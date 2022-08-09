@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mirv/models/device_location.dart';
+import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:test/test.dart';
@@ -13,7 +15,8 @@ void main() {
     print("deploy: ${json.encode(RoverGeneralCommands.deploy.toJson())}");
     print("cancel: ${json.encode(RoverGeneralCommands.cancel.toJson())}");
     print("stow: ${json.encode(RoverGeneralCommands.stow.toJson())}");
-    // print("deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits().toJson())}");
+    print(
+        "deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits(PiLitFormationType.taper_left_3, DeviceLocation(lat: 39, long: -103.5)).toJson())}");
     print("retrievePiLits: ${json.encode(RoverGeneralCommands.retrievePiLits.toJson())}");
     print("enableRemoteOperation: ${json.encode(RoverGeneralCommands.enableRemoteOperation.toJson())}");
     print("disableRemoteOperation: ${json.encode(RoverGeneralCommands.disableRemoteOperation.toJson())}");
@@ -31,6 +34,6 @@ void main() {
 
     print("----------------- RoverMovementCommands -----------------");
     print(
-        "movementCommand: ${json.encode(RoverMovementCommands.movementCommand(RoverCommandTypeMovement.to_location, 39, -105).toJson())}");
+        "movementCommand: ${json.encode(RoverDrivetrainCommands.destinationCommand(RoverCommandTypeDrivetrain.to_location, 39, -105).toJson())}");
   });
 }

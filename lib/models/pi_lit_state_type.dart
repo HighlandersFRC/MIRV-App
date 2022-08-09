@@ -1,1 +1,1 @@
-enum PiLitStateType { off, idle, sequential, sequential_reverse, parallel }
+enum PiLitStateType { no_pi_lits, idle, wave, wave_reverse, simultaneous }
