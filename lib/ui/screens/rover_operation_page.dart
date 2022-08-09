@@ -14,8 +14,8 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
-
 import 'webrtc_connection.dart';
+import 'package:mirv/models/pi_lit_formation_type.dart';
 
 class RoverOperationPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -25,6 +25,29 @@ class RoverOperationPage extends StatelessWidget {
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
+
+  // PiLitFormationType formation = PiLitFormationType.taper_right_3;
+  // int numPiLitsRequired = formation.piLitsRequired;
+
+  double piLitDeploy = 0.0;
+  bool piLitsBeingDeployed = true;
+  Widget getProgress() {
+    if (piLitsBeingDeployed == true) {
+      return LinearProgressIndicator(
+        value: piLitDeploy,
+        minHeight: 20,
+        color: Color.fromARGB(255, 255, 153, 0),
+        backgroundColor: Color.fromARGB(148, 158, 158, 158),
+        // valueColor:
+        //     AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 255, 0, 0)),
+      );
+    } else {
+      return SizedBox(
+        height: 15,
+        width: 1500,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +70,18 @@ class RoverOperationPage extends StatelessWidget {
         ),
         body: Stack(
           children: [
+            Obx(
+              () => Positioned(
+                top: 10,
+                height: 40,
+                width: 150,
+                left: 30,
+                child: Container(
+                  color: Colors.amber,
+                  child: const Text("over here"),
+                ),
+              ),
+            ),
             Center(
               child: Container(
                 decoration: const BoxDecoration(
