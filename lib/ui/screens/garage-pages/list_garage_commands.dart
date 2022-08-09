@@ -3,6 +3,7 @@ import 'package:mirv/constants/theme_data.dart';
 
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/models/pair.dart';
 
 class GarageCommandList extends StatelessWidget {
   const GarageCommandList({
@@ -19,9 +20,9 @@ class GarageCommandList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var garageCommandList = garageCommandsByState[garageMetrics.state];
-    return ListView.builder(
-      itemCount: garageCommandList!.length,
+  var garageCommandList = garageCommandsByState[Pair(garageMetrics.state, garageMetrics.lights_on)] ?? []; 
+   return ListView.builder(
+    itemCount: garageCommandList.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),

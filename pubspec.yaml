@@ -107,6 +107,11 @@ flutter:
     - assets/images/garage_up.png
     - assets/images/closeup_locked_garage.png
     - assets/images/closeup_unlocked_garage.png
+    - assets/images/light.png
+    - assets/images/light_off.png
+    - assets/images/light_on_close_up.png
+    - assets/images/light_off_close_up.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

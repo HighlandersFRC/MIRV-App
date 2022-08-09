@@ -17,6 +17,13 @@ class LockImage extends StatelessWidget {
         return Image.asset('assets/images/closeup_locked_garage.png');
       case GarageStateType.retracted_unlatched:
         return Image.asset('assets/images/closeup_unlocked_garage.png');
+      case GarageStateType.deployed:
+        return Image.asset('assets/images/closeup_unlocked_garage.png');
+      case GarageStateType.in_motion_deploy:
+        return Image.asset('assets/images/closeup_unlocked_garage.png');
+      case GarageStateType.in_motion_retract:
+        return Image.asset('assets/images/closeup_unlocked_garage.png');
+
       default:
         return null;
     }

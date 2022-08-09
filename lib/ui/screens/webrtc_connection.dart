@@ -38,8 +38,8 @@ class WebRTCConnection {
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
   final RoverMetrics roverMetrics;
-
   late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
+
 
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();
@@ -112,7 +112,7 @@ class WebRTCConnection {
   }
 
   // TODO: Remove this before deployment
-  void updateRoverState(command) {
+   updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
     bool docked = tempRoverMetrics.docked;

@@ -7,6 +7,7 @@ import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_app_bar.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_image_states.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_light_icon.dart';
 import 'package:mirv/ui/screens/garage-pages/list_garage_commands.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/garage-pages/update_lock_image.dart';
@@ -40,7 +41,7 @@ class GarageOperationPage extends StatelessWidget {
           Positioned(
             top: 30,
             height: 450,
-            left: 20,
+            left: 10,
             width: 110,
             child: Scrollbar(
               child: Obx(
@@ -63,8 +64,12 @@ class GarageOperationPage extends StatelessWidget {
               top: 70,
               right: 65,
               child: LockImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value!)),
-          )
-
+          ),
+   Obx (() =>
+  Positioned(
+              top: 350,
+              right: 145,
+              child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value!,)),)
         ],
       ),
     );

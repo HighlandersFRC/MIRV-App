@@ -177,27 +177,26 @@ class MirvApi {
 
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
-    GarageStateType? state = tempGarageMetrics?.state;
-    SizedBox sizedBox = SizedBox(
-      width: 200.0,
-      height: 300.0,
-      child: Image.asset(
-        'assets/images/mars_rover_new.png',
-      ),
-    );
-    Rx<GarageStateType?> roverStateObs = Rx<GarageStateType?>(state);
+    GarageStateType state = tempGarageMetrics!.state;
+    bool lights_on = tempGarageMetrics.lights_on;
+    Rx<GarageStateType?> garageStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
       state = GarageStateType.retracted_unlatched;
-      sizedBox;
     } else if (command == GarageCommands.lock) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.retract) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.deploy) {
       state = GarageStateType.deployed;
+     } else if (command == GarageCommands.lightsOff) {
+      state = tempGarageMetrics.state;
+      lights_on = true;
+      } else if (command == GarageCommands.lightsOn) {
+      state = tempGarageMetrics.state;
+      lights_on = false;
     } else {
       state = GarageStateType.unavailable;
     }
-    garageMetricsObs.value = tempGarageMetrics?.copyWith(state: state);
+    garageMetricsObs.value = tempGarageMetrics.copyWith(state: state, lights_on: lights_on);
   }
 }
