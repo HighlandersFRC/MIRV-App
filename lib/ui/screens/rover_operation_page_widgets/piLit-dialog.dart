@@ -103,8 +103,9 @@ class PiLitDialogButton extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                sendCommand(piLitState.value.command);
-                //piLitDeployCommandDropdown.sendPiLitCommand();
+                if (piLitState.value.command != null) {
+                  sendCommand(piLitState.value.command!);
+                }
               },
               child: const Text('Deploy Pi-Lits'),
             ),

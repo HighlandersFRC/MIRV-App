@@ -24,8 +24,8 @@ class PiLitCommandDropdown extends StatelessWidget {
           onChanged: (PiLitStateType? t) {
             if (t != null) {
               piLitState.value = t;
-              if (sendCommand != null) {
-                sendCommand!(t.command);
+              if (sendCommand != null && t.command != null) {
+                sendCommand!(t.command!);
               }
             }
           },
