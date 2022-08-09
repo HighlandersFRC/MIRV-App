@@ -1629,7 +1629,7 @@ class _$DrivetrainRoverCommandDestination
     implements DrivetrainRoverCommandDestination {
   const _$DrivetrainRoverCommandDestination(
       this.command, this.commandParameters,
-      {this.subsystem = RoverSubsystemType.movement, final String? $type})
+      {this.subsystem = RoverSubsystemType.drivetrain, final String? $type})
       : $type = $type ?? 'destinationCommand';
 
   factory _$DrivetrainRoverCommandDestination.fromJson(

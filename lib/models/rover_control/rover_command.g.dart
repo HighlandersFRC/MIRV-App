@@ -48,7 +48,6 @@ const _$RoverSubsystemTypeEnumMap = {
   RoverSubsystemType.general: 'general',
   RoverSubsystemType.intake: 'intake',
   RoverSubsystemType.drivetrain: 'drivetrain',
-  RoverSubsystemType.movement: 'movement',
   RoverSubsystemType.heartbeat: 'heartbeat',
   RoverSubsystemType.pi_lit: 'pi_lit',
   RoverSubsystemType.garage: 'garage',
@@ -96,6 +95,10 @@ Map<String, dynamic> _$$IntakeRoverCommandToJson(
 const _$RoverCommandTypeIntakeEnumMap = {
   RoverCommandTypeIntake.place_1_pi_lit: 'place_1_pi_lit',
   RoverCommandTypeIntake.pickup_1_pi_lit: 'pickup_1_pi_lit',
+  RoverCommandTypeIntake.unload_pi_lits: 'unload_pi_lits',
+  RoverCommandTypeIntake.load_pi_lits: 'load_pi_lits',
+  RoverCommandTypeIntake.deploy_intake: 'deploy_intake',
+  RoverCommandTypeIntake.retract_intake: 'retract_intake',
 };
 
 _$GarageRoverCommand _$$GarageRoverCommandFromJson(Map<String, dynamic> json) =>
@@ -148,6 +151,7 @@ Map<String, dynamic> _$$DrivetrainRoverCommandToJson(
 const _$RoverCommandTypeDrivetrainEnumMap = {
   RoverCommandTypeDrivetrain.arcade: 'arcade',
   RoverCommandTypeDrivetrain.tank: 'tank',
+  RoverCommandTypeDrivetrain.to_location: 'to_location',
 };
 
 _$DrivetrainRoverCommandDestination
@@ -158,7 +162,7 @@ _$DrivetrainRoverCommandDestination
               json['commandParameters'] as Map<String, dynamic>),
           subsystem: $enumDecodeNullable(
                   _$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.movement,
+              RoverSubsystemType.drivetrain,
           $type: json['runtimeType'] as String?,
         );
 
@@ -192,6 +196,7 @@ const _$RoverCommandTypePiLitEnumMap = {
   RoverCommandTypePiLit.wave: 'wave',
   RoverCommandTypePiLit.wave_reverse: 'wave_reverse',
   RoverCommandTypePiLit.simultaneous: 'simultaneous',
+  RoverCommandTypePiLit.set_number_pi_lits: 'set_number_pi_lits',
 };
 
 _$RoverCommandParametersDrivetrain _$$RoverCommandParametersDrivetrainFromJson(

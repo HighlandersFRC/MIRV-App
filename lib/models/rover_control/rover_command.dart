@@ -42,7 +42,7 @@ class RoverCommand with _$RoverCommand {
   const factory RoverCommand.destinationCommand(
     RoverCommandTypeDrivetrain command,
     RoverCommandParameters commandParameters, {
-    @Default(RoverSubsystemType.movement) RoverSubsystemType subsystem,
+    @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
   }) = DrivetrainRoverCommandDestination;
 
   const factory RoverCommand.piLitCommand(
@@ -83,9 +83,14 @@ class RoverHeartbeatCommands {
   static const heartbeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
 }
 
+// place_1_pi_lit, pickup_1_pi_lit, unload_pi_lits, load_pi_lits, deploy_intake, retract_intake
 class RoverIntakeCommands {
   static const placeOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.place_1_pi_lit);
   static const pickupOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.pickup_1_pi_lit);
+  static const unloadPiLits = RoverCommand.intakeCommand(RoverCommandTypeIntake.unload_pi_lits);
+  static const loadPiLits = RoverCommand.intakeCommand(RoverCommandTypeIntake.load_pi_lits);
+  static const deployIntake = RoverCommand.intakeCommand(RoverCommandTypeIntake.deploy_intake);
+  static const retractIntake = RoverCommand.intakeCommand(RoverCommandTypeIntake.retract_intake);
 }
 
 class RoverGarageCommands {
@@ -99,9 +104,10 @@ class RoverGarageCommands {
 
 class RoverPiLitCommands {
   static const idle = RoverCommand.piLitCommand(RoverCommandTypePiLit.idle);
-  static const sequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave);
-  static const reverseSequential = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave_reverse);
-  static const parallel = RoverCommand.piLitCommand(RoverCommandTypePiLit.simultaneous);
+  static const wave = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave);
+  static const waveReverse = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave_reverse);
+  static const simultaneous = RoverCommand.piLitCommand(RoverCommandTypePiLit.simultaneous);
+  static const setNumberPiLits = RoverCommand.piLitCommand(RoverCommandTypePiLit.set_number_pi_lits);
 }
 
 class RoverDrivetrainCommands {
