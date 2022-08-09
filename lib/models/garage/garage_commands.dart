@@ -20,11 +20,14 @@ class GarageCommands {
   static const unlock = GarageCommand(GarageCommandType.unlock);
   static const retract = GarageCommand(GarageCommandType.retract);
   static const deploy = GarageCommand(GarageCommandType.deploy);
+  static const lightsOn = GarageCommand(GarageCommandType.lights_on);
+  static const lightsOff = GarageCommand(GarageCommandType.lights_off);
 }
 
 Map<GarageStateType, List<Pair<GarageCommand, Image>>> garageCommandsByState = {
   GarageStateType.retracted_latched: [
     Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
+    Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
   ],
   GarageStateType.deployed: [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),

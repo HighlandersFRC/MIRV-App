@@ -117,7 +117,7 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
- 
+
   Future<GarageMetrics> getGarageMetrics(String garage_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
     return GarageMetrics.fromJson(json.decode(response.body));
@@ -178,12 +178,12 @@ class MirvApi {
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
     GarageStateType? state = tempGarageMetrics?.state;
-    SizedBox sizedBox =  SizedBox(
+    SizedBox sizedBox = SizedBox(
       width: 200.0,
       height: 300.0,
       child: Image.asset(
-                      'assets/images/mars_rover_new.png',
-                    ),
+        'assets/images/mars_rover_new.png',
+      ),
     );
     Rx<GarageStateType?> roverStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
@@ -192,7 +192,7 @@ class MirvApi {
     } else if (command == GarageCommands.lock) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.retract) {
-      state = GarageStateType.retracted_unlatched;
+      state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.deploy) {
       state = GarageStateType.deployed;
     } else {
