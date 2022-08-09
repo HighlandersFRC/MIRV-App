@@ -77,7 +77,7 @@ class RoverOperationPage extends StatelessWidget {
                     : const SizedBox.shrink(),
                 Expanded(
                   child: CommandList(
-                    state: webRTCConnection.roverMetricsObs.value.state,
+                    roverMetrics: webRTCConnection.roverMetricsObs.value,
                     sendCommand: webRTCConnection.sendRoverCommand,
                   ),
                 ),
@@ -105,12 +105,11 @@ class RoverOperationPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child:PiLitCommandDropdown(
-                        piLitState: piLitState,
-                        sendCommand: webRTCConnection.sendRoverCommand,
-                      ),
+                  child: PiLitCommandDropdown(
+                    piLitState: piLitState,
+                    sendCommand: webRTCConnection.sendRoverCommand,
+                  ),
                 )
-               
               ]),
             ),
             Obx(() => Positioned(

@@ -1,36 +1,35 @@
 import 'package:mirv/models/rover_control/rover_command.dart';
 
-enum PiLitStateType { off, idle, sequential, sequential_reverse, parallel }
+enum PiLitStateType { no_pi_lits, idle, wave, wave_reverse, simultaneous }
 
 extension PiLitStateType1 on PiLitStateType {
   String get name {
     switch (this) {
-      case PiLitStateType.off:
-        return 'Off';
-
+      case PiLitStateType.no_pi_lits:
+        return 'No Pi Lits';
       case PiLitStateType.idle:
         return 'Idle';
-      case PiLitStateType.sequential:
-        return 'Sequential';
-      case PiLitStateType.sequential_reverse:
-        return 'Reverse Sequential';
-      case PiLitStateType.parallel:
-        return 'Parallel';
+      case PiLitStateType.wave:
+        return 'Wave';
+      case PiLitStateType.wave_reverse:
+        return 'Wave Reverse';
+      case PiLitStateType.simultaneous:
+        return 'Simultaneous';
     }
   }
 
-  RoverCommand get command {
+  RoverCommand? get command {
     switch (this) {
-      case PiLitStateType.off:
-        return RoverPiLitCommands.off;
       case PiLitStateType.idle:
         return RoverPiLitCommands.idle;
-      case PiLitStateType.sequential:
-        return RoverPiLitCommands.sequential;
-      case PiLitStateType.sequential_reverse:
-        return RoverPiLitCommands.reverseSequential;
-      case PiLitStateType.parallel:
-        return RoverPiLitCommands.parallel;
+      case PiLitStateType.wave:
+        return RoverPiLitCommands.wave;
+      case PiLitStateType.wave_reverse:
+        return RoverPiLitCommands.waveReverse;
+      case PiLitStateType.simultaneous:
+        return RoverPiLitCommands.simultaneous;
+      default:
+        return null;
     }
   }
 }
