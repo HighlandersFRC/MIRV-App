@@ -5,7 +5,10 @@ import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 
 class PiLitFormationCommandDropdown extends StatelessWidget {
-  PiLitFormationCommandDropdown({Key? key, this.sendCommand, required this.piLitFormationType}) : super(key: key);
+  PiLitFormationCommandDropdown({Key? key, this.sendCommand, required this.piLitFormationType, required this.piLitAmount})
+      : super(key: key);
+
+  final int piLitAmount;
 
   final Function(RoverCommand)? sendCommand;
 
@@ -16,14 +19,15 @@ class PiLitFormationCommandDropdown extends StatelessWidget {
     return Obx(() => DropdownButton(
           value: piLitFormationType.value,
           items: PiLitFormationType.values.map((piLitFormationType) {
-            return DropdownMenuItem(value: piLitFormationType, child: Text(piLitFormationType.name));
+            return DropdownMenuItem(
+              value: piLitFormationType,
+              child: Text(piLitFormationType.name),
+              enabled: piLitFormationType.piLitsRequired <= piLitAmount,
+            );
           }).toList(),
           onChanged: (PiLitFormationType? t) {
             if (t != null) {
               piLitFormationType.value = t;
-              if (sendCommand != null) {
-                sendCommand!(t.command);
-              }
             }
           },
         ));

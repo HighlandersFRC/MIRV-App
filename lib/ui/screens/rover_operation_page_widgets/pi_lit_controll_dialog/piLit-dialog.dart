@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/constants/theme_data.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lit_commands_drop_down.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/list_pi_lits_deploy_commands_drop_down.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lits_deploy_commands_drop_down.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_placemment_map.dart';
 
 class PiLitDialogButton extends StatelessWidget {
   PiLitDialogButton({
@@ -18,22 +21,22 @@ class PiLitDialogButton extends StatelessWidget {
     required this.roverMetrics,
     required this.sendCommand,
     required this.piLitState,
-    // required this.piLitForamtionType,
+    required this.piLitForamtionType,
   }) : super(key: key);
 
-  final RoverMetrics roverMetrics;
+  final Rx<RoverMetrics> roverMetrics;
   final Rx<PiLitStateType> piLitState;
-  // final Rx<PiLitFormationType> piLitForamtionType;
+  final Rx<PiLitFormationType> piLitForamtionType;
+
+  final Rx<LatLng?> tappedPoint = null.obs;
 
   final Function(RoverCommand) sendCommand;
 
-  late int piLitAmount = roverMetrics.pi_lits.pi_lits_stowed_right + roverMetrics.pi_lits.pi_lits_stowed_left;
-  //late PiLitDeployCommandDropdown piLitDeployCommandDropdown = PiLitDeployCommandDropdown(sendCommand: sendCommand);
+  late int piLitAmount = roverMetrics.value.pi_lits.pi_lits_stowed_right + roverMetrics.value.pi_lits.pi_lits_stowed_left;
 
-//put observable and pass it in
-// pass in function ()
   @override
   Widget build(BuildContext context) {
+    print('piLitAmount $piLitAmount');
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, right: 2),
       child: ListTile(
@@ -76,8 +79,8 @@ class PiLitDialogButton extends StatelessWidget {
                   foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 50, 50, 50)),
                   backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 100, 100, 100)),
                 ),
-                child: Image.asset('assets/images/pi_lit_outline_down.png'),
-                onPressed: piLitDialog),
+                onPressed: piLitDialog,
+                child: Image.asset('assets/images/pi_lit_outline_down.png')),
           ),
         ),
       ),
@@ -89,15 +92,21 @@ class PiLitDialogButton extends StatelessWidget {
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content: Row(
+          content: Column(
             children: [
-              PiLitCommandDropdown(
-                piLitState: piLitState,
+              Row(
+                children: [
+                  PiLitCommandDropdown(
+                    piLitState: piLitState,
+                  ),
+                  const SizedBox(width: 10),
+                  PiLitFormationCommandDropdown(
+                    piLitFormationType: piLitForamtionType,
+                    piLitAmount: piLitAmount,
+                  ),
+                ],
               ),
-              // PiLitFormationCommandDropdown(
-              //   piLitFormationType: piLitForamtionType,
-              // ),
-              Container(child: const Text('Map')),
+              SizedBox(child: PiLitPlacementMap(roverMetrics, tappedPoint))
             ],
           ),
           actions: <Widget>[
@@ -106,6 +115,8 @@ class PiLitDialogButton extends StatelessWidget {
                 if (piLitState.value.command != null) {
                   sendCommand(piLitState.value.command!);
                 }
+                sendCommand(RoverGeneralCommands.deployPiLits(piLitForamtionType.value, tappedPoint.value as DeviceLocation));
+                print(' Pilit formation ${piLitForamtionType.value}, ${tappedPoint.value}');
               },
               child: const Text('Deploy Pi-Lits'),
             ),

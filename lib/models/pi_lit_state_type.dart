@@ -32,4 +32,13 @@ extension PiLitStateType1 on PiLitStateType {
         return null;
     }
   }
+
+  bool get enable {
+    switch (this) {
+      case PiLitStateType.no_pi_lits:
+        return false;
+      default:
+        return true;
+    }
+  }
 }

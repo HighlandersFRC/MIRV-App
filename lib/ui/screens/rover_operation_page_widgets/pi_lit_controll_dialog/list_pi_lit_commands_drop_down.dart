@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
@@ -19,7 +20,14 @@ class PiLitCommandDropdown extends StatelessWidget {
     return Obx(() => DropdownButton(
           value: piLitState.value,
           items: PiLitStateType.values.map((piLitStateType) {
-            return DropdownMenuItem(value: piLitStateType, child: Text(piLitStateType.name));
+            return DropdownMenuItem(
+              value: piLitStateType,
+              enabled: piLitStateType.enable,
+              child: Text(
+                piLitStateType.name,
+                style: TextStyle(color: !piLitStateType.enable ? Colors.grey : fontColor),
+              ),
+            );
           }).toList(),
           onChanged: (PiLitStateType? t) {
             if (t != null) {
