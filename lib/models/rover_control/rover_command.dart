@@ -83,7 +83,6 @@ class RoverHeartbeatCommands {
   static const heartbeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
 }
 
-// place_1_pi_lit, pickup_1_pi_lit, unload_pi_lits, load_pi_lits, deploy_intake, retract_intake
 class RoverIntakeCommands {
   static const placeOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.place_1_pi_lit);
   static const pickupOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.pickup_1_pi_lit);
