@@ -19,9 +19,9 @@ class ToggleDisable extends StatelessWidget {
 
   bool? getEnabledState(RoverStateType? roverState) {
     switch (roverState) {
-      case RoverStateType.connected_idle:
+      case RoverStateType.idle:
         return true;
-      case RoverStateType.connected_disabled:
+      case RoverStateType.disabled:
         return false;
       default:
         return null;

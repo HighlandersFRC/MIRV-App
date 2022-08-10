@@ -14,7 +14,6 @@ class RoverMetrics with _$RoverMetrics {
     required String rover_id,
     required RoverStateType state,
     required DeviceStatusType status,
-    required bool docked,
     double? battery_voltage,
     required int battery_percent,
     required RoverMetricHealth subsystems,

@@ -115,21 +115,18 @@ class WebRTCConnection {
   void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
-    bool docked = tempRoverMetrics.docked;
     if (command == RoverGeneralCommands.eStop) {
       state = RoverStateType.e_stop;
     } else if (command == RoverGeneralCommands.disable) {
-      state = RoverStateType.connected_disabled;
+      state = RoverStateType.disabled;
     } else if (command == RoverGeneralCommands.enable) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.deploy) {
-      state = RoverStateType.connected_idle;
-      docked = false;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.cancel) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.stow) {
-      state = RoverStateType.connected_idle;
-      docked = true;
+      state = RoverStateType.docked;
     } else if (command == RoverGeneralCommands.deployPiLits) {
       state = RoverStateType.autonomous;
     } else if (command == RoverGeneralCommands.retrievePiLits) {
@@ -137,9 +134,9 @@ class WebRTCConnection {
     } else if (command == RoverGeneralCommands.enableRemoteOperation) {
       state = RoverStateType.remote_operation;
     } else if (command == RoverGeneralCommands.disableRemoteOperation) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     }
-    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state, docked: docked);
+    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
   }
 
   void setStateInFunction({required Function function}) {

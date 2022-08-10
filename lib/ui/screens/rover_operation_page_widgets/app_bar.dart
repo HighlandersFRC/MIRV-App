@@ -20,7 +20,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
-  String _stateText(RoverStateType? roverState, bool docked) {
+  String _stateText(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disconnected:
         return "Disconnected";
@@ -28,22 +28,20 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
         return "Autonomous";
       case RoverStateType.disconnected_fault:
         return "Disconnected with Error";
-      case RoverStateType.connected_disabled:
+      case RoverStateType.disabled:
         return "Disabled";
-      case RoverStateType.connected_fault:
-        return "Connected with Error";
-      case RoverStateType.connected_idle:
-        if (docked) {
-          return "Docked";
-        } else {
-          return "Awaiting Orders";
-        }
+      case RoverStateType.fault:
+        return "Fault";
+      case RoverStateType.idle:
+        return "Awaiting Orders";
+      case RoverStateType.docked:
+        return "Docked";
       case RoverStateType.e_stop:
         return "E-Stopped";
       case RoverStateType.remote_operation:
         return "Controlling";
-      default:
-        return "No Data";
+      case RoverStateType.remote_operation_autonomous:
+        return "Autonomous";
     }
   }
 
@@ -98,8 +96,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
             StatusDot(peerConnectionState),
           ],
         ),
-        title: Text(_stateText(roverMetrics.value.state, roverMetrics.value.docked),
-            style: const TextStyle(fontSize: 20, color: fontColor)),
+        title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(

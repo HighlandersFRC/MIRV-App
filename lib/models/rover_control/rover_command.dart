@@ -119,26 +119,29 @@ class RoverDrivetrainCommands {
   }
 }
 
-Map<Pair<RoverStateType, bool>, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
+Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
   // Pair(RoverStateType.disconnected, false): [],
   // Pair(RoverStateType.e_stop, false): [],
   // Pair(RoverStateType.disconnected_fault, false): [],
-  // Pair(RoverStateType.connected_disabled, false): [],
+  // Pair(RoverStateType.disabled, false): [],
   // Pair(RoverStateType.connected_fault, false): [],
-  Pair(RoverStateType.connected_idle, false): [
+  RoverStateType.idle: [
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
     // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
-  Pair(RoverStateType.connected_idle, true): [
+  RoverStateType.docked: [
     Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
   ],
-  Pair(RoverStateType.autonomous, false): [
+  RoverStateType.autonomous: [
     Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
   ],
-  Pair(RoverStateType.remote_operation, false): [
+  RoverStateType.remote_operation: [
     Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
     Pair(RoverIntakeCommands.placeOnePiLit, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
+  ],
+  RoverStateType.remote_operation_autonomous: [
+    Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
   ],
 };
