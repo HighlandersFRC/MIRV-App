@@ -108,7 +108,7 @@ class WebRTCConnection {
     }
 
     // TODO: Remove this before deployment
-    updateRoverState(command);
+    // updateRoverState(command);
   }
 
   // TODO: Remove this before deployment
@@ -167,12 +167,15 @@ class WebRTCConnection {
   // This Data Channel Function receives data sent on the data channel created by the flutter app
   void _onDataChannelMessage(RTCDataChannelMessage message) {
     if (message.type == MessageType.text) {
-      try {
-        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
-        recentStatusMessage = DateTime.now();
-      } catch (e) {
-        // ignore: avoid_print
-        print("Failed to process status message: $message");
+      if (message.text.isNotEmpty) {
+        try {
+          print("RECEIVED MESSAGE FROM ROVER: ${message.text}");
+          roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+          recentStatusMessage = DateTime.now();
+        } catch (e) {
+          // ignore: avoid_print
+          print("Error processing received WebRTC message: ${message.text}, because: $e");
+        }
       }
     } else {
       // do something with message.binary
