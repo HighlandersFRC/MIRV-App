@@ -7,12 +7,10 @@ class GarageStatusBar extends StatelessWidget {
   GarageStatusBar({
     Key? key,
     required this.garageMetrics,
-    required this.garageMetricsObs,
   }) : super(key: key);
   final GarageMetrics garageMetrics;
-  final Rx<GarageMetrics?> garageMetricsObs;
 
-  StatelessWidget _stateDescription(GarageStateType state, GarageMetrics garageMetrics) {
+  StatelessWidget _stateDescription(GarageStateType state) {
     switch (state) {
       case GarageStateType.retracted_unlatched:
         return const Text("State: Retracted_unlatched", textScaleFactor: 1);
@@ -34,8 +32,9 @@ class GarageStatusBar extends StatelessWidget {
     BuildContext context,
   ) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      Positioned(child: Text(garageMetricsObs.value!.garage_id)),
-      _stateDescription(garageMetrics.state, garageMetricsObs.value!),
+      Positioned(child: 
+      Text(garageMetrics.garage_id)),
+      _stateDescription(garageMetrics.state),
     ]);
   }
 }

@@ -21,7 +21,6 @@ class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         title: Obx(() => GarageStatusBar(
               garageMetrics: garageMetricsObs.value!,
-              garageMetricsObs: _mirvGarageApi.garageMetricsObs,
             )),
         actions: [
           Padding(
