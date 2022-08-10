@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -10,10 +12,8 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/models/ui_connection_state.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/services/mirv_api.dart';
@@ -88,7 +88,7 @@ class WebRTCConnection {
         barrierDismissible: true,
         AlertDialog(
           title: const Text('Failed Connection'),
-          content: Text('$error'),
+          content: Text(error),
           actions: <Widget>[
             TextButton(
                 onPressed: () {

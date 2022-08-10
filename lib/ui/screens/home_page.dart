@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
     Image? image,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 10, //height / 20,
         horizontal: 5,
       ),

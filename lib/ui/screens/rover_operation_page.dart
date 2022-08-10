@@ -15,7 +15,6 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart'
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'webrtc_connection.dart';
-import 'package:mirv/models/pi_lit_formation_type.dart';
 
 class RoverOperationPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -36,13 +35,13 @@ class RoverOperationPage extends StatelessWidget {
       return LinearProgressIndicator(
         value: piLitDeploy,
         minHeight: 20,
-        color: Color.fromARGB(255, 255, 153, 0),
-        backgroundColor: Color.fromARGB(148, 158, 158, 158),
+        color: const Color.fromARGB(255, 255, 153, 0),
+        backgroundColor: const Color.fromARGB(148, 158, 158, 158),
         // valueColor:
         //     AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 255, 0, 0)),
       );
     } else {
-      return SizedBox(
+      return const SizedBox(
         height: 15,
         width: 1500,
       );

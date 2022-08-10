@@ -1,7 +1,8 @@
-import 'dart:math' as _math;
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mirv/control_pad/joystick_update_controller.dart';
 import 'package:mirv/control_pad/views/vertical_view.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
@@ -80,10 +81,10 @@ class VerticalJoystickView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double actualSize =
-        size != null ? size! : _math.min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) * 0.5;
+        size != null ? size! : math.min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) * 0.5;
     double innerCircleSize = actualSize / 2;
     Offset lastPosition = Offset(innerCircleSize, innerCircleSize);
-    Offset joystickInnerPosition = _calculatePositionOfInnerCircle(lastPosition, innerCircleSize, actualSize, Offset(0, 0));
+    Offset joystickInnerPosition = _calculatePositionOfInnerCircle(lastPosition, innerCircleSize, actualSize, const Offset(0, 0));
 
     DateTime? _callbackTimestamp;
 
@@ -123,7 +124,7 @@ class VerticalJoystickView extends StatelessWidget {
                 onDirectionChanged!(0);
               }
               joystickInnerPosition = _calculatePositionOfInnerCircle(
-                  Offset(innerCircleSize, innerCircleSize), innerCircleSize, actualSize, Offset(0, 0));
+                  Offset(innerCircleSize, innerCircleSize), innerCircleSize, actualSize, const Offset(0, 0));
               setState(() => lastPosition = Offset(innerCircleSize, innerCircleSize));
             },
             child: (opacity != null) ? Opacity(opacity: opacity!, child: joystick) : joystick,
@@ -161,7 +162,7 @@ class VerticalJoystickView extends StatelessWidget {
 
     double distance = (middle - offset.dy);
 
-    double normalizedDistance = _math.max(_math.min(distance / (size / 2), 1.0), -1.0);
+    double normalizedDistance = math.max(math.min(distance / (size / 2), 1.0), -1.0);
 
     updateController.updateJoystickVal(JoystickValue(0.0, -normalizedDistance));
     DateTime? _callbackTimestamp = callbackTimestamp;
@@ -197,39 +198,39 @@ class VerticalJoystickView extends StatelessWidget {
   Offset _calculatePositionOfInnerCircle(Offset lastPosition, double innerCircleSize, double size, Offset offset) {
     double middle = size / 2.0;
 
-    double angle = _math.atan2(offset.dy - middle, offset.dx - middle);
-    double degrees = angle * 180 / _math.pi;
+    double angle = math.atan2(offset.dy - middle, offset.dx - middle);
+    double degrees = angle * 180 / math.pi;
     if (offset.dx < middle && offset.dy < middle) {
       degrees = 360 + degrees;
     }
     bool isStartPosition = lastPosition.dx == innerCircleSize && lastPosition.dy == innerCircleSize;
-    double lastAngleRadians = (isStartPosition) ? 0 : (degrees) * (_math.pi / 180.0);
+    double lastAngleRadians = (isStartPosition) ? 0 : (degrees) * (math.pi / 180.0);
 
     var rBig = size / 2;
     var rSmall = innerCircleSize / 2;
 
-    var x = (lastAngleRadians == -1) ? rBig - rSmall : (rBig - rSmall) + (rBig - rSmall) * _math.cos(lastAngleRadians);
-    var y = (lastAngleRadians == -1) ? rBig - rSmall : (rBig - rSmall) + (rBig - rSmall) * _math.sin(lastAngleRadians);
+    var x = (lastAngleRadians == -1) ? rBig - rSmall : (rBig - rSmall) + (rBig - rSmall) * math.cos(lastAngleRadians);
+    var y = (lastAngleRadians == -1) ? rBig - rSmall : (rBig - rSmall) + (rBig - rSmall) * math.sin(lastAngleRadians);
 
     var xPosition = lastPosition.dx - rSmall;
     var yPosition = lastPosition.dy - rSmall;
 
-    var angleRadianPlus = lastAngleRadians + _math.pi / 2;
-    if (angleRadianPlus < _math.pi / 2) {
+    var angleRadianPlus = lastAngleRadians + math.pi / 2;
+    if (angleRadianPlus < math.pi / 2) {
       if (xPosition > x) {
         xPosition = x;
       }
       if (yPosition < y) {
         yPosition = y;
       }
-    } else if (angleRadianPlus < _math.pi) {
+    } else if (angleRadianPlus < math.pi) {
       if (xPosition > x) {
         xPosition = x;
       }
       if (yPosition > y) {
         yPosition = y;
       }
-    } else if (angleRadianPlus < 3 * _math.pi / 2) {
+    } else if (angleRadianPlus < 3 * math.pi / 2) {
       if (xPosition < x) {
         xPosition = x;
       }

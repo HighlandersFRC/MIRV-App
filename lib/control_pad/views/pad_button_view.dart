@@ -1,8 +1,7 @@
 import 'dart:collection';
-import 'dart:math' as _math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mirv/control_pad/models/gestures.dart';
 import 'package:mirv/control_pad/models/pad_button_item.dart';
 
@@ -34,6 +33,7 @@ class PadButtonsView extends StatelessWidget {
   final Color? backgroundPadButtonsColor;
 
   PadButtonsView({
+    Key? key,
     this.size,
     this.buttons = const [
       PadButtonItem(index: 0, buttonText: 'A'),
@@ -44,7 +44,8 @@ class PadButtonsView extends StatelessWidget {
     this.padButtonPressedCallback,
     this.buttonsPadding = 0,
     this.backgroundPadButtonsColor = Colors.transparent,
-  }) : assert(buttons != null && buttons.isNotEmpty) {
+  })  : assert(buttons != null && buttons.isNotEmpty),
+        super(key: key) {
     buttons!.forEach((button) => buttonsStateMap![button.index!] = button.backgroundColor!);
   }
 
@@ -54,7 +55,7 @@ class PadButtonsView extends StatelessWidget {
     if (size != null) {
       actualSize = size;
     } else {
-      actualSize = _math.min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) * 0.5;
+      actualSize = math.min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) * 0.5;
     }
     double? innerCircleSize = actualSize! / 3;
 
@@ -138,20 +139,20 @@ class PadButtonsView extends StatelessWidget {
 
   double _calculatePositionXOfButton(int index, double innerCircleSize, double actualSize) {
     double? degrees = 360 / buttons!.length * index;
-    double? lastAngleRadians = (degrees) * (_math.pi / 180.0);
+    double? lastAngleRadians = (degrees) * (math.pi / 180.0);
 
     var rBig = actualSize / 2;
     var rSmall = (innerCircleSize + 2 * buttonsPadding!) / 2;
 
-    return (rBig - rSmall) + (rBig - rSmall) * _math.cos(lastAngleRadians);
+    return (rBig - rSmall) + (rBig - rSmall) * math.cos(lastAngleRadians);
   }
 
   double _calculatePositionYOfButton(int index, double innerCircleSize, double actualSize) {
     double? degrees = 360 / buttons!.length * index;
-    double? lastAngleRadians = (degrees) * (_math.pi / 180.0);
+    double? lastAngleRadians = (degrees) * (math.pi / 180.0);
     var rBig = actualSize / 2;
     var rSmall = (innerCircleSize + 2 * buttonsPadding!) / 2;
 
-    return (rBig - rSmall) + (rBig - rSmall) * _math.sin(lastAngleRadians);
+    return (rBig - rSmall) + (rBig - rSmall) * math.sin(lastAngleRadians);
   }
 }

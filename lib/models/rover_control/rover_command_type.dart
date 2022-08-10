@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum RoverSubsystemType { general, intake, drivetrain, heartbeat, pi_lit, garage }
 // ignore: todo
 // TODO: enhanced enum, integer sub_command, maps to different enum

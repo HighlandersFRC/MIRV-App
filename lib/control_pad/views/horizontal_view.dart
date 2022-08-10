@@ -1,5 +1,6 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HorizontalView extends StatelessWidget {
   final double size;
@@ -18,7 +19,7 @@ class HorizontalView extends StatelessWidget {
 
   final String? buttonText;
 
-  HorizontalView({
+  const HorizontalView({
     required this.size,
     this.color = Colors.transparent,
     this.boxShadow,
@@ -34,6 +35,13 @@ class HorizontalView extends StatelessWidget {
     return Container(
       width: size,
       height: size / 2,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.rectangle,
+        border: border,
+        boxShadow: boxShadow,
+        borderRadius: new BorderRadius.circular((size / 2)),
+      ),
       child: Center(
         child: buttonIcon != null
             ? buttonIcon
@@ -42,13 +50,6 @@ class HorizontalView extends StatelessWidget {
                 : (buttonText != null)
                     ? Text(buttonText!)
                     : null,
-      ),
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.rectangle,
-        border: border,
-        boxShadow: boxShadow,
-        borderRadius: new BorderRadius.circular((size / 2)),
       ),
     );
   }
@@ -61,7 +62,7 @@ class HorizontalView extends StatelessWidget {
           width: 4.0,
           style: BorderStyle.solid,
         ),
-        boxShadow: <BoxShadow>[
+        boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 8.0,

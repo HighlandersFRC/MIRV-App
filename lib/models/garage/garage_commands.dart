@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/pair.dart';

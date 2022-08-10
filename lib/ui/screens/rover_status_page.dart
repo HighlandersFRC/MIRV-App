@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/icons/custom_icons_icons.dart';
 import 'package:mirv/models/device_health.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
-import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class StatusPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
@@ -34,7 +32,7 @@ class HealthContainer extends StatelessWidget {
   final DeviceHealth subsystemHealth;
   final String name;
   final IconData icon;
-  HealthContainer(this.subsystemHealth, this.name, this.icon, {Key? key}) : super(key: key);
+  const HealthContainer(this.subsystemHealth, this.name, this.icon, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

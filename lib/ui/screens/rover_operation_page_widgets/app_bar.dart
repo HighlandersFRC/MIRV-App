@@ -53,8 +53,8 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Color.fromARGB(0, 255, 255, 255),
-        foregroundColor: Color.fromARGB(0, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+        foregroundColor: const Color.fromARGB(0, 255, 255, 255),
         leadingWidth: 250,
         leading: Row(
           children: [

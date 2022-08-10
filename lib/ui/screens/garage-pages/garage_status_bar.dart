@@ -3,7 +3,7 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 
 class GarageStatusBar extends StatelessWidget {
-  GarageStatusBar({
+  const GarageStatusBar({
     Key? key,
     required this.garageMetrics,
   }) : super(key: key);

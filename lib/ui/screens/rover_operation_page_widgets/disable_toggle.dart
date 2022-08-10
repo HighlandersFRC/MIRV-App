@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:ionicons/ionicons.dart';
 
 class ToggleDisable extends StatelessWidget {
   late final bool? enabled;

@@ -1,5 +1,6 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CircleView extends StatelessWidget {
   final double? size;
@@ -18,7 +19,7 @@ class CircleView extends StatelessWidget {
 
   final String? buttonText;
 
-  CircleView({
+  const CircleView({
     this.size,
     this.color = Colors.transparent,
     this.boxShadow,
@@ -61,7 +62,7 @@ class CircleView extends StatelessWidget {
           width: 4.0,
           style: BorderStyle.solid,
         ),
-        boxShadow: <BoxShadow>[
+        boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 8.0,
@@ -70,8 +71,7 @@ class CircleView extends StatelessWidget {
         ],
       );
 
-  factory CircleView.joystickInnerCircle(double size, Color color) =>
-      CircleView(
+  factory CircleView.joystickInnerCircle(double size, Color color) => CircleView(
         size: size,
         color: color,
         border: Border.all(
@@ -79,7 +79,7 @@ class CircleView extends StatelessWidget {
           width: 2.0,
           style: BorderStyle.solid,
         ),
-        boxShadow: <BoxShadow>[
+        boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 8.0,
@@ -88,8 +88,7 @@ class CircleView extends StatelessWidget {
         ],
       );
 
-  factory CircleView.padBackgroundCircle(double? size, Color? backgroundColour,
-          borderColor, Color? shadowColor,
+  factory CircleView.padBackgroundCircle(double? size, Color? backgroundColour, borderColor, Color? shadowColor,
           {double? opacity}) =>
       CircleView(
         size: size,
@@ -127,7 +126,7 @@ class CircleView extends StatelessWidget {
           width: 2.0,
           style: BorderStyle.solid,
         ),
-        boxShadow: <BoxShadow>[
+        boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 8.0,

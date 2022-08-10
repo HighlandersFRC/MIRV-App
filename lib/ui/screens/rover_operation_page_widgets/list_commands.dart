@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_state_type.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({
@@ -16,8 +15,7 @@ class CommandList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var commandList = roverCommandsByState[Pair(roverMetrics.state, roverMetrics.docked)] ?? [];
-    return Container(
-        child: ListView.builder(
+    return ListView.builder(
       itemCount: commandList.length,
       itemBuilder: (context, index) {
         return Padding(
@@ -72,6 +70,6 @@ class CommandList extends StatelessWidget {
           ),
         );
       },
-    ));
+    );
   }
 }

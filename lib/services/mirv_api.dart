@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -116,7 +118,7 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
- 
+
   Future<GarageMetrics> getGarageMetrics(String garage_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
     return GarageMetrics.fromJson(json.decode(response.body));

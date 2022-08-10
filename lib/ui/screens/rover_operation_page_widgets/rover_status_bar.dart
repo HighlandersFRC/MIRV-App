@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/icons/custom_icons_icons.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/device_health.dart';
-import 'package:mirv/models/ui_connection_state.dart';
 
 // ignore: must_be_immutable
 class RoverStatusBar extends StatelessWidget {
-  RoverStatusBar({
+  const RoverStatusBar({
     Key? key,
     required this.roverMetrics,
   }) : super(key: key);
