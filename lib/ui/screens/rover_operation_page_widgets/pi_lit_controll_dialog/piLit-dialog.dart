@@ -28,7 +28,7 @@ class PiLitDialogButton extends StatelessWidget {
   final Rx<PiLitStateType> piLitState;
   final Rx<PiLitFormationType> piLitForamtionType;
 
-  final Rx<LatLng?> tappedPoint = null.obs;
+  final Rx<LatLng?> tappedPoint = Rx<LatLng?>(null);
 
   final Function(RoverCommand) sendCommand;
 
@@ -79,7 +79,9 @@ class PiLitDialogButton extends StatelessWidget {
                   foregroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 50, 50, 50)),
                   backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 100, 100, 100)),
                 ),
-                onPressed: piLitDialog,
+                onPressed: () {
+                  piLitDialog(context);
+                },
                 child: Image.asset('assets/images/pi_lit_outline_down.png')),
           ),
         ),
@@ -87,36 +89,56 @@ class PiLitDialogButton extends StatelessWidget {
     );
   }
 
-  void piLitDialog() {
+  void piLitDialog(BuildContext context) {
     Get.dialog(
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content: Column(
-            children: [
-              Row(
-                children: [
-                  PiLitCommandDropdown(
-                    piLitState: piLitState,
-                  ),
-                  const SizedBox(width: 10),
-                  PiLitFormationCommandDropdown(
-                    piLitFormationType: piLitForamtionType,
-                    piLitAmount: piLitAmount,
-                  ),
-                ],
-              ),
-              SizedBox(child: PiLitPlacementMap(roverMetrics, tappedPoint))
-            ],
-          ),
+          content:
+              // Stack(
+              //   children: [
+              // Positioned(
+              //   top: 20,
+              //   child: PiLitCommandDropdown(
+              //     piLitState: piLitState,
+              //   ),
+              // ),
+              // Positioned(
+              //   top: 20,
+              //   child: PiLitFormationCommandDropdown(
+              //     piLitFormationType: piLitForamtionType,
+              //     piLitAmount: piLitAmount,
+              //   ),
+              // ),
+              // Positioned(
+              //     bottom: 10,
+              // child:
+              SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: PiLitPlacementMap(roverMetrics, tappedPoint)),
+          // ),
+          // ],
+          // ),
+          // ),
           actions: <Widget>[
+            PiLitCommandDropdown(
+              piLitState: piLitState,
+            ),
+            PiLitFormationCommandDropdown(
+              piLitFormationType: piLitForamtionType,
+              piLitAmount: piLitAmount,
+            ),
             TextButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
                   sendCommand(piLitState.value.command!);
                 }
-                sendCommand(RoverGeneralCommands.deployPiLits(piLitForamtionType.value, tappedPoint.value as DeviceLocation));
-                print(' Pilit formation ${piLitForamtionType.value}, ${tappedPoint.value}');
+
+                if (tappedPoint.value != null) {
+                  sendCommand(
+                      RoverGeneralCommands.deployPiLits(piLitForamtionType.value, DeviceLocation.fromLatLng(tappedPoint.value!)));
+                  Get.back();
+                } else {
+                  Get.snackbar('Pilit Control', 'No starting point selected');
+                }
               },
               child: const Text('Deploy Pi-Lits'),
             ),

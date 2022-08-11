@@ -4,8 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 
 class PiLitPlacementMap extends StatefulWidget {
-  late Rx<RoverMetrics> roverMetricsObs;
-  late Rx<LatLng?> tappedPoint;
+  final Rx<RoverMetrics> roverMetricsObs;
+  final Rx<LatLng?> tappedPoint;
   PiLitPlacementMap(this.roverMetricsObs, this.tappedPoint, {Key? key}) : super(key: key);
 
   @override
@@ -38,6 +38,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   addMarker(LatLng tappedPoint) {
     widget.tappedPoint.value = tappedPoint;
+    print('OBS  ${widget.tappedPoint.value}, ACT $tappedPoint');
     setState(
       () {
         if (widget.tappedPoint.value != null) {
