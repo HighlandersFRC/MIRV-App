@@ -54,7 +54,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
     return AppBar(
         backgroundColor: const Color.fromARGB(0, 255, 255, 255),
         foregroundColor: const Color.fromARGB(0, 255, 255, 255),
-        leadingWidth: 250,
+        leadingWidth: 400,
         leading: Row(
           children: [
             Padding(
@@ -95,11 +95,11 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 27.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: StatusDot(peerConnectionState),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 27),
+              padding: const EdgeInsets.only(left: 10),
               child: Text("ID: ${roverMetrics.value.rover_id}", style: const TextStyle(fontSize: 20, color: fontColor)),
             ),
           ],
