@@ -34,8 +34,22 @@ class RoverOperationPage extends StatelessWidget {
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
 
-  // PiLitFormationType formation = PiLitFormationType.taper_right_3;
-  // int numPiLitsRequired = formation.piLitsRequired;
+  double getPiNeeded(formation) {
+    switch (formation) {
+      case PiLitFormationType.spear_7:
+        return 7.0;
+      case PiLitFormationType.taper_left_3:
+        return 7.0;
+      case PiLitFormationType.taper_left_5:
+        return 7.0;
+      case PiLitFormationType.taper_right_3:
+        return 7.0;
+      case PiLitFormationType.taper_right_5:
+        return 7.0;
+      default:
+        return 0.0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,17 +77,14 @@ class RoverOperationPage extends StatelessWidget {
               () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.autonomous &&
                       !webRTCConnection.roverMetricsObs.value.docked
                   ? Positioned(
-                      top: 10,
-                      height: 40,
-                      width: 150,
-                      left: 30,
-                      child: LinearProgressIndicator(
-                        value: 0.6,
-                        minHeight: 20,
-                        color: const Color.fromARGB(255, 255, 153, 0),
-                        backgroundColor: const Color.fromARGB(148, 158, 158, 158),
-                      ),
-                    )
+                      top: 10, height: 40, width: 150, left: 30, child: Container(child: Text("asdfghjkl;'"), color: Colors.amber)
+                      // child: LinearProgressIndicator(
+                      //   value: 0.6,
+                      //   minHeight: 20,
+                      //   color: const Color.fromARGB(255, 255, 153, 0),
+                      //   backgroundColor: const Color.fromARGB(148, 158, 158, 158),
+                      // ),
+                      )
                   : Container(
                       color: Color.fromARGB(255, 243, 33, 33),
                       child: const Text(""),
