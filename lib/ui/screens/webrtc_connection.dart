@@ -38,8 +38,8 @@ class WebRTCConnection {
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
   final RoverMetrics roverMetrics;
-
   late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
+
 
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();

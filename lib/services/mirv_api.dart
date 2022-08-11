@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
@@ -116,7 +117,7 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
   // Garage
   //////////////////////////////////////////////////////////////////////////////
- 
+
   Future<GarageMetrics> getGarageMetrics(String garage_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
     return GarageMetrics.fromJson(json.decode(response.body));
@@ -176,19 +177,26 @@ class MirvApi {
 
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
-    GarageStateType? state = tempGarageMetrics?.state;
-    Rx<GarageStateType?> roverStateObs = Rx<GarageStateType?>(state);
+    GarageStateType state = tempGarageMetrics!.state;
+    bool lights_on = tempGarageMetrics.lights_on;
+    Rx<GarageStateType?> garageStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
       state = GarageStateType.retracted_unlatched;
     } else if (command == GarageCommands.lock) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.retract) {
-      state = GarageStateType.retracted_unlatched;
+      state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.deploy) {
       state = GarageStateType.deployed;
+     } else if (command == GarageCommands.lightsOff) {
+      state = tempGarageMetrics.state;
+      lights_on = true;
+      } else if (command == GarageCommands.lightsOn) {
+      state = tempGarageMetrics.state;
+      lights_on = false;
     } else {
       state = GarageStateType.unavailable;
     }
-    garageMetricsObs.value = tempGarageMetrics?.copyWith(state: state);
+    garageMetricsObs.value = tempGarageMetrics.copyWith(state: state, lights_on: lights_on);
   }
 }

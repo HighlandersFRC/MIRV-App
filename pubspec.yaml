@@ -83,12 +83,17 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/lock.png
+    - assets/images/deployed.png
+    - assets/images/retracted_latched.png
+    - assets/images/retracted_unlatched.png 
     - assets/images/up_arrow.png
     - assets/images/down_arrow.png
     - assets/images/unlock.png
     - assets/images/garage_icon_2.png
     - assets/images/home.png
     - assets/images/ramp.png
+    - assets/images/default_garage.png
+    - assets/images/garage_unavailable.png
     - assets/images/cancel.png
     - assets/images/pi_lit_outline_up.png
     - assets/images/pi_lit_outline_down.png
@@ -98,6 +103,15 @@ flutter:
     - assets/images/rover_app_icon.png
     - assets/images/rover_app_icon_larger.png
     - assets/images/mars_rover_new.png
+    - assets/images/garage_down.png
+    - assets/images/garage_up.png
+    - assets/images/closeup_locked_garage.png
+    - assets/images/closeup_unlocked_garage.png
+    - assets/images/light.png
+    - assets/images/light_off.png
+    - assets/images/light_on_close_up.png
+    - assets/images/light_off_close_up.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

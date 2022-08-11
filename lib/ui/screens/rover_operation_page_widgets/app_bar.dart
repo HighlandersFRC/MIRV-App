@@ -53,11 +53,11 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
     return AppBar(
         backgroundColor: Color.fromARGB(0, 255, 255, 255),
         foregroundColor: Color.fromARGB(0, 255, 255, 255),
-        leadingWidth: 250,
+        leadingWidth: 410,
         leading: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 5, right: 10, top: 1, bottom: 1),
+              padding: const EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.call_end_rounded, size: 30, color: fontColor),
                 label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
@@ -93,10 +93,19 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                 ),
               ),
             ),
-            StatusDot(peerConnectionState),
+            Padding(
+              padding: const EdgeInsets.only(left: 27.0),
+              child: StatusDot(peerConnectionState),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 27),
+              child: Text("ID: ${roverMetrics.value.rover_id}", style: const TextStyle(fontSize: 20, color: fontColor)),
+            ),
           ],
         ),
-        title: Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
+        title: Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
+        ]),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(
