@@ -18,7 +18,7 @@ void main() {
     print("cancel: ${json.encode(RoverGeneralCommands.cancel.toJson())}");
     print("stow: ${json.encode(RoverGeneralCommands.stow.toJson())}");
     print(
-        "deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits(PiLitFormationType.taper_left_3, const DeviceLocation(lat: 39, long: -103.5)).toJson())}");
+        "deployPiLits: ${json.encode(RoverGeneralCommands.deployPiLits(PiLitFormationType.taper_left_3, const DeviceLocation(lat: 39, long: -103.5), 12).toJson())}");
     print("retrievePiLits: ${json.encode(RoverGeneralCommands.retrievePiLits.toJson())}");
     print("enableRemoteOperation: ${json.encode(RoverGeneralCommands.enableRemoteOperation.toJson())}");
     print("disableRemoteOperation: ${json.encode(RoverGeneralCommands.disableRemoteOperation.toJson())}");
