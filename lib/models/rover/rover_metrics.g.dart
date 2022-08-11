@@ -11,7 +11,6 @@ _$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
       rover_id: json['rover_id'] as String,
       state: $enumDecode(_$RoverStateTypeEnumMap, json['state']),
       status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
-      docked: json['docked'] as bool,
       battery_voltage: (json['battery_voltage'] as num?)?.toDouble(),
       battery_percent: json['battery_percent'] as int,
       subsystems: RoverMetricHealth.fromJson(
@@ -29,7 +28,6 @@ Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
       'rover_id': instance.rover_id,
       'state': _$RoverStateTypeEnumMap[instance.state],
       'status': _$DeviceStatusTypeEnumMap[instance.status],
-      'docked': instance.docked,
       'battery_voltage': instance.battery_voltage,
       'battery_percent': instance.battery_percent,
       'subsystems': instance.subsystems,
@@ -42,11 +40,13 @@ const _$RoverStateTypeEnumMap = {
   RoverStateType.disconnected: 'disconnected',
   RoverStateType.disconnected_fault: 'disconnected_fault',
   RoverStateType.e_stop: 'e_stop',
-  RoverStateType.connected_disabled: 'connected_disabled',
-  RoverStateType.connected_idle: 'connected_idle',
-  RoverStateType.connected_fault: 'connected_fault',
+  RoverStateType.disabled: 'disabled',
+  RoverStateType.docked: 'docked',
+  RoverStateType.idle: 'idle',
+  RoverStateType.fault: 'fault',
   RoverStateType.autonomous: 'autonomous',
   RoverStateType.remote_operation: 'remote_operation',
+  RoverStateType.remote_operation_autonomous: 'remote_operation_autonomous',
 };
 
 const _$DeviceStatusTypeEnumMap = {

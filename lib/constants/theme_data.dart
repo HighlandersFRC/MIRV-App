@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 const errorColor = Color(0xFFFF2800);
 const onErrorColor = Color.fromARGB(255, 255, 193, 182);
 
-const primaryColor = Color(0xFFF27F0C);
+const primaryColor = Color.fromRGBO(242, 127, 12, 1);
 const primaryColorLight = Color(0xFFF7ad19);
 const primaryColordark = Color.fromARGB(255, 196, 83, 12);
-const secondaryColor = Color(0xFF429EBD);
+const secondaryColor = Color.fromRGBO(66, 158, 189, 1);
 const secondaryColorLight = Color(0xFF9FE7F5);
-const secondaryColordark = Color(0xFF053F5C);
+const secondaryColordark = Color.fromRGBO(5, 63, 92, 1);
 
 const backgroundColor = Color(0xFF053F5C);
 const loadingColor = Colors.grey;
