@@ -5,23 +5,30 @@ import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
+import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/piLit-dialog.dart';
 import 'webrtc_connection.dart';
-import 'package:mirv/models/pi_lit_formation_type.dart';
 
 class RoverOperationPage extends StatelessWidget {
   final RoverMetrics roverMetrics;
 
   RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
+
+  late Rx<PiLitStateType> piLitState = roverMetrics.pi_lits.state.obs;
+  //TODO: out in actual pass through
+  late Rx<PiLitFormationType> piLitFormationType = PiLitFormationType.spear_7.obs;
 
   late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
   late Rx<bool> manualOperation = false.obs;
@@ -49,6 +56,7 @@ class RoverOperationPage extends StatelessWidget {
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
         ),
+        drawer: CommandsDrawer(sendCommand: webRTCConnection.sendRoverCommand),
         body: Stack(
           children: [
             Obx(
@@ -80,44 +88,59 @@ class RoverOperationPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 30,
+              top: 10,
               height: 450,
               width: 150,
               left: 10,
-              child: Scrollbar(
-                child: CommandList(
-                  roverMetrics: webRTCConnection.roverMetricsObs.value,
-                  sendCommand: webRTCConnection.sendRoverCommand,
+              child: Column(children: [
+                const OpenCommandsDrawer(),
+                webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle &&
+                        !webRTCConnection.roverMetricsObs.value.docked
+                    ? PiLitDialogButton(
+                        roverMetrics: webRTCConnection.roverMetricsObs,
+                        sendCommand: webRTCConnection.sendRoverCommand,
+                        piLitState: piLitState,
+                        piLitForamtionType: piLitFormationType,
+                      )
+                    : const SizedBox.shrink(),
+                Expanded(
+                  child: CommandList(
+                    roverMetrics: webRTCConnection.roverMetricsObs.value,
+                    sendCommand: webRTCConnection.sendRoverCommand,
+                  ),
                 ),
-              ),
+              ]),
             ),
             Positioned(
               top: 0,
               height: 450,
-              right: -15,
-              width: 150,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 20),
-                    child: Obx(
-                      () => ToggleDisable(
-                        roverMetrics: webRTCConnection.roverMetricsObs.value,
-                        sendCommand: webRTCConnection.sendRoverCommand,
-                      ),
+              right: 15,
+              width: 175,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, bottom: 20),
+                  child: Obx(
+                    () => ToggleDisable(
+                      roverMetrics: webRTCConnection.roverMetricsObs.value,
+                      sendCommand: webRTCConnection.sendRoverCommand,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Obx(
-                      () => EStopButton(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Obx(() => EStopButton(
                         roverMetrics: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
-                      ),
-                    ),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: PiLitCommandDropdown(
+                    piLitState: piLitState,
+                    sendCommand: webRTCConnection.sendRoverCommand,
                   ),
-                ],
-              ),
+                )
+              ]),
             ),
             Obx(
               () => Positioned(
@@ -152,46 +175,51 @@ class RoverOperationPage extends StatelessWidget {
                 ),
               ),
             ),
-            Obx(
-              () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle &&
-                      !webRTCConnection.roverMetricsObs.value.docked
-                  ? Positioned(
-                      bottom: 20,
-                      right: 15,
-                      child: Center(
-                        child: Container(
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16.0),
-                            color: const Color.fromARGB(0, 50, 50, 50),
-                          ),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
-                              shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
+            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle &&
+                    !webRTCConnection.roverMetricsObs.value.docked
+                ? Positioned(
+                    bottom: 20,
+                    right: 15,
+                    child: Center(
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          color: const Color.fromARGB(0, 50, 50, 50),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(50, 50, 50, 0.5)),
+                            shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
                               ),
                             ),
-                            child: const Icon(
-                              CupertinoIcons.game_controller,
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
-                            },
                           ),
+                          child: const Icon(
+                            CupertinoIcons.game_controller,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            webRTCConnection.sendRoverCommand(RoverGeneralCommands.enableRemoteOperation);
+                          },
                         ),
                       ),
-                    )
-                  : const ElevatedButton(
-                      child: null,
-                      onPressed: null,
                     ),
-            ),
+                  )
+                : const SizedBox.shrink()),
+            Obx(() => manualOperation.value
+                ? Positioned(
+                    bottom: 20,
+                    left: 20,
+                    right: 20,
+                    child: JoystickOverlay(
+                      joystickController: webRTCConnection.joystickController,
+                    ),
+                  )
+                : const SizedBox.shrink()),
             Obx(
               () => manualOperation.value
                   ? Positioned(

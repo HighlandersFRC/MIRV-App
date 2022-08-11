@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/device_location.dart';
@@ -109,6 +110,8 @@ class RoverPiLitCommands {
   static const setNumberPiLits = RoverCommand.piLitCommand(RoverCommandTypePiLit.set_number_pi_lits);
 }
 
+
+
 class RoverDrivetrainCommands {
   static DrivetrainRoverCommand drivetrainCommand(RoverCommandTypeDrivetrain command, double x, double y) {
     return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
@@ -142,3 +145,28 @@ Map<Pair<RoverStateType, bool>, List<Pair<RoverCommand, Image>>> roverCommandsBy
     Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
 };
+
+List<Pair<RoverCommand, String>> allRoverCommands = [
+  Pair(RoverIntakeCommands.placeOnePiLit, 'Place One PiLit'),
+  Pair(RoverIntakeCommands.pickupOnePiLit, 'Pickup One PiLit'),
+  Pair(RoverGeneralCommands.eStop, 'Emergency Stop'),
+  Pair(RoverGeneralCommands.disable, 'Disable'),
+  Pair(RoverGeneralCommands.enable, 'Enable'),
+  Pair(RoverGeneralCommands.deploy, 'Emergency Stop'),
+  Pair(RoverGeneralCommands.cancel, 'Cancel'),
+  Pair(RoverGeneralCommands.stow, 'Stow'),
+  Pair(RoverGeneralCommands.retrievePiLits, 'Retrieve PiLits'),
+  Pair(RoverGeneralCommands.enableRemoteOperation, 'Enable Remote Operation'),
+  Pair(RoverGeneralCommands.disableRemoteOperation, 'Disable Remote Operation'),
+  Pair(RoverGarageCommands.lock, 'Lock Garage'),
+  Pair(RoverGarageCommands.unlock, 'Unlock Garage'),
+  Pair(RoverGarageCommands.retract, 'Retract Garage'),
+  Pair(RoverGarageCommands.deploy, 'Deploy Garage'),
+  Pair(RoverGarageCommands.lightsOn, 'Turn on Garage Lights'),
+  Pair(RoverGarageCommands.lightsOff, 'Turn off Garage Lights'),
+  Pair(RoverPiLitCommands.idle, 'Set PiLits Lights to idel'),
+  Pair(RoverPiLitCommands.setNumberPiLits, 'Set PiLits Lights to off'),
+  Pair(RoverPiLitCommands.simultaneous, 'Set PiLits Lights to sequential'),
+  Pair(RoverPiLitCommands.wave, 'Set PiLits Lights to Reverse Sequential'),
+  Pair(RoverPiLitCommands.waveReverse, 'Set PiLits Lights to parallel'),
+];

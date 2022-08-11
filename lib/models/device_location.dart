@@ -15,5 +15,9 @@ class DeviceLocation with _$DeviceLocation {
 
   get latLng => LatLng(lat, long);
 
+  static fromLatLng(LatLng latLng) {
+    return DeviceLocation(lat: latLng.latitude, long: latLng.longitude);
+  }
+
   factory DeviceLocation.fromJson(Map<String, dynamic> json) => _$DeviceLocationFromJson(json);
 }
