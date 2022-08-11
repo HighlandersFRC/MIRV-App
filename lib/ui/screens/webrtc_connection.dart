@@ -112,7 +112,7 @@ class WebRTCConnection {
   }
 
   // TODO: Remove this before deployment
-   updateRoverState(command) {
+  void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
     bool docked = tempRoverMetrics.docked;

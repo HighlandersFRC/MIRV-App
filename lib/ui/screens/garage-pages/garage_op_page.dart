@@ -56,20 +56,20 @@ class GarageOperationPage extends StatelessWidget {
           ),
           Obx (() =>
             Positioned(
-              right: 200,
+              right: 225,
               child: StateImages(garageMetrics: _mirvGarageApi.garageMetricsObs.value!)),
           ),
           Obx (() =>
             Positioned(
               top: 70,
-              right: 65,
+              right: 25,
               child: LockImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value!)),
           ),
    Obx (() =>
   Positioned(
               top: 350,
               right: 155,
-              child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value!,)),)
+              child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value!)),)
         ],
       ),
     );
