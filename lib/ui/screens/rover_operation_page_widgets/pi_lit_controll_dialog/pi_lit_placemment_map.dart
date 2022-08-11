@@ -5,8 +5,17 @@ import 'package:mirv/models/rover/rover_metrics.dart';
 
 class PiLitPlacementMap extends StatefulWidget {
   final Rx<RoverMetrics> roverMetricsObs;
-  final Rx<LatLng?> tappedPoint;
-  PiLitPlacementMap(this.roverMetricsObs, this.tappedPoint, {Key? key}) : super(key: key);
+  final Rx<LatLng?> startPoint;
+  final Rx<LatLng?> endPoint;
+  final Rx<bool> startPointOnMap;
+
+  PiLitPlacementMap(
+    this.roverMetricsObs,
+    this.startPoint,
+    this.endPoint,
+    this.startPointOnMap, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PiLitPlacementMap> createState() => _PiLitPlacementMapState();
@@ -36,21 +45,52 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     });
   }
 
-  addMarker(LatLng tappedPoint) {
-    widget.tappedPoint.value = tappedPoint;
-    print('OBS  ${widget.tappedPoint.value}, ACT $tappedPoint');
+  setStartMarker(LatLng tappedPoint) {
+    widget.startPoint.value = tappedPoint;
+    print('OBS  ${widget.startPoint.value}, ACT $tappedPoint');
     setState(
       () {
-        if (widget.tappedPoint.value != null) {
+        if (widget.startPoint.value != null) {
           markers.add(
             Marker(
-              markerId: MarkerId('Selected Point'),
-              position: widget.tappedPoint.value!,
-              infoWindow: InfoWindow(
-                title: 'Selected Point',
+              draggable: true,
+              onDragEnd: (newValue) {
+                widget.startPoint.value = newValue;
+              },
+              markerId: const MarkerId('Selected Start Point'),
+              position: widget.startPoint.value!,
+              infoWindow: const InfoWindow(
+                title: 'Selected Start Point',
               ),
             ),
           );
+          widget.startPointOnMap.value = true;
+        }
+      },
+    );
+  }
+
+  setEndMarker(LatLng tappedPoint) {
+    widget.endPoint.value = tappedPoint;
+
+    setState(
+      () {
+        if (widget.endPoint.value != null) {
+          markers.add(
+            Marker(
+              icon: BitmapDescriptor.defaultMarkerWithHue(115),
+              draggable: true,
+              onDragEnd: (newValue) {
+                widget.endPoint.value = newValue;
+              },
+              markerId: const MarkerId('Selected End Point'),
+              position: widget.endPoint.value!,
+              infoWindow: const InfoWindow(
+                title: 'Selected End Point',
+              ),
+            ),
+          );
+          widget.startPointOnMap.value = true;
         }
       },
     );
@@ -71,7 +111,9 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     return Scaffold(
       body: Stack(children: <Widget>[
         GoogleMap(
-          onTap: addMarker,
+          onTap: (t) {
+            widget.startPointOnMap.value ? setEndMarker(t) : setStartMarker(t);
+          },
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(
             target: widget.roverMetricsObs.value.telemetry.location.latLng,

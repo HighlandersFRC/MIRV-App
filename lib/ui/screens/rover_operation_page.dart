@@ -93,7 +93,8 @@ class RoverOperationPage extends StatelessWidget {
               left: 10,
               child: Column(children: [
                 const OpenCommandsDrawer(),
-                webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
+                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
+                true
                     ? PiLitDialogButton(
                         roverMetrics: webRTCConnection.roverMetricsObs,
                         sendCommand: webRTCConnection.sendRoverCommand,

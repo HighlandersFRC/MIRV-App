@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mirv/constants/theme_data.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lits_deploy_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_placemment_map.dart';
@@ -27,8 +22,10 @@ class PiLitDialogButton extends StatelessWidget {
   final Rx<RoverMetrics> roverMetrics;
   final Rx<PiLitStateType> piLitState;
   final Rx<PiLitFormationType> piLitForamtionType;
+  final Rx<bool> startPointOnMap = false.obs;
 
-  final Rx<LatLng?> tappedPoint = Rx<LatLng?>(null);
+  final Rx<LatLng?> startPoint = Rx<LatLng?>(null);
+  final Rx<LatLng?> endPoint = Rx<LatLng?>(null);
 
   final Function(RoverCommand) sendCommand;
 
@@ -94,47 +91,37 @@ class PiLitDialogButton extends StatelessWidget {
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content:
-              // Stack(
-              //   children: [
-              // Positioned(
-              //   top: 20,
-              //   child: PiLitCommandDropdown(
-              //     piLitState: piLitState,
-              //   ),
-              // ),
-              // Positioned(
-              //   top: 20,
-              //   child: PiLitFormationCommandDropdown(
-              //     piLitFormationType: piLitForamtionType,
-              //     piLitAmount: piLitAmount,
-              //   ),
-              // ),
-              // Positioned(
-              //     bottom: 10,
-              // child:
-              SizedBox(width: MediaQuery.of(context).size.width * 0.8, child: PiLitPlacementMap(roverMetrics, tappedPoint)),
-          // ),
-          // ],
-          // ),
-          // ),
+          content: Column(
+            children: [
+              Row(
+                children: [
+                  PiLitCommandDropdown(
+                    piLitState: piLitState,
+                  ),
+                  PiLitFormationCommandDropdown(
+                    piLitFormationType: piLitForamtionType,
+                    piLitAmount: piLitAmount,
+                  ),
+                ],
+              ),
+              Obx(() => Text(startPointOnMap.value ? 'Place End Point (Red Marker)' : 'Place Start Point (Green Marker)')),
+              SizedBox(height: 10),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: AspectRatio(
+                      aspectRatio: 2.5, child: PiLitPlacementMap(roverMetrics, startPoint, endPoint, startPointOnMap))),
+            ],
+          ),
           actions: <Widget>[
-            PiLitCommandDropdown(
-              piLitState: piLitState,
-            ),
-            PiLitFormationCommandDropdown(
-              piLitFormationType: piLitForamtionType,
-              piLitAmount: piLitAmount,
-            ),
             TextButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
                   sendCommand(piLitState.value.command!);
                 }
 
-                if (tappedPoint.value != null) {
-                  sendCommand(
-                      RoverGeneralCommands.deployPiLits(piLitForamtionType.value, DeviceLocation.fromLatLng(tappedPoint.value!)));
+                if (startPoint.value != null) {
+                  sendCommand(RoverGeneralCommands.deployPiLits(
+                      piLitForamtionType.value, DeviceLocation.fromLatLng(startPoint.value!), 12));
                   Get.back();
                 } else {
                   Get.snackbar('Pilit Control', 'No starting point selected');

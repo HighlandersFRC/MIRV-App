@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 
 import 'package:mirv/models/pi_lit_formation_type.dart';
-import 'package:mirv/models/rover_control/rover_command.dart';
 
 class PiLitFormationCommandDropdown extends StatelessWidget {
-  PiLitFormationCommandDropdown({Key? key, this.sendCommand, required this.piLitFormationType, required this.piLitAmount})
-      : super(key: key);
+  PiLitFormationCommandDropdown({Key? key, required this.piLitFormationType, required this.piLitAmount}) : super(key: key);
 
   final int piLitAmount;
-
-  final Function(RoverCommand)? sendCommand;
 
   final Rx<PiLitFormationType> piLitFormationType;
 
@@ -21,8 +18,9 @@ class PiLitFormationCommandDropdown extends StatelessWidget {
           items: PiLitFormationType.values.map((piLitFormationType) {
             return DropdownMenuItem(
               value: piLitFormationType,
-              child: Text(piLitFormationType.name),
               enabled: piLitFormationType.piLitsRequired <= piLitAmount,
+              child: Text(piLitFormationType.name,
+                  style: TextStyle(color: piLitFormationType.piLitsRequired >= piLitAmount ? Colors.grey : fontColor)),
             );
           }).toList(),
           onChanged: (PiLitFormationType? t) {

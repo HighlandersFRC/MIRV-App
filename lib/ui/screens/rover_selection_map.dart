@@ -23,7 +23,7 @@ class RoverSelectionMap extends StatefulWidget {
 
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
   Set<Marker> markers = {};
-  BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarkerWithHue(20);
   RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
   Rx<String> selectedRoverId = "".obs;
   void setCustomMarker() async {
