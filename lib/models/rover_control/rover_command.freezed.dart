@@ -2143,8 +2143,8 @@ mixin _$RoverCommandParameters {
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
-    required TResult Function(
-            DeviceLocation location, PiLitFormationType formation)
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
         piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
@@ -2152,7 +2152,8 @@ mixin _$RoverCommandParameters {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
   }) =>
       throw _privateConstructorUsedError;
@@ -2160,7 +2161,8 @@ mixin _$RoverCommandParameters {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
     required TResult orElse(),
   }) =>
@@ -2305,8 +2307,8 @@ class _$RoverCommandParametersDrivetrain
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
-    required TResult Function(
-            DeviceLocation location, PiLitFormationType formation)
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
         piLitPlacement,
   }) {
     return drivetrain(x, y);
@@ -2317,7 +2319,8 @@ class _$RoverCommandParametersDrivetrain
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
   }) {
     return drivetrain?.call(x, y);
@@ -2328,7 +2331,8 @@ class _$RoverCommandParametersDrivetrain
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
     required TResult orElse(),
   }) {
@@ -2492,8 +2496,8 @@ class _$RoverCommandParametersDestination
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
-    required TResult Function(
-            DeviceLocation location, PiLitFormationType formation)
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
         piLitPlacement,
   }) {
     return destination(lat, long);
@@ -2504,7 +2508,8 @@ class _$RoverCommandParametersDestination
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
   }) {
     return destination?.call(lat, long);
@@ -2515,7 +2520,8 @@ class _$RoverCommandParametersDestination
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
     required TResult orElse(),
   }) {
@@ -2593,7 +2599,8 @@ abstract class _$$RoverCommandParametersPiLitPlacementCopyWith<$Res> {
           _$RoverCommandParametersPiLitPlacement value,
           $Res Function(_$RoverCommandParametersPiLitPlacement) then) =
       __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>;
-  $Res call({DeviceLocation location, PiLitFormationType formation});
+  $Res call(
+      {DeviceLocation location, PiLitFormationType formation, double heading});
 
   $DeviceLocationCopyWith<$Res> get location;
 }
@@ -2616,6 +2623,7 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
   $Res call({
     Object? location = freezed,
     Object? formation = freezed,
+    Object? heading = freezed,
   }) {
     return _then(_$RoverCommandParametersPiLitPlacement(
       location == freezed
@@ -2626,6 +2634,10 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
           ? _value.formation
           : formation // ignore: cast_nullable_to_non_nullable
               as PiLitFormationType,
+      heading == freezed
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 
@@ -2641,7 +2653,8 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoverCommandParametersPiLitPlacement
     implements RoverCommandParametersPiLitPlacement {
-  const _$RoverCommandParametersPiLitPlacement(this.location, this.formation,
+  const _$RoverCommandParametersPiLitPlacement(
+      this.location, this.formation, this.heading,
       {final String? $type})
       : $type = $type ?? 'piLitPlacement';
 
@@ -2653,13 +2666,15 @@ class _$RoverCommandParametersPiLitPlacement
   final DeviceLocation location;
   @override
   final PiLitFormationType formation;
+  @override
+  final double heading;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'RoverCommandParameters.piLitPlacement(location: $location, formation: $formation)';
+    return 'RoverCommandParameters.piLitPlacement(location: $location, formation: $formation, heading: $heading)';
   }
 
   @override
@@ -2668,7 +2683,8 @@ class _$RoverCommandParametersPiLitPlacement
         (other.runtimeType == runtimeType &&
             other is _$RoverCommandParametersPiLitPlacement &&
             const DeepCollectionEquality().equals(other.location, location) &&
-            const DeepCollectionEquality().equals(other.formation, formation));
+            const DeepCollectionEquality().equals(other.formation, formation) &&
+            const DeepCollectionEquality().equals(other.heading, heading));
   }
 
   @JsonKey(ignore: true)
@@ -2676,7 +2692,8 @@ class _$RoverCommandParametersPiLitPlacement
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(location),
-      const DeepCollectionEquality().hash(formation));
+      const DeepCollectionEquality().hash(formation),
+      const DeepCollectionEquality().hash(heading));
 
   @JsonKey(ignore: true)
   @override
@@ -2690,11 +2707,11 @@ class _$RoverCommandParametersPiLitPlacement
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
-    required TResult Function(
-            DeviceLocation location, PiLitFormationType formation)
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
         piLitPlacement,
   }) {
-    return piLitPlacement(location, formation);
+    return piLitPlacement(location, formation, heading);
   }
 
   @override
@@ -2702,10 +2719,11 @@ class _$RoverCommandParametersPiLitPlacement
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
   }) {
-    return piLitPlacement?.call(location, formation);
+    return piLitPlacement?.call(location, formation, heading);
   }
 
   @override
@@ -2713,12 +2731,13 @@ class _$RoverCommandParametersPiLitPlacement
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
-    TResult Function(DeviceLocation location, PiLitFormationType formation)?
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
         piLitPlacement,
     required TResult orElse(),
   }) {
     if (piLitPlacement != null) {
-      return piLitPlacement(location, formation);
+      return piLitPlacement(location, formation, heading);
     }
     return orElse();
   }
@@ -2771,8 +2790,9 @@ class _$RoverCommandParametersPiLitPlacement
 abstract class RoverCommandParametersPiLitPlacement
     implements RoverCommandParameters {
   const factory RoverCommandParametersPiLitPlacement(
-          final DeviceLocation location, final PiLitFormationType formation) =
-      _$RoverCommandParametersPiLitPlacement;
+      final DeviceLocation location,
+      final PiLitFormationType formation,
+      final double heading) = _$RoverCommandParametersPiLitPlacement;
 
   factory RoverCommandParametersPiLitPlacement.fromJson(
           Map<String, dynamic> json) =
@@ -2780,6 +2800,7 @@ abstract class RoverCommandParametersPiLitPlacement
 
   DeviceLocation get location => throw _privateConstructorUsedError;
   PiLitFormationType get formation => throw _privateConstructorUsedError;
+  double get heading => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$RoverCommandParametersPiLitPlacementCopyWith<
           _$RoverCommandParametersPiLitPlacement>

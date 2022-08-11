@@ -15,6 +15,7 @@ class SelectedRoverController extends GetxController {
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<bool> isRoverListMinimized = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
+  Rx<bool> ignoreUnavailable = false.obs;
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedRoverId) => isConnectButtonEnabled.value = (selectedRoverId != ""));
@@ -40,19 +41,14 @@ class SelectedRoverController extends GetxController {
     }
   }
 
-  Color roverTileColor(
-    String rover_id,
-    DeviceStatusType value,
-  ) {
+  Color roverTileColor(String rover_id, DeviceStatusType value, {bool ignoreUnavailable = false}) {
     if (selectedRoverId.value == rover_id) {
       return tileColorSelected;
     } else {
-      switch (value) {
-        case DeviceStatusType.available:
-          return tileColorAvailible;
-
-        case DeviceStatusType.unavailable:
-          return tileColorUnavailible;
+      if (value == DeviceStatusType.available || ignoreUnavailable) {
+        return tileColorAvailible;
+      } else {
+        return tileColorUnavailible;
       }
     }
   }
@@ -128,10 +124,16 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          "Rover Selection",
-        ),
-      ),
+          title: const Text(
+            "Rover Selection",
+          ),
+          actions: [
+            Obx(() => Switch(
+                value: selectedRoverController.ignoreUnavailable.value,
+                onChanged: (value) {
+                  selectedRoverController.ignoreUnavailable.value = value;
+                }))
+          ]),
       body: Row(
         children: [
           Obx(
@@ -158,12 +160,12 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                       //   roverList[index].rover_id,
                                       // ),
                                       tileColor: selectedRoverController.roverTileColor(
-                                        roverList[index].rover_id,
-                                        roverList[index].status,
-                                      ),
+                                          roverList[index].rover_id, roverList[index].status,
+                                          ignoreUnavailable: selectedRoverController.ignoreUnavailable.value),
                                       title: Text(roverList[index].rover_id.toString()),
                                       onTap: () {
-                                        if (roverList[index].status == DeviceStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available ||
+                                            selectedRoverController.ignoreUnavailable.value) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       })
@@ -182,7 +184,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Text(
                                               'Battery: ${roverList[index].battery_percent.toString()}% \n${roverList[index].state.toString().replaceAll('RoverStateType.', 'State: ')}'),
                                       onTap: () {
-                                        if (roverList[index].status == DeviceStatusType.available) {
+                                        if (roverList[index].status == DeviceStatusType.available ||
+                                            selectedRoverController.ignoreUnavailable.value) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       },

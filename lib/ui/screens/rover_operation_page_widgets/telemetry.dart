@@ -16,7 +16,7 @@ class TelemetryWidget extends StatelessWidget {
           Icons.speed,
           color: primaryColor,
         ),
-        Text("${roverMetrics.telemetry.speed} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
+        Text("${roverMetrics.telemetry.speed.round()} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
       ]),
       const SizedBox(width: 10),
       Row(children: [
@@ -24,7 +24,7 @@ class TelemetryWidget extends StatelessWidget {
           CustomIcons.compass,
           color: primaryColor,
         ),
-        Text("${roverMetrics.telemetry.heading}\u00B0", style: const TextStyle(fontSize: 20, color: fontColor)),
+        Text("${roverMetrics.telemetry.heading.round()}\u00B0", style: const TextStyle(fontSize: 20, color: fontColor)),
       ])
     ]);
   }

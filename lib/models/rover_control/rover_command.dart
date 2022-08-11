@@ -57,7 +57,7 @@ class RoverCommand with _$RoverCommand {
 class RoverCommandParameters with _$RoverCommandParameters {
   const factory RoverCommandParameters.drivetrain(double x, double y) = RoverCommandParametersDrivetrain;
   const factory RoverCommandParameters.destination(double lat, double long) = RoverCommandParametersDestination;
-  const factory RoverCommandParameters.piLitPlacement(DeviceLocation location, PiLitFormationType formation) =
+  const factory RoverCommandParameters.piLitPlacement(DeviceLocation location, PiLitFormationType formation, double heading) =
       RoverCommandParametersPiLitPlacement;
 
   factory RoverCommandParameters.fromJson(Map<String, dynamic> json) => _$RoverCommandParametersFromJson(json);
@@ -73,9 +73,9 @@ class RoverGeneralCommands {
   static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
   static const enableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable_remote_operation);
   static const disableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable_remote_operation);
-  static GeneralRoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location) {
+  static GeneralRoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location, double heading) {
     return GeneralRoverCommand(RoverCommandTypeGeneral.deploy_pi_lits,
-        commandParameters: RoverCommandParametersPiLitPlacement(location, formation));
+        commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading));
   }
 }
 
@@ -129,6 +129,8 @@ Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
     Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
     // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
     Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
+    Pair(RoverGeneralCommands.deployPiLits(PiLitFormationType.taper_right_5, DeviceLocation(lat: 39, long: -103.5), 96),
+        Image.asset('assets/images/pi_lit_outline_down.png')),
   ],
   RoverStateType.docked: [
     Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
