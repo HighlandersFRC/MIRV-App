@@ -38,8 +38,8 @@ class WebRTCConnection {
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
   final RoverMetrics roverMetrics;
-
   late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
+
 
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();
@@ -52,6 +52,7 @@ class WebRTCConnection {
   get_pkg.Rx<bool> useGamepad = false.obs;
   BehaviorSubject<RoverCommand> periodicRoverCommandUpdates = BehaviorSubject<RoverCommand>();
   Duration secondsElapsed = const Duration(seconds: 10);
+  DateTime prevHeartbeatDebugTime = DateTime.now();
 
   DateTime? recentStatusMessage;
 
@@ -85,7 +86,7 @@ class WebRTCConnection {
     required String roverId,
   }) {
     get_pkg.Get.dialog(
-        barrierDismissible: true,
+        barrierDismissible: false,
         AlertDialog(
           title: const Text('Failed Connection'),
           content: Text('$error'),
@@ -105,31 +106,29 @@ class WebRTCConnection {
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
+      print("------------------------ COMMAND: ${json.encode(command.toJson())} ------------------------");
     }
 
     // TODO: Remove this before deployment
-    updateRoverState(command);
+    // updateRoverState(command);
   }
 
   // TODO: Remove this before deployment
   void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
-    bool docked = tempRoverMetrics.docked;
     if (command == RoverGeneralCommands.eStop) {
       state = RoverStateType.e_stop;
     } else if (command == RoverGeneralCommands.disable) {
-      state = RoverStateType.connected_disabled;
+      state = RoverStateType.disabled;
     } else if (command == RoverGeneralCommands.enable) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.deploy) {
-      state = RoverStateType.connected_idle;
-      docked = false;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.cancel) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     } else if (command == RoverGeneralCommands.stow) {
-      state = RoverStateType.connected_idle;
-      docked = true;
+      state = RoverStateType.docked;
     } else if (command == RoverGeneralCommands.deployPiLits) {
       state = RoverStateType.autonomous;
     } else if (command == RoverGeneralCommands.retrievePiLits) {
@@ -137,9 +136,9 @@ class WebRTCConnection {
     } else if (command == RoverGeneralCommands.enableRemoteOperation) {
       state = RoverStateType.remote_operation;
     } else if (command == RoverGeneralCommands.disableRemoteOperation) {
-      state = RoverStateType.connected_idle;
+      state = RoverStateType.idle;
     }
-    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state, docked: docked);
+    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
   }
 
   void setStateInFunction({required Function function}) {
@@ -161,6 +160,9 @@ class WebRTCConnection {
     // or alternatively:
     dataChannel.messageStream.listen((message) {
       if (message.type == MessageType.text) {
+        print("RECEIVED MESSAGE FROM ROVER CALLBACK 1: ${message.text}");
+        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+        recentStatusMessage = DateTime.now();
       } else {
         // do something with message.binary
       }
@@ -170,12 +172,15 @@ class WebRTCConnection {
   // This Data Channel Function receives data sent on the data channel created by the flutter app
   void _onDataChannelMessage(RTCDataChannelMessage message) {
     if (message.type == MessageType.text) {
-      try {
-        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
-        recentStatusMessage = DateTime.now();
-      } catch (e) {
-        // ignore: avoid_print
-        print("Failed to process status message: $message");
+      if (message.text.isNotEmpty) {
+        try {
+          print("RECEIVED MESSAGE FROM ROVER CALLBACK 2: ${message.text}");
+          roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+          recentStatusMessage = DateTime.now();
+        } catch (e) {
+          // ignore: avoid_print
+          print("Error processing received WebRTC message: ${message.text}, because: $e");
+        }
       }
     } else {
       // do something with message.binary
@@ -341,6 +346,11 @@ class WebRTCConnection {
   _startHeartbeatMessages() {
     heartbeatTimer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
       sendRoverCommand(RoverHeartbeatCommands.heartbeat);
+      int duration = DateTime.now().difference(prevHeartbeatDebugTime).inMilliseconds;
+      if (duration > 1.2 * 1000) {
+        print("MISSED HEARTBEAT COMMAND!!! $duration");
+      }
+      prevHeartbeatDebugTime = DateTime.now();
     });
   }
 

@@ -15,7 +15,7 @@ class CommandList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var commandList = roverCommandsByState[Pair(roverMetrics.state, roverMetrics.docked)] ?? [];
+    var commandList = roverCommandsByState[roverMetrics.state] ?? [];
     return Container(
         child: ListView.builder(
       itemCount: commandList.length,

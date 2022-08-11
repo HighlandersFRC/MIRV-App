@@ -20,7 +20,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
-  String _stateText(RoverStateType? roverState, bool docked) {
+  String _stateText(RoverStateType roverState) {
     switch (roverState) {
       case RoverStateType.disconnected:
         return "Disconnected";
@@ -28,22 +28,20 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
         return "Autonomous";
       case RoverStateType.disconnected_fault:
         return "Disconnected with Error";
-      case RoverStateType.connected_disabled:
+      case RoverStateType.disabled:
         return "Disabled";
-      case RoverStateType.connected_fault:
-        return "Connected with Error";
-      case RoverStateType.connected_idle:
-        if (docked) {
-          return "Docked";
-        } else {
-          return "Awaiting Orders";
-        }
+      case RoverStateType.fault:
+        return "Fault";
+      case RoverStateType.idle:
+        return "Awaiting Orders";
+      case RoverStateType.docked:
+        return "Docked";
       case RoverStateType.e_stop:
         return "E-Stopped";
       case RoverStateType.remote_operation:
         return "Controlling";
-      default:
-        return "No Data";
+      case RoverStateType.remote_operation_autonomous:
+        return "Autonomous";
     }
   }
 
@@ -55,11 +53,11 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
     return AppBar(
         backgroundColor: Color.fromARGB(0, 255, 255, 255),
         foregroundColor: Color.fromARGB(0, 255, 255, 255),
-        leadingWidth: 250,
+        leadingWidth: 410,
         leading: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 5, right: 10, top: 1, bottom: 1),
+              padding: const EdgeInsets.only(left: 5, right: 5, top: 1, bottom: 1),
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.call_end_rounded, size: 30, color: fontColor),
                 label: const Text("Disconnect", style: TextStyle(fontSize: 20)),
@@ -95,11 +93,19 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                 ),
               ),
             ),
-            StatusDot(peerConnectionState),
+            Padding(
+              padding: const EdgeInsets.only(left: 27.0),
+              child: StatusDot(peerConnectionState),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 27),
+              child: Text("ID: ${roverMetrics.value.rover_id}", style: const TextStyle(fontSize: 20, color: fontColor)),
+            ),
           ],
         ),
-        title: Text(_stateText(roverMetrics.value.state, roverMetrics.value.docked),
-            style: const TextStyle(fontSize: 20, color: fontColor)),
+        title: Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
+        ]),
         actions: [
           Obx(() => TelemetryWidget(roverMetrics.value)),
           Padding(

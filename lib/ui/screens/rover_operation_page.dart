@@ -119,8 +119,7 @@ class RoverOperationPage extends StatelessWidget {
                   },
                   child: roverOperationMap,
                 ))),
-            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.connected_idle &&
-                    !webRTCConnection.roverMetricsObs.value.docked
+            Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
                 ? Positioned(
                     bottom: 20,
                     right: 15,

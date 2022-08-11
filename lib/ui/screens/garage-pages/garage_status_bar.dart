@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 
@@ -30,8 +32,10 @@ class GarageStatusBar extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      _stateDescription(garageMetrics.state),
+    return Row(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+       Text("ID: ${garageMetrics.garage_id}", style: const TextStyle (color: fontColor)),
+      const SizedBox(width: 270),
+_stateDescription(garageMetrics.state),
     ]);
   }
 }
