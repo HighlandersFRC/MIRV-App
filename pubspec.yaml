@@ -59,6 +59,9 @@ dependencies:
   shared_preferences: ^2.0.15
   ionicons: ^0.1.2
   quiver: ^3.1.0
+  logger: ^1.1.0
+  logger_flutter: ^0.0.1
+  shake: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -85,7 +88,7 @@ flutter:
     - assets/images/lock.png
     - assets/images/deployed.png
     - assets/images/retracted_latched.png
-    - assets/images/retracted_unlatched.png 
+    - assets/images/retracted_unlatched.png
     - assets/images/up_arrow.png
     - assets/images/down_arrow.png
     - assets/images/unlock.png
@@ -112,7 +115,6 @@ flutter:
     - assets/images/light_on_close_up.png
     - assets/images/light_off_close_up.png
 
-
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -125,9 +127,9 @@ flutter:
   # https://flutter.dev/assets-and-images/#from-packages
 
   fonts:
-      - family: CustomIcons
-        fonts:
-          - asset: fonts/CustomIcons.ttf
+    - family: CustomIcons
+      fonts:
+        - asset: fonts/CustomIcons.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

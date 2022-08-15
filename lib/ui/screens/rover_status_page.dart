@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mirv/icons/custom_icons_icons.dart';
 import 'package:mirv/models/device_health.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 
 class StatusPage extends StatelessWidget {
-  final RoverMetrics roverMetrics;
-  const StatusPage(this.roverMetrics, {Key? key}) : super(key: key);
+  final RoverGarageState roverGarageState;
+  const StatusPage(this.roverGarageState, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +16,13 @@ class StatusPage extends StatelessWidget {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverMetrics.subsystems.sensors, "Sensors", Icons.sensors),
-        HealthContainer(roverMetrics.subsystems.electronics, "Electronics", Icons.bolt),
-        HealthContainer(roverMetrics.subsystems.drivetrain, "Drivetrain", CustomIcons.steering_wheel),
-        HealthContainer(roverMetrics.subsystems.garage, "Garage", CustomIcons.warehouse),
-        HealthContainer(roverMetrics.subsystems.intake, "Intake", Icons.rotate_90_degrees_ccw),
-        HealthContainer(roverMetrics.subsystems.power, "Power", Icons.power),
-        HealthContainer(roverMetrics.subsystems.general, "General", Icons.smart_toy_outlined),
+        HealthContainer(roverGarageState.subsystems.sensors, "Sensors", Icons.sensors),
+        HealthContainer(roverGarageState.subsystems.electronics, "Electronics", Icons.bolt),
+        HealthContainer(roverGarageState.subsystems.drivetrain, "Drivetrain", CustomIcons.steering_wheel),
+        HealthContainer(roverGarageState.subsystems.garage, "Garage", CustomIcons.warehouse),
+        HealthContainer(roverGarageState.subsystems.intake, "Intake", Icons.rotate_90_degrees_ccw),
+        HealthContainer(roverGarageState.subsystems.power, "Power", Icons.power),
+        HealthContainer(roverGarageState.subsystems.general, "General", Icons.smart_toy_outlined),
       ],
     );
   }

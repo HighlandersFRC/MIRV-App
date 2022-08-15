@@ -6,8 +6,9 @@ import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/device_status_type.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
@@ -31,7 +32,7 @@ class SelectedRoverController extends GetxController {
     }
   }
 
-  verifyRoverId(List<RoverMetrics> rovers) {
+  verifyRoverId(List<RoverState> rovers) {
     if (rovers.where((element) => element.rover_id == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
   }
 
@@ -72,10 +73,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final TextEditingController typeAheadController = TextEditingController();
 
   int? groupValue = 0;
-  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
+  RxList<RoverState> roverList = <RoverState>[].obs;
 
   void _refreshRoversList() async {
-    roverList.value = await mirvApi.getRovers();
+    roverList.value = await mirvApi.getRoverStates();
     selectedRoverController.verifyRoverId(roverList);
   }
 
@@ -218,9 +219,12 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         child: Obx(
                           () => ElevatedButton(
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
-                                ? () {
-                                    Get.to(RoverOperationPage(roverList.firstWhere(
-                                        (element) => selectedRoverController.selectedRoverId.value == element.rover_id)));
+                                ? () async {
+                                    RoverState selectedRoverState = roverList.firstWhere(
+                                        (element) => selectedRoverController.selectedRoverId.value == element.rover_id);
+                                    RoverGarageState roverGarageState = RoverGarageState.fromRoverState(
+                                        selectedRoverState, await mirvApi.getGarageMetrics(selectedRoverState.garage?.garage_id));
+                                    Get.to(RoverOperationPage(roverGarageState));
                                   }
                                 : null,
                             child: Row(

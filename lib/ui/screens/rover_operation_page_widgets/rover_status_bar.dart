@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/icons/custom_icons_icons.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/device_health.dart';
 
 // ignore: must_be_immutable
 class RoverStatusBar extends StatelessWidget {
   const RoverStatusBar({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
   }) : super(key: key);
-  final RoverMetrics? roverMetrics;
+  final RoverGarageState? roverGarageState;
   final double iconSize = 40;
 
   IconData _batteryIcon(int? batteryLevel, {int? alertLevel}) {
@@ -66,21 +66,23 @@ class RoverStatusBar extends StatelessWidget {
   ) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: roverMetrics != null
+      children: roverGarageState != null
           ? [
-              Icon(_batteryIcon(roverMetrics!.battery_percent, alertLevel: 20), size: iconSize, color: primaryColor),
+              Icon(_batteryIcon(roverGarageState!.battery_percent, alertLevel: 20), size: iconSize, color: primaryColor),
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: Text("${roverMetrics!.battery_percent}%", style: const TextStyle(fontSize: 20, color: fontColor)),
+                child: Text("${roverGarageState!.battery_percent}%", style: const TextStyle(fontSize: 20, color: fontColor)),
               ),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.electronics.health, healthIconChoice: Icons.bolt),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.power.health, healthIconChoice: Icons.power),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.general.health, healthIconChoice: Icons.smart_toy_outlined),
+              _healthIcon(roverHealthType: roverGarageState!.subsystems.electronics.health, healthIconChoice: Icons.bolt),
+              _healthIcon(roverHealthType: roverGarageState!.subsystems.power.health, healthIconChoice: Icons.power),
               _healthIcon(
-                  roverHealthType: roverMetrics!.subsystems.drivetrain.health, healthIconChoice: CustomIcons.steering_wheel),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.intake.health, healthIconChoice: Icons.rotate_90_degrees_ccw),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.sensors.health, healthIconChoice: Icons.sensors),
-              _healthIcon(roverHealthType: roverMetrics!.subsystems.garage.health, healthIconChoice: CustomIcons.warehouse),
+                  roverHealthType: roverGarageState!.subsystems.general.health, healthIconChoice: Icons.smart_toy_outlined),
+              _healthIcon(
+                  roverHealthType: roverGarageState!.subsystems.drivetrain.health, healthIconChoice: CustomIcons.steering_wheel),
+              _healthIcon(
+                  roverHealthType: roverGarageState!.subsystems.intake.health, healthIconChoice: Icons.rotate_90_degrees_ccw),
+              _healthIcon(roverHealthType: roverGarageState!.subsystems.sensors.health, healthIconChoice: Icons.sensors),
+              _healthIcon(roverHealthType: roverGarageState!.subsystems.garage.health, healthIconChoice: CustomIcons.warehouse),
             ]
           : [],
     );

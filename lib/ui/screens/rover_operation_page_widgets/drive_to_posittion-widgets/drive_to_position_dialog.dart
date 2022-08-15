@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mirv/models/device_location.dart';
-import 'package:mirv/models/pi_lit_formation_type.dart';
-import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lits_deploy_commands_drop_down.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_placemment_map.dart';
+import 'package:mirv/models/rover_control/rover_command_type.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_posittion-widgets/pi_lit_placemment_map.dart';
 
-class PiLitDialogButton extends StatelessWidget {
-  PiLitDialogButton(
-    this.roverGarageState,
-    this.sendCommand, {
+class DriveToPositionDialog extends StatelessWidget {
+  DriveToPositionDialog({
     Key? key,
+    required this.roverGarageState,
+    required this.sendCommand,
   }) : super(key: key);
 
   final Rx<RoverGarageState> roverGarageState;
-  late Rx<PiLitStateType> piLitState = Rx<PiLitStateType>(roverGarageState.value.pi_lits.state);
-  late Rx<PiLitFormationType> piLitForamtionType = PiLitFormationType.taper_right_5.obs;
   final Rx<bool> startPointOnMap = false.obs;
 
-  final Rx<LatLng?> startPoint = Rx<LatLng?>(null);
-  final Rx<LatLng?> endPoint = Rx<LatLng?>(null);
+  final Rx<LatLng?> targetLocation = Rx<LatLng?>(null);
 
   final Function(RoverCommand) sendCommand;
 
-  late int piLitAmount = roverGarageState.value.pi_lits.pi_lits_stowed_right + roverGarageState.value.pi_lits.pi_lits_stowed_left;
-
   @override
   Widget build(BuildContext context) {
-    print('piLitAmount $piLitAmount');
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, right: 2),
       child: ListTile(
@@ -77,7 +67,7 @@ class PiLitDialogButton extends StatelessWidget {
                 onPressed: () {
                   piLitDialog(context);
                 },
-                child: Image.asset('assets/images/pi_lit_outline_down.png')),
+                child: const Icon(Icons.moving_rounded)),
           ),
         ),
       ),
@@ -88,44 +78,28 @@ class PiLitDialogButton extends StatelessWidget {
     Get.dialog(
         barrierDismissible: true,
         AlertDialog(
-          title: const Text('PiLit Controll'),
+          title: const Text('Move Rover to Location'),
           content: Column(
             children: [
-              Row(
-                children: [
-                  PiLitCommandDropdown(
-                    piLitState,
-                  ),
-                  PiLitFormationCommandDropdown(
-                    piLitFormationType: piLitForamtionType,
-                    piLitAmount: piLitAmount,
-                  ),
-                ],
-              ),
-              Obx(() => Text(startPointOnMap.value ? 'Place End Point (Red Marker)' : 'Place Start Point (Green Marker)')),
-              SizedBox(height: 10),
+              const Text('Place Target Point'),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: AspectRatio(
-                      aspectRatio: 2.5, child: PiLitPlacementMap(roverGarageState, startPoint, endPoint, startPointOnMap))),
+                      aspectRatio: 2.5, child: DriveToLocationMap(roverGarageState, targetLocation, startPointOnMap))),
             ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                if (piLitState.value.command != null) {
-                  sendCommand(piLitState.value.command!);
-                }
-
-                if (startPoint.value != null) {
-                  sendCommand(RoverGeneralCommands.deployPiLits(
-                      piLitForamtionType.value, DeviceLocation.fromLatLng(startPoint.value!), 12));
+                if (targetLocation.value != null) {
+                  sendCommand(RoverDrivetrainCommands.destinationCommand(
+                      RoverCommandTypeDrivetrain.to_location, targetLocation.value!.latitude, targetLocation.value!.longitude));
                   Get.back();
                 } else {
-                  Get.snackbar('Pilit Control', 'No starting point selected');
+                  Get.snackbar('Rover Movement', 'No target location selected');
                 }
               },
-              child: const Text('Deploy Pi-Lits'),
+              child: const Text('Move Rover to Location'),
             ),
             TextButton(
                 onPressed: () {

@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 
 class ToggleDisable extends StatelessWidget {
   late final bool? enabled;
 
-  final RoverMetrics? roverMetrics;
+  final RoverGarageState? roverGarageState;
   final Function(RoverCommand) sendCommand;
   ToggleDisable({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.sendCommand,
   }) : super(key: key) {
-    enabled = getEnabledState(roverMetrics?.state);
+    enabled = getEnabledState(roverGarageState?.state);
   }
 
   bool? getEnabledState(RoverStateType? roverState) {
     switch (roverState) {
-      case RoverStateType.idle:
-        return true;
       case RoverStateType.disabled:
         return false;
-      default:
+      case RoverStateType.docked:
+      case RoverStateType.disconnected:
         return null;
+      default:
+        return true;
     }
   }
 

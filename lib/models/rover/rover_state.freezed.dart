@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'rover_metrics.dart';
+part of 'rover_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,57 +14,57 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-RoverMetrics _$RoverMetricsFromJson(Map<String, dynamic> json) {
-  return _RoverMetrics.fromJson(json);
+RoverState _$RoverStateFromJson(Map<String, dynamic> json) {
+  return _RoverState.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RoverMetrics {
+mixin _$RoverState {
   String get rover_id => throw _privateConstructorUsedError;
   RoverStateType get state => throw _privateConstructorUsedError;
   DeviceStatusType get status => throw _privateConstructorUsedError;
   double? get battery_voltage => throw _privateConstructorUsedError;
   int get battery_percent => throw _privateConstructorUsedError;
-  RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
-  RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
-  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
-  Garage? get garage => throw _privateConstructorUsedError;
+  RoverStateHealth get subsystems => throw _privateConstructorUsedError;
+  RoverStateTelemetry get telemetry => throw _privateConstructorUsedError;
+  RoverStatePiLits get pi_lits => throw _privateConstructorUsedError;
+  RoverStateGarage? get garage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricsCopyWith<RoverMetrics> get copyWith =>
+  $RoverStateCopyWith<RoverState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RoverMetricsCopyWith<$Res> {
-  factory $RoverMetricsCopyWith(
-          RoverMetrics value, $Res Function(RoverMetrics) then) =
-      _$RoverMetricsCopyWithImpl<$Res>;
+abstract class $RoverStateCopyWith<$Res> {
+  factory $RoverStateCopyWith(
+          RoverState value, $Res Function(RoverState) then) =
+      _$RoverStateCopyWithImpl<$Res>;
   $Res call(
       {String rover_id,
       RoverStateType state,
       DeviceStatusType status,
       double? battery_voltage,
       int battery_percent,
-      RoverMetricHealth subsystems,
-      RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits,
-      Garage? garage});
+      RoverStateHealth subsystems,
+      RoverStateTelemetry telemetry,
+      RoverStatePiLits pi_lits,
+      RoverStateGarage? garage});
 
-  $RoverMetricHealthCopyWith<$Res> get subsystems;
-  $RoverMetricTelemetryCopyWith<$Res> get telemetry;
-  $RoverPiLitsCopyWith<$Res> get pi_lits;
-  $GarageCopyWith<$Res>? get garage;
+  $RoverStateHealthCopyWith<$Res> get subsystems;
+  $RoverStateTelemetryCopyWith<$Res> get telemetry;
+  $RoverStatePiLitsCopyWith<$Res> get pi_lits;
+  $RoverStateGarageCopyWith<$Res>? get garage;
 }
 
 /// @nodoc
-class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
-  _$RoverMetricsCopyWithImpl(this._value, this._then);
+class _$RoverStateCopyWithImpl<$Res> implements $RoverStateCopyWith<$Res> {
+  _$RoverStateCopyWithImpl(this._value, this._then);
 
-  final RoverMetrics _value;
+  final RoverState _value;
   // ignore: unused_field
-  final $Res Function(RoverMetrics) _then;
+  final $Res Function(RoverState) _then;
 
   @override
   $Res call({
@@ -102,61 +102,61 @@ class _$RoverMetricsCopyWithImpl<$Res> implements $RoverMetricsCopyWith<$Res> {
       subsystems: subsystems == freezed
           ? _value.subsystems
           : subsystems // ignore: cast_nullable_to_non_nullable
-              as RoverMetricHealth,
+              as RoverStateHealth,
       telemetry: telemetry == freezed
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
-              as RoverMetricTelemetry,
+              as RoverStateTelemetry,
       pi_lits: pi_lits == freezed
           ? _value.pi_lits
           : pi_lits // ignore: cast_nullable_to_non_nullable
-              as RoverPiLits,
+              as RoverStatePiLits,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as Garage?,
+              as RoverStateGarage?,
     ));
   }
 
   @override
-  $RoverMetricHealthCopyWith<$Res> get subsystems {
-    return $RoverMetricHealthCopyWith<$Res>(_value.subsystems, (value) {
+  $RoverStateHealthCopyWith<$Res> get subsystems {
+    return $RoverStateHealthCopyWith<$Res>(_value.subsystems, (value) {
       return _then(_value.copyWith(subsystems: value));
     });
   }
 
   @override
-  $RoverMetricTelemetryCopyWith<$Res> get telemetry {
-    return $RoverMetricTelemetryCopyWith<$Res>(_value.telemetry, (value) {
+  $RoverStateTelemetryCopyWith<$Res> get telemetry {
+    return $RoverStateTelemetryCopyWith<$Res>(_value.telemetry, (value) {
       return _then(_value.copyWith(telemetry: value));
     });
   }
 
   @override
-  $RoverPiLitsCopyWith<$Res> get pi_lits {
-    return $RoverPiLitsCopyWith<$Res>(_value.pi_lits, (value) {
+  $RoverStatePiLitsCopyWith<$Res> get pi_lits {
+    return $RoverStatePiLitsCopyWith<$Res>(_value.pi_lits, (value) {
       return _then(_value.copyWith(pi_lits: value));
     });
   }
 
   @override
-  $GarageCopyWith<$Res>? get garage {
+  $RoverStateGarageCopyWith<$Res>? get garage {
     if (_value.garage == null) {
       return null;
     }
 
-    return $GarageCopyWith<$Res>(_value.garage!, (value) {
+    return $RoverStateGarageCopyWith<$Res>(_value.garage!, (value) {
       return _then(_value.copyWith(garage: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricsCopyWith<$Res>
-    implements $RoverMetricsCopyWith<$Res> {
-  factory _$$_RoverMetricsCopyWith(
-          _$_RoverMetrics value, $Res Function(_$_RoverMetrics) then) =
-      __$$_RoverMetricsCopyWithImpl<$Res>;
+abstract class _$$_RoverStateCopyWith<$Res>
+    implements $RoverStateCopyWith<$Res> {
+  factory _$$_RoverStateCopyWith(
+          _$_RoverState value, $Res Function(_$_RoverState) then) =
+      __$$_RoverStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {String rover_id,
@@ -164,31 +164,30 @@ abstract class _$$_RoverMetricsCopyWith<$Res>
       DeviceStatusType status,
       double? battery_voltage,
       int battery_percent,
-      RoverMetricHealth subsystems,
-      RoverMetricTelemetry telemetry,
-      RoverPiLits pi_lits,
-      Garage? garage});
+      RoverStateHealth subsystems,
+      RoverStateTelemetry telemetry,
+      RoverStatePiLits pi_lits,
+      RoverStateGarage? garage});
 
   @override
-  $RoverMetricHealthCopyWith<$Res> get subsystems;
+  $RoverStateHealthCopyWith<$Res> get subsystems;
   @override
-  $RoverMetricTelemetryCopyWith<$Res> get telemetry;
+  $RoverStateTelemetryCopyWith<$Res> get telemetry;
   @override
-  $RoverPiLitsCopyWith<$Res> get pi_lits;
+  $RoverStatePiLitsCopyWith<$Res> get pi_lits;
   @override
-  $GarageCopyWith<$Res>? get garage;
+  $RoverStateGarageCopyWith<$Res>? get garage;
 }
 
 /// @nodoc
-class __$$_RoverMetricsCopyWithImpl<$Res>
-    extends _$RoverMetricsCopyWithImpl<$Res>
-    implements _$$_RoverMetricsCopyWith<$Res> {
-  __$$_RoverMetricsCopyWithImpl(
-      _$_RoverMetrics _value, $Res Function(_$_RoverMetrics) _then)
-      : super(_value, (v) => _then(v as _$_RoverMetrics));
+class __$$_RoverStateCopyWithImpl<$Res> extends _$RoverStateCopyWithImpl<$Res>
+    implements _$$_RoverStateCopyWith<$Res> {
+  __$$_RoverStateCopyWithImpl(
+      _$_RoverState _value, $Res Function(_$_RoverState) _then)
+      : super(_value, (v) => _then(v as _$_RoverState));
 
   @override
-  _$_RoverMetrics get _value => super._value as _$_RoverMetrics;
+  _$_RoverState get _value => super._value as _$_RoverState;
 
   @override
   $Res call({
@@ -202,7 +201,7 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
     Object? pi_lits = freezed,
     Object? garage = freezed,
   }) {
-    return _then(_$_RoverMetrics(
+    return _then(_$_RoverState(
       rover_id: rover_id == freezed
           ? _value.rover_id
           : rover_id // ignore: cast_nullable_to_non_nullable
@@ -226,27 +225,27 @@ class __$$_RoverMetricsCopyWithImpl<$Res>
       subsystems: subsystems == freezed
           ? _value.subsystems
           : subsystems // ignore: cast_nullable_to_non_nullable
-              as RoverMetricHealth,
+              as RoverStateHealth,
       telemetry: telemetry == freezed
           ? _value.telemetry
           : telemetry // ignore: cast_nullable_to_non_nullable
-              as RoverMetricTelemetry,
+              as RoverStateTelemetry,
       pi_lits: pi_lits == freezed
           ? _value.pi_lits
           : pi_lits // ignore: cast_nullable_to_non_nullable
-              as RoverPiLits,
+              as RoverStatePiLits,
       garage: garage == freezed
           ? _value.garage
           : garage // ignore: cast_nullable_to_non_nullable
-              as Garage?,
+              as RoverStateGarage?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_RoverMetrics implements _RoverMetrics {
-  const _$_RoverMetrics(
+class _$_RoverState implements _RoverState {
+  const _$_RoverState(
       {required this.rover_id,
       required this.state,
       required this.status,
@@ -257,8 +256,8 @@ class _$_RoverMetrics implements _RoverMetrics {
       required this.pi_lits,
       this.garage});
 
-  factory _$_RoverMetrics.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverMetricsFromJson(json);
+  factory _$_RoverState.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStateFromJson(json);
 
   @override
   final String rover_id;
@@ -271,24 +270,24 @@ class _$_RoverMetrics implements _RoverMetrics {
   @override
   final int battery_percent;
   @override
-  final RoverMetricHealth subsystems;
+  final RoverStateHealth subsystems;
   @override
-  final RoverMetricTelemetry telemetry;
+  final RoverStateTelemetry telemetry;
   @override
-  final RoverPiLits pi_lits;
+  final RoverStatePiLits pi_lits;
   @override
-  final Garage? garage;
+  final RoverStateGarage? garage;
 
   @override
   String toString() {
-    return 'RoverMetrics(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits, garage: $garage)';
+    return 'RoverState(rover_id: $rover_id, state: $state, status: $status, battery_voltage: $battery_voltage, battery_percent: $battery_percent, subsystems: $subsystems, telemetry: $telemetry, pi_lits: $pi_lits, garage: $garage)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RoverMetrics &&
+            other is _$_RoverState &&
             const DeepCollectionEquality().equals(other.rover_id, rover_id) &&
             const DeepCollectionEquality().equals(other.state, state) &&
             const DeepCollectionEquality().equals(other.status, status) &&
@@ -319,29 +318,29 @@ class _$_RoverMetrics implements _RoverMetrics {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
-      __$$_RoverMetricsCopyWithImpl<_$_RoverMetrics>(this, _$identity);
+  _$$_RoverStateCopyWith<_$_RoverState> get copyWith =>
+      __$$_RoverStateCopyWithImpl<_$_RoverState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RoverMetricsToJson(this);
+    return _$$_RoverStateToJson(this);
   }
 }
 
-abstract class _RoverMetrics implements RoverMetrics {
-  const factory _RoverMetrics(
+abstract class _RoverState implements RoverState {
+  const factory _RoverState(
       {required final String rover_id,
       required final RoverStateType state,
       required final DeviceStatusType status,
       final double? battery_voltage,
       required final int battery_percent,
-      required final RoverMetricHealth subsystems,
-      required final RoverMetricTelemetry telemetry,
-      required final RoverPiLits pi_lits,
-      final Garage? garage}) = _$_RoverMetrics;
+      required final RoverStateHealth subsystems,
+      required final RoverStateTelemetry telemetry,
+      required final RoverStatePiLits pi_lits,
+      final RoverStateGarage? garage}) = _$_RoverState;
 
-  factory _RoverMetrics.fromJson(Map<String, dynamic> json) =
-      _$_RoverMetrics.fromJson;
+  factory _RoverState.fromJson(Map<String, dynamic> json) =
+      _$_RoverState.fromJson;
 
   @override
   String get rover_id => throw _privateConstructorUsedError;
@@ -354,25 +353,25 @@ abstract class _RoverMetrics implements RoverMetrics {
   @override
   int get battery_percent => throw _privateConstructorUsedError;
   @override
-  RoverMetricHealth get subsystems => throw _privateConstructorUsedError;
+  RoverStateHealth get subsystems => throw _privateConstructorUsedError;
   @override
-  RoverMetricTelemetry get telemetry => throw _privateConstructorUsedError;
+  RoverStateTelemetry get telemetry => throw _privateConstructorUsedError;
   @override
-  RoverPiLits get pi_lits => throw _privateConstructorUsedError;
+  RoverStatePiLits get pi_lits => throw _privateConstructorUsedError;
   @override
-  Garage? get garage => throw _privateConstructorUsedError;
+  RoverStateGarage? get garage => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricsCopyWith<_$_RoverMetrics> get copyWith =>
+  _$$_RoverStateCopyWith<_$_RoverState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-RoverMetricHealth _$RoverMetricHealthFromJson(Map<String, dynamic> json) {
-  return _RoverMetricHealth.fromJson(json);
+RoverStateHealth _$RoverStateHealthFromJson(Map<String, dynamic> json) {
+  return _RoverStateHealth.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RoverMetricHealth {
+mixin _$RoverStateHealth {
   DeviceHealth get electronics => throw _privateConstructorUsedError;
   DeviceHealth get drivetrain => throw _privateConstructorUsedError;
   DeviceHealth get intake => throw _privateConstructorUsedError;
@@ -383,15 +382,15 @@ mixin _$RoverMetricHealth {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricHealthCopyWith<RoverMetricHealth> get copyWith =>
+  $RoverStateHealthCopyWith<RoverStateHealth> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RoverMetricHealthCopyWith<$Res> {
-  factory $RoverMetricHealthCopyWith(
-          RoverMetricHealth value, $Res Function(RoverMetricHealth) then) =
-      _$RoverMetricHealthCopyWithImpl<$Res>;
+abstract class $RoverStateHealthCopyWith<$Res> {
+  factory $RoverStateHealthCopyWith(
+          RoverStateHealth value, $Res Function(RoverStateHealth) then) =
+      _$RoverStateHealthCopyWithImpl<$Res>;
   $Res call(
       {DeviceHealth electronics,
       DeviceHealth drivetrain,
@@ -411,13 +410,13 @@ abstract class $RoverMetricHealthCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RoverMetricHealthCopyWithImpl<$Res>
-    implements $RoverMetricHealthCopyWith<$Res> {
-  _$RoverMetricHealthCopyWithImpl(this._value, this._then);
+class _$RoverStateHealthCopyWithImpl<$Res>
+    implements $RoverStateHealthCopyWith<$Res> {
+  _$RoverStateHealthCopyWithImpl(this._value, this._then);
 
-  final RoverMetricHealth _value;
+  final RoverStateHealth _value;
   // ignore: unused_field
-  final $Res Function(RoverMetricHealth) _then;
+  final $Res Function(RoverStateHealth) _then;
 
   @override
   $Res call({
@@ -512,11 +511,11 @@ class _$RoverMetricHealthCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricHealthCopyWith<$Res>
-    implements $RoverMetricHealthCopyWith<$Res> {
-  factory _$$_RoverMetricHealthCopyWith(_$_RoverMetricHealth value,
-          $Res Function(_$_RoverMetricHealth) then) =
-      __$$_RoverMetricHealthCopyWithImpl<$Res>;
+abstract class _$$_RoverStateHealthCopyWith<$Res>
+    implements $RoverStateHealthCopyWith<$Res> {
+  factory _$$_RoverStateHealthCopyWith(
+          _$_RoverStateHealth value, $Res Function(_$_RoverStateHealth) then) =
+      __$$_RoverStateHealthCopyWithImpl<$Res>;
   @override
   $Res call(
       {DeviceHealth electronics,
@@ -544,15 +543,15 @@ abstract class _$$_RoverMetricHealthCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RoverMetricHealthCopyWithImpl<$Res>
-    extends _$RoverMetricHealthCopyWithImpl<$Res>
-    implements _$$_RoverMetricHealthCopyWith<$Res> {
-  __$$_RoverMetricHealthCopyWithImpl(
-      _$_RoverMetricHealth _value, $Res Function(_$_RoverMetricHealth) _then)
-      : super(_value, (v) => _then(v as _$_RoverMetricHealth));
+class __$$_RoverStateHealthCopyWithImpl<$Res>
+    extends _$RoverStateHealthCopyWithImpl<$Res>
+    implements _$$_RoverStateHealthCopyWith<$Res> {
+  __$$_RoverStateHealthCopyWithImpl(
+      _$_RoverStateHealth _value, $Res Function(_$_RoverStateHealth) _then)
+      : super(_value, (v) => _then(v as _$_RoverStateHealth));
 
   @override
-  _$_RoverMetricHealth get _value => super._value as _$_RoverMetricHealth;
+  _$_RoverStateHealth get _value => super._value as _$_RoverStateHealth;
 
   @override
   $Res call({
@@ -564,7 +563,7 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
     Object? power = freezed,
     Object? general = freezed,
   }) {
-    return _then(_$_RoverMetricHealth(
+    return _then(_$_RoverStateHealth(
       electronics: electronics == freezed
           ? _value.electronics
           : electronics // ignore: cast_nullable_to_non_nullable
@@ -599,8 +598,8 @@ class __$$_RoverMetricHealthCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RoverMetricHealth implements _RoverMetricHealth {
-  const _$_RoverMetricHealth(
+class _$_RoverStateHealth implements _RoverStateHealth {
+  const _$_RoverStateHealth(
       {this.electronics = const DeviceHealth(),
       this.drivetrain = const DeviceHealth(),
       this.intake = const DeviceHealth(),
@@ -609,8 +608,8 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
       this.power = const DeviceHealth(),
       this.general = const DeviceHealth()});
 
-  factory _$_RoverMetricHealth.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverMetricHealthFromJson(json);
+  factory _$_RoverStateHealth.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStateHealthFromJson(json);
 
   @override
   @JsonKey()
@@ -636,14 +635,14 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
 
   @override
   String toString() {
-    return 'RoverMetricHealth(electronics: $electronics, drivetrain: $drivetrain, intake: $intake, sensors: $sensors, garage: $garage, power: $power, general: $general)';
+    return 'RoverStateHealth(electronics: $electronics, drivetrain: $drivetrain, intake: $intake, sensors: $sensors, garage: $garage, power: $power, general: $general)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RoverMetricHealth &&
+            other is _$_RoverStateHealth &&
             const DeepCollectionEquality()
                 .equals(other.electronics, electronics) &&
             const DeepCollectionEquality()
@@ -669,28 +668,27 @@ class _$_RoverMetricHealth implements _RoverMetricHealth {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>
-      __$$_RoverMetricHealthCopyWithImpl<_$_RoverMetricHealth>(
-          this, _$identity);
+  _$$_RoverStateHealthCopyWith<_$_RoverStateHealth> get copyWith =>
+      __$$_RoverStateHealthCopyWithImpl<_$_RoverStateHealth>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RoverMetricHealthToJson(this);
+    return _$$_RoverStateHealthToJson(this);
   }
 }
 
-abstract class _RoverMetricHealth implements RoverMetricHealth {
-  const factory _RoverMetricHealth(
+abstract class _RoverStateHealth implements RoverStateHealth {
+  const factory _RoverStateHealth(
       {final DeviceHealth electronics,
       final DeviceHealth drivetrain,
       final DeviceHealth intake,
       final DeviceHealth sensors,
       final DeviceHealth garage,
       final DeviceHealth power,
-      final DeviceHealth general}) = _$_RoverMetricHealth;
+      final DeviceHealth general}) = _$_RoverStateHealth;
 
-  factory _RoverMetricHealth.fromJson(Map<String, dynamic> json) =
-      _$_RoverMetricHealth.fromJson;
+  factory _RoverStateHealth.fromJson(Map<String, dynamic> json) =
+      _$_RoverStateHealth.fromJson;
 
   @override
   DeviceHealth get electronics => throw _privateConstructorUsedError;
@@ -708,44 +706,44 @@ abstract class _RoverMetricHealth implements RoverMetricHealth {
   DeviceHealth get general => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricHealthCopyWith<_$_RoverMetricHealth> get copyWith =>
+  _$$_RoverStateHealthCopyWith<_$_RoverStateHealth> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-RoverMetricTelemetry _$RoverMetricTelemetryFromJson(Map<String, dynamic> json) {
-  return _RoverMetricTelemetry.fromJson(json);
+RoverStateTelemetry _$RoverStateTelemetryFromJson(Map<String, dynamic> json) {
+  return _RoverStateTelemetry.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RoverMetricTelemetry {
+mixin _$RoverStateTelemetry {
   DeviceLocation get location => throw _privateConstructorUsedError;
   double get heading => throw _privateConstructorUsedError;
   double get speed => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverMetricTelemetryCopyWith<RoverMetricTelemetry> get copyWith =>
+  $RoverStateTelemetryCopyWith<RoverStateTelemetry> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RoverMetricTelemetryCopyWith<$Res> {
-  factory $RoverMetricTelemetryCopyWith(RoverMetricTelemetry value,
-          $Res Function(RoverMetricTelemetry) then) =
-      _$RoverMetricTelemetryCopyWithImpl<$Res>;
+abstract class $RoverStateTelemetryCopyWith<$Res> {
+  factory $RoverStateTelemetryCopyWith(
+          RoverStateTelemetry value, $Res Function(RoverStateTelemetry) then) =
+      _$RoverStateTelemetryCopyWithImpl<$Res>;
   $Res call({DeviceLocation location, double heading, double speed});
 
   $DeviceLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
-class _$RoverMetricTelemetryCopyWithImpl<$Res>
-    implements $RoverMetricTelemetryCopyWith<$Res> {
-  _$RoverMetricTelemetryCopyWithImpl(this._value, this._then);
+class _$RoverStateTelemetryCopyWithImpl<$Res>
+    implements $RoverStateTelemetryCopyWith<$Res> {
+  _$RoverStateTelemetryCopyWithImpl(this._value, this._then);
 
-  final RoverMetricTelemetry _value;
+  final RoverStateTelemetry _value;
   // ignore: unused_field
-  final $Res Function(RoverMetricTelemetry) _then;
+  final $Res Function(RoverStateTelemetry) _then;
 
   @override
   $Res call({
@@ -778,11 +776,11 @@ class _$RoverMetricTelemetryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$$_RoverMetricTelemetryCopyWith<$Res>
-    implements $RoverMetricTelemetryCopyWith<$Res> {
-  factory _$$_RoverMetricTelemetryCopyWith(_$_RoverMetricTelemetry value,
-          $Res Function(_$_RoverMetricTelemetry) then) =
-      __$$_RoverMetricTelemetryCopyWithImpl<$Res>;
+abstract class _$$_RoverStateTelemetryCopyWith<$Res>
+    implements $RoverStateTelemetryCopyWith<$Res> {
+  factory _$$_RoverStateTelemetryCopyWith(_$_RoverStateTelemetry value,
+          $Res Function(_$_RoverStateTelemetry) then) =
+      __$$_RoverStateTelemetryCopyWithImpl<$Res>;
   @override
   $Res call({DeviceLocation location, double heading, double speed});
 
@@ -791,15 +789,15 @@ abstract class _$$_RoverMetricTelemetryCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
-    extends _$RoverMetricTelemetryCopyWithImpl<$Res>
-    implements _$$_RoverMetricTelemetryCopyWith<$Res> {
-  __$$_RoverMetricTelemetryCopyWithImpl(_$_RoverMetricTelemetry _value,
-      $Res Function(_$_RoverMetricTelemetry) _then)
-      : super(_value, (v) => _then(v as _$_RoverMetricTelemetry));
+class __$$_RoverStateTelemetryCopyWithImpl<$Res>
+    extends _$RoverStateTelemetryCopyWithImpl<$Res>
+    implements _$$_RoverStateTelemetryCopyWith<$Res> {
+  __$$_RoverStateTelemetryCopyWithImpl(_$_RoverStateTelemetry _value,
+      $Res Function(_$_RoverStateTelemetry) _then)
+      : super(_value, (v) => _then(v as _$_RoverStateTelemetry));
 
   @override
-  _$_RoverMetricTelemetry get _value => super._value as _$_RoverMetricTelemetry;
+  _$_RoverStateTelemetry get _value => super._value as _$_RoverStateTelemetry;
 
   @override
   $Res call({
@@ -807,7 +805,7 @@ class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
     Object? heading = freezed,
     Object? speed = freezed,
   }) {
-    return _then(_$_RoverMetricTelemetry(
+    return _then(_$_RoverStateTelemetry(
       location: location == freezed
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -826,12 +824,12 @@ class __$$_RoverMetricTelemetryCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
-  const _$_RoverMetricTelemetry(
+class _$_RoverStateTelemetry implements _RoverStateTelemetry {
+  const _$_RoverStateTelemetry(
       {required this.location, required this.heading, required this.speed});
 
-  factory _$_RoverMetricTelemetry.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverMetricTelemetryFromJson(json);
+  factory _$_RoverStateTelemetry.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStateTelemetryFromJson(json);
 
   @override
   final DeviceLocation location;
@@ -842,14 +840,14 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 
   @override
   String toString() {
-    return 'RoverMetricTelemetry(location: $location, heading: $heading, speed: $speed)';
+    return 'RoverStateTelemetry(location: $location, heading: $heading, speed: $speed)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RoverMetricTelemetry &&
+            other is _$_RoverStateTelemetry &&
             const DeepCollectionEquality().equals(other.location, location) &&
             const DeepCollectionEquality().equals(other.heading, heading) &&
             const DeepCollectionEquality().equals(other.speed, speed));
@@ -865,24 +863,24 @@ class _$_RoverMetricTelemetry implements _RoverMetricTelemetry {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith =>
-      __$$_RoverMetricTelemetryCopyWithImpl<_$_RoverMetricTelemetry>(
+  _$$_RoverStateTelemetryCopyWith<_$_RoverStateTelemetry> get copyWith =>
+      __$$_RoverStateTelemetryCopyWithImpl<_$_RoverStateTelemetry>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RoverMetricTelemetryToJson(this);
+    return _$$_RoverStateTelemetryToJson(this);
   }
 }
 
-abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
-  const factory _RoverMetricTelemetry(
+abstract class _RoverStateTelemetry implements RoverStateTelemetry {
+  const factory _RoverStateTelemetry(
       {required final DeviceLocation location,
       required final double heading,
-      required final double speed}) = _$_RoverMetricTelemetry;
+      required final double speed}) = _$_RoverStateTelemetry;
 
-  factory _RoverMetricTelemetry.fromJson(Map<String, dynamic> json) =
-      _$_RoverMetricTelemetry.fromJson;
+  factory _RoverStateTelemetry.fromJson(Map<String, dynamic> json) =
+      _$_RoverStateTelemetry.fromJson;
 
   @override
   DeviceLocation get location => throw _privateConstructorUsedError;
@@ -892,46 +890,48 @@ abstract class _RoverMetricTelemetry implements RoverMetricTelemetry {
   double get speed => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverMetricTelemetryCopyWith<_$_RoverMetricTelemetry> get copyWith =>
+  _$$_RoverStateTelemetryCopyWith<_$_RoverStateTelemetry> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-RoverPiLits _$RoverPiLitsFromJson(Map<String, dynamic> json) {
-  return _RoverPiLits.fromJson(json);
+RoverStatePiLits _$RoverStatePiLitsFromJson(Map<String, dynamic> json) {
+  return _RoverStatePiLits.fromJson(json);
 }
 
 /// @nodoc
-mixin _$RoverPiLits {
+mixin _$RoverStatePiLits {
   PiLitStateType get state => throw _privateConstructorUsedError;
   int get pi_lits_stowed_left => throw _privateConstructorUsedError;
   int get pi_lits_stowed_right => throw _privateConstructorUsedError;
-  List<PiLit> get deployed_pi_lits => throw _privateConstructorUsedError;
+  List<RoverStatePiLit> get deployed_pi_lits =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $RoverPiLitsCopyWith<RoverPiLits> get copyWith =>
+  $RoverStatePiLitsCopyWith<RoverStatePiLits> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RoverPiLitsCopyWith<$Res> {
-  factory $RoverPiLitsCopyWith(
-          RoverPiLits value, $Res Function(RoverPiLits) then) =
-      _$RoverPiLitsCopyWithImpl<$Res>;
+abstract class $RoverStatePiLitsCopyWith<$Res> {
+  factory $RoverStatePiLitsCopyWith(
+          RoverStatePiLits value, $Res Function(RoverStatePiLits) then) =
+      _$RoverStatePiLitsCopyWithImpl<$Res>;
   $Res call(
       {PiLitStateType state,
       int pi_lits_stowed_left,
       int pi_lits_stowed_right,
-      List<PiLit> deployed_pi_lits});
+      List<RoverStatePiLit> deployed_pi_lits});
 }
 
 /// @nodoc
-class _$RoverPiLitsCopyWithImpl<$Res> implements $RoverPiLitsCopyWith<$Res> {
-  _$RoverPiLitsCopyWithImpl(this._value, this._then);
+class _$RoverStatePiLitsCopyWithImpl<$Res>
+    implements $RoverStatePiLitsCopyWith<$Res> {
+  _$RoverStatePiLitsCopyWithImpl(this._value, this._then);
 
-  final RoverPiLits _value;
+  final RoverStatePiLits _value;
   // ignore: unused_field
-  final $Res Function(RoverPiLits) _then;
+  final $Res Function(RoverStatePiLits) _then;
 
   @override
   $Res call({
@@ -956,34 +956,35 @@ class _$RoverPiLitsCopyWithImpl<$Res> implements $RoverPiLitsCopyWith<$Res> {
       deployed_pi_lits: deployed_pi_lits == freezed
           ? _value.deployed_pi_lits
           : deployed_pi_lits // ignore: cast_nullable_to_non_nullable
-              as List<PiLit>,
+              as List<RoverStatePiLit>,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$$_RoverPiLitsCopyWith<$Res>
-    implements $RoverPiLitsCopyWith<$Res> {
-  factory _$$_RoverPiLitsCopyWith(
-          _$_RoverPiLits value, $Res Function(_$_RoverPiLits) then) =
-      __$$_RoverPiLitsCopyWithImpl<$Res>;
+abstract class _$$_RoverStatePiLitsCopyWith<$Res>
+    implements $RoverStatePiLitsCopyWith<$Res> {
+  factory _$$_RoverStatePiLitsCopyWith(
+          _$_RoverStatePiLits value, $Res Function(_$_RoverStatePiLits) then) =
+      __$$_RoverStatePiLitsCopyWithImpl<$Res>;
   @override
   $Res call(
       {PiLitStateType state,
       int pi_lits_stowed_left,
       int pi_lits_stowed_right,
-      List<PiLit> deployed_pi_lits});
+      List<RoverStatePiLit> deployed_pi_lits});
 }
 
 /// @nodoc
-class __$$_RoverPiLitsCopyWithImpl<$Res> extends _$RoverPiLitsCopyWithImpl<$Res>
-    implements _$$_RoverPiLitsCopyWith<$Res> {
-  __$$_RoverPiLitsCopyWithImpl(
-      _$_RoverPiLits _value, $Res Function(_$_RoverPiLits) _then)
-      : super(_value, (v) => _then(v as _$_RoverPiLits));
+class __$$_RoverStatePiLitsCopyWithImpl<$Res>
+    extends _$RoverStatePiLitsCopyWithImpl<$Res>
+    implements _$$_RoverStatePiLitsCopyWith<$Res> {
+  __$$_RoverStatePiLitsCopyWithImpl(
+      _$_RoverStatePiLits _value, $Res Function(_$_RoverStatePiLits) _then)
+      : super(_value, (v) => _then(v as _$_RoverStatePiLits));
 
   @override
-  _$_RoverPiLits get _value => super._value as _$_RoverPiLits;
+  _$_RoverStatePiLits get _value => super._value as _$_RoverStatePiLits;
 
   @override
   $Res call({
@@ -992,7 +993,7 @@ class __$$_RoverPiLitsCopyWithImpl<$Res> extends _$RoverPiLitsCopyWithImpl<$Res>
     Object? pi_lits_stowed_right = freezed,
     Object? deployed_pi_lits = freezed,
   }) {
-    return _then(_$_RoverPiLits(
+    return _then(_$_RoverStatePiLits(
       state: state == freezed
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -1008,23 +1009,23 @@ class __$$_RoverPiLitsCopyWithImpl<$Res> extends _$RoverPiLitsCopyWithImpl<$Res>
       deployed_pi_lits: deployed_pi_lits == freezed
           ? _value._deployed_pi_lits
           : deployed_pi_lits // ignore: cast_nullable_to_non_nullable
-              as List<PiLit>,
+              as List<RoverStatePiLit>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_RoverPiLits implements _RoverPiLits {
-  const _$_RoverPiLits(
+class _$_RoverStatePiLits implements _RoverStatePiLits {
+  const _$_RoverStatePiLits(
       {required this.state,
       required this.pi_lits_stowed_left,
       required this.pi_lits_stowed_right,
-      required final List<PiLit> deployed_pi_lits})
+      required final List<RoverStatePiLit> deployed_pi_lits})
       : _deployed_pi_lits = deployed_pi_lits;
 
-  factory _$_RoverPiLits.fromJson(Map<String, dynamic> json) =>
-      _$$_RoverPiLitsFromJson(json);
+  factory _$_RoverStatePiLits.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStatePiLitsFromJson(json);
 
   @override
   final PiLitStateType state;
@@ -1032,23 +1033,23 @@ class _$_RoverPiLits implements _RoverPiLits {
   final int pi_lits_stowed_left;
   @override
   final int pi_lits_stowed_right;
-  final List<PiLit> _deployed_pi_lits;
+  final List<RoverStatePiLit> _deployed_pi_lits;
   @override
-  List<PiLit> get deployed_pi_lits {
+  List<RoverStatePiLit> get deployed_pi_lits {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_deployed_pi_lits);
   }
 
   @override
   String toString() {
-    return 'RoverPiLits(state: $state, pi_lits_stowed_left: $pi_lits_stowed_left, pi_lits_stowed_right: $pi_lits_stowed_right, deployed_pi_lits: $deployed_pi_lits)';
+    return 'RoverStatePiLits(state: $state, pi_lits_stowed_left: $pi_lits_stowed_left, pi_lits_stowed_right: $pi_lits_stowed_right, deployed_pi_lits: $deployed_pi_lits)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RoverPiLits &&
+            other is _$_RoverStatePiLits &&
             const DeepCollectionEquality().equals(other.state, state) &&
             const DeepCollectionEquality()
                 .equals(other.pi_lits_stowed_left, pi_lits_stowed_left) &&
@@ -1069,24 +1070,25 @@ class _$_RoverPiLits implements _RoverPiLits {
 
   @JsonKey(ignore: true)
   @override
-  _$$_RoverPiLitsCopyWith<_$_RoverPiLits> get copyWith =>
-      __$$_RoverPiLitsCopyWithImpl<_$_RoverPiLits>(this, _$identity);
+  _$$_RoverStatePiLitsCopyWith<_$_RoverStatePiLits> get copyWith =>
+      __$$_RoverStatePiLitsCopyWithImpl<_$_RoverStatePiLits>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RoverPiLitsToJson(this);
+    return _$$_RoverStatePiLitsToJson(this);
   }
 }
 
-abstract class _RoverPiLits implements RoverPiLits {
-  const factory _RoverPiLits(
-      {required final PiLitStateType state,
-      required final int pi_lits_stowed_left,
-      required final int pi_lits_stowed_right,
-      required final List<PiLit> deployed_pi_lits}) = _$_RoverPiLits;
+abstract class _RoverStatePiLits implements RoverStatePiLits {
+  const factory _RoverStatePiLits(
+          {required final PiLitStateType state,
+          required final int pi_lits_stowed_left,
+          required final int pi_lits_stowed_right,
+          required final List<RoverStatePiLit> deployed_pi_lits}) =
+      _$_RoverStatePiLits;
 
-  factory _RoverPiLits.fromJson(Map<String, dynamic> json) =
-      _$_RoverPiLits.fromJson;
+  factory _RoverStatePiLits.fromJson(Map<String, dynamic> json) =
+      _$_RoverStatePiLits.fromJson;
 
   @override
   PiLitStateType get state => throw _privateConstructorUsedError;
@@ -1095,43 +1097,47 @@ abstract class _RoverPiLits implements RoverPiLits {
   @override
   int get pi_lits_stowed_right => throw _privateConstructorUsedError;
   @override
-  List<PiLit> get deployed_pi_lits => throw _privateConstructorUsedError;
+  List<RoverStatePiLit> get deployed_pi_lits =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_RoverPiLitsCopyWith<_$_RoverPiLits> get copyWith =>
+  _$$_RoverStatePiLitsCopyWith<_$_RoverStatePiLits> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-PiLit _$PiLitFromJson(Map<String, dynamic> json) {
-  return _PiLit.fromJson(json);
+RoverStatePiLit _$RoverStatePiLitFromJson(Map<String, dynamic> json) {
+  return _RoverStatePiLit.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PiLit {
+mixin _$RoverStatePiLit {
   String get pi_lit_id => throw _privateConstructorUsedError;
   DeviceLocation get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PiLitCopyWith<PiLit> get copyWith => throw _privateConstructorUsedError;
+  $RoverStatePiLitCopyWith<RoverStatePiLit> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PiLitCopyWith<$Res> {
-  factory $PiLitCopyWith(PiLit value, $Res Function(PiLit) then) =
-      _$PiLitCopyWithImpl<$Res>;
+abstract class $RoverStatePiLitCopyWith<$Res> {
+  factory $RoverStatePiLitCopyWith(
+          RoverStatePiLit value, $Res Function(RoverStatePiLit) then) =
+      _$RoverStatePiLitCopyWithImpl<$Res>;
   $Res call({String pi_lit_id, DeviceLocation location});
 
   $DeviceLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
-class _$PiLitCopyWithImpl<$Res> implements $PiLitCopyWith<$Res> {
-  _$PiLitCopyWithImpl(this._value, this._then);
+class _$RoverStatePiLitCopyWithImpl<$Res>
+    implements $RoverStatePiLitCopyWith<$Res> {
+  _$RoverStatePiLitCopyWithImpl(this._value, this._then);
 
-  final PiLit _value;
+  final RoverStatePiLit _value;
   // ignore: unused_field
-  final $Res Function(PiLit) _then;
+  final $Res Function(RoverStatePiLit) _then;
 
   @override
   $Res call({
@@ -1159,9 +1165,11 @@ class _$PiLitCopyWithImpl<$Res> implements $PiLitCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_PiLitCopyWith<$Res> implements $PiLitCopyWith<$Res> {
-  factory _$$_PiLitCopyWith(_$_PiLit value, $Res Function(_$_PiLit) then) =
-      __$$_PiLitCopyWithImpl<$Res>;
+abstract class _$$_RoverStatePiLitCopyWith<$Res>
+    implements $RoverStatePiLitCopyWith<$Res> {
+  factory _$$_RoverStatePiLitCopyWith(
+          _$_RoverStatePiLit value, $Res Function(_$_RoverStatePiLit) then) =
+      __$$_RoverStatePiLitCopyWithImpl<$Res>;
   @override
   $Res call({String pi_lit_id, DeviceLocation location});
 
@@ -1170,20 +1178,22 @@ abstract class _$$_PiLitCopyWith<$Res> implements $PiLitCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PiLitCopyWithImpl<$Res> extends _$PiLitCopyWithImpl<$Res>
-    implements _$$_PiLitCopyWith<$Res> {
-  __$$_PiLitCopyWithImpl(_$_PiLit _value, $Res Function(_$_PiLit) _then)
-      : super(_value, (v) => _then(v as _$_PiLit));
+class __$$_RoverStatePiLitCopyWithImpl<$Res>
+    extends _$RoverStatePiLitCopyWithImpl<$Res>
+    implements _$$_RoverStatePiLitCopyWith<$Res> {
+  __$$_RoverStatePiLitCopyWithImpl(
+      _$_RoverStatePiLit _value, $Res Function(_$_RoverStatePiLit) _then)
+      : super(_value, (v) => _then(v as _$_RoverStatePiLit));
 
   @override
-  _$_PiLit get _value => super._value as _$_PiLit;
+  _$_RoverStatePiLit get _value => super._value as _$_RoverStatePiLit;
 
   @override
   $Res call({
     Object? pi_lit_id = freezed,
     Object? location = freezed,
   }) {
-    return _then(_$_PiLit(
+    return _then(_$_RoverStatePiLit(
       pi_lit_id: pi_lit_id == freezed
           ? _value.pi_lit_id
           : pi_lit_id // ignore: cast_nullable_to_non_nullable
@@ -1198,11 +1208,11 @@ class __$$_PiLitCopyWithImpl<$Res> extends _$PiLitCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_PiLit implements _PiLit {
-  const _$_PiLit({required this.pi_lit_id, required this.location});
+class _$_RoverStatePiLit implements _RoverStatePiLit {
+  const _$_RoverStatePiLit({required this.pi_lit_id, required this.location});
 
-  factory _$_PiLit.fromJson(Map<String, dynamic> json) =>
-      _$$_PiLitFromJson(json);
+  factory _$_RoverStatePiLit.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStatePiLitFromJson(json);
 
   @override
   final String pi_lit_id;
@@ -1211,14 +1221,14 @@ class _$_PiLit implements _PiLit {
 
   @override
   String toString() {
-    return 'PiLit(pi_lit_id: $pi_lit_id, location: $location)';
+    return 'RoverStatePiLit(pi_lit_id: $pi_lit_id, location: $location)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PiLit &&
+            other is _$_RoverStatePiLit &&
             const DeepCollectionEquality().equals(other.pi_lit_id, pi_lit_id) &&
             const DeepCollectionEquality().equals(other.location, location));
   }
@@ -1232,21 +1242,22 @@ class _$_PiLit implements _PiLit {
 
   @JsonKey(ignore: true)
   @override
-  _$$_PiLitCopyWith<_$_PiLit> get copyWith =>
-      __$$_PiLitCopyWithImpl<_$_PiLit>(this, _$identity);
+  _$$_RoverStatePiLitCopyWith<_$_RoverStatePiLit> get copyWith =>
+      __$$_RoverStatePiLitCopyWithImpl<_$_RoverStatePiLit>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PiLitToJson(this);
+    return _$$_RoverStatePiLitToJson(this);
   }
 }
 
-abstract class _PiLit implements PiLit {
-  const factory _PiLit(
+abstract class _RoverStatePiLit implements RoverStatePiLit {
+  const factory _RoverStatePiLit(
       {required final String pi_lit_id,
-      required final DeviceLocation location}) = _$_PiLit;
+      required final DeviceLocation location}) = _$_RoverStatePiLit;
 
-  factory _PiLit.fromJson(Map<String, dynamic> json) = _$_PiLit.fromJson;
+  factory _RoverStatePiLit.fromJson(Map<String, dynamic> json) =
+      _$_RoverStatePiLit.fromJson;
 
   @override
   String get pi_lit_id => throw _privateConstructorUsedError;
@@ -1254,40 +1265,43 @@ abstract class _PiLit implements PiLit {
   DeviceLocation get location => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_PiLitCopyWith<_$_PiLit> get copyWith =>
+  _$$_RoverStatePiLitCopyWith<_$_RoverStatePiLit> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-Garage _$GarageFromJson(Map<String, dynamic> json) {
-  return _Garage.fromJson(json);
+RoverStateGarage _$RoverStateGarageFromJson(Map<String, dynamic> json) {
+  return _RoverStateGarage.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Garage {
+mixin _$RoverStateGarage {
   String get garage_id => throw _privateConstructorUsedError;
   DeviceLocation get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GarageCopyWith<Garage> get copyWith => throw _privateConstructorUsedError;
+  $RoverStateGarageCopyWith<RoverStateGarage> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GarageCopyWith<$Res> {
-  factory $GarageCopyWith(Garage value, $Res Function(Garage) then) =
-      _$GarageCopyWithImpl<$Res>;
+abstract class $RoverStateGarageCopyWith<$Res> {
+  factory $RoverStateGarageCopyWith(
+          RoverStateGarage value, $Res Function(RoverStateGarage) then) =
+      _$RoverStateGarageCopyWithImpl<$Res>;
   $Res call({String garage_id, DeviceLocation location});
 
   $DeviceLocationCopyWith<$Res> get location;
 }
 
 /// @nodoc
-class _$GarageCopyWithImpl<$Res> implements $GarageCopyWith<$Res> {
-  _$GarageCopyWithImpl(this._value, this._then);
+class _$RoverStateGarageCopyWithImpl<$Res>
+    implements $RoverStateGarageCopyWith<$Res> {
+  _$RoverStateGarageCopyWithImpl(this._value, this._then);
 
-  final Garage _value;
+  final RoverStateGarage _value;
   // ignore: unused_field
-  final $Res Function(Garage) _then;
+  final $Res Function(RoverStateGarage) _then;
 
   @override
   $Res call({
@@ -1315,9 +1329,11 @@ class _$GarageCopyWithImpl<$Res> implements $GarageCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_GarageCopyWith<$Res> implements $GarageCopyWith<$Res> {
-  factory _$$_GarageCopyWith(_$_Garage value, $Res Function(_$_Garage) then) =
-      __$$_GarageCopyWithImpl<$Res>;
+abstract class _$$_RoverStateGarageCopyWith<$Res>
+    implements $RoverStateGarageCopyWith<$Res> {
+  factory _$$_RoverStateGarageCopyWith(
+          _$_RoverStateGarage value, $Res Function(_$_RoverStateGarage) then) =
+      __$$_RoverStateGarageCopyWithImpl<$Res>;
   @override
   $Res call({String garage_id, DeviceLocation location});
 
@@ -1326,20 +1342,22 @@ abstract class _$$_GarageCopyWith<$Res> implements $GarageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_GarageCopyWithImpl<$Res> extends _$GarageCopyWithImpl<$Res>
-    implements _$$_GarageCopyWith<$Res> {
-  __$$_GarageCopyWithImpl(_$_Garage _value, $Res Function(_$_Garage) _then)
-      : super(_value, (v) => _then(v as _$_Garage));
+class __$$_RoverStateGarageCopyWithImpl<$Res>
+    extends _$RoverStateGarageCopyWithImpl<$Res>
+    implements _$$_RoverStateGarageCopyWith<$Res> {
+  __$$_RoverStateGarageCopyWithImpl(
+      _$_RoverStateGarage _value, $Res Function(_$_RoverStateGarage) _then)
+      : super(_value, (v) => _then(v as _$_RoverStateGarage));
 
   @override
-  _$_Garage get _value => super._value as _$_Garage;
+  _$_RoverStateGarage get _value => super._value as _$_RoverStateGarage;
 
   @override
   $Res call({
     Object? garage_id = freezed,
     Object? location = freezed,
   }) {
-    return _then(_$_Garage(
+    return _then(_$_RoverStateGarage(
       garage_id: garage_id == freezed
           ? _value.garage_id
           : garage_id // ignore: cast_nullable_to_non_nullable
@@ -1354,11 +1372,11 @@ class __$$_GarageCopyWithImpl<$Res> extends _$GarageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Garage implements _Garage {
-  const _$_Garage({required this.garage_id, required this.location});
+class _$_RoverStateGarage implements _RoverStateGarage {
+  const _$_RoverStateGarage({required this.garage_id, required this.location});
 
-  factory _$_Garage.fromJson(Map<String, dynamic> json) =>
-      _$$_GarageFromJson(json);
+  factory _$_RoverStateGarage.fromJson(Map<String, dynamic> json) =>
+      _$$_RoverStateGarageFromJson(json);
 
   @override
   final String garage_id;
@@ -1367,14 +1385,14 @@ class _$_Garage implements _Garage {
 
   @override
   String toString() {
-    return 'Garage(garage_id: $garage_id, location: $location)';
+    return 'RoverStateGarage(garage_id: $garage_id, location: $location)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Garage &&
+            other is _$_RoverStateGarage &&
             const DeepCollectionEquality().equals(other.garage_id, garage_id) &&
             const DeepCollectionEquality().equals(other.location, location));
   }
@@ -1388,21 +1406,22 @@ class _$_Garage implements _Garage {
 
   @JsonKey(ignore: true)
   @override
-  _$$_GarageCopyWith<_$_Garage> get copyWith =>
-      __$$_GarageCopyWithImpl<_$_Garage>(this, _$identity);
+  _$$_RoverStateGarageCopyWith<_$_RoverStateGarage> get copyWith =>
+      __$$_RoverStateGarageCopyWithImpl<_$_RoverStateGarage>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GarageToJson(this);
+    return _$$_RoverStateGarageToJson(this);
   }
 }
 
-abstract class _Garage implements Garage {
-  const factory _Garage(
+abstract class _RoverStateGarage implements RoverStateGarage {
+  const factory _RoverStateGarage(
       {required final String garage_id,
-      required final DeviceLocation location}) = _$_Garage;
+      required final DeviceLocation location}) = _$_RoverStateGarage;
 
-  factory _Garage.fromJson(Map<String, dynamic> json) = _$_Garage.fromJson;
+  factory _RoverStateGarage.fromJson(Map<String, dynamic> json) =
+      _$_RoverStateGarage.fromJson;
 
   @override
   String get garage_id => throw _privateConstructorUsedError;
@@ -1410,6 +1429,6 @@ abstract class _Garage implements Garage {
   DeviceLocation get location => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$$_GarageCopyWith<_$_Garage> get copyWith =>
+  _$$_RoverStateGarageCopyWith<_$_RoverStateGarage> get copyWith =>
       throw _privateConstructorUsedError;
 }

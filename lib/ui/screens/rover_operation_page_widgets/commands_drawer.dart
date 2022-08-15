@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class OpenCommandsDrawer extends StatelessWidget {
   const OpenCommandsDrawer({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class OpenCommandsDrawer extends StatelessWidget {
           foregroundColor: MaterialStateProperty.all(fontColor),
           backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 100, 100, 100)),
         ),
-        child: Text(
+        child: const Text(
           'Open Command Drawer',
           textAlign: TextAlign.center,
         ),
@@ -54,23 +55,21 @@ class OpenCommandsDrawer extends StatelessWidget {
 }
 
 class CommandsDrawer extends StatelessWidget {
-  CommandsDrawer({Key? key, required this.sendCommand}) : super(key: key);
-  List commandList = allRoverCommands;
-  final Function(RoverCommand) sendCommand;
+  final WebRTCConnection webRtcConnection;
+  const CommandsDrawer(this.webRtcConnection, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView.builder(
-        itemCount: commandList.length,
+        itemCount: allRoverCommands.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 20, right: 2),
             child: ListTile(
-              title: Text(
-                allRoverCommands[index].last,
-              ),
+              title: allRoverCommands[index].last,
               onTap: () {
-                sendCommand(allRoverCommands[index].first);
+                allRoverCommands[index].first(webRtcConnection, context);
               },
             ),
           );

@@ -1,29 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rover_metrics.dart';
+part of 'rover_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RoverMetrics _$$_RoverMetricsFromJson(Map<String, dynamic> json) =>
-    _$_RoverMetrics(
+_$_RoverState _$$_RoverStateFromJson(Map<String, dynamic> json) =>
+    _$_RoverState(
       rover_id: json['rover_id'] as String,
       state: $enumDecode(_$RoverStateTypeEnumMap, json['state']),
       status: $enumDecode(_$DeviceStatusTypeEnumMap, json['status']),
       battery_voltage: (json['battery_voltage'] as num?)?.toDouble(),
       battery_percent: json['battery_percent'] as int,
-      subsystems: RoverMetricHealth.fromJson(
-          json['subsystems'] as Map<String, dynamic>),
-      telemetry: RoverMetricTelemetry.fromJson(
+      subsystems:
+          RoverStateHealth.fromJson(json['subsystems'] as Map<String, dynamic>),
+      telemetry: RoverStateTelemetry.fromJson(
           json['telemetry'] as Map<String, dynamic>),
-      pi_lits: RoverPiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
+      pi_lits:
+          RoverStatePiLits.fromJson(json['pi_lits'] as Map<String, dynamic>),
       garage: json['garage'] == null
           ? null
-          : Garage.fromJson(json['garage'] as Map<String, dynamic>),
+          : RoverStateGarage.fromJson(json['garage'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_RoverMetricsToJson(_$_RoverMetrics instance) =>
+Map<String, dynamic> _$$_RoverStateToJson(_$_RoverState instance) =>
     <String, dynamic>{
       'rover_id': instance.rover_id,
       'state': _$RoverStateTypeEnumMap[instance.state],
@@ -54,8 +55,8 @@ const _$DeviceStatusTypeEnumMap = {
   DeviceStatusType.unavailable: 'unavailable',
 };
 
-_$_RoverMetricHealth _$$_RoverMetricHealthFromJson(Map<String, dynamic> json) =>
-    _$_RoverMetricHealth(
+_$_RoverStateHealth _$$_RoverStateHealthFromJson(Map<String, dynamic> json) =>
+    _$_RoverStateHealth(
       electronics: json['electronics'] == null
           ? const DeviceHealth()
           : DeviceHealth.fromJson(json['electronics'] as Map<String, dynamic>),
@@ -79,8 +80,7 @@ _$_RoverMetricHealth _$$_RoverMetricHealthFromJson(Map<String, dynamic> json) =>
           : DeviceHealth.fromJson(json['general'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_RoverMetricHealthToJson(
-        _$_RoverMetricHealth instance) =>
+Map<String, dynamic> _$$_RoverStateHealthToJson(_$_RoverStateHealth instance) =>
     <String, dynamic>{
       'electronics': instance.electronics,
       'drivetrain': instance.drivetrain,
@@ -91,34 +91,34 @@ Map<String, dynamic> _$$_RoverMetricHealthToJson(
       'general': instance.general,
     };
 
-_$_RoverMetricTelemetry _$$_RoverMetricTelemetryFromJson(
+_$_RoverStateTelemetry _$$_RoverStateTelemetryFromJson(
         Map<String, dynamic> json) =>
-    _$_RoverMetricTelemetry(
+    _$_RoverStateTelemetry(
       location:
           DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
       heading: (json['heading'] as num).toDouble(),
       speed: (json['speed'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$_RoverMetricTelemetryToJson(
-        _$_RoverMetricTelemetry instance) =>
+Map<String, dynamic> _$$_RoverStateTelemetryToJson(
+        _$_RoverStateTelemetry instance) =>
     <String, dynamic>{
       'location': instance.location,
       'heading': instance.heading,
       'speed': instance.speed,
     };
 
-_$_RoverPiLits _$$_RoverPiLitsFromJson(Map<String, dynamic> json) =>
-    _$_RoverPiLits(
+_$_RoverStatePiLits _$$_RoverStatePiLitsFromJson(Map<String, dynamic> json) =>
+    _$_RoverStatePiLits(
       state: $enumDecode(_$PiLitStateTypeEnumMap, json['state']),
       pi_lits_stowed_left: json['pi_lits_stowed_left'] as int,
       pi_lits_stowed_right: json['pi_lits_stowed_right'] as int,
       deployed_pi_lits: (json['deployed_pi_lits'] as List<dynamic>)
-          .map((e) => PiLit.fromJson(e as Map<String, dynamic>))
+          .map((e) => RoverStatePiLit.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$_RoverPiLitsToJson(_$_RoverPiLits instance) =>
+Map<String, dynamic> _$$_RoverStatePiLitsToJson(_$_RoverStatePiLits instance) =>
     <String, dynamic>{
       'state': _$PiLitStateTypeEnumMap[instance.state],
       'pi_lits_stowed_left': instance.pi_lits_stowed_left,
@@ -134,24 +134,28 @@ const _$PiLitStateTypeEnumMap = {
   PiLitStateType.simultaneous: 'simultaneous',
 };
 
-_$_PiLit _$$_PiLitFromJson(Map<String, dynamic> json) => _$_PiLit(
+_$_RoverStatePiLit _$$_RoverStatePiLitFromJson(Map<String, dynamic> json) =>
+    _$_RoverStatePiLit(
       pi_lit_id: json['pi_lit_id'] as String,
       location:
           DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_PiLitToJson(_$_PiLit instance) => <String, dynamic>{
+Map<String, dynamic> _$$_RoverStatePiLitToJson(_$_RoverStatePiLit instance) =>
+    <String, dynamic>{
       'pi_lit_id': instance.pi_lit_id,
       'location': instance.location,
     };
 
-_$_Garage _$$_GarageFromJson(Map<String, dynamic> json) => _$_Garage(
+_$_RoverStateGarage _$$_RoverStateGarageFromJson(Map<String, dynamic> json) =>
+    _$_RoverStateGarage(
       garage_id: json['garage_id'] as String,
       location:
           DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_GarageToJson(_$_Garage instance) => <String, dynamic>{
+Map<String, dynamic> _$$_RoverStateGarageToJson(_$_RoverStateGarage instance) =>
+    <String, dynamic>{
       'garage_id': instance.garage_id,
       'location': instance.location,
     };

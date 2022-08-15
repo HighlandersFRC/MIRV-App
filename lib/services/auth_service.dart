@@ -34,11 +34,18 @@ class AuthService {
     }
   }
 
+  // TODO: Add exception handling
+  // Connection closed before full header was received
   Future<bool> validateToken() async {
     String? token = sessionStorageService.retriveAccessToken();
-    var res =
-        await http.post(getKeycloakUserInfoEndpoint(), headers: {"Authorization": "Bearer $token"}, body: {"client_id": "mirv"});
-    return res.statusCode == 200 ? true : false;
+    try {
+      var res = await http
+          .post(getKeycloakUserInfoEndpoint(), headers: {"Authorization": "Bearer $token"}, body: {"client_id": "mirv"});
+      return res.statusCode == 200 ? true : false;
+    } catch (e) {
+      print("EXCEPTION: $e");
+      return false;
+    }
   }
 
   setMirvEndpoint(String endpoint) {

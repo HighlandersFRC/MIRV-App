@@ -25,4 +25,5 @@ const _$GarageCommandTypeEnumMap = {
   GarageCommandType.deploy: 'deploy',
   GarageCommandType.lights_on: 'lights_on',
   GarageCommandType.lights_off: 'lights_off',
+  GarageCommandType.stop: 'stop',
 };

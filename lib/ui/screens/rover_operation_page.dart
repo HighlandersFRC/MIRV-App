@@ -8,12 +8,13 @@ import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_posittion-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
@@ -22,15 +23,11 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dia
 import 'webrtc_connection.dart';
 
 class RoverOperationPage extends StatelessWidget {
-  final RoverMetrics roverMetrics;
+  final RoverGarageState roverGarageState;
 
-  RoverOperationPage(this.roverMetrics, {Key? key}) : super(key: key);
+  RoverOperationPage(this.roverGarageState, {Key? key}) : super(key: key);
 
-  late Rx<PiLitStateType> piLitState = roverMetrics.pi_lits.state.obs;
-  //TODO: out in actual pass through
-  late Rx<PiLitFormationType> piLitFormationType = PiLitFormationType.spear_7.obs;
-
-  late WebRTCConnection webRTCConnection = WebRTCConnection(roverMetrics);
+  late WebRTCConnection webRTCConnection = WebRTCConnection(roverGarageState);
   late Rx<bool> manualOperation = false.obs;
   late bool showMap;
 
@@ -41,27 +38,23 @@ class RoverOperationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     manualOperation.value = webRTCConnection.roverMetricsObs.value.state == RoverStateType.remote_operation;
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
-    webRTCConnection.makeCall(roverMetrics.rover_id);
+    webRTCConnection.makeCall(roverGarageState.rover_id);
     webRTCConnection.startJoystickUpdates();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
 
     var roverOperationMap = RoverOperationMap(webRTCConnection.roverMetricsObs);
     return Obx(
       () => Scaffold(
         appBar: OperationPageAppBar(
-          roverMetrics: webRTCConnection.roverMetricsObs,
+          roverGarageState: webRTCConnection.roverMetricsObs,
           stopCall: webRTCConnection.stopCall,
           peerConnectionState: webRTCConnection.peerConnectionState,
         ),
-        drawer: CommandsDrawer(sendCommand: webRTCConnection.sendRoverCommand),
+        drawer: CommandsDrawer(webRTCConnection),
         body: Stack(
           children: [
             Obx(
               () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.autonomous
-                  ? Positioned(
+                  ? const Positioned(
                       top: 10,
                       height: 40,
                       width: 150,
@@ -69,12 +62,12 @@ class RoverOperationPage extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: 0.6,
                         minHeight: 20,
-                        color: const Color.fromARGB(255, 255, 153, 0),
-                        backgroundColor: const Color.fromARGB(148, 158, 158, 158),
+                        color: Color.fromARGB(255, 255, 153, 0),
+                        backgroundColor: Color.fromARGB(148, 158, 158, 158),
                       ),
                     )
                   : Container(
-                      color: Color.fromARGB(255, 243, 33, 33),
+                      color: const Color.fromARGB(255, 243, 33, 33),
                       child: const Text(""),
                     ),
             ),
@@ -93,18 +86,21 @@ class RoverOperationPage extends StatelessWidget {
               left: 10,
               child: Column(children: [
                 const OpenCommandsDrawer(),
-                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
-                true
+                webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
                     ? PiLitDialogButton(
-                        roverMetrics: webRTCConnection.roverMetricsObs,
+                        webRTCConnection.roverMetricsObs,
+                        webRTCConnection.sendRoverCommand,
+                      )
+                    : const SizedBox.shrink(),
+                webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
+                    ? DriveToPositionDialog(
+                        roverGarageState: webRTCConnection.roverMetricsObs,
                         sendCommand: webRTCConnection.sendRoverCommand,
-                        piLitState: piLitState,
-                        piLitForamtionType: piLitFormationType,
                       )
                     : const SizedBox.shrink(),
                 Expanded(
                   child: CommandList(
-                    roverMetrics: webRTCConnection.roverMetricsObs.value,
+                    roverGarageState: webRTCConnection.roverMetricsObs.value,
                     sendCommand: webRTCConnection.sendRoverCommand,
                   ),
                 ),
@@ -120,7 +116,7 @@ class RoverOperationPage extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 30, bottom: 20),
                   child: Obx(
                     () => ToggleDisable(
-                      roverMetrics: webRTCConnection.roverMetricsObs.value,
+                      roverGarageState: webRTCConnection.roverMetricsObs.value,
                       sendCommand: webRTCConnection.sendRoverCommand,
                     ),
                   ),
@@ -128,14 +124,14 @@ class RoverOperationPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Obx(() => EStopButton(
-                        roverMetrics: webRTCConnection.roverMetricsObs.value,
+                        roverGarageState: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: PiLitCommandDropdown(
-                    piLitState: piLitState,
+                    Rx<PiLitStateType>(webRTCConnection.roverMetricsObs.value.pi_lits.state),
                     sendCommand: webRTCConnection.sendRoverCommand,
                   ),
                 )
@@ -241,7 +237,7 @@ class RoverOperationPage extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: Text("Connecting to ${roverMetrics.rover_id}"),
+                                child: Text("Connecting to ${roverGarageState.rover_id}"),
                               ),
                               const CircularProgressIndicator(),
                             ],

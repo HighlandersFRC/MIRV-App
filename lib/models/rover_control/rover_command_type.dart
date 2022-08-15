@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-enum RoverSubsystemType { general, intake, drivetrain, heartbeat, pi_lit, garage }
+enum RoverSubsystemType { general, intake, drivetrain, heartbeat, pi_lit, garage, camera }
 // ignore: todo
 // TODO: enhanced enum, integer sub_command, maps to different enum
 
@@ -30,6 +30,8 @@ enum RoverCommandTypePiLitDeploy { taper_right_3, taper_left_3, taper_right_5, t
 enum RoverCommandTypeDrivetrain { arcade, tank, to_location }
 
 enum RoverCommandTypeMovement { to_location }
+
+enum RoverCommandTypeCamera { switch_camera }
 
 extension RoverSubsytemType1 on RoverSubsystemType {
   dynamic get subCommands {}

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 
 class EStopButton extends StatelessWidget {
-  final RoverMetrics? roverMetrics;
+  final RoverGarageState? roverGarageState;
   late final bool? isEnabled;
 
   final Function(RoverCommand) sendCommand;
   EStopButton({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.sendCommand,
   }) : super(key: key) {
-    isEnabled = _cancelState(roverMetrics?.state);
+    isEnabled = _cancelState(roverGarageState?.state);
   }
 
   bool? _cancelState(RoverStateType? roverState) {

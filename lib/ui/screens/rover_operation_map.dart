@@ -1,12 +1,14 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 
 class RoverOperationMap extends StatefulWidget {
-  late Rx<RoverMetrics> roverMetricsObs;
+  late Rx<RoverGarageState> roverMetricsObs;
   RoverOperationMap(this.roverMetricsObs, {Key? key}) : super(key: key);
 
   @override
@@ -14,6 +16,7 @@ class RoverOperationMap extends StatefulWidget {
 }
 
 class _RoverOperationMapState extends State<RoverOperationMap> {
+  StreamSubscription? getMarkerSubscription;
   final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
   Set<Marker> markers = {};
@@ -29,8 +32,8 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     updateMarkers(widget.roverMetricsObs.value);
   }
 
-  void updateMarkers(RoverMetrics roverMetrics) {
-    var tempMarkers = getMarkers(roverMetrics);
+  void updateMarkers(RoverGarageState roverGarageState) {
+    var tempMarkers = getMarkers(roverGarageState);
     setState(() {
       markers = tempMarkers;
     });
@@ -41,9 +44,15 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     super.initState();
     setMarkerIcons();
 
-    widget.roverMetricsObs.listen((roverMetrics) {
-      updateMarkers(roverMetrics);
+    getMarkerSubscription = widget.roverMetricsObs.listen((roverGarageState) {
+      updateMarkers(roverGarageState);
     });
+  }
+
+  @override
+  void dispose() {
+    getMarkerSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -79,22 +88,22 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     );
   }
 
-  Set<Marker> getMarkers(RoverMetrics roverMetrics) {
+  Set<Marker> getMarkers(RoverGarageState roverGarageState) {
     Set<Marker> markers = {};
 
-    if (roverMetrics.garage != null) {
+    if (roverGarageState.garage != null) {
       markers.add(Marker(
-        markerId: MarkerId(roverMetrics.garage!.garage_id),
-        position: roverMetrics.garage?.location.latLng,
+        markerId: MarkerId(roverGarageState.garage!.garage_id),
+        position: roverGarageState.garage?.location.latLng,
         infoWindow: InfoWindow(
-          title: roverMetrics.garage?.garage_id,
+          title: roverGarageState.garage?.garage_id,
         ),
         icon: garageMarkerIcon,
         zIndex: 5,
       ));
     }
 
-    markers.addAll(roverMetrics.pi_lits.deployed_pi_lits.map((piLit) => Marker(
+    markers.addAll(roverGarageState.pi_lits.deployed_pi_lits.map((piLit) => Marker(
           markerId: MarkerId(piLit.pi_lit_id),
           position: piLit.location.latLng,
           infoWindow: InfoWindow(
@@ -105,10 +114,10 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
         )));
 
     markers.add(Marker(
-      markerId: MarkerId(roverMetrics.rover_id),
-      position: roverMetrics.telemetry.location.latLng,
+      markerId: MarkerId(roverGarageState.rover_id),
+      position: roverGarageState.telemetry.location.latLng,
       infoWindow: InfoWindow(
-        title: roverMetrics.rover_id,
+        title: roverGarageState.rover_id,
       ),
       icon: roverMarkerIcon,
       zIndex: 10,

@@ -3,25 +3,23 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 
-class PiLitPlacementMap extends StatefulWidget {
+class DriveToLocationMap extends StatefulWidget {
   final Rx<RoverGarageState> roverMetricsObs;
   final Rx<LatLng?> startPoint;
-  final Rx<LatLng?> endPoint;
   final Rx<bool> startPointOnMap;
 
-  PiLitPlacementMap(
+  DriveToLocationMap(
     this.roverMetricsObs,
     this.startPoint,
-    this.endPoint,
     this.startPointOnMap, {
     Key? key,
   }) : super(key: key);
 
   @override
-  State<PiLitPlacementMap> createState() => _PiLitPlacementMapState();
+  State<DriveToLocationMap> createState() => _DriveToLocationMapState();
 }
 
-class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
+class _DriveToLocationMapState extends State<DriveToLocationMap> {
   final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
   Set<Marker> markers = {};
@@ -70,32 +68,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     );
   }
 
-  setEndMarker(LatLng tappedPoint) {
-    widget.endPoint.value = tappedPoint;
-
-    setState(
-      () {
-        if (widget.endPoint.value != null) {
-          markers.add(
-            Marker(
-              icon: BitmapDescriptor.defaultMarkerWithHue(115),
-              draggable: true,
-              onDragEnd: (newValue) {
-                widget.endPoint.value = newValue;
-              },
-              markerId: const MarkerId('Selected End Point'),
-              position: widget.endPoint.value!,
-              infoWindow: const InfoWindow(
-                title: 'Selected End Point',
-              ),
-            ),
-          );
-          widget.startPointOnMap.value = true;
-        }
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -112,7 +84,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
       body: Stack(children: <Widget>[
         GoogleMap(
           onTap: (t) {
-            widget.startPointOnMap.value ? setEndMarker(t) : setStartMarker(t);
+            setStartMarker(t);
           },
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(

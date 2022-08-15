@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/icons/custom_icons_icons.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 
 class TelemetryWidget extends StatelessWidget {
-  final RoverMetrics roverMetrics;
+  final RoverGarageState roverGarageState;
 
-  const TelemetryWidget(this.roverMetrics, {Key? key}) : super(key: key);
+  const TelemetryWidget(this.roverGarageState, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class TelemetryWidget extends StatelessWidget {
           Icons.speed,
           color: primaryColor,
         ),
-        Text("${roverMetrics.telemetry.speed.round()} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
+        Text("${roverGarageState.telemetry.speed.round()} mph", style: const TextStyle(fontSize: 20, color: fontColor)),
       ]),
       const SizedBox(width: 10),
       Row(children: [
@@ -24,7 +24,7 @@ class TelemetryWidget extends StatelessWidget {
           CustomIcons.compass,
           color: primaryColor,
         ),
-        Text("${roverMetrics.telemetry.heading.round()}\u00B0", style: const TextStyle(fontSize: 20, color: fontColor)),
+        Text("${roverGarageState.telemetry.heading.round()}\u00B0", style: const TextStyle(fontSize: 20, color: fontColor)),
       ])
     ]);
   }

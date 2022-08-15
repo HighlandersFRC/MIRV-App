@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
+import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
@@ -28,7 +31,7 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  late GarageMetrics garageMetrics;
+  var logger = Logger();
 
   late MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
@@ -37,9 +40,9 @@ class WebRTCConnection {
   get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState = get_pkg.Rx<RTCPeerConnectionState?>(null);
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
-  final RoverMetrics roverMetrics;
-  late get_pkg.Rx<RoverMetrics> roverMetricsObs = get_pkg.Rx<RoverMetrics>(roverMetrics);
-
+  final RoverGarageState roverGarageState;
+  late get_pkg.Rx<RoverGarageState> roverMetricsObs = get_pkg.Rx<RoverGarageState>(roverGarageState);
+  StreamSubscription? garageStateSubscription;
 
   GamepadController gamepadController = GamepadController();
   JoystickController joystickController = JoystickController();
@@ -66,9 +69,9 @@ class WebRTCConnection {
   Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
-  int GATHERING_HEARTBEAT = 100;
+  int GATHERING_HEARTBEAT = 500;
 
-  WebRTCConnection(this.roverMetrics) {
+  WebRTCConnection(this.roverGarageState) {
     init();
     peerConnectionTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       peerConnectionState.value = peerConnection?.connectionState;
@@ -79,6 +82,19 @@ class WebRTCConnection {
     RTCVideoRenderer val = localRenderer.value;
     await val.initialize();
     localRenderer.value = val;
+    _startGarageUpdates();
+  }
+
+  _startGarageUpdates() {
+    mirvApi.garageMetricsObs.listen((value) {
+      roverMetricsObs.value = roverMetricsObs.value.updateGarageState(value);
+    });
+    garageStateSubscription = roverMetricsObs.listen((value) {
+      if (value.garage?.garage_id != null) {
+        mirvApi.startGarageMetricUpdates(roverMetricsObs.value.garage!.garage_id);
+        garageStateSubscription?.cancel();
+      }
+    });
   }
 
   _showFailedConnectionDialog({
@@ -107,6 +123,9 @@ class WebRTCConnection {
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
       print("------------------------ COMMAND: ${json.encode(command.toJson())} ------------------------");
+      if (command != RoverHeartbeatCommands.heartbeat) {
+        logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
+      }
     }
 
     // TODO: Remove this before deployment
@@ -138,11 +157,8 @@ class WebRTCConnection {
     } else if (command == RoverGeneralCommands.disableRemoteOperation) {
       state = RoverStateType.idle;
     }
+    logger.d("WebRTCConnection; updateRoverState; Automatically updating rover sate from ${tempRoverMetrics.state} to $state");
     roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
-  }
-
-  void setStateInFunction({required Function function}) {
-    function;
   }
 
   final Map<String, dynamic> offerSdpConstraints = {
@@ -157,14 +173,11 @@ class WebRTCConnection {
 
   // This Data Channel function receives data send on the rover created data channels
   void _onDataChannel(RTCDataChannel dataChannel) {
-    // or alternatively:
     dataChannel.messageStream.listen((message) {
       if (message.type == MessageType.text) {
-        print("RECEIVED MESSAGE FROM ROVER CALLBACK 1: ${message.text}");
-        roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+        logger.d("WebRTCConnection; _onDataChannel; receiving message over WebRTC data channel: ${message.text}");
+        roverMetricsObs.value = roverMetricsObs.value.updateState(RoverState.fromJson(json.decode(message.text)));
         recentStatusMessage = DateTime.now();
-      } else {
-        // do something with message.binary
       }
     });
   }
@@ -173,17 +186,16 @@ class WebRTCConnection {
   void _onDataChannelMessage(RTCDataChannelMessage message) {
     if (message.type == MessageType.text) {
       if (message.text.isNotEmpty) {
+        logger.d("WebRTCConnection; _onDataChannelMessage; receiving message over WebRTC data channel: ${message.text}");
         try {
-          print("RECEIVED MESSAGE FROM ROVER CALLBACK 2: ${message.text}");
-          roverMetricsObs.value = RoverMetrics.fromJson(json.decode(message.text));
+          roverMetricsObs.value = RoverGarageState.fromJson(json.decode(message.text));
+          roverMetricsObs.trigger(RoverGarageState.fromJson(json.decode(message.text)));
           recentStatusMessage = DateTime.now();
         } catch (e) {
-          // ignore: avoid_print
-          print("Error processing received WebRTC message: ${message.text}, because: $e");
+          logger.w(
+              "WebRTCConnection; _onDataChannelMessage; Error processing received WebRTC message: ${message.text}, because: $e");
         }
       }
-    } else {
-      // do something with message.binary
     }
   }
 
@@ -229,23 +241,19 @@ class WebRTCConnection {
 
 //?
   void _onDataChannelState(RTCDataChannelState? state) {
-    switch (state) {
-      case RTCDataChannelState.RTCDataChannelClosed:
-        break;
-      case RTCDataChannelState.RTCDataChannelOpen:
-        break;
-      default:
-        break;
-    }
+    logger.w("WebRTCConnection; _onDataChannelState; Data channel state changed: $state");
+    dataChannelState.value = state;
   }
 
 //checks connection state  until it is connected up to 1.5 minutes
   Future<bool> _waitForGatheringComplete(int count) async {
     if (peerConnection == null) {
+      logger.i("WebRTCConnection; _waitForGatheringComplete; peerConnection is null");
       return false;
     } else if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else if (count >= GATHERING_RETRY_THRESHOLD) {
+      logger.i("WebRTCConnection; _waitForGatheringComplete; Ice Gathering Timed Out");
       return false;
     } else {
       count++;
@@ -258,15 +266,20 @@ class WebRTCConnection {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
+          logger.d("WebRTCConnection; _negotiateRemoteConnection; Setting offer to local description");
           return peerConnection!.setLocalDescription(offer);
         })
         .then((_) => _waitForGatheringComplete(0))
         .then((success) async {
+          logger.d("WebRTCConnection; _negotiateRemoteConnection; ICE Gathering Complete");
           if (!success && peerConnection != null) {
+            logger.d(
+                "WebRTCConnection; _negotiateRemoteConnection; ICE Gathering failed or peerConnection is null. Stopping connection");
             await stopCall();
             return _showFailedConnectionDialog(error: 'Connection timed out', roverId: roverId);
           } else if (!success) {
-            return;
+            stopCall();
+            _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
           }
           try {
             var des = await peerConnection!.getLocalDescription();
@@ -365,7 +378,7 @@ class WebRTCConnection {
       var configuration = <String, dynamic>{
         'sdpSemantics': 'unified-plan',
         "iceServers": [
-          {"url": "stun:stun.l.google.com:19302"},
+          // {"url": "stun:stun.l.google.com:19302"},
         ]
       };
       //* Create Peer Connection

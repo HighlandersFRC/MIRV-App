@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
@@ -11,15 +10,14 @@ import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/auth_service.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
 import 'package:http/http.dart' as http;
 
 class MirvApi {
   Timer? garageMetricsUpdatesTimer;
   Rx<GarageMetrics?> garageMetricsObs = Rx<GarageMetrics?>(null);
   AuthService authService = AuthService();
-  Rx<GarageCommandType?> garageCommandsObs = Rx<GarageCommandType?>(null);
   final Duration _duration = const Duration(seconds: 5);
 
   MirvApi() {
@@ -42,7 +40,6 @@ class MirvApi {
       Uri.parse(endpoint),
       headers: headers,
     );
-
     switch (response.statusCode) {
       case 401:
       case 403:
@@ -85,14 +82,14 @@ class MirvApi {
     }
   }
 
-  Future<RoverMetrics> getRoverMetrics(String rover_id) async {
+  Future<RoverState> getRoverState(String rover_id) async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers/$rover_id");
-    return RoverMetrics.fromJson(json.decode(response.body));
+    return RoverState.fromJson(json.decode(response.body));
   }
 
-  Future<List<RoverMetrics>> getRovers() async {
+  Future<List<RoverState>> getRoverStates() async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers");
-    return (json.decode(response.body) as List).map((i) => RoverMetrics.fromJson(i)).toList();
+    return (json.decode(response.body) as List).map((i) => RoverState.fromJson(i)).toList();
   }
 
   Future<http.StreamedResponse> startRoverConnection(String rover_id, RTCSessionDescription? des) async {
@@ -120,37 +117,18 @@ class MirvApi {
   // Garage
   //////////////////////////////////////////////////////////////////////////////
 
-  Future<GarageMetrics> getGarageMetrics(String garage_id) async {
+  Future<GarageMetrics?> getGarageMetrics(String? garage_id) async {
+    if (garage_id == null) {
+      return null;
+    }
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
-    return GarageMetrics.fromJson(json.decode(response.body));
+    return response.statusCode == 200 ? GarageMetrics.fromJson(json.decode(response.body)) : null;
   }
 
   Future<List<GarageMetrics>> getGarages() async {
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
     return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
   }
-
-  // Future<GarageMetrics> getGarageMetrics(String garageID) async {
-  //   String? token = _getCurrentAuthToken();
-  //   GarageMetrics garageMetrics =
-  //       const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
-  //   print(json.encode(garageMetrics.toJson()));
-  //   garageMetricsObs.value;
-
-  //   return garageMetrics = garageMetrics;
-  // }
-
-  // Future<List<GarageMetrics>> getGarages() async {
-  //   String? token = _getCurrentAuthToken();
-  //   List<GarageMetrics> garages;
-  //   GarageMetrics garageMetrics =
-  //       const GarageMetrics(garage_id: '1', location: DeviceLocation(), state: GarageStateType.retracted_unlatched);
-  //   String response = '[${json.encode(garageMetrics.toJson())}]';
-  //   garageMetricsObs.value = garageMetrics;
-
-  //   garages = (json.decode(response) as List).map((i) => GarageMetrics.fromJson(i)).toList();
-  //   return garages;
-  // }
 
   Future<bool> sendGarageCommand(String garage_id, GarageCommand command) async {
     var response = await makeAuthenticatedPostRequest(
@@ -190,10 +168,10 @@ class MirvApi {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.deploy) {
       state = GarageStateType.deployed;
-     } else if (command == GarageCommands.lightsOff) {
+    } else if (command == GarageCommands.lightsOff) {
       state = tempGarageMetrics.state;
       lights_on = true;
-      } else if (command == GarageCommands.lightsOn) {
+    } else if (command == GarageCommands.lightsOn) {
       state = tempGarageMetrics.state;
       lights_on = false;
     } else {

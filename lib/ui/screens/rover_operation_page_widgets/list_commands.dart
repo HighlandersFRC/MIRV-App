@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/models/pair.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.sendCommand,
   }) : super(key: key);
-  final RoverMetrics roverMetrics;
+  final RoverGarageState roverGarageState;
   final Function(RoverCommand) sendCommand;
 
   @override
   Widget build(BuildContext context) {
-    var commandList = roverCommandsByState[roverMetrics.state] ?? [];
+    var commandList = roverCommandsByState[roverGarageState.state] ?? [];
     return ListView.builder(
       itemCount: commandList.length,
       itemBuilder: (context, index) {
