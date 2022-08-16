@@ -14,8 +14,9 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_posittion-widgets/drive_to_position_dialog.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/garage_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
@@ -81,7 +82,7 @@ class RoverOperationPage extends StatelessWidget {
             ),
             Positioned(
               top: 10,
-              height: 450,
+              bottom: 10,
               width: 150,
               left: 10,
               child: Column(children: [
@@ -134,12 +135,16 @@ class RoverOperationPage extends StatelessWidget {
                     Rx<PiLitStateType>(webRTCConnection.roverMetricsObs.value.pi_lits.state),
                     sendCommand: webRTCConnection.sendRoverCommand,
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: GarageButton(),
                 )
               ]),
             ),
             Obx(
               () => Positioned(
-                left: manualOperation.value ? 400 : 20,
+                left: manualOperation.value ? 400 : 180,
                 bottom: 20,
                 height: 200,
                 width: 375,

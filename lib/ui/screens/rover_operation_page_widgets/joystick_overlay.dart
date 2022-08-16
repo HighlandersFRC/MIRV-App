@@ -17,7 +17,7 @@ class JoystickOverlay extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30.0),
+          padding: const EdgeInsets.only(left: 140.0),
           child: VerticalJoystickView(
             joystickController,
             opacity: 0.8,

@@ -9,7 +9,7 @@ class PiLitPlacementMap extends StatefulWidget {
   final Rx<LatLng?> endPoint;
   final Rx<bool> startPointOnMap;
 
-  PiLitPlacementMap(
+  const PiLitPlacementMap(
     this.roverMetricsObs,
     this.startPoint,
     this.endPoint,
@@ -53,6 +53,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         if (widget.startPoint.value != null) {
           markers.add(
             Marker(
+              icon: BitmapDescriptor.defaultMarkerWithHue(115),
               draggable: true,
               onDragEnd: (newValue) {
                 widget.startPoint.value = newValue;
@@ -78,7 +79,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         if (widget.endPoint.value != null) {
           markers.add(
             Marker(
-              icon: BitmapDescriptor.defaultMarkerWithHue(115),
               draggable: true,
               onDragEnd: (newValue) {
                 widget.endPoint.value = newValue;
@@ -100,10 +100,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
   void initState() {
     super.initState();
     setMarkerIcons();
-
-    widget.roverMetricsObs.listen((roverGarageState) {
-      updateMarkers(roverGarageState);
-    });
   }
 
   @override

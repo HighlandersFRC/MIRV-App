@@ -85,7 +85,7 @@ class MirvApi {
           body: body,
         )
         .timeout(
-          const Duration(seconds: 5),
+          const Duration(seconds: 30),
           onTimeout: () => http.Response('Timeout', 408),
         );
 
@@ -133,9 +133,8 @@ class MirvApi {
     request.headers.addAll(headers);
 
     return request.send().timeout(
-          const Duration(seconds: 5),
+          const Duration(seconds: 30),
         );
-    ;
   }
 
   //////////////////////////////////////////////////////////////////////////////

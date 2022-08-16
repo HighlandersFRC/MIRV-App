@@ -72,10 +72,6 @@ class _DriveToLocationMapState extends State<DriveToLocationMap> {
   void initState() {
     super.initState();
     setMarkerIcons();
-
-    widget.roverMetricsObs.listen((roverGarageState) {
-      updateMarkers(roverGarageState);
-    });
   }
 
   @override

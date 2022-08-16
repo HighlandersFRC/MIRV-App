@@ -7,7 +7,7 @@ import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 
 class StateImages extends StatelessWidget {
-  final GarageMetrics garageMetrics;
+  final GarageMetrics? garageMetrics;
 
   StateImages({Key? key, required this.garageMetrics}) : super(key: key);
 
@@ -32,6 +32,6 @@ class StateImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(child: updateImage(garageMetrics.state));
+    return SizedBox(child: updateImage(garageMetrics?.state));
   }
 }

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:get/get.dart';
 import 'package:mirv/models/camera_modes.dart';
 import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
-import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_posittion-widgets/drive_to_position_dialog.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/piLit-dialog.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
 
