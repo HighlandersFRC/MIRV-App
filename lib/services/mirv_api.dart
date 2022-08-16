@@ -161,7 +161,12 @@ class MirvApi {
         "${authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
         additionalHeaders: {'Content-Type': 'application/json'});
     if (response == null) return null;
+    updateGarageMetrics(garage_id);
     return response.statusCode == 200;
+  }
+
+  void updateGarageMetrics(String garage_id) {
+    getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
   }
 
   void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
@@ -193,9 +198,11 @@ class MirvApi {
     } else if (command == GarageCommands.lock) {
       state = GarageStateType.retracted_latched;
     } else if (command == GarageCommands.retract) {
-      state = GarageStateType.retracted_latched;
+      state = GarageStateType.in_motion_retract;
     } else if (command == GarageCommands.deploy) {
-      state = GarageStateType.deployed;
+      state = GarageStateType.in_motion_deploy;
+    } else if (command == GarageCommands.stop) {
+      state = GarageStateType.unavailable;
     } else if (command == GarageCommands.lightsOff) {
       state = tempGarageMetrics.state;
       lights_on = true;

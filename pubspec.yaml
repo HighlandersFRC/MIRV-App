@@ -100,6 +100,8 @@ flutter:
     - assets/images/cancel.png
     - assets/images/pi_lit_outline_up.png
     - assets/images/pi_lit_outline_down.png
+    - assets/images/pi_lit_outline_up_1.png
+    - assets/images/pi_lit_outline_down_1.png
     - assets/images/pi_lit_icon.png
     - assets/images/rover_icon_new.png
     - assets/images/rover_icon_home_page.png

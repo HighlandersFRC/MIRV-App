@@ -56,17 +56,17 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         if (widget.startPoint.value != null) {
           markers.add(
             Marker(
-              icon: BitmapDescriptor.defaultMarkerWithHue(115),
-              draggable: true,
-              onDragEnd: (newValue) {
-                widget.startPoint.value = newValue;
-              },
-              markerId: const MarkerId('Selected Start Point'),
-              position: widget.startPoint.value!,
-              infoWindow: const InfoWindow(
-                title: 'Selected Start Point',
-              ),
-            ),
+                icon: BitmapDescriptor.defaultMarkerWithHue(115),
+                draggable: true,
+                onDragEnd: (newValue) {
+                  widget.startPoint.value = newValue;
+                },
+                markerId: const MarkerId('Selected Start Point'),
+                position: widget.startPoint.value!,
+                infoWindow: const InfoWindow(
+                  title: 'Selected Start Point',
+                ),
+                zIndex: 12),
           );
           widget.startPointOnMap.value = true;
         }
@@ -82,16 +82,16 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         if (widget.endPoint.value != null) {
           markers.add(
             Marker(
-              draggable: true,
-              onDragEnd: (newValue) {
-                widget.endPoint.value = newValue;
-              },
-              markerId: const MarkerId('Selected End Point'),
-              position: widget.endPoint.value!,
-              infoWindow: const InfoWindow(
-                title: 'Selected End Point',
-              ),
-            ),
+                draggable: true,
+                onDragEnd: (newValue) {
+                  widget.endPoint.value = newValue;
+                },
+                markerId: const MarkerId('Selected End Point'),
+                position: widget.endPoint.value!,
+                infoWindow: const InfoWindow(
+                  title: 'Selected End Point',
+                ),
+                zIndex: 12),
           );
           widget.startPointOnMap.value = true;
         }
@@ -160,9 +160,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
       markers.add(Marker(
         markerId: MarkerId(roverGarageState.garage!.garage_id),
         position: roverGarageState.garage?.location.latLng,
-        infoWindow: InfoWindow(
-          title: roverGarageState.garage?.garage_id,
-        ),
         icon: garageMarkerIcon,
         zIndex: 5,
       ));
@@ -171,9 +168,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     markers.addAll(roverGarageState.pi_lits.deployed_pi_lits.map((piLit) => Marker(
           markerId: MarkerId(piLit.pi_lit_id),
           position: piLit.location.latLng,
-          infoWindow: InfoWindow(
-            title: piLit.pi_lit_id,
-          ),
           icon: mapMarkerIcon,
           zIndex: 7,
         )));
@@ -181,9 +175,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     markers.add(Marker(
       markerId: MarkerId(roverGarageState.rover_id),
       position: roverGarageState.telemetry.location.latLng,
-      infoWindow: InfoWindow(
-        title: roverGarageState.rover_id,
-      ),
       icon: roverMarkerIcon,
       zIndex: 10,
     ));

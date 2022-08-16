@@ -9,12 +9,10 @@ class GarageCommandList extends StatelessWidget {
     Key? key,
     required this.garageMetrics,
     required this.sendCommand,
-    required this.changeGarageState,
     required this.resetGarageState,
   }) : super(key: key);
   final GarageMetrics? garageMetrics;
   final Function(String, GarageCommand) sendCommand;
-  final Function(String, GarageCommand) changeGarageState;
   final Future<void> resetGarageState;
 
   @override
@@ -39,7 +37,6 @@ class GarageCommandList extends StatelessWidget {
                 iconSize: 300,
                 onPressed: () {
                   sendCommand(garageMetrics!.garage_id, garageCommandList[index].first);
-                  changeGarageState(garageMetrics!.garage_id, garageCommandList[index].first);
                 },
               )),
             ),

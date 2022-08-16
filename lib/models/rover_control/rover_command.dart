@@ -161,7 +161,7 @@ Map<RoverStateType, List<Pair<Function(WebRTCConnection, BuildContext), Widget>>
     Pair(
         (connection, context) =>
             DriveToPositionDialog(connection.roverMetricsObs, connection.sendRoverCommand).piLitDialog(context),
-        const Icon(Icons.moving_rounded, size: 30, color: Colors.white)),
+        const Icon(Icons.gps_fixed, size: 80, color: Colors.white)),
   ],
   RoverStateType.docked: [
     Pair(
@@ -175,9 +175,9 @@ Map<RoverStateType, List<Pair<Function(WebRTCConnection, BuildContext), Widget>>
     Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.disableRemoteOperation),
         Image.asset('assets/images/cancel.png')),
     Pair((connection, context) => connection.sendRoverCommand(RoverIntakeCommands.placeOnePiLit),
-        Image.asset('assets/images/pi_lit_outline_down.png')),
+        Image.asset('assets/images/pi_lit_outline_down_1.png')),
     Pair((connection, context) => connection.sendRoverCommand(RoverIntakeCommands.pickupOnePiLit),
-        Image.asset('assets/images/pi_lit_outline_up.png')),
+        Image.asset('assets/images/pi_lit_outline_up_1.png')),
   ],
   RoverStateType.remote_operation_autonomous: [
     Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.cancel),

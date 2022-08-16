@@ -53,7 +53,6 @@ class GarageOperationPage extends StatelessWidget {
                 () => GarageCommandList(
                   garageMetrics: _mirvGarageApi.garageMetricsObs.value,
                   sendCommand: _mirvGarageApi.sendGarageCommand,
-                  changeGarageState: _mirvGarageApi.updateGarageState,
                   resetGarageState: _mirvGarageApi.resetGarageMetricsUpdates(garage_id),
                 ),
               ),
@@ -72,7 +71,7 @@ class GarageOperationPage extends StatelessWidget {
           ),
           Obx(
             () => Positioned(
-                top: height * 2 / 3,
+                top: height / 2,
                 right: 25,
                 child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value, width: width / 4)),
           )

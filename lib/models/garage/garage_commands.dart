@@ -56,19 +56,19 @@ Map<Pair<GarageStateType?, bool?>, List<Pair<GarageCommand, Widget>>> garageComm
     Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.in_motion_deploy, false): [
-    Pair(GarageCommands.lock, const Icon(Icons.stop, size: 30)),
+    Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
     Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.in_motion_deploy, true): [
-    Pair(GarageCommands.lock, const Icon(Icons.stop, size: 30)),
+    Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
     Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.in_motion_retract, false): [
-    Pair(GarageCommands.lock, const Icon(Icons.stop, size: 30)),
+    Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
     Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.in_motion_retract, true): [
-    Pair(GarageCommands.lock, const Icon(Icons.stop, size: 30)),
+    Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
     Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.unavailable, false): [
