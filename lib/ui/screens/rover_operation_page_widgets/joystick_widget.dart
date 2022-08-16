@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 
 // ignore: must_be_immutable
 class JoystickWidget extends StatelessWidget {
-  final RoverMetrics roverMetrics;
+  final RoverGarageState roverGarageState;
   final Function(GamepadAxisType, double, double) onJoystickChanged;
   late GamepadAxisType axisType;
   late JoystickMode joystickMode;
@@ -14,11 +14,11 @@ class JoystickWidget extends StatelessWidget {
 
   JoystickWidget({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.onJoystickChanged,
     required this.axisType,
   }) : super(key: key) {
-    isEnabled = _cancelState(roverMetrics.state);
+    isEnabled = _cancelState(roverGarageState.state);
     joystickMode = _getJoystickMode(axisType);
   }
 

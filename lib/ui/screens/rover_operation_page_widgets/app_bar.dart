@@ -5,18 +5,19 @@ import 'package:get/get.dart' as get_pkg;
 import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/ui/screens/home_page.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/status_dot.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const OperationPageAppBar({Key? key, required this.roverMetrics, required this.stopCall, required this.peerConnectionState})
+  const OperationPageAppBar({Key? key, required this.roverGarageState, required this.stopCall, required this.peerConnectionState})
       : super(key: key);
 
-  final Rx<RoverMetrics> roverMetrics;
+  final Rx<RoverGarageState> roverGarageState;
   final get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState;
   final Function() stopCall;
 
@@ -41,7 +42,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
       case RoverStateType.remote_operation:
         return "Controlling";
       case RoverStateType.remote_operation_autonomous:
-        return "Autonomous";
+        return "Autonomous (Remote Operation)";
     }
   }
 
@@ -51,9 +52,9 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Color.fromARGB(0, 255, 255, 255),
-        foregroundColor: Color.fromARGB(0, 255, 255, 255),
-        leadingWidth: 410,
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+        foregroundColor: const Color.fromARGB(0, 255, 255, 255),
+        leadingWidth: 400,
         leading: Row(
           children: [
             Padding(
@@ -66,18 +67,11 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text('Disconnect?'),
-                      content: Text('Would  you like to discconect from ${roverMetrics.value.rover_id}'),
+                      content: Text('Would  you like to discconect from ${roverGarageState.value.rover_id}'),
                       actions: <Widget>[
                         TextButton(
                             onPressed: () {
                               stopCall();
-
-                              SystemChrome.setPreferredOrientations([
-                                DeviceOrientation.landscapeRight,
-                                DeviceOrientation.landscapeLeft,
-                                DeviceOrientation.portraitUp,
-                                DeviceOrientation.portraitDown,
-                              ]);
                               Navigator.pop(context);
                               get_pkg.Get.offAll(() => HomePage());
                             },
@@ -94,23 +88,23 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 27.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: StatusDot(peerConnectionState),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 27),
-              child: Text("ID: ${roverMetrics.value.rover_id}", style: const TextStyle(fontSize: 20, color: fontColor)),
+              padding: const EdgeInsets.only(left: 10),
+              child: Text("ID: ${roverGarageState.value.rover_id}", style: const TextStyle(fontSize: 20, color: fontColor)),
             ),
           ],
         ),
         title: Row(mainAxisSize: MainAxisSize.min, children: [
-          Text(_stateText(roverMetrics.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
+          Text(_stateText(roverGarageState.value.state), style: const TextStyle(fontSize: 20, color: fontColor)),
         ]),
         actions: [
-          Obx(() => TelemetryWidget(roverMetrics.value)),
+          Obx(() => TelemetryWidget(roverGarageState.value)),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RoverStatusBar(roverMetrics: roverMetrics.value),
+            child: RoverStatusBar(roverGarageState: roverGarageState.value),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
@@ -119,7 +113,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverMetrics.value)),
+                    content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverGarageState.value)),
                     actions: [
                       TextButton(
                         onPressed: () {

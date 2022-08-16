@@ -30,6 +30,8 @@ RoverCommand _$RoverCommandFromJson(Map<String, dynamic> json) {
       return DrivetrainRoverCommandDestination.fromJson(json);
     case 'piLitCommand':
       return PiLitRoverCommand.fromJson(json);
+    case 'cameraCommand':
+      return CameraRoverCommand.fromJson(json);
 
     default:
       throw CheckedFromJsonException(json, 'runtimeType', 'RoverCommand',
@@ -67,8 +69,15 @@ mixin _$RoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -97,8 +106,15 @@ mixin _$RoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -127,8 +143,15 @@ mixin _$RoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -142,6 +165,7 @@ mixin _$RoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -154,6 +178,7 @@ mixin _$RoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -166,6 +191,7 @@ mixin _$RoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -346,8 +372,15 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return generalCommand(command, commandParameters, subsystem);
   }
@@ -379,8 +412,15 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return generalCommand?.call(command, commandParameters, subsystem);
   }
@@ -412,8 +452,15 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (generalCommand != null) {
@@ -433,6 +480,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return generalCommand(this);
   }
@@ -448,6 +496,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return generalCommand?.call(this);
   }
@@ -463,6 +512,7 @@ class _$GeneralRoverCommand implements GeneralRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (generalCommand != null) {
@@ -609,8 +659,15 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return heartbeatCommand(command, subsystem);
   }
@@ -642,8 +699,15 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return heartbeatCommand?.call(command, subsystem);
   }
@@ -675,8 +739,15 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (heartbeatCommand != null) {
@@ -696,6 +767,7 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return heartbeatCommand(this);
   }
@@ -711,6 +783,7 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return heartbeatCommand?.call(this);
   }
@@ -726,6 +799,7 @@ class _$HeartbeatRoverCommand implements HeartbeatRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (heartbeatCommand != null) {
@@ -869,8 +943,15 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return intakeCommand(command, subsystem);
   }
@@ -902,8 +983,15 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return intakeCommand?.call(command, subsystem);
   }
@@ -935,8 +1023,15 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (intakeCommand != null) {
@@ -956,6 +1051,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return intakeCommand(this);
   }
@@ -971,6 +1067,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return intakeCommand?.call(this);
   }
@@ -986,6 +1083,7 @@ class _$IntakeRoverCommand implements IntakeRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (intakeCommand != null) {
@@ -1129,8 +1227,15 @@ class _$GarageRoverCommand implements GarageRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return garageCommand(command, subsystem);
   }
@@ -1162,8 +1267,15 @@ class _$GarageRoverCommand implements GarageRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return garageCommand?.call(command, subsystem);
   }
@@ -1195,8 +1307,15 @@ class _$GarageRoverCommand implements GarageRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (garageCommand != null) {
@@ -1216,6 +1335,7 @@ class _$GarageRoverCommand implements GarageRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return garageCommand(this);
   }
@@ -1231,6 +1351,7 @@ class _$GarageRoverCommand implements GarageRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return garageCommand?.call(this);
   }
@@ -1246,6 +1367,7 @@ class _$GarageRoverCommand implements GarageRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (garageCommand != null) {
@@ -1413,8 +1535,15 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return drivetrainCommand(command, commandParameters, subsystem);
   }
@@ -1446,8 +1575,15 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return drivetrainCommand?.call(command, commandParameters, subsystem);
   }
@@ -1479,8 +1615,15 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (drivetrainCommand != null) {
@@ -1500,6 +1643,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return drivetrainCommand(this);
   }
@@ -1515,6 +1659,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return drivetrainCommand?.call(this);
   }
@@ -1530,6 +1675,7 @@ class _$DrivetrainRoverCommand implements DrivetrainRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (drivetrainCommand != null) {
@@ -1706,8 +1852,15 @@ class _$DrivetrainRoverCommandDestination
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
     return destinationCommand(command, commandParameters, subsystem);
   }
@@ -1739,8 +1892,15 @@ class _$DrivetrainRoverCommandDestination
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
     return destinationCommand?.call(command, commandParameters, subsystem);
   }
@@ -1772,8 +1932,15 @@ class _$DrivetrainRoverCommandDestination
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (destinationCommand != null) {
@@ -1793,6 +1960,7 @@ class _$DrivetrainRoverCommandDestination
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return destinationCommand(this);
   }
@@ -1808,6 +1976,7 @@ class _$DrivetrainRoverCommandDestination
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return destinationCommand?.call(this);
   }
@@ -1823,6 +1992,7 @@ class _$DrivetrainRoverCommandDestination
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (destinationCommand != null) {
@@ -1866,7 +2036,12 @@ abstract class _$$PiLitRoverCommandCopyWith<$Res>
           _$PiLitRoverCommand value, $Res Function(_$PiLitRoverCommand) then) =
       __$$PiLitRoverCommandCopyWithImpl<$Res>;
   @override
-  $Res call({RoverCommandTypePiLit command, RoverSubsystemType subsystem});
+  $Res call(
+      {RoverCommandTypePiLit command,
+      RoverCommandParameters? commandParameters,
+      RoverSubsystemType subsystem});
+
+  $RoverCommandParametersCopyWith<$Res>? get commandParameters;
 }
 
 /// @nodoc
@@ -1883,6 +2058,7 @@ class __$$PiLitRoverCommandCopyWithImpl<$Res>
   @override
   $Res call({
     Object? command = freezed,
+    Object? commandParameters = freezed,
     Object? subsystem = freezed,
   }) {
     return _then(_$PiLitRoverCommand(
@@ -1890,11 +2066,27 @@ class __$$PiLitRoverCommandCopyWithImpl<$Res>
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as RoverCommandTypePiLit,
+      commandParameters: commandParameters == freezed
+          ? _value.commandParameters
+          : commandParameters // ignore: cast_nullable_to_non_nullable
+              as RoverCommandParameters?,
       subsystem: subsystem == freezed
           ? _value.subsystem
           : subsystem // ignore: cast_nullable_to_non_nullable
               as RoverSubsystemType,
     ));
+  }
+
+  @override
+  $RoverCommandParametersCopyWith<$Res>? get commandParameters {
+    if (_value.commandParameters == null) {
+      return null;
+    }
+
+    return $RoverCommandParametersCopyWith<$Res>(_value.commandParameters!,
+        (value) {
+      return _then(_value.copyWith(commandParameters: value));
+    });
   }
 }
 
@@ -1902,7 +2094,9 @@ class __$$PiLitRoverCommandCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PiLitRoverCommand implements PiLitRoverCommand {
   const _$PiLitRoverCommand(this.command,
-      {this.subsystem = RoverSubsystemType.pi_lit, final String? $type})
+      {this.commandParameters,
+      this.subsystem = RoverSubsystemType.pi_lit,
+      final String? $type})
       : $type = $type ?? 'piLitCommand';
 
   factory _$PiLitRoverCommand.fromJson(Map<String, dynamic> json) =>
@@ -1910,6 +2104,8 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
 
   @override
   final RoverCommandTypePiLit command;
+  @override
+  final RoverCommandParameters? commandParameters;
   @override
   @JsonKey()
   final RoverSubsystemType subsystem;
@@ -1919,7 +2115,7 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
 
   @override
   String toString() {
-    return 'RoverCommand.piLitCommand(command: $command, subsystem: $subsystem)';
+    return 'RoverCommand.piLitCommand(command: $command, commandParameters: $commandParameters, subsystem: $subsystem)';
   }
 
   @override
@@ -1928,6 +2124,8 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
         (other.runtimeType == runtimeType &&
             other is _$PiLitRoverCommand &&
             const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality()
+                .equals(other.commandParameters, commandParameters) &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem));
   }
 
@@ -1936,6 +2134,7 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(commandParameters),
       const DeepCollectionEquality().hash(subsystem));
 
   @JsonKey(ignore: true)
@@ -1971,10 +2170,17 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
             RoverSubsystemType subsystem)
         destinationCommand,
     required TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
         piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
   }) {
-    return piLitCommand(command, subsystem);
+    return piLitCommand(command, commandParameters, subsystem);
   }
 
   @override
@@ -2004,10 +2210,17 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
   }) {
-    return piLitCommand?.call(command, subsystem);
+    return piLitCommand?.call(command, commandParameters, subsystem);
   }
 
   @override
@@ -2037,12 +2250,19 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
             RoverSubsystemType subsystem)?
         destinationCommand,
     TResult Function(
-            RoverCommandTypePiLit command, RoverSubsystemType subsystem)?
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
         piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
     required TResult orElse(),
   }) {
     if (piLitCommand != null) {
-      return piLitCommand(command, subsystem);
+      return piLitCommand(command, commandParameters, subsystem);
     }
     return orElse();
   }
@@ -2058,6 +2278,7 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
     required TResult Function(DrivetrainRoverCommandDestination value)
         destinationCommand,
     required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
   }) {
     return piLitCommand(this);
   }
@@ -2073,6 +2294,7 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
   }) {
     return piLitCommand?.call(this);
   }
@@ -2088,6 +2310,7 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
     TResult Function(DrivetrainRoverCommandDestination value)?
         destinationCommand,
     TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
     required TResult orElse(),
   }) {
     if (piLitCommand != null) {
@@ -2104,17 +2327,330 @@ class _$PiLitRoverCommand implements PiLitRoverCommand {
 
 abstract class PiLitRoverCommand implements RoverCommand {
   const factory PiLitRoverCommand(final RoverCommandTypePiLit command,
-      {final RoverSubsystemType subsystem}) = _$PiLitRoverCommand;
+      {final RoverCommandParameters? commandParameters,
+      final RoverSubsystemType subsystem}) = _$PiLitRoverCommand;
 
   factory PiLitRoverCommand.fromJson(Map<String, dynamic> json) =
       _$PiLitRoverCommand.fromJson;
 
   RoverCommandTypePiLit get command => throw _privateConstructorUsedError;
+  RoverCommandParameters? get commandParameters =>
+      throw _privateConstructorUsedError;
   @override
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$PiLitRoverCommandCopyWith<_$PiLitRoverCommand> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CameraRoverCommandCopyWith<$Res>
+    implements $RoverCommandCopyWith<$Res> {
+  factory _$$CameraRoverCommandCopyWith(_$CameraRoverCommand value,
+          $Res Function(_$CameraRoverCommand) then) =
+      __$$CameraRoverCommandCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {RoverCommandTypeCamera command,
+      RoverCommandParameters commandParameters,
+      RoverSubsystemType subsystem});
+
+  $RoverCommandParametersCopyWith<$Res> get commandParameters;
+}
+
+/// @nodoc
+class __$$CameraRoverCommandCopyWithImpl<$Res>
+    extends _$RoverCommandCopyWithImpl<$Res>
+    implements _$$CameraRoverCommandCopyWith<$Res> {
+  __$$CameraRoverCommandCopyWithImpl(
+      _$CameraRoverCommand _value, $Res Function(_$CameraRoverCommand) _then)
+      : super(_value, (v) => _then(v as _$CameraRoverCommand));
+
+  @override
+  _$CameraRoverCommand get _value => super._value as _$CameraRoverCommand;
+
+  @override
+  $Res call({
+    Object? command = freezed,
+    Object? commandParameters = freezed,
+    Object? subsystem = freezed,
+  }) {
+    return _then(_$CameraRoverCommand(
+      command == freezed
+          ? _value.command
+          : command // ignore: cast_nullable_to_non_nullable
+              as RoverCommandTypeCamera,
+      commandParameters == freezed
+          ? _value.commandParameters
+          : commandParameters // ignore: cast_nullable_to_non_nullable
+              as RoverCommandParameters,
+      subsystem: subsystem == freezed
+          ? _value.subsystem
+          : subsystem // ignore: cast_nullable_to_non_nullable
+              as RoverSubsystemType,
+    ));
+  }
+
+  @override
+  $RoverCommandParametersCopyWith<$Res> get commandParameters {
+    return $RoverCommandParametersCopyWith<$Res>(_value.commandParameters,
+        (value) {
+      return _then(_value.copyWith(commandParameters: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CameraRoverCommand implements CameraRoverCommand {
+  const _$CameraRoverCommand(this.command, this.commandParameters,
+      {this.subsystem = RoverSubsystemType.camera, final String? $type})
+      : $type = $type ?? 'cameraCommand';
+
+  factory _$CameraRoverCommand.fromJson(Map<String, dynamic> json) =>
+      _$$CameraRoverCommandFromJson(json);
+
+  @override
+  final RoverCommandTypeCamera command;
+  @override
+  final RoverCommandParameters commandParameters;
+  @override
+  @JsonKey()
+  final RoverSubsystemType subsystem;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommand.cameraCommand(command: $command, commandParameters: $commandParameters, subsystem: $subsystem)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CameraRoverCommand &&
+            const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality()
+                .equals(other.commandParameters, commandParameters) &&
+            const DeepCollectionEquality().equals(other.subsystem, subsystem));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(commandParameters),
+      const DeepCollectionEquality().hash(subsystem));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$CameraRoverCommandCopyWith<_$CameraRoverCommand> get copyWith =>
+      __$$CameraRoverCommandCopyWithImpl<_$CameraRoverCommand>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
+        generalCommand,
+    required TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)
+        heartbeatCommand,
+    required TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)
+        intakeCommand,
+    required TResult Function(
+            GarageCommandType command, RoverSubsystemType subsystem)
+        garageCommand,
+    required TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        drivetrainCommand,
+    required TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        destinationCommand,
+    required TResult Function(
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)
+        piLitCommand,
+    required TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)
+        cameraCommand,
+  }) {
+    return cameraCommand(command, commandParameters, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        destinationCommand,
+    TResult Function(
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
+  }) {
+    return cameraCommand?.call(command, commandParameters, subsystem);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            RoverCommandTypeGeneral command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        generalCommand,
+    TResult Function(
+            RoverCommandTypeHeartbeat command, RoverSubsystemType subsystem)?
+        heartbeatCommand,
+    TResult Function(
+            RoverCommandTypeIntake command, RoverSubsystemType subsystem)?
+        intakeCommand,
+    TResult Function(GarageCommandType command, RoverSubsystemType subsystem)?
+        garageCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        drivetrainCommand,
+    TResult Function(
+            RoverCommandTypeDrivetrain command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        destinationCommand,
+    TResult Function(
+            RoverCommandTypePiLit command,
+            RoverCommandParameters? commandParameters,
+            RoverSubsystemType subsystem)?
+        piLitCommand,
+    TResult Function(
+            RoverCommandTypeCamera command,
+            RoverCommandParameters commandParameters,
+            RoverSubsystemType subsystem)?
+        cameraCommand,
+    required TResult orElse(),
+  }) {
+    if (cameraCommand != null) {
+      return cameraCommand(command, commandParameters, subsystem);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GeneralRoverCommand value) generalCommand,
+    required TResult Function(HeartbeatRoverCommand value) heartbeatCommand,
+    required TResult Function(IntakeRoverCommand value) intakeCommand,
+    required TResult Function(GarageRoverCommand value) garageCommand,
+    required TResult Function(DrivetrainRoverCommand value) drivetrainCommand,
+    required TResult Function(DrivetrainRoverCommandDestination value)
+        destinationCommand,
+    required TResult Function(PiLitRoverCommand value) piLitCommand,
+    required TResult Function(CameraRoverCommand value) cameraCommand,
+  }) {
+    return cameraCommand(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(DrivetrainRoverCommandDestination value)?
+        destinationCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
+  }) {
+    return cameraCommand?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GeneralRoverCommand value)? generalCommand,
+    TResult Function(HeartbeatRoverCommand value)? heartbeatCommand,
+    TResult Function(IntakeRoverCommand value)? intakeCommand,
+    TResult Function(GarageRoverCommand value)? garageCommand,
+    TResult Function(DrivetrainRoverCommand value)? drivetrainCommand,
+    TResult Function(DrivetrainRoverCommandDestination value)?
+        destinationCommand,
+    TResult Function(PiLitRoverCommand value)? piLitCommand,
+    TResult Function(CameraRoverCommand value)? cameraCommand,
+    required TResult orElse(),
+  }) {
+    if (cameraCommand != null) {
+      return cameraCommand(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CameraRoverCommandToJson(this);
+  }
+}
+
+abstract class CameraRoverCommand implements RoverCommand {
+  const factory CameraRoverCommand(final RoverCommandTypeCamera command,
+      final RoverCommandParameters commandParameters,
+      {final RoverSubsystemType subsystem}) = _$CameraRoverCommand;
+
+  factory CameraRoverCommand.fromJson(Map<String, dynamic> json) =
+      _$CameraRoverCommand.fromJson;
+
+  RoverCommandTypeCamera get command => throw _privateConstructorUsedError;
+  RoverCommandParameters get commandParameters =>
+      throw _privateConstructorUsedError;
+  @override
+  RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$CameraRoverCommandCopyWith<_$CameraRoverCommand> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2125,8 +2661,12 @@ RoverCommandParameters _$RoverCommandParametersFromJson(
       return RoverCommandParametersDrivetrain.fromJson(json);
     case 'destination':
       return RoverCommandParametersDestination.fromJson(json);
+    case 'numberPiLitsOverride':
+      return RoverCommandParametersPiLit.fromJson(json);
     case 'piLitPlacement':
       return RoverCommandParametersPiLitPlacement.fromJson(json);
+    case 'switchCamera':
+      return RoverCommandParametersCamera.fromJson(json);
 
     default:
       throw CheckedFromJsonException(
@@ -2143,27 +2683,34 @@ mixin _$RoverCommandParameters {
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
     required TResult Function(DeviceLocation location,
             PiLitFormationType formation, double heading)
         piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -2173,24 +2720,31 @@ mixin _$RoverCommandParameters {
         drivetrain,
     required TResult Function(RoverCommandParametersDestination value)
         destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
     required TResult Function(RoverCommandParametersPiLitPlacement value)
         piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -2307,9 +2861,12 @@ class _$RoverCommandParametersDrivetrain
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
     required TResult Function(DeviceLocation location,
             PiLitFormationType formation, double heading)
         piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
   }) {
     return drivetrain(x, y);
   }
@@ -2319,9 +2876,11 @@ class _$RoverCommandParametersDrivetrain
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
   }) {
     return drivetrain?.call(x, y);
   }
@@ -2331,9 +2890,11 @@ class _$RoverCommandParametersDrivetrain
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
   }) {
     if (drivetrain != null) {
@@ -2349,8 +2910,11 @@ class _$RoverCommandParametersDrivetrain
         drivetrain,
     required TResult Function(RoverCommandParametersDestination value)
         destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
     required TResult Function(RoverCommandParametersPiLitPlacement value)
         piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
   }) {
     return drivetrain(this);
   }
@@ -2360,8 +2924,10 @@ class _$RoverCommandParametersDrivetrain
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
   }) {
     return drivetrain?.call(this);
   }
@@ -2371,8 +2937,10 @@ class _$RoverCommandParametersDrivetrain
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
     required TResult orElse(),
   }) {
     if (drivetrain != null) {
@@ -2496,9 +3064,12 @@ class _$RoverCommandParametersDestination
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
     required TResult Function(DeviceLocation location,
             PiLitFormationType formation, double heading)
         piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
   }) {
     return destination(lat, long);
   }
@@ -2508,9 +3079,11 @@ class _$RoverCommandParametersDestination
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
   }) {
     return destination?.call(lat, long);
   }
@@ -2520,9 +3093,11 @@ class _$RoverCommandParametersDestination
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
   }) {
     if (destination != null) {
@@ -2538,8 +3113,11 @@ class _$RoverCommandParametersDestination
         drivetrain,
     required TResult Function(RoverCommandParametersDestination value)
         destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
     required TResult Function(RoverCommandParametersPiLitPlacement value)
         piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
   }) {
     return destination(this);
   }
@@ -2549,8 +3127,10 @@ class _$RoverCommandParametersDestination
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
   }) {
     return destination?.call(this);
   }
@@ -2560,8 +3140,10 @@ class _$RoverCommandParametersDestination
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
     required TResult orElse(),
   }) {
     if (destination != null) {
@@ -2590,6 +3172,207 @@ abstract class RoverCommandParametersDestination
   @JsonKey(ignore: true)
   _$$RoverCommandParametersDestinationCopyWith<
           _$RoverCommandParametersDestination>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RoverCommandParametersPiLitCopyWith<$Res> {
+  factory _$$RoverCommandParametersPiLitCopyWith(
+          _$RoverCommandParametersPiLit value,
+          $Res Function(_$RoverCommandParametersPiLit) then) =
+      __$$RoverCommandParametersPiLitCopyWithImpl<$Res>;
+  $Res call({int piLitsLeft, int piLitsRight});
+}
+
+/// @nodoc
+class __$$RoverCommandParametersPiLitCopyWithImpl<$Res>
+    extends _$RoverCommandParametersCopyWithImpl<$Res>
+    implements _$$RoverCommandParametersPiLitCopyWith<$Res> {
+  __$$RoverCommandParametersPiLitCopyWithImpl(
+      _$RoverCommandParametersPiLit _value,
+      $Res Function(_$RoverCommandParametersPiLit) _then)
+      : super(_value, (v) => _then(v as _$RoverCommandParametersPiLit));
+
+  @override
+  _$RoverCommandParametersPiLit get _value =>
+      super._value as _$RoverCommandParametersPiLit;
+
+  @override
+  $Res call({
+    Object? piLitsLeft = freezed,
+    Object? piLitsRight = freezed,
+  }) {
+    return _then(_$RoverCommandParametersPiLit(
+      piLitsLeft == freezed
+          ? _value.piLitsLeft
+          : piLitsLeft // ignore: cast_nullable_to_non_nullable
+              as int,
+      piLitsRight == freezed
+          ? _value.piLitsRight
+          : piLitsRight // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$RoverCommandParametersPiLit implements RoverCommandParametersPiLit {
+  const _$RoverCommandParametersPiLit(this.piLitsLeft, this.piLitsRight,
+      {final String? $type})
+      : $type = $type ?? 'numberPiLitsOverride';
+
+  factory _$RoverCommandParametersPiLit.fromJson(Map<String, dynamic> json) =>
+      _$$RoverCommandParametersPiLitFromJson(json);
+
+  @override
+  final int piLitsLeft;
+  @override
+  final int piLitsRight;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommandParameters.numberPiLitsOverride(piLitsLeft: $piLitsLeft, piLitsRight: $piLitsRight)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RoverCommandParametersPiLit &&
+            const DeepCollectionEquality()
+                .equals(other.piLitsLeft, piLitsLeft) &&
+            const DeepCollectionEquality()
+                .equals(other.piLitsRight, piLitsRight));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(piLitsLeft),
+      const DeepCollectionEquality().hash(piLitsRight));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$RoverCommandParametersPiLitCopyWith<_$RoverCommandParametersPiLit>
+      get copyWith => __$$RoverCommandParametersPiLitCopyWithImpl<
+          _$RoverCommandParametersPiLit>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(double x, double y) drivetrain,
+    required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
+        piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
+  }) {
+    return numberPiLitsOverride(piLitsLeft, piLitsRight);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
+        piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
+  }) {
+    return numberPiLitsOverride?.call(piLitsLeft, piLitsRight);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
+        piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
+    required TResult orElse(),
+  }) {
+    if (numberPiLitsOverride != null) {
+      return numberPiLitsOverride(piLitsLeft, piLitsRight);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RoverCommandParametersDrivetrain value)
+        drivetrain,
+    required TResult Function(RoverCommandParametersDestination value)
+        destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
+  }) {
+    return numberPiLitsOverride(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
+  }) {
+    return numberPiLitsOverride?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
+    required TResult orElse(),
+  }) {
+    if (numberPiLitsOverride != null) {
+      return numberPiLitsOverride(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RoverCommandParametersPiLitToJson(this);
+  }
+}
+
+abstract class RoverCommandParametersPiLit implements RoverCommandParameters {
+  const factory RoverCommandParametersPiLit(
+          final int piLitsLeft, final int piLitsRight) =
+      _$RoverCommandParametersPiLit;
+
+  factory RoverCommandParametersPiLit.fromJson(Map<String, dynamic> json) =
+      _$RoverCommandParametersPiLit.fromJson;
+
+  int get piLitsLeft => throw _privateConstructorUsedError;
+  int get piLitsRight => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$$RoverCommandParametersPiLitCopyWith<_$RoverCommandParametersPiLit>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -2707,9 +3490,12 @@ class _$RoverCommandParametersPiLitPlacement
   TResult when<TResult extends Object?>({
     required TResult Function(double x, double y) drivetrain,
     required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
     required TResult Function(DeviceLocation location,
             PiLitFormationType formation, double heading)
         piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
   }) {
     return piLitPlacement(location, formation, heading);
   }
@@ -2719,9 +3505,11 @@ class _$RoverCommandParametersPiLitPlacement
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
   }) {
     return piLitPlacement?.call(location, formation, heading);
   }
@@ -2731,9 +3519,11 @@ class _$RoverCommandParametersPiLitPlacement
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(double x, double y)? drivetrain,
     TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
             double heading)?
         piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
   }) {
     if (piLitPlacement != null) {
@@ -2749,8 +3539,11 @@ class _$RoverCommandParametersPiLitPlacement
         drivetrain,
     required TResult Function(RoverCommandParametersDestination value)
         destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
     required TResult Function(RoverCommandParametersPiLitPlacement value)
         piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
   }) {
     return piLitPlacement(this);
   }
@@ -2760,8 +3553,10 @@ class _$RoverCommandParametersPiLitPlacement
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
   }) {
     return piLitPlacement?.call(this);
   }
@@ -2771,8 +3566,10 @@ class _$RoverCommandParametersPiLitPlacement
   TResult maybeMap<TResult extends Object?>({
     TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
     TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
     TResult Function(RoverCommandParametersPiLitPlacement value)?
         piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
     required TResult orElse(),
   }) {
     if (piLitPlacement != null) {
@@ -2804,5 +3601,191 @@ abstract class RoverCommandParametersPiLitPlacement
   @JsonKey(ignore: true)
   _$$RoverCommandParametersPiLitPlacementCopyWith<
           _$RoverCommandParametersPiLitPlacement>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RoverCommandParametersCameraCopyWith<$Res> {
+  factory _$$RoverCommandParametersCameraCopyWith(
+          _$RoverCommandParametersCamera value,
+          $Res Function(_$RoverCommandParametersCamera) then) =
+      __$$RoverCommandParametersCameraCopyWithImpl<$Res>;
+  $Res call({CameraType camera});
+}
+
+/// @nodoc
+class __$$RoverCommandParametersCameraCopyWithImpl<$Res>
+    extends _$RoverCommandParametersCopyWithImpl<$Res>
+    implements _$$RoverCommandParametersCameraCopyWith<$Res> {
+  __$$RoverCommandParametersCameraCopyWithImpl(
+      _$RoverCommandParametersCamera _value,
+      $Res Function(_$RoverCommandParametersCamera) _then)
+      : super(_value, (v) => _then(v as _$RoverCommandParametersCamera));
+
+  @override
+  _$RoverCommandParametersCamera get _value =>
+      super._value as _$RoverCommandParametersCamera;
+
+  @override
+  $Res call({
+    Object? camera = freezed,
+  }) {
+    return _then(_$RoverCommandParametersCamera(
+      camera == freezed
+          ? _value.camera
+          : camera // ignore: cast_nullable_to_non_nullable
+              as CameraType,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$RoverCommandParametersCamera implements RoverCommandParametersCamera {
+  const _$RoverCommandParametersCamera(this.camera, {final String? $type})
+      : $type = $type ?? 'switchCamera';
+
+  factory _$RoverCommandParametersCamera.fromJson(Map<String, dynamic> json) =>
+      _$$RoverCommandParametersCameraFromJson(json);
+
+  @override
+  final CameraType camera;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'RoverCommandParameters.switchCamera(camera: $camera)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RoverCommandParametersCamera &&
+            const DeepCollectionEquality().equals(other.camera, camera));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(camera));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$RoverCommandParametersCameraCopyWith<_$RoverCommandParametersCamera>
+      get copyWith => __$$RoverCommandParametersCameraCopyWithImpl<
+          _$RoverCommandParametersCamera>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(double x, double y) drivetrain,
+    required TResult Function(double lat, double long) destination,
+    required TResult Function(int piLitsLeft, int piLitsRight)
+        numberPiLitsOverride,
+    required TResult Function(DeviceLocation location,
+            PiLitFormationType formation, double heading)
+        piLitPlacement,
+    required TResult Function(CameraType camera) switchCamera,
+  }) {
+    return switchCamera(camera);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
+        piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
+  }) {
+    return switchCamera?.call(camera);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(double x, double y)? drivetrain,
+    TResult Function(double lat, double long)? destination,
+    TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
+    TResult Function(DeviceLocation location, PiLitFormationType formation,
+            double heading)?
+        piLitPlacement,
+    TResult Function(CameraType camera)? switchCamera,
+    required TResult orElse(),
+  }) {
+    if (switchCamera != null) {
+      return switchCamera(camera);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RoverCommandParametersDrivetrain value)
+        drivetrain,
+    required TResult Function(RoverCommandParametersDestination value)
+        destination,
+    required TResult Function(RoverCommandParametersPiLit value)
+        numberPiLitsOverride,
+    required TResult Function(RoverCommandParametersPiLitPlacement value)
+        piLitPlacement,
+    required TResult Function(RoverCommandParametersCamera value) switchCamera,
+  }) {
+    return switchCamera(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
+  }) {
+    return switchCamera?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RoverCommandParametersDrivetrain value)? drivetrain,
+    TResult Function(RoverCommandParametersDestination value)? destination,
+    TResult Function(RoverCommandParametersPiLit value)? numberPiLitsOverride,
+    TResult Function(RoverCommandParametersPiLitPlacement value)?
+        piLitPlacement,
+    TResult Function(RoverCommandParametersCamera value)? switchCamera,
+    required TResult orElse(),
+  }) {
+    if (switchCamera != null) {
+      return switchCamera(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RoverCommandParametersCameraToJson(this);
+  }
+}
+
+abstract class RoverCommandParametersCamera implements RoverCommandParameters {
+  const factory RoverCommandParametersCamera(final CameraType camera) =
+      _$RoverCommandParametersCamera;
+
+  factory RoverCommandParametersCamera.fromJson(Map<String, dynamic> json) =
+      _$RoverCommandParametersCamera.fromJson;
+
+  CameraType get camera => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$$RoverCommandParametersCameraCopyWith<_$RoverCommandParametersCamera>
       get copyWith => throw _privateConstructorUsedError;
 }

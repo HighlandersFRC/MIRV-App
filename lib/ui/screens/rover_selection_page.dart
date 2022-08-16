@@ -1,11 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/Blocs/autocomplete/search_bar.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/device_status_type.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_page.dart';
 import 'package:mirv/ui/screens/rover_selection_map.dart';
@@ -15,7 +18,6 @@ class SelectedRoverController extends GetxController {
   Rx<bool> isConnectButtonEnabled = false.obs;
   Rx<bool> isRoverListMinimized = false.obs;
   Rx<Place?> searchSelect = Rx<Place?>(null);
-  Rx<bool> ignoreUnavailable = false.obs;
 
   SelectedRoverController() {
     selectedRoverId.listen((selectedRoverId) => isConnectButtonEnabled.value = (selectedRoverId != ""));
@@ -29,7 +31,7 @@ class SelectedRoverController extends GetxController {
     }
   }
 
-  verifyRoverId(List<RoverMetrics> rovers) {
+  verifyRoverId(List<RoverState> rovers) {
     if (rovers.where((element) => element.rover_id == selectedRoverId.value).isEmpty) selectedRoverId.value = "";
   }
 
@@ -41,12 +43,12 @@ class SelectedRoverController extends GetxController {
     }
   }
 
-  Color roverTileColor(String rover_id, DeviceStatusType value, {bool ignoreUnavailable = false}) {
+  Color roverTileColor(String rover_id, DeviceStatusType value) {
     if (selectedRoverId.value == rover_id) {
       return tileColorSelected;
     } else {
-      if (value == DeviceStatusType.available || ignoreUnavailable) {
-        return tileColorAvailible;
+      if (value == DeviceStatusType.available) {
+        return tileColorAvailable;
       } else {
         return tileColorUnavailible;
       }
@@ -70,10 +72,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   final TextEditingController typeAheadController = TextEditingController();
 
   int? groupValue = 0;
-  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
+  RxList<RoverState> roverList = <RoverState>[].obs;
 
   void _refreshRoversList() async {
-    roverList.value = await mirvApi.getRovers();
+    roverList.value = await mirvApi.getRoverStates() ?? [];
     selectedRoverController.verifyRoverId(roverList);
   }
 
@@ -124,16 +126,10 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: const Text(
-            "Rover Selection",
-          ),
-          actions: [
-            Obx(() => Switch(
-                value: selectedRoverController.ignoreUnavailable.value,
-                onChanged: (value) {
-                  selectedRoverController.ignoreUnavailable.value = value;
-                }))
-          ]),
+        title: const Text(
+          "Rover Selection",
+        ),
+      ),
       body: Row(
         children: [
           Obx(
@@ -156,16 +152,11 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                               () => selectedRoverController.isRoverListMinimized.value
                                   ? ListTile(
                                       iconColor: Colors.amber,
-                                      // selectedRoverController.roverTileIconColor(
-                                      //   roverList[index].rover_id,
-                                      // ),
                                       tileColor: selectedRoverController.roverTileColor(
-                                          roverList[index].rover_id, roverList[index].status,
-                                          ignoreUnavailable: selectedRoverController.ignoreUnavailable.value),
+                                          roverList[index].rover_id, roverList[index].status),
                                       title: Text(roverList[index].rover_id.toString()),
                                       onTap: () {
-                                        if (roverList[index].status == DeviceStatusType.available ||
-                                            selectedRoverController.ignoreUnavailable.value) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       })
@@ -184,8 +175,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                                           : Text(
                                               'Battery: ${roverList[index].battery_percent.toString()}% \n${roverList[index].state.toString().replaceAll('RoverStateType.', 'State: ')}'),
                                       onTap: () {
-                                        if (roverList[index].status == DeviceStatusType.available ||
-                                            selectedRoverController.ignoreUnavailable.value) {
+                                        if (roverList[index].status == DeviceStatusType.available) {
                                           selectedRoverController.setSelectedRoverId((roverList[index].rover_id).toString());
                                         }
                                       },
@@ -216,9 +206,12 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                         child: Obx(
                           () => ElevatedButton(
                             onPressed: selectedRoverController.isConnectButtonEnabled.value
-                                ? () {
-                                    Get.to(RoverOperationPage(roverList.firstWhere(
-                                        (element) => selectedRoverController.selectedRoverId.value == element.rover_id)));
+                                ? () async {
+                                    RoverState selectedRoverState = roverList.firstWhere(
+                                        (element) => selectedRoverController.selectedRoverId.value == element.rover_id);
+                                    RoverGarageState roverGarageState = RoverGarageState.fromRoverState(
+                                        selectedRoverState, await mirvApi.getGarageMetrics(selectedRoverState.garage?.garage_id));
+                                    Get.to(RoverOperationPage(roverGarageState));
                                   }
                                 : null,
                             child: Row(

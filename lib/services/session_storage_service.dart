@@ -1,3 +1,6 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:mirv/constants/settings_default.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -16,16 +19,16 @@ class SessionStorageService {
   init() async {
     _prefs = await SharedPreferences.getInstance();
     if (retrieveMirvEndpoint() == null) {
-      saveMirvEndpoint('http://20.237.58.76:8080');
+      saveMirvEndpoint(SettingsDefaults.endpoint);
     }
     if (retrieveKeycloakEndpoint() == null) {
-      saveKeycloakEndpoint('http://20.232.252.236:8080');
+      saveKeycloakEndpoint(SettingsDefaults.keycloakEndpoint);
     }
     if (retrieveKeycloakRealm() == null) {
-      saveKeycloakRealm('vtti');
+      saveKeycloakRealm(SettingsDefaults.keycloakRealm);
     }
     if (retrieveKeycloakClient() == null) {
-      saveKeycloakClient('users');
+      saveKeycloakClient(SettingsDefaults.keycloakClient);
     }
   }
 

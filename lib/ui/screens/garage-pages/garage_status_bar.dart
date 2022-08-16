@@ -5,11 +5,11 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 
 class GarageStatusBar extends StatelessWidget {
-  GarageStatusBar({
+  const GarageStatusBar({
     Key? key,
     required this.garageMetrics,
   }) : super(key: key);
-  final GarageMetrics garageMetrics;
+  final GarageMetrics? garageMetrics;
 
   StatelessWidget _stateDescription(GarageStateType state) {
     switch (state) {
@@ -33,9 +33,9 @@ class GarageStatusBar extends StatelessWidget {
     BuildContext context,
   ) {
     return Row(mainAxisAlignment: MainAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-       Text("ID: ${garageMetrics.garage_id}", style: const TextStyle (color: fontColor)),
+      Text("ID: ${garageMetrics?.garage_id ?? 'unknown'}", style: const TextStyle(color: fontColor)),
       const SizedBox(width: 270),
-_stateDescription(garageMetrics.state),
+      _stateDescription(garageMetrics?.state ?? GarageStateType.unavailable),
     ]);
   }
 }

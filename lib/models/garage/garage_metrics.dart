@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/device_health.dart';

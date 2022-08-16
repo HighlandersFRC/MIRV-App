@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 
 class CancelAuto extends StatelessWidget {
-  final RoverMetrics? roverMetrics;
+  final RoverGarageState? roverGarageState;
   late final bool? cancelled;
 
   final Function(RoverCommand) sendCommand;
   CancelAuto({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.sendCommand,
   }) : super(key: key) {
-    cancelled = _cancelState(roverMetrics?.state);
+    cancelled = _cancelState(roverGarageState?.state);
   }
 
   bool? _cancelState(RoverStateType? roverState) {

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mirv/services/session_storage_service.dart';
 
@@ -21,24 +24,40 @@ class AuthService {
   Future<int> authenticateUser(String username, String password) async {
     var res = await http.post(getKeycloakAuthEndpoint(),
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: {"username": username, "password": password, "client_id": "${getKeycloakClient()}", "grant_type": "password"});
+        body: {"username": username, "password": password, "client_id": getKeycloakClient(), "grant_type": "password"}).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => http.Response('Timeout', 408),
+    );
 
-    if (res.statusCode == 200) {
-      //copy
-      sessionStorageService.saveAccessToken(res.body);
-      return res.statusCode;
-      //
-    } else {
-      debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
-      return res.statusCode;
+    switch (res.statusCode) {
+      case 200:
+        sessionStorageService.saveAccessToken(res.body);
+        return res.statusCode;
+      default:
+        debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
+        return res.statusCode;
     }
   }
 
-  Future<bool> validateToken() async {
+  // Connection closed before full header was received
+  Future<bool?> validateToken(Function()? onTimeout) async {
     String? token = sessionStorageService.retriveAccessToken();
-    var res =
-        await http.post(getKeycloakUserInfoEndpoint(), headers: {"Authorization": "Bearer $token"}, body: {"client_id": "mirv"});
-    return res.statusCode == 200 ? true : false;
+    var res = await http.post(
+      getKeycloakUserInfoEndpoint(),
+      headers: {"Authorization": "Bearer $token"},
+      body: {"client_id": "mirv"},
+    ).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => http.Response('Timeout', 408),
+    );
+    switch (res.statusCode) {
+      case 200:
+        return true;
+      case 408:
+        return null;
+      default:
+        return false;
+    }
   }
 
   setMirvEndpoint(String endpoint) {

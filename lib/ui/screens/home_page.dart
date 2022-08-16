@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
     Image? image,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 10, //height / 20,
         horizontal: 5,
       ),
@@ -38,10 +38,10 @@ class HomePage extends StatelessWidget {
         leading: icon != null ? Icon(icon, size: iconSize) : image,
         onTap: () async {
           if (validateLogin) {
-            if (await isCurrentTokenValid()) {
+            if (await isCurrentTokenValid() == true) {
               Get.to(pageRoute);
             } else {
-              Get.to(LoginPage(pageRoute));
+              Get.to(LoginPage(() => Get.off(pageRoute)));
             }
           } else {
             Get.to(pageRoute);
@@ -51,16 +51,14 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<bool> isCurrentTokenValid() async {
-    return authService.validateToken();
+  Future<bool?> isCurrentTokenValid() async {
+    return authService.validateToken(() => Get.snackbar("Login", "Error accessing authentication server"));
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     double height = MediaQuery.of(context).size.height;
-
     Rx<bool> isHomePageListMinimized = false.obs;
     isHomePageListMinimized.value = width < 600;
     return Scaffold(

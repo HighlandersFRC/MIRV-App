@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mirv/models/place.dart';
 import 'dart:convert' as convert;
@@ -8,26 +9,59 @@ class PlacesService {
 
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     var url = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&key=$key';
-    var response = await http.get(Uri.parse(url));
-    var json = convert.jsonDecode(response.body);
-    var jsonResults = json['predictions'] as List;
-    return jsonResults.map((place) => PlaceSearch.fromJson(place)).toList();
+    var response = await http.get(Uri.parse(url)).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => http.Response('Timeout', 408),
+        );
+    switch (response.statusCode) {
+      case 200:
+        var json = convert.jsonDecode(response.body);
+        var results = json['predictions'] as List;
+        return results.map((place) => PlaceSearch.fromJson(place)).toList();
+      case 408:
+        Get.snackbar("Timeout", "Places search timed out");
+        return [];
+      default:
+        return [];
+    }
   }
 
-  Future<Place> getPlace(String placeId) async {
+  Future<Place?> getPlace(String placeId) async {
     var url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$key';
-    var response = await http.get(Uri.parse(url));
-    var json = convert.jsonDecode(response.body);
-    var jsonResult = json['result'] as Map<String, dynamic>;
-    return Place.fromJson(jsonResult);
+    var response = await http.get(Uri.parse(url)).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => http.Response('Timeout', 408),
+        );
+    switch (response.statusCode) {
+      case 200:
+        var json = convert.jsonDecode(response.body);
+        var jsonResult = json['result'] as Map<String, dynamic>;
+        return Place.fromJson(jsonResult);
+      case 408:
+        Get.snackbar("Timeout", "Places search timed out");
+        return null;
+      default:
+        return null;
+    }
   }
 
   Future<List<Place>> getPlaces(double lat, double lng, String placeType) async {
     var url =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?location=$lat,$lng&type=$placeType&rankby=distance&key=$key';
-    var response = await http.get(Uri.parse(url));
-    var json = convert.jsonDecode(response.body);
-    var jsonResults = json['results'] as List;
-    return jsonResults.map((place) => Place.fromJson(place)).toList();
+    var response = await http.get(Uri.parse(url)).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => http.Response('Timeout', 408),
+        );
+    switch (response.statusCode) {
+      case 200:
+        var json = convert.jsonDecode(response.body);
+        var jsonResults = json['results'] as List;
+        return jsonResults.map((place) => Place.fromJson(place)).toList();
+      case 408:
+        Get.snackbar("Timeout", "Places search timed out");
+        return [];
+      default:
+        return [];
+    }
   }
 }

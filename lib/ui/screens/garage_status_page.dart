@@ -5,7 +5,7 @@ import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/ui/screens/rover_status_page.dart';
 
 class StatusPageGarage extends StatelessWidget {
-  final GarageMetrics garageMetrics;
+  final GarageMetrics? garageMetrics;
   const StatusPageGarage(this.garageMetrics, {Key? key}) : super(key: key);
 
   @override
@@ -17,7 +17,9 @@ class StatusPageGarage extends StatelessWidget {
       crossAxisCount: 4,
       children: <Widget>[
         HealthContainer(
-            DeviceHealth(health: garageMetrics.health, details: garageMetrics.health_details), "General", CustomIcons.warehouse),
+            DeviceHealth(health: garageMetrics?.health ?? DeviceHealthType.unavailable, details: garageMetrics?.health_details),
+            "General",
+            CustomIcons.warehouse),
       ],
     );
   }

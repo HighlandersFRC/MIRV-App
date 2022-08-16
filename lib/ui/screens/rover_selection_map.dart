@@ -1,20 +1,22 @@
+// ignore_for_file: non_constant_identifier_names, avoid_function_literals_in_foreach_calls
+
 import 'dart:async';
-import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/place.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/device_status_type.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/ui/screens/rover_selection_page.dart';
 
 class RoverSelectionMap extends StatefulWidget {
-  final List<RoverMetrics> roverMetrics;
+  final List<RoverState> roverStates;
   final Rx<String> selectedRoverId;
   final SelectedRoverController selectedRoverController;
   final Rx<String> selectedMarkerId = "".obs;
 
-  RoverSelectionMap(this.roverMetrics, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
+  RoverSelectionMap(this.roverStates, this.selectedRoverId, this.selectedRoverController, {Key? key}) : super(key: key);
 
   @override
   State<RoverSelectionMap> createState() => _RoverSelectionMapState();
@@ -22,8 +24,8 @@ class RoverSelectionMap extends StatefulWidget {
 
 class _RoverSelectionMapState extends State<RoverSelectionMap> {
   Set<Marker> markers = {};
-  BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
-  RxList<RoverMetrics> roverList = <RoverMetrics>[].obs;
+  BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarkerWithHue(20);
+  RxList<RoverGarageState> roverList = <RoverGarageState>[].obs;
   Rx<String> selectedRoverId = "".obs;
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon_new.png');
@@ -50,7 +52,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
     });
 
     widget.selectedRoverId.listen((rover_id) {
-      widget.roverMetrics.forEach((element) async {
+      widget.roverStates.forEach((element) async {
         if (element.rover_id == rover_id) {
           _mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
               target: LatLng(element.telemetry.location.lat, element.telemetry.location.long),
@@ -62,7 +64,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   @override
   Widget build(BuildContext context) {
-    var firstRover = widget.roverMetrics.firstWhereOrNull((val) => true);
+    var firstRover = widget.roverStates.firstWhereOrNull((val) => true);
     var lat = firstRover?.telemetry.location.lat ?? 40.5;
     var long = firstRover?.telemetry.location.long ?? -105;
     return Scaffold(
@@ -84,7 +86,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   Set<Marker> getMarkers() {
     setState(() {
       markers = {
-        ...widget.roverMetrics.map((rover) {
+        ...widget.roverStates.map((rover) {
           return Marker(
               markerId: MarkerId(rover.rover_id),
               position: LatLng(rover.telemetry.location.lat, rover.telemetry.location.long),

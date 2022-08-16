@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class VerticalView extends StatelessWidget {
   final double size;
@@ -18,7 +17,8 @@ class VerticalView extends StatelessWidget {
 
   final String? buttonText;
 
-  VerticalView({
+  const VerticalView({
+    Key? key,
     required this.size,
     this.color = Colors.transparent,
     this.boxShadow,
@@ -27,13 +27,20 @@ class VerticalView extends StatelessWidget {
     this.buttonImage,
     this.buttonIcon,
     this.buttonText,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: size / 2,
       height: size,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.rectangle,
+        border: border,
+        boxShadow: boxShadow,
+        borderRadius: new BorderRadius.circular((size / 2)),
+      ),
       child: Center(
         child: buttonIcon != null
             ? buttonIcon
@@ -42,13 +49,6 @@ class VerticalView extends StatelessWidget {
                 : (buttonText != null)
                     ? Text(buttonText!)
                     : null,
-      ),
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.rectangle,
-        border: border,
-        boxShadow: boxShadow,
-        borderRadius: new BorderRadius.circular((size / 2)),
       ),
     );
   }
@@ -61,7 +61,7 @@ class VerticalView extends StatelessWidget {
           width: 4.0,
           style: BorderStyle.solid,
         ),
-        boxShadow: <BoxShadow>[
+        boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 8.0,

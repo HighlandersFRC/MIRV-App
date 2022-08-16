@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/pair.dart';
-import 'package:mirv/models/rover/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({
     Key? key,
-    required this.roverMetrics,
+    required this.roverGarageState,
     required this.sendCommand,
+    required this.webRtcConnection,
   }) : super(key: key);
-  final RoverMetrics roverMetrics;
+
+  final WebRTCConnection webRtcConnection;
+  final RoverGarageState roverGarageState;
   final Function(RoverCommand) sendCommand;
 
   @override
   Widget build(BuildContext context) {
-    var commandList = roverCommandsByState[roverMetrics.state] ?? [];
-    return Container(
-        child: ListView.builder(
+    var commandList = roverCommandsByState[roverGarageState.state] ?? [];
+    return ListView.builder(
       itemCount: commandList.length,
       itemBuilder: (context, index) {
         return Padding(
@@ -64,7 +65,7 @@ class CommandList extends StatelessWidget {
                   ),
                   child: commandList[index].last,
                   onPressed: () {
-                    sendCommand(commandList[index].first);
+                    commandList[index].first(webRtcConnection, context);
                   },
                 ),
               ),
@@ -72,6 +73,6 @@ class CommandList extends StatelessWidget {
           ),
         );
       },
-    ));
+    );
   }
 }
