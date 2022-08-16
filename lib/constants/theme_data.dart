@@ -15,9 +15,9 @@ const loadingColor = Colors.grey;
 const surface = primaryColordark;
 const onSuface = primaryColor;
 
-const tileColorAvailible = Color.fromARGB(255, 59, 59, 59);
+const tileColorAvailable = Color.fromARGB(255, 59, 59, 59);
 const tileColorSelected = secondaryColor;
-const tileColorUnavailible = backgroundColor;
+const tileColorUnavailible = Color.fromARGB(255, 165, 55, 36);
 
 const fontColor = Colors.white;
 const fontFamily = 'Georgia';

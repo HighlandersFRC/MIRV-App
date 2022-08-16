@@ -36,7 +36,7 @@ class SelectedGarageController extends GetxController {
     if (selectedGarageId.value == garageId) {
       return tileColorSelected;
     } else {
-      return tileColorAvailible;
+      return tileColorAvailable;
     }
   }
 }
@@ -53,7 +53,7 @@ class GarageSelectionPage extends StatelessWidget {
   final TextEditingController typeAheadController = TextEditingController();
 
   void _refreshGaragesList() async {
-    garageList.value = await mirvGarageApi!.getGarages();
+    garageList.value = await mirvGarageApi!.getGarages() ?? [];
     selectedGarageController.verifyGarageId(garageList);
   }
 

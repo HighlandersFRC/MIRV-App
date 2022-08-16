@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 import 'package:mirv/services/auth_service.dart';
 
 class LoginController extends GetxController {
-  final Widget pageRoute;
-  LoginController(this.pageRoute);
+  final Function() onLogin;
+  LoginController(this.onLogin);
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   AuthService authService = AuthService();
+  Rx<bool> isLoading = true.obs;
 
   Future<void> init() async {
     await authService.init();
@@ -33,7 +34,7 @@ class LoginController extends GetxController {
   void login() {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       if (code == 200) {
-        Get.off(pageRoute);
+        onLogin();
       } else if (code == 401 || code == 403) {
         Get.snackbar('Login', 'Invalid username or password');
       } else {
@@ -45,57 +46,83 @@ class LoginController extends GetxController {
   Future<int> attemptLogIn(String username, String password) async {
     return authService.authenticateUser(username, password);
   }
+
+  Future<bool?> isCurrentTokenValid() async {
+    return authService.validateToken(() => Get.snackbar("Login", "Error accessing authentication server"));
+  }
 }
 
 class LoginPage extends StatelessWidget {
-  late LoginController controller = LoginController(pageRoute);
-  final Widget pageRoute;
+  final Function() onLogin;
   final Rx<bool> _isObscure = true.obs;
-  LoginPage(this.pageRoute, {Key? key}) : super(key: key);
+  late LoginController controller = LoginController(onLogin);
+  LoginPage(this.onLogin, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    controller.init().then(
+          (_) => controller.isCurrentTokenValid().then(
+            (valid) {
+              controller.isLoading.value = false;
+              if (valid == true) {
+                onLogin();
+              }
+            },
+          ),
+        );
     return Scaffold(
       appBar: AppBar(
         title: const Text("Log In Page"),
       ),
       body: ListView(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: controller.usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
-                  validator: controller.validator,
-                ),
-                Obx(
-                  () => TextFormField(
-                    controller: controller.passwordController,
-                    validator: controller.validator,
-                    obscureText: _isObscure.value,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isObscure.value ? Icons.visibility : Icons.visibility_off,
+          Stack(children: <Widget>[
+            Scrollbar(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      controller: controller.usernameController,
+                      decoration: const InputDecoration(labelText: 'Username'),
+                      validator: controller.validator,
+                    ),
+                    Obx(
+                      () => TextFormField(
+                        controller: controller.passwordController,
+                        validator: controller.validator,
+                        obscureText: _isObscure.value,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure.value ? Icons.visibility : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              _isObscure.value = !_isObscure.value;
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          _isObscure.value = !_isObscure.value;
-                        },
                       ),
                     ),
-                  ),
+                    ElevatedButton(
+                      onPressed: controller.login,
+                      child: const Text('Login'),
+                    )
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: controller.login,
-                  child: const Text('Login'),
-                )
-              ],
+              ),
             ),
-          ),
+            Obx(() => controller.isLoading.value
+                ? Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Container()),
+          ])
         ],
       ),
     );
