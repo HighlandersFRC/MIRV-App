@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/constants/theme_data.dart';
 
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
@@ -13,16 +12,16 @@ class GarageCommandList extends StatelessWidget {
     required this.changeGarageState,
     required this.resetGarageState,
   }) : super(key: key);
-  final GarageMetrics garageMetrics;
+  final GarageMetrics? garageMetrics;
   final Function(String, GarageCommand) sendCommand;
   final Function(String, GarageCommand) changeGarageState;
   final Future<void> resetGarageState;
 
   @override
   Widget build(BuildContext context) {
-  var garageCommandList = garageCommandsByState[Pair(garageMetrics.state, garageMetrics.lights_on)] ?? []; 
-   return ListView.builder(
-    itemCount: garageCommandList.length,
+    var garageCommandList = garageCommandsByState[Pair(garageMetrics?.state, garageMetrics?.lights_on)] ?? [];
+    return ListView.builder(
+      itemCount: garageCommandList.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),
@@ -39,8 +38,8 @@ class GarageCommandList extends StatelessWidget {
                 icon: garageCommandList[index].last,
                 iconSize: 300,
                 onPressed: () {
-                  sendCommand(garageMetrics.garage_id, garageCommandList[index].first);
-                  changeGarageState(garageMetrics.garage_id, garageCommandList[index].first);
+                  sendCommand(garageMetrics!.garage_id, garageCommandList[index].first);
+                  changeGarageState(garageMetrics!.garage_id, garageCommandList[index].first);
                 },
               )),
             ),

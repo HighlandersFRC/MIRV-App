@@ -90,7 +90,7 @@ class WebRTCConnection {
       roverMetricsObs.value = roverMetricsObs.value.updateGarageState(value);
     });
     garageStateSubscription = roverMetricsObs.listen((value) {
-      if (value.garage?.garage_id != null) {
+      if (value.garage != null) {
         mirvApi.startGarageMetricUpdates(roverMetricsObs.value.garage!.garage_id);
         garageStateSubscription?.cancel();
       }

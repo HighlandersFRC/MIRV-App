@@ -26,7 +26,7 @@ class GarageCommands {
   static const lightsOff = GarageCommand(GarageCommandType.lights_off);
 }
 
-Map<Pair<GarageStateType, bool>, List<Pair<GarageCommand, Widget>>> garageCommandsByState = {
+Map<Pair<GarageStateType?, bool?>, List<Pair<GarageCommand, Widget>>> garageCommandsByState = {
   Pair(GarageStateType.retracted_latched, false): [
     Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),

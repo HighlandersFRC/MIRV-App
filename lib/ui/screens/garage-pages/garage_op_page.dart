@@ -48,7 +48,7 @@ class GarageOperationPage extends StatelessWidget {
             child: Scrollbar(
               child: Obx(
                 () => GarageCommandList(
-                  garageMetrics: _mirvGarageApi.garageMetricsObs.value!,
+                  garageMetrics: _mirvGarageApi.garageMetricsObs.value,
                   sendCommand: _mirvGarageApi.sendGarageCommand,
                   changeGarageState: _mirvGarageApi.updateGarageState,
                   resetGarageState: _mirvGarageApi.resetGarageMetricsUpdates(garage_id),

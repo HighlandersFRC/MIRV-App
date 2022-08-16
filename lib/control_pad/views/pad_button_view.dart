@@ -17,7 +17,7 @@ class PadButtonsView extends StatelessWidget {
   final double? size;
 
   /// List of pad buttons, default contains 4 buttons
-  final List<PadButtonItem>? buttons;
+  final List<PadButtonItem> buttons;
 
   /// [padButtonPressedCallback] contains information which button(index) was
   /// used by user and what gesture was done on it.
@@ -46,7 +46,7 @@ class PadButtonsView extends StatelessWidget {
     this.backgroundPadButtonsColor = Colors.transparent,
   })  : assert(buttons != null && buttons.isNotEmpty),
         super(key: key) {
-    buttons!.forEach((button) => buttonsStateMap![button.index!] = button.backgroundColor!);
+    buttons.forEach((button) => buttonsStateMap![button.index!] = button.backgroundColor!);
   }
 
   @override
@@ -70,8 +70,8 @@ class PadButtonsView extends StatelessWidget {
         backgroundPadButtonsColor != Colors.transparent ? Colors.black45 : Colors.transparent,
         backgroundPadButtonsColor != Colors.transparent ? Colors.black12 : Colors.transparent));
 
-    for (var i = 0; i < buttons!.length; i++) {
-      var padButton = buttons![i];
+    for (var i = 0; i < buttons.length; i++) {
+      var padButton = buttons[i];
       list.add(createPositionedButtons(
         padButton,
         actualSize,
@@ -138,7 +138,7 @@ class PadButtonsView extends StatelessWidget {
   }
 
   double _calculatePositionXOfButton(int index, double innerCircleSize, double actualSize) {
-    double? degrees = 360 / buttons!.length * index;
+    double? degrees = 360 / buttons.length * index;
     double? lastAngleRadians = (degrees) * (math.pi / 180.0);
 
     var rBig = actualSize / 2;
@@ -148,7 +148,7 @@ class PadButtonsView extends StatelessWidget {
   }
 
   double _calculatePositionYOfButton(int index, double innerCircleSize, double actualSize) {
-    double? degrees = 360 / buttons!.length * index;
+    double? degrees = 360 / buttons.length * index;
     double? lastAngleRadians = (degrees) * (math.pi / 180.0);
     var rBig = actualSize / 2;
     var rSmall = (innerCircleSize + 2 * buttonsPadding!) / 2;

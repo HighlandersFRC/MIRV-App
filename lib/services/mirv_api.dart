@@ -183,7 +183,9 @@ class MirvApi {
 
   Future<void> updateGarageState(String garage_id, GarageCommand command) async {
     var tempGarageMetrics = garageMetricsObs.value;
-    GarageStateType state = tempGarageMetrics!.state;
+    if (tempGarageMetrics == null) return;
+
+    GarageStateType state = tempGarageMetrics.state;
     bool lights_on = tempGarageMetrics.lights_on;
     Rx<GarageStateType?> garageStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
