@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -25,6 +27,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
   final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
   Set<Marker> markers = {};
+  StreamSubscription? resetSub;
 
   BitmapDescriptor mapMarkerIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor roverMarkerIcon = BitmapDescriptor.defaultMarker;
@@ -97,9 +100,21 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    resetSub?.cancel();
+  }
+
+  @override
   void initState() {
     super.initState();
     setMarkerIcons();
+
+    resetSub = widget.startPointOnMap.listen((value) {
+      if (!value) {
+        updateMarkers(widget.roverMetricsObs.value);
+      }
+    });
   }
 
   @override

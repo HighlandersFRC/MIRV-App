@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 class CommandList extends StatelessWidget {
   const CommandList({
     Key? key,
     required this.roverGarageState,
     required this.sendCommand,
+    required this.webRtcConnection,
   }) : super(key: key);
+
+  final WebRTCConnection webRtcConnection;
   final RoverGarageState roverGarageState;
   final Function(RoverCommand) sendCommand;
 
@@ -62,7 +65,7 @@ class CommandList extends StatelessWidget {
                   ),
                   child: commandList[index].last,
                   onPressed: () {
-                    sendCommand(commandList[index].first);
+                    commandList[index].first(webRtcConnection, context);
                   },
                 ),
               ),

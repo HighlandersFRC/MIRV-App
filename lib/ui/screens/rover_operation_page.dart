@@ -87,22 +87,23 @@ class RoverOperationPage extends StatelessWidget {
               left: 10,
               child: Column(children: [
                 const OpenCommandsDrawer(),
-                webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
-                    ? PiLitDialogButton(
-                        webRTCConnection.roverMetricsObs,
-                        webRTCConnection.sendRoverCommand,
-                      )
-                    : const SizedBox.shrink(),
-                webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
-                    ? DriveToPositionDialog(
-                        roverGarageState: webRTCConnection.roverMetricsObs,
-                        sendCommand: webRTCConnection.sendRoverCommand,
-                      )
-                    : const SizedBox.shrink(),
+                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
+                //     ? PiLitDialogButton(
+                //         webRTCConnection.roverMetricsObs,
+                //         webRTCConnection.sendRoverCommand,
+                //       )
+                //     : const SizedBox.shrink(),
+                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
+                //     ? DriveToPositionDialog(
+                //         roverGarageState: webRTCConnection.roverMetricsObs,
+                //         sendCommand: webRTCConnection.sendRoverCommand,
+                //       )
+                //     : const SizedBox.shrink(),
                 Expanded(
                   child: CommandList(
                     roverGarageState: webRTCConnection.roverMetricsObs.value,
                     sendCommand: webRTCConnection.sendRoverCommand,
+                    webRtcConnection: webRTCConnection,
                   ),
                 ),
               ]),
@@ -138,7 +139,7 @@ class RoverOperationPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: GarageButton(),
+                  child: Obx(() => GarageButton(webRTCConnection.mirvApi.garageMetricsObs.value)),
                 )
               ]),
             ),

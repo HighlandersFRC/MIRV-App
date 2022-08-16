@@ -146,30 +146,42 @@ class RoverDrivetrainCommands {
   }
 }
 
-Map<RoverStateType, List<Pair<RoverCommand, Image>>> roverCommandsByState = {
+Map<RoverStateType, List<Pair<Function(WebRTCConnection, BuildContext), Widget>>> roverCommandsByState = {
   // Pair(RoverStateType.disconnected, false): [],
   // Pair(RoverStateType.e_stop, false): [],
   // Pair(RoverStateType.disconnected_fault, false): [],
   // Pair(RoverStateType.disabled, false): [],
   // Pair(RoverStateType.connected_fault, false): [],
   RoverStateType.idle: [
-    Pair(RoverGeneralCommands.stow, Image.asset('assets/images/home.png')),
-    // Pair(RoverGeneralCommands.deployPiLits, Image.asset('assets/images/pi_lit_outline_down.png')),
-    Pair(RoverGeneralCommands.retrievePiLits, Image.asset('assets/images/pi_lit_outline_up.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.stow), Image.asset('assets/images/home.png')),
+    Pair((connection, context) => PiLitDialogButton(connection.roverMetricsObs, connection.sendRoverCommand).piLitDialog(context),
+        Image.asset('assets/images/pi_lit_outline_down.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.retrievePiLits),
+        Image.asset('assets/images/pi_lit_outline_up.png')),
+    Pair(
+        (connection, context) =>
+            DriveToPositionDialog(connection.roverMetricsObs, connection.sendRoverCommand).piLitDialog(context),
+        const Icon(Icons.moving_rounded, size: 30, color: Colors.white)),
   ],
   RoverStateType.docked: [
-    Pair(RoverGeneralCommands.deploy, Image.asset('assets/images/ramp.png')),
+    Pair(
+        (connection, context) => connection.sendRoverCommand(RoverGeneralCommands.deploy), Image.asset('assets/images/ramp.png')),
   ],
   RoverStateType.autonomous: [
-    Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.cancel),
+        Image.asset('assets/images/cancel.png')),
   ],
   RoverStateType.remote_operation: [
-    Pair(RoverGeneralCommands.disableRemoteOperation, Image.asset('assets/images/cancel.png')),
-    Pair(RoverIntakeCommands.placeOnePiLit, Image.asset('assets/images/pi_lit_outline_down.png')),
-    Pair(RoverIntakeCommands.pickupOnePiLit, Image.asset('assets/images/pi_lit_outline_up.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.disableRemoteOperation),
+        Image.asset('assets/images/cancel.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverIntakeCommands.placeOnePiLit),
+        Image.asset('assets/images/pi_lit_outline_down.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverIntakeCommands.pickupOnePiLit),
+        Image.asset('assets/images/pi_lit_outline_up.png')),
   ],
   RoverStateType.remote_operation_autonomous: [
-    Pair(RoverGeneralCommands.cancel, Image.asset('assets/images/cancel.png')),
+    Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.cancel),
+        Image.asset('assets/images/cancel.png')),
   ],
 };
 
@@ -213,7 +225,7 @@ List<Pair<Function(WebRTCConnection, BuildContext), Widget>> allRoverCommands = 
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.waveReverse),
       const Text('Set PiLits Lights to parallel')),
   Pair((connection, context) {
-    var dialog = DriveToPositionDialog(roverGarageState: connection.roverMetricsObs, sendCommand: connection.sendRoverCommand);
+    var dialog = DriveToPositionDialog(connection.roverMetricsObs, connection.sendRoverCommand);
     dialog.piLitDialog(context);
   }, const Text('Set PiLits Lights to parallel')),
   Pair((connection, context) => connection.sendRoverCommand(RoverGeneralCommands.retrievePiLits), const Text('Retrieve PiLits')),

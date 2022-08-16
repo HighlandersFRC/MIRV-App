@@ -7,10 +7,10 @@ import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/pi_lit_placemment_map.dart';
 
 class DriveToPositionDialog extends StatelessWidget {
-  DriveToPositionDialog({
+  DriveToPositionDialog(
+    this.roverGarageState,
+    this.sendCommand, {
     Key? key,
-    required this.roverGarageState,
-    required this.sendCommand,
   }) : super(key: key);
 
   final Rx<RoverGarageState> roverGarageState;

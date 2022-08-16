@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/constants/geometry.dart';
 import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
@@ -93,12 +94,29 @@ class PiLitDialogButton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  PiLitCommandDropdown(
-                    piLitState,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PiLitCommandDropdown(
+                      piLitState,
+                    ),
                   ),
-                  PiLitFormationCommandDropdown(
-                    piLitFormationType: piLitForamtionType,
-                    piLitAmount: piLitAmount,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: PiLitFormationCommandDropdown(
+                      piLitFormationType: piLitForamtionType,
+                      piLitAmount: piLitAmount,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      child: Text("Reset Markers"),
+                      onPressed: () {
+                        startPoint.value = null;
+                        endPoint.value = null;
+                        startPointOnMap.value = false;
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -117,9 +135,10 @@ class PiLitDialogButton extends StatelessWidget {
                   sendCommand(piLitState.value.command!);
                 }
 
-                if (startPoint.value != null) {
+                if (startPoint.value != null && endPoint.value != null) {
+                  double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
                   sendCommand(RoverGeneralCommands.deployPiLits(
-                      piLitForamtionType.value, DeviceLocation.fromLatLng(startPoint.value!), 12));
+                      piLitForamtionType.value, DeviceLocation.fromLatLng(startPoint.value!), heading));
                   Get.back();
                 } else {
                   Get.snackbar('Pilit Control', 'No starting point selected');

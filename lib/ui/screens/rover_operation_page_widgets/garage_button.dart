@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 
 class GarageButton extends StatelessWidget {
-  const GarageButton({Key? key}) : super(key: key);
+  final GarageMetrics? garageMetrics;
+  const GarageButton(this.garageMetrics, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +47,32 @@ class GarageButton extends StatelessWidget {
           'Garage Control',
           textAlign: TextAlign.center,
         ),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
+        onPressed: () => garageMetrics == null
+            ? null
+            : showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  double width = MediaQuery.of(context).size.width;
+                  double height = MediaQuery.of(context).size.height;
+                  return AlertDialog(
+                    content: AspectRatio(
+                        aspectRatio: 1.5,
+                        child: GarageOperationPage(
+                          garageMetrics!,
+                          setWidth: width * 2 / 3,
+                          setHeight: height * 2 / 3,
+                        )),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          return Navigator.pop(context);
+                        },
+                        child: const Text('Close'),
+                      )
+                    ],
+                  );
+                },
+              ),
       ),
     );
   }

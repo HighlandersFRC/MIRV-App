@@ -22,8 +22,10 @@ class GarageOperationPage extends StatelessWidget {
   final selectedGarageController = Get.put(SelectedGarageController());
   RxList<GarageMetrics?> garageList = <GarageMetrics?>[].obs;
   late String garage_id;
+  double? setWidth;
+  double? setHeight;
 
-  GarageOperationPage(GarageMetrics garageMetrics, {Key? key}) : super(key: key) {
+  GarageOperationPage(GarageMetrics garageMetrics, {Key? key, this.setWidth, this.setHeight}) : super(key: key) {
     _mirvGarageApi.garageMetricsObs.value = garageMetrics;
     garage_id = garageMetrics.garage_id;
   }
@@ -34,15 +36,16 @@ class GarageOperationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _mirvGarageApi.startGarageMetricUpdates(garage_id);
+    double width = setWidth ?? MediaQuery.of(context).size.width;
+    double height = setHeight ?? MediaQuery.of(context).size.height;
+    print("PRINTING WIDTHS: ${width}, ${width / 2}, ${(width - 110) - (width / 4)}");
     return Scaffold(
-      appBar: (GarageAppBar(
-        garageMetricsObs: _mirvGarageApi.garageMetricsObs,
-      )),
+      appBar: (GarageAppBar(garageMetricsObs: _mirvGarageApi.garageMetricsObs, width: width)),
       body: Stack(
         children: [
           Positioned(
             top: 30,
-            height: 450,
+            bottom: 30,
             left: 10,
             width: 110,
             child: Scrollbar(
@@ -57,13 +60,21 @@ class GarageOperationPage extends StatelessWidget {
             ),
           ),
           Obx(
-            () => Positioned(right: 225, child: StateImages(garageMetrics: _mirvGarageApi.garageMetricsObs.value)),
+            () => Positioned(
+                right: width / 4,
+                child: StateImages(
+                    garageMetrics: _mirvGarageApi.garageMetricsObs.value,
+                    width: (width - 110) - (width / 4))), //(width - 110 - (width / 4))
           ),
           Obx(
-            () => Positioned(top: 70, right: 25, child: LockImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value)),
+            () => Positioned(
+                top: 70, right: 25, child: LockImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value, width: width / 4)),
           ),
           Obx(
-            () => Positioned(top: 350, right: 155, child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value)),
+            () => Positioned(
+                top: height * 2 / 3,
+                right: 25,
+                child: LightImage(garageMetrics: _mirvGarageApi.garageMetricsObs.value, width: width / 4)),
           )
         ],
       ),

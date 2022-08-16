@@ -8,25 +8,26 @@ import 'package:mirv/models/rover_control/rover_command.dart';
 
 class StateImages extends StatelessWidget {
   final GarageMetrics? garageMetrics;
+  final double width;
 
-  StateImages({Key? key, required this.garageMetrics}) : super(key: key);
+  StateImages({Key? key, required this.garageMetrics, this.width = 250}) : super(key: key);
 
   Image? updateImage(GarageStateType? garageState) {
     switch (garageState) {
       case GarageStateType.deployed:
-        return Image.asset('assets/images/deployed.png');
+        return Image.asset('assets/images/deployed.png', width: width);
       case GarageStateType.in_motion_deploy:
-        return Image.asset('assets/images/garage_down.png');
+        return Image.asset('assets/images/garage_down.png', width: width);
       case GarageStateType.in_motion_retract:
-        return Image.asset('assets/images/garage_up.png');
+        return Image.asset('assets/images/garage_up.png', width: width);
       case GarageStateType.retracted_latched:
-        return Image.asset('assets/images/retracted_latched.png');
+        return Image.asset('assets/images/retracted_latched.png', width: width);
       case GarageStateType.retracted_unlatched:
-        return Image.asset('assets/images/retracted_unlatched.png');
+        return Image.asset('assets/images/retracted_unlatched.png', width: width);
       case GarageStateType.unavailable:
-        return Image.asset('assets/images/garage_unavailable.png');
+        return Image.asset('assets/images/garage_unavailable.png', width: width);
       default:
-        return Image.asset('assets/images/default_garage.png');
+        return Image.asset('assets/images/default_garage.png', width: width);
     }
   }
 
