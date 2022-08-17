@@ -214,14 +214,10 @@ List<Pair<Function(WebRTCConnection, BuildContext), Widget>> allRoverCommands = 
       connection.mirvApi.sendGarageCommand(garageId, GarageCommands.lightsOff);
     }
   }, const Text('Turn Off Garage Lights')),
-  Pair(
-      (connection, context) => showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return PiLitCountDialog(connection.roverMetricsObs.value, connection.sendRoverCommand);
-            },
-          ),
-      const Text('Set Number of Stored PiLits')),
+  Pair((connection, context) {
+    var piLitCount = PiLitCountDialog(connection.roverMetricsObs.value, connection.sendRoverCommand);
+    piLitCount.showPiLitCountDialog(context);
+  }, const Text('Set Number of Stored PiLits')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.idle), const Text('Set PiLits Lights to idle')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.simultaneous),
       const Text('Set PiLits Lights to sequential')),

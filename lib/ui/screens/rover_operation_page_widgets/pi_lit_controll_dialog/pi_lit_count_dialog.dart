@@ -49,48 +49,50 @@ class PiLitCountDialog extends StatelessWidget {
           'Manage Pi-Lit Counts',
           textAlign: TextAlign.center,
         ),
-        onPressed: () {
-          List<int> values = [0, 1, 2, 3, 4];
-          Rx<int> numLeft = roverState.pi_lits.pi_lits_stowed_left.obs;
-          Rx<int> numRight = roverState.pi_lits.pi_lits_stowed_right.obs;
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Row(
-                  children: [
-                    Column(
-                      children: [
-                        const Padding(padding: EdgeInsets.all(8), child: Text("Left Magazine Count")),
-                        DropwownMenuInteger(values, numLeft)
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        const Padding(padding: EdgeInsets.all(8), child: Text("Right Magazine Count")),
-                        DropwownMenuInteger(values, numRight)
-                      ],
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        sendCommand(RoverPiLitCommands.setNumberPiLits(numLeft.value, numRight.value));
-                        Get.back();
-                      },
-                      child: const Text('Update Pi-Lit Counts')),
-                  TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child: const Text('Close')),
-                ],
-              );
-            },
-          );
-        },
+        onPressed: () {},
       ),
+    );
+  }
+
+  showPiLitCountDialog(BuildContext context) {
+    List<int> values = [0, 1, 2, 3, 4];
+    Rx<int> numLeft = roverState.pi_lits.pi_lits_stowed_left.obs;
+    Rx<int> numRight = roverState.pi_lits.pi_lits_stowed_right.obs;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Row(
+            children: [
+              Column(
+                children: [
+                  const Padding(padding: EdgeInsets.all(8), child: Text("Left Magazine Count")),
+                  DropwownMenuInteger(values, numLeft)
+                ],
+              ),
+              Column(
+                children: [
+                  const Padding(padding: EdgeInsets.all(8), child: Text("Right Magazine Count")),
+                  DropwownMenuInteger(values, numRight)
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  sendCommand(RoverPiLitCommands.setNumberPiLits(numLeft.value, numRight.value));
+                  Get.back();
+                },
+                child: const Text('Update Pi-Lit Counts')),
+            TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Close')),
+          ],
+        );
+      },
     );
   }
 }

@@ -43,25 +43,15 @@ dependencies:
   http: ^0.13.4
   get: ^4.6.5
   google_maps_flutter: ^2.1.8
-  url_launcher_android: ^6.0.17
-  flutter_polyline_points: ^1.0.0
   rxdart: ^0.27.4
   observable: ^0.24.0
-  equatable: ^2.0.3
-  bloc: ^8.0.3
-  provider: ^6.0.3
   flutter_typeahead: ^4.0.0
 
-  google_fonts: ^3.0.1
-  fluttertoast: ^8.0.9
   flutter_webrtc: ^0.8.10
   settings_ui: ^2.0.2
   shared_preferences: ^2.0.15
-  ionicons: ^0.1.2
   quiver: ^3.1.0
   logger: ^1.1.0
-  logger_flutter: ^0.0.1
-  shake: ^2.1.0
 
 dev_dependencies:
   flutter_test:
