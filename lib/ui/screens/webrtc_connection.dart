@@ -59,6 +59,7 @@ class WebRTCConnection {
   DateTime? recentStatusMessage;
 
   RoverCommand? mostRecentCommand;
+  late RoverGarageState initialCommandState = roverGarageState;
 
   // MediaStream? _localStream;
   bool inCalling = false;
@@ -70,7 +71,7 @@ class WebRTCConnection {
   Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
-  int GATHERING_HEARTBEAT = 500;
+  int GATHERING_HEARTBEAT = 2000;
 
   WebRTCConnection(this.roverGarageState) {
     init();
@@ -125,6 +126,7 @@ class WebRTCConnection {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
       if (command != RoverHeartbeatCommands.heartbeat) {
         mostRecentCommand = command;
+        initialCommandState = roverMetricsObs.value;
         logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
       }
     }

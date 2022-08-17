@@ -20,7 +20,7 @@ class PiLitFormationCommandDropdown extends StatelessWidget {
               value: piLitFormationType,
               enabled: piLitFormationType.piLitsRequired <= piLitAmount,
               child: Text(piLitFormationType.name,
-                  style: TextStyle(color: piLitFormationType.piLitsRequired >= piLitAmount ? Colors.grey : fontColor)),
+                  style: TextStyle(color: piLitFormationType.piLitsRequired <= piLitAmount ? fontColor : Colors.grey)),
             );
           }).toList(),
           onChanged: (PiLitFormationType? t) {

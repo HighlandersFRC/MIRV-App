@@ -17,6 +17,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.da
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
+import 'rover_operation_page_widgets/task_progress_indicator.dart';
 import 'webrtc_connection.dart';
 
 // ignore: must_be_immutable
@@ -51,26 +52,6 @@ class RoverOperationPage extends StatelessWidget {
         drawer: CommandsDrawer(webRTCConnection),
         body: Stack(
           children: [
-            Obx(
-              () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.autonomous &&
-                      webRTCConnection.mostRecentCommand?.command == RoverCommandType.deploy_pi_lits
-                  ? const Positioned(
-                      top: 10,
-                      height: 40,
-                      width: 150,
-                      left: 30,
-                      child: LinearProgressIndicator(
-                        value: 0.6,
-                        minHeight: 20,
-                        color: Color.fromARGB(255, 255, 153, 0),
-                        backgroundColor: Color.fromARGB(148, 158, 158, 158),
-                      ),
-                    )
-                  : Container(
-                      color: const Color.fromARGB(255, 243, 33, 33),
-                      child: const Text(""),
-                    ),
-            ),
             Center(
               child: Container(
                 decoration: const BoxDecoration(
@@ -78,6 +59,10 @@ class RoverOperationPage extends StatelessWidget {
                 ),
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
+            ),
+            Obx(
+              () => TaskProgressIndicator(webRTCConnection.roverMetricsObs.value, webRTCConnection.initialCommandState,
+                  webRTCConnection.mostRecentCommand),
             ),
             Positioned(
               top: 10,

@@ -1016,13 +1016,14 @@ class __$$_RoverStatePiLitsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RoverStatePiLits implements _RoverStatePiLits {
+class _$_RoverStatePiLits extends _RoverStatePiLits {
   const _$_RoverStatePiLits(
       {required this.state,
       required this.pi_lits_stowed_left,
       required this.pi_lits_stowed_right,
       required final List<RoverStatePiLit> deployed_pi_lits})
-      : _deployed_pi_lits = deployed_pi_lits;
+      : _deployed_pi_lits = deployed_pi_lits,
+        super._();
 
   factory _$_RoverStatePiLits.fromJson(Map<String, dynamic> json) =>
       _$$_RoverStatePiLitsFromJson(json);
@@ -1079,13 +1080,14 @@ class _$_RoverStatePiLits implements _RoverStatePiLits {
   }
 }
 
-abstract class _RoverStatePiLits implements RoverStatePiLits {
+abstract class _RoverStatePiLits extends RoverStatePiLits {
   const factory _RoverStatePiLits(
           {required final PiLitStateType state,
           required final int pi_lits_stowed_left,
           required final int pi_lits_stowed_right,
           required final List<RoverStatePiLit> deployed_pi_lits}) =
       _$_RoverStatePiLits;
+  const _RoverStatePiLits._() : super._();
 
   factory _RoverStatePiLits.fromJson(Map<String, dynamic> json) =
       _$_RoverStatePiLits.fromJson;

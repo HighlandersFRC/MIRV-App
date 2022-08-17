@@ -29,7 +29,7 @@ class PiLitDialogButton extends StatelessWidget {
 
   final Function(RoverCommand) sendCommand;
 
-  late int piLitAmount = roverGarageState.value.pi_lits.pi_lits_stowed_right + roverGarageState.value.pi_lits.pi_lits_stowed_left;
+  late int piLitAmount = roverGarageState.value.pi_lits.numPiLitsStowed;
 
   @override
   Widget build(BuildContext context) {
