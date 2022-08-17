@@ -120,6 +120,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
   @override
   Widget build(BuildContext context) {
     _refreshRoversList();
+    mirvApi.buildContext = context;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     selectedRoverController.isRoverListMinimized.value = width < 600;
@@ -218,7 +219,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: const [
                                 Icon(Icons.link_rounded),
-                                Text(' Connect'),
+                                Text(' Connect', style: TextStyle(fontSize: homeFontSize)),
                               ],
                             ),
                           ),

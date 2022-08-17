@@ -93,7 +93,7 @@ class DriveToPositionDialog extends StatelessWidget {
               onPressed: () {
                 if (targetLocation.value != null) {
                   sendCommand(RoverDrivetrainCommands.destinationCommand(
-                      RoverCommandTypeDrivetrain.to_location, targetLocation.value!.latitude, targetLocation.value!.longitude));
+                      targetLocation.value!.latitude, targetLocation.value!.longitude));
                   Get.back();
                 } else {
                   Get.snackbar('Rover Movement', 'No target location selected');

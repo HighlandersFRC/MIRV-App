@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mirv/models/camera_modes.dart';
 import 'package:mirv/models/device_location.dart';
-import 'package:mirv/models/garage/garage_command_type.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
@@ -11,6 +9,7 @@ import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/piLit-dialog.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 part 'rover_command.freezed.dart';
@@ -18,50 +17,56 @@ part 'rover_command.g.dart';
 
 @freezed
 class RoverCommand with _$RoverCommand {
-  const factory RoverCommand.generalCommand(
-    RoverCommandTypeGeneral command, {
+  const factory RoverCommand(
+    RoverSubsystemType subsystem,
+    RoverCommandType command, {
     RoverCommandParameters? commandParameters,
-    @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
-  }) = GeneralRoverCommand;
+  }) = _RoverCommand;
 
-  const factory RoverCommand.heartbeatCommand(
-    RoverCommandTypeHeartbeat command, {
-    @Default(RoverSubsystemType.heartbeat) RoverSubsystemType subsystem,
-  }) = HeartbeatRoverCommand;
+  // const factory RoverCommand.RoverSubsystemType.general(
+  //   RoverCommandTypeGeneral command, {
+  //   RoverCommandParameters? commandParameters,
+  //   @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
+  // }) = GeneralRoverCommand;
 
-  const factory RoverCommand.intakeCommand(
-    RoverCommandTypeIntake command, {
-    @Default(RoverSubsystemType.intake) RoverSubsystemType subsystem,
-  }) = IntakeRoverCommand;
+  // const factory RoverCommand.heartbeatCommand(
+  //   RoverCommandTypeHeartbeat command, {
+  //   @Default(RoverSubsystemType.heartbeat) RoverSubsystemType subsystem,
+  // }) = HeartbeatRoverCommand;
 
-  const factory RoverCommand.garageCommand(
-    GarageCommandType command, {
-    @Default(RoverSubsystemType.garage) RoverSubsystemType subsystem,
-  }) = GarageRoverCommand;
+  // const factory RoverCommand.intakeCommand(
+  //   RoverCommandTypeIntake command, {
+  //   @Default(RoverSubsystemType.intake) RoverSubsystemType subsystem,
+  // }) = IntakeRoverCommand;
 
-  const factory RoverCommand.drivetrainCommand(
-    RoverCommandTypeDrivetrain command,
-    RoverCommandParameters commandParameters, {
-    @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
-  }) = DrivetrainRoverCommand;
+  // const factory RoverCommand.garageCommand(
+  //   GarageCommandType command, {
+  //   @Default(RoverSubsystemType.garage) RoverSubsystemType subsystem,
+  // }) = GarageRoverCommand;
 
-  const factory RoverCommand.destinationCommand(
-    RoverCommandTypeDrivetrain command,
-    RoverCommandParameters commandParameters, {
-    @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
-  }) = DrivetrainRoverCommandDestination;
+  // const factory RoverCommand.drivetrainCommand(
+  //   RoverCommandTypeDrivetrain command,
+  //   RoverCommandParameters commandParameters, {
+  //   @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
+  // }) = DrivetrainRoverCommand;
 
-  const factory RoverCommand.piLitCommand(
-    RoverCommandTypePiLit command, {
-    RoverCommandParameters? commandParameters,
-    @Default(RoverSubsystemType.pi_lit) RoverSubsystemType subsystem,
-  }) = PiLitRoverCommand;
+  // const factory RoverCommand.destinationCommand(
+  //   RoverCommandTypeDrivetrain command,
+  //   RoverCommandParameters commandParameters, {
+  //   @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
+  // }) = DrivetrainRoverCommandDestination;
 
-  const factory RoverCommand.cameraCommand(
-    RoverCommandTypeCamera command,
-    RoverCommandParameters commandParameters, {
-    @Default(RoverSubsystemType.camera) RoverSubsystemType subsystem,
-  }) = CameraRoverCommand;
+  // const factory RoverCommand.piLitCommand(
+  //   RoverCommandTypePiLit command, {
+  //   RoverCommandParameters? commandParameters,
+  //   @Default(RoverSubsystemType.pi_lit) RoverSubsystemType subsystem,
+  // }) = PiLitRoverCommand;
+
+  // const factory RoverCommand.cameraCommand(
+  //   RoverCommandTypeCamera command,
+  //   RoverCommandParameters commandParameters, {
+  //   @Default(RoverSubsystemType.camera) RoverSubsystemType subsystem,
+  // }) = CameraRoverCommand;
 
   factory RoverCommand.fromJson(Map<String, dynamic> json) => _$RoverCommandFromJson(json);
 }
@@ -79,70 +84,62 @@ class RoverCommandParameters with _$RoverCommandParameters {
 }
 
 class RoverGeneralCommands {
-  static const eStop = RoverCommand.generalCommand(RoverCommandTypeGeneral.e_stop);
-  static const disable = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable);
-  static const enable = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable);
-  static const deploy = RoverCommand.generalCommand(RoverCommandTypeGeneral.deploy);
-  static const cancel = RoverCommand.generalCommand(RoverCommandTypeGeneral.cancel);
-  static const stow = RoverCommand.generalCommand(RoverCommandTypeGeneral.stow);
-  static const retrievePiLits = RoverCommand.generalCommand(RoverCommandTypeGeneral.retrieve_pi_lits);
-  static const enableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.enable_remote_operation);
-  static const disableRemoteOperation = RoverCommand.generalCommand(RoverCommandTypeGeneral.disable_remote_operation);
-  static GeneralRoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location, double heading) {
-    return GeneralRoverCommand(RoverCommandTypeGeneral.deploy_pi_lits,
+  static const eStop = RoverCommand(RoverSubsystemType.general, RoverCommandType.e_stop);
+  static const disable = RoverCommand(RoverSubsystemType.general, RoverCommandType.disable);
+  static const enable = RoverCommand(RoverSubsystemType.general, RoverCommandType.enable);
+  static const deploy = RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy);
+  static const cancel = RoverCommand(RoverSubsystemType.general, RoverCommandType.cancel);
+  static const stow = RoverCommand(RoverSubsystemType.general, RoverCommandType.stow);
+  static const retrievePiLits = RoverCommand(RoverSubsystemType.general, RoverCommandType.retrieve_pi_lits);
+  static const enableRemoteOperation = RoverCommand(RoverSubsystemType.general, RoverCommandType.enable_remote_operation);
+  static const disableRemoteOperation = RoverCommand(RoverSubsystemType.general, RoverCommandType.disable_remote_operation);
+  static RoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location, double heading) {
+    return RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy_pi_lits,
         commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading));
   }
 }
 
 class RoverHeartbeatCommands {
-  static const heartbeat = RoverCommand.heartbeatCommand(RoverCommandTypeHeartbeat.heartbeat);
+  static const heartbeat = RoverCommand(RoverSubsystemType.heartbeat, RoverCommandType.heartbeat);
 }
 
 class RoverIntakeCommands {
-  static const placeOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.place_1_pi_lit);
-  static const pickupOnePiLit = RoverCommand.intakeCommand(RoverCommandTypeIntake.pickup_1_pi_lit);
-  static const unloadPiLits = RoverCommand.intakeCommand(RoverCommandTypeIntake.unload_pi_lits);
-  static const loadPiLits = RoverCommand.intakeCommand(RoverCommandTypeIntake.load_pi_lits);
-  static const deployIntake = RoverCommand.intakeCommand(RoverCommandTypeIntake.deploy_intake);
-  static const retractIntake = RoverCommand.intakeCommand(RoverCommandTypeIntake.retract_intake);
-}
-
-class RoverGarageCommands {
-  static const lock = RoverCommand.garageCommand(GarageCommandType.lock);
-  static const unlock = RoverCommand.garageCommand(GarageCommandType.unlock);
-  static const retract = RoverCommand.garageCommand(GarageCommandType.retract);
-  static const deploy = RoverCommand.garageCommand(GarageCommandType.deploy);
-  static const lightsOn = RoverCommand.garageCommand(GarageCommandType.lights_on);
-  static const lightsOff = RoverCommand.garageCommand(GarageCommandType.lights_off);
+  static const placeOnePiLit = RoverCommand(RoverSubsystemType.intake, RoverCommandType.place_1_pi_lit);
+  static const pickupOnePiLit = RoverCommand(RoverSubsystemType.intake, RoverCommandType.pickup_1_pi_lit);
+  static const unloadPiLits = RoverCommand(RoverSubsystemType.intake, RoverCommandType.unload_pi_lits);
+  static const loadPiLits = RoverCommand(RoverSubsystemType.intake, RoverCommandType.load_pi_lits);
+  static const deployIntake = RoverCommand(RoverSubsystemType.intake, RoverCommandType.deploy_intake);
+  static const retractIntake = RoverCommand(RoverSubsystemType.intake, RoverCommandType.retract_intake);
 }
 
 class RoverPiLitCommands {
-  static const idle = RoverCommand.piLitCommand(RoverCommandTypePiLit.idle);
-  static const wave = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave);
-  static const waveReverse = RoverCommand.piLitCommand(RoverCommandTypePiLit.wave_reverse);
-  static const simultaneous = RoverCommand.piLitCommand(RoverCommandTypePiLit.simultaneous);
-  static PiLitRoverCommand setNumberPiLits(int piLitsLeft, int piLitsRight) => PiLitRoverCommand(
-        RoverCommandTypePiLit.set_number_pi_lits,
+  static const idle = RoverCommand(RoverSubsystemType.pi_lit, RoverCommandType.idle);
+  static const wave = RoverCommand(RoverSubsystemType.pi_lit, RoverCommandType.wave);
+  static const waveReverse = RoverCommand(RoverSubsystemType.pi_lit, RoverCommandType.wave_reverse);
+  static const simultaneous = RoverCommand(RoverSubsystemType.pi_lit, RoverCommandType.simultaneous);
+  static RoverCommand setNumberPiLits(int piLitsLeft, int piLitsRight) => RoverCommand(
+        RoverSubsystemType.pi_lit,
+        RoverCommandType.set_number_pi_lits,
         commandParameters: RoverCommandParametersPiLit(piLitsLeft, piLitsRight),
       );
 }
 
 class RoverCameraCommands {
-  static const switchWebcamFront = RoverCommand.cameraCommand(
-      RoverCommandTypeCamera.switch_camera, RoverCommandParameters.switchCamera(CameraType.webcam_front));
-  static const switchVisionFront = RoverCommand.cameraCommand(
-      RoverCommandTypeCamera.switch_camera, RoverCommandParameters.switchCamera(CameraType.vision_front));
-  static const switchVisionBack = RoverCommand.cameraCommand(
-      RoverCommandTypeCamera.switch_camera, RoverCommandParameters.switchCamera(CameraType.vision_back));
+  static const switchWebcamFront = RoverCommand(RoverSubsystemType.camera, RoverCommandType.switch_camera,
+      commandParameters: RoverCommandParameters.switchCamera(CameraType.webcam_front));
+  static const switchVisionFront = RoverCommand(RoverSubsystemType.camera, RoverCommandType.switch_camera,
+      commandParameters: RoverCommandParameters.switchCamera(CameraType.vision_front));
+  static const switchVisionBack = RoverCommand(RoverSubsystemType.camera, RoverCommandType.switch_camera,
+      commandParameters: RoverCommandParameters.switchCamera(CameraType.vision_back));
 }
 
 class RoverDrivetrainCommands {
-  static DrivetrainRoverCommand drivetrainCommand(RoverCommandTypeDrivetrain command, double x, double y) {
-    return DrivetrainRoverCommand(command, RoverCommandParameters.drivetrain(x, y));
+  static RoverCommand drivetrainCommand(double x, double y) {
+    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.arcade, commandParameters: RoverCommandParameters.drivetrain(x, y));
   }
 
-  static DrivetrainRoverCommand destinationCommand(RoverCommandTypeDrivetrain command, double lat, double long) {
-    return DrivetrainRoverCommand(command, RoverCommandParameters.destination(lat, long));
+  static RoverCommand destinationCommand(double lat, double long) {
+    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.to_location, commandParameters: RoverCommandParameters.destination(lat, long));
   }
 }
 
@@ -215,8 +212,14 @@ List<Pair<Function(WebRTCConnection, BuildContext), Widget>> allRoverCommands = 
       connection.mirvApi.sendGarageCommand(garageId, GarageCommands.lightsOff);
     }
   }, const Text('Turn Off Garage Lights')),
-  Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.setNumberPiLits(4, 4)),
-      const Text('Set Number of Stored PiLits to 8')),
+  Pair(
+      (connection, context) => showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return PiLitCountDialog(connection.roverMetricsObs.value, connection.sendRoverCommand);
+            },
+          ),
+      const Text('Set Number of Stored PiLits')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.idle), const Text('Set PiLits Lights to idle')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.simultaneous),
       const Text('Set PiLits Lights to sequential')),

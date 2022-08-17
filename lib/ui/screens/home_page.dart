@@ -37,15 +37,16 @@ class HomePage extends StatelessWidget {
         ),
         leading: icon != null ? Icon(icon, size: iconSize) : image,
         onTap: () async {
-          if (validateLogin) {
-            if (await isCurrentTokenValid() == true) {
-              Get.to(pageRoute);
-            } else {
-              Get.to(LoginPage(() => Get.off(pageRoute)));
-            }
-          } else {
-            Get.to(pageRoute);
-          }
+          Get.to(LoginPage(() => Get.off(pageRoute)));
+          // if (validateLogin) {
+          //   if (await isCurrentTokenValid() == true) {
+          //     Get.to(pageRoute);
+          //   } else {
+          //     Get.to(LoginPage(() => Get.off(pageRoute)));
+          //   }
+          // } else {
+          //   Get.to(pageRoute);
+          // }
         },
       ),
     );

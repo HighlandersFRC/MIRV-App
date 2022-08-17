@@ -22,7 +22,7 @@ const tileColorUnavailible = Color.fromARGB(255, 165, 55, 36);
 const fontColor = Colors.white;
 const fontFamily = 'Georgia';
 
-const double homeFontSize = 18;
+const double homeFontSize = 25;
 
 final ThemeData overallTheme = ThemeData(
   appBarTheme: const AppBarTheme(

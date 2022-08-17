@@ -144,7 +144,7 @@ class GarageSelectionPage extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: const [
                               Icon(Icons.link_rounded),
-                              Text(' Connect'),
+                              Text(' Connect', style: TextStyle(fontSize: homeFontSize)),
                             ],
                           ),
                         ),

@@ -38,6 +38,7 @@ class GarageOperationPage extends StatelessWidget {
     _mirvGarageApi.startGarageMetricUpdates(garage_id);
     double width = setWidth ?? MediaQuery.of(context).size.width;
     double height = setHeight ?? MediaQuery.of(context).size.height;
+    _mirvGarageApi.buildContext = context;
     print("PRINTING WIDTHS: ${width}, ${width / 2}, ${(width - 110) - (width / 4)}");
     return Scaffold(
       appBar: (GarageAppBar(garageMetricsObs: _mirvGarageApi.garageMetricsObs, width: width)),

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
@@ -59,6 +60,8 @@ class WebRTCConnection {
 
   DateTime? recentStatusMessage;
 
+  RoverCommand? mostRecentCommand;
+
   // MediaStream? _localStream;
   bool inCalling = false;
   get_pkg.Rx<bool> loading = false.obs;
@@ -102,28 +105,29 @@ class WebRTCConnection {
     required String roverId,
   }) {
     get_pkg.Get.dialog(
-        barrierDismissible: false,
-        AlertDialog(
-          title: const Text('Failed Connection'),
-          content: Text(error),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  get_pkg.Get.back();
-                  get_pkg.Get.offAll(() => HomePage());
-                },
-                child: const Text('Home page'))
-          ],
-        ));
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Failed Connection'),
+        content: Text(error),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                get_pkg.Get.back();
+                get_pkg.Get.offAll(() => HomePage());
+              },
+              child: const Text('Home page'))
+        ],
+      ),
+    );
   }
 
   sendRoverCommand(RoverCommand command) {
-    // print("Sending rover command: ${json.encode(command.toJson())}");
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
       print("------------------------ COMMAND: ${json.encode(command.toJson())} ------------------------");
       if (command != RoverHeartbeatCommands.heartbeat) {
+        mostRecentCommand = command;
         logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
       }
     }
@@ -304,6 +308,12 @@ class WebRTCConnection {
               stopCall();
               _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
+          } on TimeoutException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'Request to connect timed out', roverId: roverId);
+          } on SocketException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'No internet connection', roverId: roverId);
           } catch (e) {
             stopCall();
             _showFailedConnectionDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
