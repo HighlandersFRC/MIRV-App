@@ -8,7 +8,7 @@ import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/piLit-dialog.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
 
@@ -135,11 +135,13 @@ class RoverCameraCommands {
 
 class RoverDrivetrainCommands {
   static RoverCommand drivetrainCommand(double x, double y) {
-    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.arcade, commandParameters: RoverCommandParameters.drivetrain(x, y));
+    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.arcade,
+        commandParameters: RoverCommandParameters.drivetrain(x, y));
   }
 
   static RoverCommand destinationCommand(double lat, double long) {
-    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.to_location, commandParameters: RoverCommandParameters.destination(lat, long));
+    return RoverCommand(RoverSubsystemType.drivetrain, RoverCommandType.to_location,
+        commandParameters: RoverCommandParameters.destination(lat, long));
   }
 }
 

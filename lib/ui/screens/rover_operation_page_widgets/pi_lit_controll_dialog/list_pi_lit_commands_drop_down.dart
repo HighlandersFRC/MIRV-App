@@ -1,20 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
-import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
-import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover/rover_state_type.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class PiLitCommandDropdown extends StatelessWidget {
-  PiLitCommandDropdown(this.piLitState, {Key? key, this.sendCommand}) : super(key: key);
-
   final Function(RoverCommand)? sendCommand;
-
   final Rx<PiLitStateType> piLitState;
+
+  const PiLitCommandDropdown(this.piLitState, {Key? key, this.sendCommand}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

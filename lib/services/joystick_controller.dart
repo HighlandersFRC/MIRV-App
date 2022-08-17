@@ -4,7 +4,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class JoystickController {
   final RoverDriveControlType driveType;

@@ -10,8 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
-import 'package:mirv/models/garage/garage_commands.dart';
-import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
@@ -125,18 +123,15 @@ class WebRTCConnection {
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
-      print("------------------------ COMMAND: ${json.encode(command.toJson())} ------------------------");
       if (command != RoverHeartbeatCommands.heartbeat) {
         mostRecentCommand = command;
         logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
       }
     }
 
-    // TODO: Remove this before deployment
     // updateRoverState(command);
   }
 
-  // TODO: Remove this before deployment
   void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
@@ -371,7 +366,7 @@ class WebRTCConnection {
       sendRoverCommand(RoverHeartbeatCommands.heartbeat);
       int duration = DateTime.now().difference(prevHeartbeatDebugTime).inMilliseconds;
       if (duration > 1.2 * 1000) {
-        print("MISSED HEARTBEAT COMMAND!!! $duration");
+        logger.w("MISSED HEARTBEAT COMMAND!!! $duration");
       }
       prevHeartbeatDebugTime = DateTime.now();
     });

@@ -40,16 +40,15 @@ class HorizontalView extends StatelessWidget {
         shape: BoxShape.rectangle,
         border: border,
         boxShadow: boxShadow,
-        borderRadius: new BorderRadius.circular((size / 2)),
+        borderRadius: BorderRadius.circular((size / 2)),
       ),
       child: Center(
-        child: buttonIcon != null
-            ? buttonIcon
-            : (buttonImage != null)
+        child: buttonIcon ??
+            ((buttonImage != null)
                 ? buttonImage
                 : (buttonText != null)
                     ? Text(buttonText!)
-                    : null,
+                    : null),
       ),
     );
   }

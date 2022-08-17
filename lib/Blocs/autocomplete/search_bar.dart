@@ -12,12 +12,11 @@ import 'package:mirv/ui/screens/rover_selection_page.dart';
 // ignore: must_be_immutable
 class SearchBar extends StatelessWidget {
   final SelectedRoverController selectedRoverController;
-final TextEditingController typeAheadController;
+  final TextEditingController typeAheadController;
 
   SearchBar({Key? key, required this.selectedRoverController, required this.typeAheadController}) : super(key: key);
 
   final placesService = PlacesService();
-  
 
   Rx<String> searchBarText = Rx<String>('');
   List<PlaceSearch> searchResults = [];
@@ -72,7 +71,7 @@ final TextEditingController typeAheadController;
                       autofocus: false,
                       style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
                       decoration: const InputDecoration(border: OutlineInputBorder()),
-                      controller: this.typeAheadController),
+                      controller: typeAheadController),
                   suggestionsCallback: (pattern) async {
                     return await searchPlaces(pattern);
                   },
@@ -84,7 +83,7 @@ final TextEditingController typeAheadController;
                   onSuggestionSelected: (PlaceSearch suggestion) {
                     setSelectedLocation(suggestion.placeId);
                     searchBarText.value = suggestion.description;
-                    this.typeAheadController.text = searchBarText.value;
+                    typeAheadController.text = searchBarText.value;
                   })),
         )
       ]),

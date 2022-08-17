@@ -174,27 +174,6 @@ class HorizontalJoystickView extends StatelessWidget {
     return _callbackTimestamp;
   }
 
-  /// Checks if the [onDirectionChanged] can be called.
-  ///
-  /// Returns true if enough time has passed since last time it was called
-  /// or when there is no [interval] set.
-  bool _canCallOnDirectionChanged(DateTime? callbackTimestamp) {
-    if (callbackTimestamp == null) {
-      return true;
-    }
-    if (interval != null && callbackTimestamp != null) {
-      int intervalMilliseconds = interval.inMilliseconds;
-      int timestampMilliseconds = callbackTimestamp.millisecondsSinceEpoch;
-      int currentTimeMilliseconds = DateTime.now().millisecondsSinceEpoch;
-
-      if (currentTimeMilliseconds - timestampMilliseconds <= intervalMilliseconds) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   Offset _calculatePositionOfInnerCircle(Offset lastPosition, double innerCircleSize, double size, Offset offset) {
     double middle = size / 2.0;
 

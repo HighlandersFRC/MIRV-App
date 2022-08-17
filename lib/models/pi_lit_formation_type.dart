@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum PiLitFormationType { taper_right_3, taper_left_3, taper_right_5, taper_left_5, spear_7 }
 
 extension PiLitFormationType1 on PiLitFormationType {

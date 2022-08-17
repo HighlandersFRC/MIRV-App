@@ -207,7 +207,6 @@ class MirvApi {
 
     GarageStateType state = tempGarageMetrics.state;
     bool lights_on = tempGarageMetrics.lights_on;
-    Rx<GarageStateType?> garageStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
       state = GarageStateType.retracted_unlatched;
     } else if (command == GarageCommands.lock) {

@@ -50,7 +50,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   setStartMarker(LatLng tappedPoint) {
     widget.startPoint.value = tappedPoint;
-    print('OBS  ${widget.startPoint.value}, ACT $tappedPoint');
     setState(
       () {
         if (widget.startPoint.value != null) {

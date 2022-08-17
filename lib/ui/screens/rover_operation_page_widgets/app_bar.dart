@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/ui/screens/home_page.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/rover_status_bar.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/status_dot.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/telemetry.dart';

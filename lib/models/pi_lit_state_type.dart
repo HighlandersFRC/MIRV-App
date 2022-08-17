@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:mirv/models/rover_control/rover_command.dart';
 
 enum PiLitStateType { no_pi_lits, idle, wave, wave_reverse, simultaneous }

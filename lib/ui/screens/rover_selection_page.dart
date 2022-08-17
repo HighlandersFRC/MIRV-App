@@ -85,7 +85,6 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     int? batteryLevel, {
     int? alertLevel,
   }) {
-    final String roverId;
     double divisor = 100 / 7;
 
     if (batteryLevel == null) {
@@ -122,7 +121,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
     _refreshRoversList();
     mirvApi.buildContext = context;
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double height = MediaQuery.of(context).size.height;
     selectedRoverController.isRoverListMinimized.value = width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -264,8 +263,8 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                           SearchBar(selectedRoverController: selectedRoverController, typeAheadController: typeAheadController)),
                   Expanded(
                     child: Obx(
-                      // ignore: invalid_use_of_protected_member
                       () =>
+                          // ignore: invalid_use_of_protected_member
                           (RoverSelectionMap(roverList.value, selectedRoverController.selectedRoverId, selectedRoverController)),
                     ),
                   )

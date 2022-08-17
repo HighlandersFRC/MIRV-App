@@ -8,7 +8,7 @@ class DriveToLocationMap extends StatefulWidget {
   final Rx<LatLng?> startPoint;
   final Rx<bool> startPointOnMap;
 
-  DriveToLocationMap(
+  const DriveToLocationMap(
     this.roverMetricsObs,
     this.startPoint,
     this.startPointOnMap, {
@@ -45,7 +45,6 @@ class _DriveToLocationMapState extends State<DriveToLocationMap> {
 
   setStartMarker(LatLng tappedPoint) {
     widget.startPoint.value = tappedPoint;
-    print('OBS  ${widget.startPoint.value}, ACT $tappedPoint');
     setState(
       () {
         if (widget.startPoint.value != null) {

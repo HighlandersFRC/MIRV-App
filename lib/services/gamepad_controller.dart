@@ -6,7 +6,6 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/gamepad/gamepad_event_types.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class GamepadController {
   static const eventChannel = EventChannel('com.neaera.mirv/gamepad_channel');

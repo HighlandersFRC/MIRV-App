@@ -28,7 +28,7 @@ class GarageCommandList extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
-                color: Color.fromARGB(125, 82, 81, 81),
+                color: const Color.fromARGB(125, 82, 81, 81),
               ),
               child: ListTile(
                   title: IconButton(

@@ -5,12 +5,12 @@ class LightImage extends StatelessWidget {
   final GarageMetrics? garageMetrics;
   final double width;
 
-  LightImage({Key? key, required this.garageMetrics, this.width = 60}) : super(key: key);
+  const LightImage({Key? key, required this.garageMetrics, this.width = 60}) : super(key: key);
 
-  Image? updateLightImage(bool lights_on) {
-    if (lights_on == true) {
+  Image? updateLightImage(bool lightsOn) {
+    if (lightsOn) {
       return Image.asset('assets/images/light_off_close_up.png', width: width);
-    } else if (lights_on == false) {
+    } else {
       return Image.asset('assets/images/light_on_close_up.png', width: width);
     }
   }

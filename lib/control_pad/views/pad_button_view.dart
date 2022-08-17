@@ -44,9 +44,11 @@ class PadButtonsView extends StatelessWidget {
     this.padButtonPressedCallback,
     this.buttonsPadding = 0,
     this.backgroundPadButtonsColor = Colors.transparent,
-  })  : assert(buttons != null && buttons.isNotEmpty),
+  })  : assert(buttons.isNotEmpty),
         super(key: key) {
-    buttons.forEach((button) => buttonsStateMap![button.index!] = button.backgroundColor!);
+    for (var button in buttons) {
+      buttonsStateMap![button.index!] = button.backgroundColor!;
+    }
   }
 
   @override
@@ -133,7 +135,6 @@ class PadButtonsView extends StatelessWidget {
   void _processGesture(PadButtonItem button, Gestures gesture) {
     if (padButtonPressedCallback != null && button.supportedGestures.contains(gesture)) {
       padButtonPressedCallback!(button.index!, gesture);
-      print('$gesture paddbutton id =  ${[button.index]}');
     }
   }
 
