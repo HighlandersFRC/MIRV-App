@@ -21,7 +21,7 @@ class MirvApi {
   AuthService authService = AuthService();
   final Duration _duration = const Duration(seconds: 5);
   BuildContext? buildContext;
-  bool unauthorizedDialogOpen = false;
+  bool loginDialogOpen = false;
 
   MirvApi({this.buildContext}) {
     authService.init();
@@ -118,12 +118,14 @@ class MirvApi {
   }
 
   Future<RoverState?> getRoverState(String rover_id) async {
+    if (loginDialogOpen) return null;
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers/$rover_id");
     if (response == null) return null;
     return RoverState.fromJson(json.decode(response.body));
   }
 
   Future<List<RoverState>?> getRoverStates() async {
+    if (loginDialogOpen) return null;
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers");
     if (response == null) return null;
     return (json.decode(response.body) as List).map((i) => RoverState.fromJson(i)).toList();
@@ -157,6 +159,7 @@ class MirvApi {
   //////////////////////////////////////////////////////////////////////////////
 
   Future<GarageMetrics?> getGarageMetrics(String? garage_id) async {
+    if (loginDialogOpen) return null;
     if (garage_id == null) {
       return null;
     }
@@ -166,6 +169,7 @@ class MirvApi {
   }
 
   Future<List<GarageMetrics>?> getGarages() async {
+    if (loginDialogOpen) return null;
     var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
     if (response == null) return null;
     return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
@@ -181,12 +185,13 @@ class MirvApi {
   }
 
   void updateGarageMetrics(String garage_id) {
+    if (loginDialogOpen) return;
     getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
   }
 
   void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
     garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
-      getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
+      updateGarageMetrics(garage_id);
     });
   }
 
@@ -230,13 +235,13 @@ class MirvApi {
   }
 
   forceLogin(BuildContext context) {
-    unauthorizedDialogOpen = true;
+    loginDialogOpen = true;
 
     Get.to(WillPopScope(
       onWillPop: () async => false,
       child: LoginPage(() => Get.back()),
     ));
 
-    unauthorizedDialogOpen = false;
+    loginDialogOpen = false;
   }
 }

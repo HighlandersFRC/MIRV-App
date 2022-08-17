@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/models/place.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/device_status_type.dart';
@@ -37,7 +38,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
 
   double radius = 10.0;
   StreamController<Place?> selectedLocation = StreamController<Place?>();
-  double zoom = 16.0;
+  double zoom = 14.0;
 
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
         mapType: MapType.hybrid,
         initialCameraPosition: CameraPosition(
           target: LatLng(lat, long),
-          zoom: 14,
+          zoom: zoom,
         ),
         markers: getMarkers(),
         onMapCreated: (GoogleMapController controller) {

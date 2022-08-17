@@ -6,4 +6,6 @@ class SettingsDefaults {
   static String keycloakRealm = 'vtti';
 
   static String keycloakClient = 'users';
+
+  static double initialMapZoom = 18;
 }
