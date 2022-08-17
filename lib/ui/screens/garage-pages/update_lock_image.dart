@@ -6,7 +6,7 @@ class LockImage extends StatelessWidget {
   final GarageMetrics? garageMetrics;
   final double width;
 
-  LockImage({Key? key, required this.garageMetrics, this.width = 60}) : super(key: key);
+  const LockImage({Key? key, required this.garageMetrics, this.width = 60}) : super(key: key);
 
   Image? updateLockImage(GarageStateType? garageState) {
     switch (garageState) {

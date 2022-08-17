@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -38,12 +37,10 @@ void main() {
     print("setNumberPiLits: ${json.encode(RoverPiLitCommands.setNumberPiLits(4, 4).toJson())}");
 
     print("----------------- RoverDrivetrainCommands -----------------");
-    print(
-        "drivetrainCommand: ${json.encode(RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, 0.0, 0.0).toJson())}");
+    print("drivetrainCommand: ${json.encode(RoverDrivetrainCommands.drivetrainCommand(0.0, 0.0).toJson())}");
 
     print("----------------- RoverMovementCommands -----------------");
-    print(
-        "movementCommand: ${json.encode(RoverDrivetrainCommands.destinationCommand(RoverCommandTypeDrivetrain.to_location, 39, -105).toJson())}");
+    print("movementCommand: ${json.encode(RoverDrivetrainCommands.destinationCommand(39, -105).toJson())}");
 
     print("----------------- RoverCameraCommands -----------------");
     print("switchWebcamFront: ${json.encode(RoverCameraCommands.switchWebcamFront)}");

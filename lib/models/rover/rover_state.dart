@@ -55,12 +55,16 @@ class RoverStateTelemetry with _$RoverStateTelemetry {
 
 @freezed
 class RoverStatePiLits with _$RoverStatePiLits {
+  const RoverStatePiLits._();
+
   const factory RoverStatePiLits({
     required PiLitStateType state,
     required int pi_lits_stowed_left,
     required int pi_lits_stowed_right,
     required List<RoverStatePiLit> deployed_pi_lits,
   }) = _RoverStatePiLits;
+
+  int get numPiLitsStowed => pi_lits_stowed_left + pi_lits_stowed_right;
 
   factory RoverStatePiLits.fromJson(Map<String, dynamic> json) => _$RoverStatePiLitsFromJson(json);
 }

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/ui/screens/home_page.dart';
-import 'package:shake/shake.dart';
 
 void main() {
   if (WebRTC.platformIsDesktop) {

@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Geometry {
+  // ignore: non_constant_identifier_names
   static double DEGREES_TO_RADIANS = 180 / pi;
 
+  // ignore: non_constant_identifier_names
   static double bearing_between_coordiantes(LatLng a, LatLng b) {
     double dL = b.longitude - a.longitude;
     double X = cos(b.latitude / DEGREES_TO_RADIANS) * sin(dL / DEGREES_TO_RADIANS);

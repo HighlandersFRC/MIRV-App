@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -22,41 +23,51 @@ class AuthService {
   }
 
   Future<int> authenticateUser(String username, String password) async {
-    var res = await http.post(getKeycloakAuthEndpoint(),
-        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-        body: {"username": username, "password": password, "client_id": getKeycloakClient(), "grant_type": "password"}).timeout(
-      const Duration(seconds: 5),
-      onTimeout: () => http.Response('Timeout', 408),
-    );
+    try {
+      var res = await http.post(getKeycloakAuthEndpoint(),
+          headers: {"Content-Type": "application/x-www-form-urlencoded"},
+          body: {"username": username, "password": password, "client_id": getKeycloakClient(), "grant_type": "password"}).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => http.Response('Timeout', 408),
+      );
 
-    switch (res.statusCode) {
-      case 200:
-        sessionStorageService.saveAccessToken(res.body);
-        return res.statusCode;
-      default:
-        debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
-        return res.statusCode;
+      switch (res.statusCode) {
+        case 200:
+          sessionStorageService.saveAccessToken(res.body);
+          return res.statusCode;
+        default:
+          debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
+          return res.statusCode;
+      }
+    } on SocketException catch (_) {
+      Get.snackbar("Internet", "No internet connection");
+      return 408;
     }
   }
 
   // Connection closed before full header was received
   Future<bool?> validateToken(Function()? onTimeout) async {
-    String? token = sessionStorageService.retriveAccessToken();
-    var res = await http.post(
-      getKeycloakUserInfoEndpoint(),
-      headers: {"Authorization": "Bearer $token"},
-      body: {"client_id": "mirv"},
-    ).timeout(
-      const Duration(seconds: 5),
-      onTimeout: () => http.Response('Timeout', 408),
-    );
-    switch (res.statusCode) {
-      case 200:
-        return true;
-      case 408:
-        return null;
-      default:
-        return false;
+    try {
+      String? token = sessionStorageService.retriveAccessToken();
+      var res = await http.post(
+        getKeycloakUserInfoEndpoint(),
+        headers: {"Authorization": "Bearer $token"},
+        body: {"client_id": "mirv"},
+      ).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => http.Response('Timeout', 408),
+      );
+      switch (res.statusCode) {
+        case 200:
+          return true;
+        case 408:
+          return null;
+        default:
+          return false;
+      }
+    } on SocketException catch (_) {
+      Get.snackbar("Internet", "No internet connection");
+      return null;
     }
   }
 

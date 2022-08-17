@@ -18,7 +18,7 @@ class JoystickUpdateController {
   JoystickValue? _lastJoystickVal;
   bool lastPointZero = true;
   Timer? timerJoy;
-  late Stream<DrivetrainRoverCommand> drivetrainCommandStream;
+  late Stream<RoverCommand> drivetrainCommandStream;
   final RoverDriveControlType driveType = RoverDriveControlType.arcade;
   final JoystickController controller;
   final GamepadAxisType axisType;

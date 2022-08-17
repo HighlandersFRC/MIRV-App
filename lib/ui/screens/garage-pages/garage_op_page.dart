@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mirv/models/garage/garage_command_type.dart';
-import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage-selection-page.dart';
@@ -17,13 +15,10 @@ import 'package:rxdart/subjects.dart';
 
 class GarageOperationPage extends StatelessWidget {
   final MirvApi _mirvGarageApi = MirvApi();
-  late GarageCommandType command;
-  late final GarageCommand _garageCommand = GarageCommand(command);
   final selectedGarageController = Get.put(SelectedGarageController());
-  RxList<GarageMetrics?> garageList = <GarageMetrics?>[].obs;
-  late String garage_id;
-  double? setWidth;
-  double? setHeight;
+  late final String garage_id;
+  final double? setWidth;
+  final double? setHeight;
 
   GarageOperationPage(GarageMetrics garageMetrics, {Key? key, this.setWidth, this.setHeight}) : super(key: key) {
     _mirvGarageApi.garageMetricsObs.value = garageMetrics;
@@ -38,7 +33,7 @@ class GarageOperationPage extends StatelessWidget {
     _mirvGarageApi.startGarageMetricUpdates(garage_id);
     double width = setWidth ?? MediaQuery.of(context).size.width;
     double height = setHeight ?? MediaQuery.of(context).size.height;
-    print("PRINTING WIDTHS: ${width}, ${width / 2}, ${(width - 110) - (width / 4)}");
+    _mirvGarageApi.buildContext = context;
     return Scaffold(
       appBar: (GarageAppBar(garageMetricsObs: _mirvGarageApi.garageMetricsObs, width: width)),
       body: Stack(

@@ -71,7 +71,7 @@ class GarageSearchBar extends StatelessWidget {
                       autofocus: false,
                       style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
                       decoration: const InputDecoration(border: OutlineInputBorder()),
-                      controller: this.typeAheadController),
+                      controller: typeAheadController),
                   suggestionsCallback: (pattern) async {
                     return await searchPlaces(pattern);
                   },
@@ -83,7 +83,7 @@ class GarageSearchBar extends StatelessWidget {
                   onSuggestionSelected: (PlaceSearch suggestion) {
                     setSelectedLocation(suggestion.placeId);
                     searchBarText.value = suggestion.description;
-                    this.typeAheadController.text = searchBarText.value;
+                    typeAheadController.text = searchBarText.value;
                   })),
         )
       ]),

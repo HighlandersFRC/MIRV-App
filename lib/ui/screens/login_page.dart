@@ -115,10 +115,12 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Obx(() => controller.isLoading.value
-                ? Container(
-                    color: Colors.black.withOpacity(0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+                ? Expanded(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   )
                 : Container()),

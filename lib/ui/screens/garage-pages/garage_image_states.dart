@@ -1,16 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
-import 'package:mirv/models/rover_control/rover_command.dart';
 
 class StateImages extends StatelessWidget {
   final GarageMetrics? garageMetrics;
   final double width;
 
-  StateImages({Key? key, required this.garageMetrics, this.width = 250}) : super(key: key);
+  const StateImages({Key? key, required this.garageMetrics, this.width = 250}) : super(key: key);
 
   Image? updateImage(GarageStateType? garageState) {
     switch (garageState) {

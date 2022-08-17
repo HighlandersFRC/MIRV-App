@@ -6,14 +6,13 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/gamepad/gamepad_event_types.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class GamepadController {
   static const eventChannel = EventChannel('com.neaera.mirv/gamepad_channel');
   late StreamSubscription _eventChannel;
   final RoverDriveControlType driveType;
 
-  late Stream<DrivetrainRoverCommand> drivetrainCommandStream;
+  late Stream<RoverCommand> drivetrainCommandStream;
 
   final StreamController<GamepadCommand> _commandStreamController = StreamController<GamepadCommand>.broadcast();
   Stream<GamepadCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
@@ -38,17 +37,16 @@ class GamepadController {
         command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
   }
 
-  DrivetrainRoverCommand _getJoystickCommandOutput(
+  // Only arcade is supported currently
+  RoverCommand _getJoystickCommandOutput(
       RoverDriveControlType driveType, GamepadAxisCommand leftStick, GamepadAxisCommand rightStick) {
     switch (driveType) {
       case RoverDriveControlType.arcade:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, rightStick.x, leftStick.y);
-      case RoverDriveControlType.single:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.x, leftStick.y);
-      case RoverDriveControlType.tank:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
-      default:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(rightStick.x, leftStick.y);
+      // case RoverDriveControlType.single:
+      //   return RoverDrivetrainCommands.drivetrainCommand(leftStick.x, leftStick.y);
+      // case RoverDriveControlType.tank:
+      //   return RoverDrivetrainCommands.drivetrainCommand(leftStick.y, rightStick.y);
     }
   }
 

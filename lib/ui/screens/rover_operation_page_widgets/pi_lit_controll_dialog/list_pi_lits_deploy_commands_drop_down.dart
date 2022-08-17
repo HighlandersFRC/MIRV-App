@@ -5,7 +5,7 @@ import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 
 class PiLitFormationCommandDropdown extends StatelessWidget {
-  PiLitFormationCommandDropdown({Key? key, required this.piLitFormationType, required this.piLitAmount}) : super(key: key);
+  const PiLitFormationCommandDropdown({Key? key, required this.piLitFormationType, required this.piLitAmount}) : super(key: key);
 
   final int piLitAmount;
 
@@ -20,7 +20,7 @@ class PiLitFormationCommandDropdown extends StatelessWidget {
               value: piLitFormationType,
               enabled: piLitFormationType.piLitsRequired <= piLitAmount,
               child: Text(piLitFormationType.name,
-                  style: TextStyle(color: piLitFormationType.piLitsRequired >= piLitAmount ? Colors.grey : fontColor)),
+                  style: TextStyle(color: piLitFormationType.piLitsRequired <= piLitAmount ? fontColor : Colors.grey)),
             );
           }).toList(),
           onChanged: (PiLitFormationType? t) {

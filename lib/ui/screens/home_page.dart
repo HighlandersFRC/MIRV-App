@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
     String title,
     IconData? icon,
     pageRoute, {
-    bool validateLogin: false,
+    bool validateLogin = false,
     double iconSize = 25,
     Image? image,
   }) {
@@ -38,11 +38,12 @@ class HomePage extends StatelessWidget {
         leading: icon != null ? Icon(icon, size: iconSize) : image,
         onTap: () async {
           if (validateLogin) {
-            if (await isCurrentTokenValid() == true) {
-              Get.to(pageRoute);
-            } else {
-              Get.to(LoginPage(() => Get.off(pageRoute)));
-            }
+            Get.to(LoginPage(() => Get.off(pageRoute)));
+            // if (await isCurrentTokenValid() == true) {
+            //   Get.to(pageRoute);
+            // } else {
+            //   Get.to(LoginPage(() => Get.off(pageRoute)));
+            // }
           } else {
             Get.to(pageRoute);
           }

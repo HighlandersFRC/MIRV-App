@@ -11,6 +11,7 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dia
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lits_deploy_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_placemment_map.dart';
 
+// ignore: must_be_immutable
 class PiLitDialogButton extends StatelessWidget {
   PiLitDialogButton(
     this.roverGarageState,
@@ -28,11 +29,10 @@ class PiLitDialogButton extends StatelessWidget {
 
   final Function(RoverCommand) sendCommand;
 
-  late int piLitAmount = roverGarageState.value.pi_lits.pi_lits_stowed_right + roverGarageState.value.pi_lits.pi_lits_stowed_left;
+  late int piLitAmount = roverGarageState.value.pi_lits.numPiLitsStowed;
 
   @override
   Widget build(BuildContext context) {
-    print('piLitAmount $piLitAmount');
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, right: 2),
       child: ListTile(
@@ -110,7 +110,7 @@ class PiLitDialogButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      child: Text("Reset Markers"),
+                      child: const Text("Reset Markers"),
                       onPressed: () {
                         startPoint.value = null;
                         endPoint.value = null;
@@ -121,7 +121,7 @@ class PiLitDialogButton extends StatelessWidget {
                 ],
               ),
               Obx(() => Text(startPointOnMap.value ? 'Place End Point (Red Marker)' : 'Place Start Point (Green Marker)')),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: AspectRatio(

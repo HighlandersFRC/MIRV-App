@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
@@ -9,8 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
-import 'package:mirv/models/garage/garage_commands.dart';
-import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
@@ -59,6 +58,9 @@ class WebRTCConnection {
 
   DateTime? recentStatusMessage;
 
+  RoverCommand? mostRecentCommand;
+  late RoverGarageState initialCommandState = roverGarageState;
+
   // MediaStream? _localStream;
   bool inCalling = false;
   get_pkg.Rx<bool> loading = false.obs;
@@ -69,7 +71,7 @@ class WebRTCConnection {
   Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
-  int GATHERING_HEARTBEAT = 500;
+  int GATHERING_HEARTBEAT = 2000;
 
   WebRTCConnection(this.roverGarageState) {
     init();
@@ -102,37 +104,36 @@ class WebRTCConnection {
     required String roverId,
   }) {
     get_pkg.Get.dialog(
-        barrierDismissible: false,
-        AlertDialog(
-          title: const Text('Failed Connection'),
-          content: Text(error),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  get_pkg.Get.back();
-                  get_pkg.Get.offAll(() => HomePage());
-                },
-                child: const Text('Home page'))
-          ],
-        ));
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Failed Connection'),
+        content: Text(error),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                get_pkg.Get.back();
+                get_pkg.Get.offAll(() => HomePage());
+              },
+              child: const Text('Home page'))
+        ],
+      ),
+    );
   }
 
   sendRoverCommand(RoverCommand command) {
-    // print("Sending rover command: ${json.encode(command.toJson())}");
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
-      print("------------------------ COMMAND: ${json.encode(command.toJson())} ------------------------");
       if (command != RoverHeartbeatCommands.heartbeat) {
+        mostRecentCommand = command;
+        initialCommandState = roverMetricsObs.value;
         logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
       }
     }
 
-    // TODO: Remove this before deployment
     // updateRoverState(command);
   }
 
-  // TODO: Remove this before deployment
   void updateRoverState(command) {
     var tempRoverMetrics = roverMetricsObs.value;
     RoverStateType state = tempRoverMetrics.state;
@@ -304,6 +305,12 @@ class WebRTCConnection {
               stopCall();
               _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
+          } on TimeoutException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'Request to connect timed out', roverId: roverId);
+          } on SocketException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'No internet connection', roverId: roverId);
           } catch (e) {
             stopCall();
             _showFailedConnectionDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
@@ -361,7 +368,7 @@ class WebRTCConnection {
       sendRoverCommand(RoverHeartbeatCommands.heartbeat);
       int duration = DateTime.now().difference(prevHeartbeatDebugTime).inMilliseconds;
       if (duration > 1.2 * 1000) {
-        print("MISSED HEARTBEAT COMMAND!!! $duration");
+        logger.w("MISSED HEARTBEAT COMMAND!!! $duration");
       }
       prevHeartbeatDebugTime = DateTime.now();
     });

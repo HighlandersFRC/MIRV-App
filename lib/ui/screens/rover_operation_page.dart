@@ -1,28 +1,26 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
+import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/commands_drawer.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/disable_toggle.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/e_stop_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/garage_button.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/piLit-dialog.dart';
+import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
+import 'rover_operation_page_widgets/task_progress_indicator.dart';
 import 'webrtc_connection.dart';
 
+// ignore: must_be_immutable
 class RoverOperationPage extends StatelessWidget {
   final RoverGarageState roverGarageState;
 
@@ -41,6 +39,7 @@ class RoverOperationPage extends StatelessWidget {
     webRTCConnection.roverMetricsObs.listen((val) => manualOperation.value = val.state == RoverStateType.remote_operation);
     webRTCConnection.makeCall(roverGarageState.rover_id);
     webRTCConnection.startJoystickUpdates();
+    webRTCConnection.mirvApi.buildContext = context;
 
     var roverOperationMap = RoverOperationMap(webRTCConnection.roverMetricsObs);
     return Obx(
@@ -53,25 +52,6 @@ class RoverOperationPage extends StatelessWidget {
         drawer: CommandsDrawer(webRTCConnection),
         body: Stack(
           children: [
-            Obx(
-              () => webRTCConnection.roverMetricsObs.value.state == RoverStateType.autonomous
-                  ? const Positioned(
-                      top: 10,
-                      height: 40,
-                      width: 150,
-                      left: 30,
-                      child: LinearProgressIndicator(
-                        value: 0.6,
-                        minHeight: 20,
-                        color: Color.fromARGB(255, 255, 153, 0),
-                        backgroundColor: Color.fromARGB(148, 158, 158, 158),
-                      ),
-                    )
-                  : Container(
-                      color: const Color.fromARGB(255, 243, 33, 33),
-                      child: const Text(""),
-                    ),
-            ),
             Center(
               child: Container(
                 decoration: const BoxDecoration(
@@ -80,6 +60,10 @@ class RoverOperationPage extends StatelessWidget {
                 child: RTCVideoView(webRTCConnection.localRenderer.value),
               ),
             ),
+            Obx(
+              () => TaskProgressIndicator(webRTCConnection.roverMetricsObs.value, webRTCConnection.initialCommandState,
+                  webRTCConnection.mostRecentCommand),
+            ),
             Positioned(
               top: 10,
               bottom: 10,
@@ -87,18 +71,6 @@ class RoverOperationPage extends StatelessWidget {
               left: 10,
               child: Column(children: [
                 const OpenCommandsDrawer(),
-                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
-                //     ? PiLitDialogButton(
-                //         webRTCConnection.roverMetricsObs,
-                //         webRTCConnection.sendRoverCommand,
-                //       )
-                //     : const SizedBox.shrink(),
-                // webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle
-                //     ? DriveToPositionDialog(
-                //         roverGarageState: webRTCConnection.roverMetricsObs,
-                //         sendCommand: webRTCConnection.sendRoverCommand,
-                //       )
-                //     : const SizedBox.shrink(),
                 Expanded(
                   child: CommandList(
                     roverGarageState: webRTCConnection.roverMetricsObs.value,
@@ -110,7 +82,7 @@ class RoverOperationPage extends StatelessWidget {
             ),
             Positioned(
               top: 0,
-              height: 450,
+              bottom: 0,
               right: 15,
               width: 175,
               child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -124,23 +96,27 @@ class RoverOperationPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Obx(() => EStopButton(
                         roverGarageState: webRTCConnection.roverMetricsObs.value,
                         sendCommand: webRTCConnection.sendRoverCommand,
                       )),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: PiLitCommandDropdown(
                     Rx<PiLitStateType>(webRTCConnection.roverMetricsObs.value.pi_lits.state),
                     sendCommand: webRTCConnection.sendRoverCommand,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: Obx(() => GarageButton(webRTCConnection.mirvApi.garageMetricsObs.value)),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Obx(() => PiLitCountDialog(webRTCConnection.roverMetricsObs.value, webRTCConnection.sendRoverCommand)),
+                ),
               ]),
             ),
             Obx(

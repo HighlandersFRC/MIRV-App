@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -39,34 +40,44 @@ class MirvApi {
       headers.addAll(additionalHeaders);
     }
 
-    var response = await http
-        .get(
-          Uri.parse(endpoint),
-          headers: headers,
-        )
-        .timeout(
-          const Duration(seconds: 5),
-          onTimeout: () => http.Response('Timeout', 408),
-        );
-    switch (response.statusCode) {
-      case 401:
-      case 403:
-        if (requireLogin && buildContext != null) forceLogin(buildContext!);
-        return null;
-      case 408:
-        Get.snackbar("Timeout", "Request timed out");
-        return null;
-      default:
-        return response;
+    try {
+      var response = await http
+          .get(
+            Uri.parse(endpoint),
+            headers: headers,
+          )
+          .timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => http.Response('Timeout', 408),
+          );
+      switch (response.statusCode) {
+        case 401:
+        case 403:
+          if (requireLogin && buildContext != null) forceLogin(buildContext!);
+          return null;
+        case 408:
+          Get.snackbar("Timeout", "Request timed out");
+          return null;
+        default:
+          return response;
+      }
+    } on SocketException catch (_) {
+      Get.snackbar("Internet", "No internet connection");
+      return null;
     }
   }
 
   Future<bool> testEndpoint(String endpoint) async {
-    var response = await http.get(Uri.parse(endpoint)).timeout(
-          const Duration(seconds: 5),
-          onTimeout: () => http.Response('Timeout', 408),
-        );
-    return response.statusCode == 200;
+    try {
+      var response = await http.get(Uri.parse(endpoint)).timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => http.Response('Timeout', 408),
+          );
+      return response.statusCode == 200;
+    } on SocketException catch (_) {
+      Get.snackbar("Internet", "No internet connection");
+      return false;
+    }
   }
 
   Future<http.Response?> makeAuthenticatedPostRequest(String endpoint, String body,
@@ -77,28 +88,32 @@ class MirvApi {
     if (additionalHeaders != null) {
       headers.addAll(additionalHeaders);
     }
+    try {
+      var response = await http
+          .post(
+            Uri.parse(endpoint),
+            headers: headers,
+            body: body,
+          )
+          .timeout(
+            const Duration(seconds: 30),
+            onTimeout: () => http.Response('Timeout', 408),
+          );
 
-    var response = await http
-        .post(
-          Uri.parse(endpoint),
-          headers: headers,
-          body: body,
-        )
-        .timeout(
-          const Duration(seconds: 30),
-          onTimeout: () => http.Response('Timeout', 408),
-        );
-
-    switch (response.statusCode) {
-      case 401:
-      case 403:
-        if (requireLogin && buildContext != null) forceLogin(buildContext!);
-        return null;
-      case 408:
-        Get.snackbar("Timeout", "Request timed out");
-        return null;
-      default:
-        return response;
+      switch (response.statusCode) {
+        case 401:
+        case 403:
+          if (requireLogin && buildContext != null) forceLogin(buildContext!);
+          return null;
+        case 408:
+          Get.snackbar("Timeout", "Request timed out");
+          return null;
+        default:
+          return response;
+      }
+    } on SocketException catch (_) {
+      Get.snackbar("Internet", "No internet connection");
+      return null;
     }
   }
 
@@ -192,7 +207,6 @@ class MirvApi {
 
     GarageStateType state = tempGarageMetrics.state;
     bool lights_on = tempGarageMetrics.lights_on;
-    Rx<GarageStateType?> garageStateObs = Rx<GarageStateType?>(state);
     if (command == GarageCommands.unlock) {
       state = GarageStateType.retracted_unlatched;
     } else if (command == GarageCommands.lock) {

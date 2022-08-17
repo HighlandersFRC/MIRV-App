@@ -14,7 +14,6 @@ class RoverStatusBar extends StatelessWidget {
   final double iconSize = 40;
 
   IconData _batteryIcon(int? batteryLevel, {int? alertLevel}) {
-    double size = 40;
     if (batteryLevel == null) {
       return Icons.battery_unknown_rounded;
     }
