@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
+import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/garage-pages/garage_op_page.dart';
 
 class GarageButton extends StatelessWidget {
   final GarageMetrics? garageMetrics;
-  const GarageButton(this.garageMetrics, {Key? key}) : super(key: key);
+  final MirvApi mirvApi;
+  const GarageButton(this.garageMetrics, this.mirvApi, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +61,12 @@ class GarageButton extends StatelessWidget {
                         aspectRatio: 1.5,
                         child: GarageOperationPage(
                           garageMetrics!,
+                          mirvApi: mirvApi,
                           setWidth: width * 2 / 3,
                           setHeight: height * 2 / 3,
                         )),
                     actions: [
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
                           return Navigator.pop(context);
                         },

@@ -22,6 +22,7 @@ class MirvApi {
   final Duration _duration = const Duration(seconds: 5);
   BuildContext? buildContext;
   bool loginDialogOpen = false;
+  bool garageUpdatesActive = false;
 
   MirvApi({this.buildContext}) {
     authService.init();
@@ -55,9 +56,9 @@ class MirvApi {
         case 403:
           if (requireLogin && buildContext != null) forceLogin(buildContext!);
           return null;
-        case 408:
-          Get.snackbar("Timeout", "Request timed out");
-          return null;
+        // case 408:
+        //   Get.snackbar("Timeout", "Request timed out");
+        //   return null;
         default:
           return response;
       }
@@ -105,9 +106,9 @@ class MirvApi {
         case 403:
           if (requireLogin && buildContext != null) forceLogin(buildContext!);
           return null;
-        case 408:
-          Get.snackbar("Timeout", "Request timed out");
-          return null;
+        // case 408:
+        //   Get.snackbar("Timeout", "Request timed out");
+        //   return null;
         default:
           return response;
       }
@@ -190,6 +191,8 @@ class MirvApi {
   }
 
   void startGarageMetricUpdates(String garage_id, {int seconds = 5}) {
+    if (garageUpdatesActive) return;
+    garageUpdatesActive = true;
     garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
       updateGarageMetrics(garage_id);
     });

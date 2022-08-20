@@ -115,12 +115,12 @@ class SettingsPage extends StatelessWidget {
         title: const Text('Unsaved Changes'),
         content: Text('You have unsaved to the following variables: ${unsavedValues.join(", ")}'),
         actions: [
-          TextButton(
+          ElevatedButton(
               onPressed: () {
                 Get.back();
               },
               child: const Text('Back')),
-          TextButton(
+          ElevatedButton(
               onPressed: () {
                 Get.offAll(HomePage());
               },
@@ -204,7 +204,7 @@ class SettingsPage extends StatelessWidget {
                                       title: const Text('Invalid Input'),
                                       content: const Text('Invalid Endpoint'),
                                       actions: [
-                                        TextButton(
+                                        ElevatedButton(
                                             onPressed: () {
                                               Get.back();
                                             },
@@ -220,7 +220,7 @@ class SettingsPage extends StatelessWidget {
                                       title: const Text('Invalid Input'),
                                       content: const Text('Invalid Keycloak Endpoint'),
                                       actions: [
-                                        TextButton(
+                                        ElevatedButton(
                                             onPressed: () {
                                               Get.back();
                                             },

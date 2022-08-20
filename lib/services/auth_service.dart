@@ -40,15 +40,24 @@ class AuthService {
           return res.statusCode;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
       return 408;
     }
+  }
+
+  bool isTokenExpired() {
+    int? expirationDelta = sessionStorageService.retrieveAccessTokenExpiration();
+    int? creationTime = sessionStorageService.retrieveAccessTokenCreationDate();
+    int currentTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+    if (expirationDelta == null || creationTime == null) return false;
+
+    return currentTime < creationTime + expirationDelta;
   }
 
   // Connection closed before full header was received
   Future<bool?> validateToken(Function()? onTimeout) async {
     try {
-      String? token = sessionStorageService.retriveAccessToken();
+      String? token = sessionStorageService.retrieveAccessToken();
       var res = await http.post(
         getKeycloakUserInfoEndpoint(),
         headers: {"Authorization": "Bearer $token"},
@@ -104,6 +113,6 @@ class AuthService {
   }
 
   String? getKeycloakAccessToken() {
-    return sessionStorageService.retriveAccessToken();
+    return sessionStorageService.retrieveAccessToken();
   }
 }

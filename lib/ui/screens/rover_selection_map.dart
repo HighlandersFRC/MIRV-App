@@ -66,8 +66,8 @@ class _RoverSelectionMapState extends State<RoverSelectionMap> {
   @override
   Widget build(BuildContext context) {
     var firstRover = widget.roverStates.firstWhereOrNull((val) => true);
-    var lat = firstRover?.telemetry.location.lat ?? 40.5;
-    var long = firstRover?.telemetry.location.long ?? -105;
+    var lat = firstRover?.telemetry.location.lat ?? 40.474019;
+    var long = firstRover?.telemetry.location.long ?? -104.969627;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GoogleMap(

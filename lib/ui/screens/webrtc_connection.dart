@@ -109,7 +109,7 @@ class WebRTCConnection {
         title: const Text('Failed Connection'),
         content: Text(error),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
               onPressed: () {
                 get_pkg.Get.back();
                 get_pkg.Get.offAll(() => HomePage());
@@ -212,12 +212,12 @@ class WebRTCConnection {
               title: const Text('Failed Connection'),
               content: const Text('No Heartbeat Messages Received'),
               actions: <Widget>[
-                TextButton(
+                ElevatedButton(
                     onPressed: () {
                       get_pkg.Get.back();
                     },
                     child: const Text('back')),
-                TextButton(
+                ElevatedButton(
                     onPressed: () {
                       stopCall();
                       get_pkg.Get.back();

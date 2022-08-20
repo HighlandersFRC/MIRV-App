@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command_type.dart';
+import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -111,7 +113,7 @@ class RoverOperationPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: Obx(() => GarageButton(webRTCConnection.mirvApi.garageMetricsObs.value)),
+                  child: Obx(() => GarageButton(webRTCConnection.mirvApi.garageMetricsObs.value, webRTCConnection.mirvApi)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
@@ -137,11 +139,11 @@ class RoverOperationPage extends StatelessWidget {
                             child: roverOperationMap,
                           ),
                           actions: [
-                            TextButton(
+                            ElevatedButton(
                               onPressed: () {
                                 return Navigator.pop(context);
                               },
-                              child: const Text('Close'),
+                              child: const Text('Close', style: TextStyle(fontSize: fontSizeButton)),
                             ),
                           ],
                         );

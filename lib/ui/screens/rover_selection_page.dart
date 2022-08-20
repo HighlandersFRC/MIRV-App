@@ -128,6 +128,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
       appBar: AppBar(
         title: const Text(
           "Rover Selection",
+          style: TextStyle(fontSize: fontSizeHomeMenu),
         ),
       ),
       body: Row(
@@ -218,7 +219,7 @@ class _RoverSelectionPageState extends State<RoverSelectionPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: const [
                                 Icon(Icons.link_rounded),
-                                Text(' Connect', style: TextStyle(fontSize: homeFontSize)),
+                                Text(' Connect', style: TextStyle(fontSize: fontSizeButton)),
                               ],
                             ),
                           ),

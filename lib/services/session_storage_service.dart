@@ -9,13 +9,13 @@ import 'package:mirv/models/auth/token_model.dart';
 class SessionStorageService {
   static SharedPreferences? _prefs;
   static const String ACCESS_TOKEN_KEY = "ACCESS_TOKEN";
+  static const String ACCESS_TOKEN_CREATION_DATE_KEY = "ACCESS_TOKEN_CREATION_DATE";
 
   static const String ENDPOINT_TOKEN_KEY = "ENDPOINT_TOKEN";
   static const String KEY_CLOAK_ENDPOINT_TOKEN_KEY = "KEY_CLOAK_ENDPOINT_TOKEN";
   static const String KEY_CLOAK_REALM_TOKEN_KEY = "KEY_CLOAK_REALM_TOKEN";
   static const String KEY_CLOAK_CLIENT_TOKEN_KEY = "KEY_CLOAK_CLIENT_TOKEN";
 
-//call init everytime with class
   init() async {
     _prefs = await SharedPreferences.getInstance();
     if (retrieveMirvEndpoint() == null) {
@@ -32,11 +32,20 @@ class SessionStorageService {
     }
   }
 
-  void saveAccessToken(String accessToken) {
-    _prefs!.setString(ACCESS_TOKEN_KEY, accessToken);
+  void saveAccessTokenCreationDate(DateTime date) {
+    _prefs!.setInt(ACCESS_TOKEN_CREATION_DATE_KEY, (date.millisecondsSinceEpoch / 1000).round());
   }
 
-  String? retriveAccessToken() {
+  int? retrieveAccessTokenCreationDate() {
+    return _prefs?.getInt(ACCESS_TOKEN_CREATION_DATE_KEY);
+  }
+
+  void saveAccessToken(String accessToken) {
+    _prefs!.setString(ACCESS_TOKEN_KEY, accessToken);
+    saveAccessTokenCreationDate(DateTime.now());
+  }
+
+  String? retrieveAccessToken() {
     var tokenJson = _prefs?.getString(ACCESS_TOKEN_KEY);
     if (tokenJson == null) {
       return null;
@@ -44,7 +53,15 @@ class SessionStorageService {
     return TokenModel.fromJson(jsonDecode(tokenJson)).accessToken;
   }
 
-//endpoint
+  int? retrieveAccessTokenExpiration() {
+    var tokenJson = _prefs?.getString(ACCESS_TOKEN_KEY);
+    if (tokenJson == null) {
+      return null;
+    }
+    return TokenModel.fromJson(jsonDecode(tokenJson)).expires_in;
+  }
+
+  //endpoint
   void saveMirvEndpoint(String endpoint) {
     _prefs!.setString(ENDPOINT_TOKEN_KEY, endpoint);
   }
@@ -53,7 +70,7 @@ class SessionStorageService {
     return _prefs?.getString(ENDPOINT_TOKEN_KEY);
   }
 
-//KeyCloakEndpoint
+  //KeyCloakEndpoint
   void saveKeycloakEndpoint(String keyCloakEndpoint) {
     _prefs!.setString(KEY_CLOAK_ENDPOINT_TOKEN_KEY, keyCloakEndpoint);
   }
@@ -62,7 +79,7 @@ class SessionStorageService {
     return _prefs?.getString(KEY_CLOAK_ENDPOINT_TOKEN_KEY);
   }
 
-//KeyCloakRealm
+  //KeyCloakRealm
   void saveKeycloakRealm(String keyCloakRealm) {
     _prefs!.setString(KEY_CLOAK_REALM_TOKEN_KEY, keyCloakRealm);
   }
@@ -71,12 +88,11 @@ class SessionStorageService {
     return _prefs?.getString(KEY_CLOAK_REALM_TOKEN_KEY);
   }
 
-//KeyCloakClient
+  //KeyCloakClient
   void saveKeycloakClient(String keyCloakClient) {
     _prefs!.setString(KEY_CLOAK_CLIENT_TOKEN_KEY, keyCloakClient);
   }
 
-//SPELLING
   String? retrieveKeycloakClient() {
     return _prefs?.getString(KEY_CLOAK_CLIENT_TOKEN_KEY);
   }

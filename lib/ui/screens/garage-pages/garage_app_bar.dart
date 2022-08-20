@@ -36,7 +36,7 @@ class GarageAppBar extends StatelessWidget implements PreferredSizeWidget {
                   return AlertDialog(
                     content: AspectRatio(aspectRatio: 1.5, child: Obx(() => StatusPageGarage(garageMetricsObs.value))),
                     actions: [
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
                           return Navigator.pop(context);
                         },

@@ -14,13 +14,15 @@ import 'package:mirv/ui/screens/garage-pages/update_lock_image.dart';
 import 'package:rxdart/subjects.dart';
 
 class GarageOperationPage extends StatelessWidget {
-  final MirvApi _mirvGarageApi = MirvApi();
+  late MirvApi _mirvGarageApi;
   final selectedGarageController = Get.put(SelectedGarageController());
   late final String garage_id;
   final double? setWidth;
   final double? setHeight;
 
-  GarageOperationPage(GarageMetrics garageMetrics, {Key? key, this.setWidth, this.setHeight}) : super(key: key) {
+  GarageOperationPage(GarageMetrics garageMetrics, {Key? key, this.setWidth, this.setHeight, MirvApi? mirvApi})
+      : super(key: key) {
+    _mirvGarageApi = mirvApi ?? MirvApi();
     _mirvGarageApi.garageMetricsObs.value = garageMetrics;
     garage_id = garageMetrics.garage_id;
   }
@@ -48,7 +50,6 @@ class GarageOperationPage extends StatelessWidget {
                 () => GarageCommandList(
                   garageMetrics: _mirvGarageApi.garageMetricsObs.value,
                   sendCommand: _mirvGarageApi.sendGarageCommand,
-                  resetGarageState: _mirvGarageApi.resetGarageMetricsUpdates(garage_id),
                 ),
               ),
             ),

@@ -47,7 +47,7 @@ class HealthContainer extends StatelessWidget {
                   ? ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')} \n \n Details: ${subsystemHealth.details}'
                   : ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')}'),
               actions: [
-                TextButton(
+                ElevatedButton(
                     onPressed: () {
                       Get.back();
                     },

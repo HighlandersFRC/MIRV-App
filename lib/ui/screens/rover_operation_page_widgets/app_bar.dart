@@ -67,14 +67,14 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                       title: const Text('Disconnect?'),
                       content: Text('Would  you like to discconect from ${roverGarageState.value.rover_id}'),
                       actions: <Widget>[
-                        TextButton(
+                        ElevatedButton(
                             onPressed: () {
                               stopCall();
                               Navigator.pop(context);
                               get_pkg.Get.offAll(() => HomePage());
                             },
                             child: const Text('Yes')),
-                        TextButton(
+                        ElevatedButton(
                             onPressed: () {
                               return Navigator.pop(context);
                             },
@@ -113,7 +113,7 @@ class OperationPageAppBar extends StatelessWidget implements PreferredSizeWidget
                   return AlertDialog(
                     content: AspectRatio(aspectRatio: 1.5, child: StatusPage(roverGarageState.value)),
                     actions: [
-                      TextButton(
+                      ElevatedButton(
                         onPressed: () {
                           return Navigator.pop(context);
                         },
