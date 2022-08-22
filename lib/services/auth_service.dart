@@ -24,9 +24,15 @@ class AuthService {
 
   Future<int> authenticateUser(String username, String password) async {
     try {
-      var res = await http.post(getKeycloakAuthEndpoint(),
-          headers: {"Content-Type": "application/x-www-form-urlencoded"},
-          body: {"username": username, "password": password, "client_id": getKeycloakClient(), "grant_type": "password"}).timeout(
+      var res = await http.post(getKeycloakAuthEndpoint(), headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }, body: {
+        "username": username,
+        "password": password,
+        "client_id": getKeycloakClient(),
+        "client_secret": getKeycloakClientSecret(),
+        "grant_type": "password"
+      }).timeout(
         const Duration(seconds: 5),
         onTimeout: () => http.Response('Timeout', 408),
       );
@@ -96,6 +102,10 @@ class AuthService {
     return sessionStorageService.saveKeycloakClient(keyCloakClient);
   }
 
+  setKeycloakClientSecret(String keyCloakClientSecret) {
+    return sessionStorageService.saveKeycloakClientSecret(keyCloakClientSecret);
+  }
+
   String getMirvEndpoint() {
     return sessionStorageService.retrieveMirvEndpoint() ?? '';
   }
@@ -110,6 +120,10 @@ class AuthService {
 
   String getKeycloakClient() {
     return sessionStorageService.retrieveKeycloakClient() ?? '';
+  }
+
+  String getKeycloakClientSecret() {
+    return sessionStorageService.retrieveKeycloakClientSecret() ?? '';
   }
 
   String? getKeycloakAccessToken() {

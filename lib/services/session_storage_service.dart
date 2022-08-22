@@ -15,6 +15,7 @@ class SessionStorageService {
   static const String KEY_CLOAK_ENDPOINT_TOKEN_KEY = "KEY_CLOAK_ENDPOINT_TOKEN";
   static const String KEY_CLOAK_REALM_TOKEN_KEY = "KEY_CLOAK_REALM_TOKEN";
   static const String KEY_CLOAK_CLIENT_TOKEN_KEY = "KEY_CLOAK_CLIENT_TOKEN";
+  static const String KEY_CLOAK_CLIENT_SECRET_KEY = "KEY_CLOAK_CLIENT_SECRET";
 
   init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -29,6 +30,9 @@ class SessionStorageService {
     }
     if (retrieveKeycloakClient() == null) {
       saveKeycloakClient(SettingsDefaults.keycloakClient);
+    }
+    if (retrieveKeycloakClient() == null) {
+      saveKeycloakClient(SettingsDefaults.keycloakClientSecret);
     }
   }
 
@@ -70,7 +74,6 @@ class SessionStorageService {
     return _prefs?.getString(ENDPOINT_TOKEN_KEY);
   }
 
-  //KeyCloakEndpoint
   void saveKeycloakEndpoint(String keyCloakEndpoint) {
     _prefs!.setString(KEY_CLOAK_ENDPOINT_TOKEN_KEY, keyCloakEndpoint);
   }
@@ -79,7 +82,6 @@ class SessionStorageService {
     return _prefs?.getString(KEY_CLOAK_ENDPOINT_TOKEN_KEY);
   }
 
-  //KeyCloakRealm
   void saveKeycloakRealm(String keyCloakRealm) {
     _prefs!.setString(KEY_CLOAK_REALM_TOKEN_KEY, keyCloakRealm);
   }
@@ -88,12 +90,19 @@ class SessionStorageService {
     return _prefs?.getString(KEY_CLOAK_REALM_TOKEN_KEY);
   }
 
-  //KeyCloakClient
   void saveKeycloakClient(String keyCloakClient) {
     _prefs!.setString(KEY_CLOAK_CLIENT_TOKEN_KEY, keyCloakClient);
   }
 
   String? retrieveKeycloakClient() {
     return _prefs?.getString(KEY_CLOAK_CLIENT_TOKEN_KEY);
+  }
+
+  void saveKeycloakClientSecret(String keyCloakClientSecret) {
+    _prefs!.setString(KEY_CLOAK_CLIENT_SECRET_KEY, keyCloakClientSecret);
+  }
+
+  String? retrieveKeycloakClientSecret() {
+    return _prefs?.getString(KEY_CLOAK_CLIENT_SECRET_KEY);
   }
 }
