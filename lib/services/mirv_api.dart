@@ -28,13 +28,13 @@ class MirvApi {
     authService.init();
   }
 
-  String? _getCurrentAuthToken() {
-    return authService.getKeycloakAccessToken();
+  Future<String?> _getCurrentAuthToken() async {
+    return await authService.getKeycloakAccessToken();
   }
 
   Future<http.Response?> makeAuthenticatedGetRequest(String endpoint,
       {Map<String, String>? additionalHeaders, bool requireLogin = true, snackbarOnError}) async {
-    String? token = _getCurrentAuthToken();
+    String? token = await _getCurrentAuthToken();
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     if (additionalHeaders != null) {
@@ -83,7 +83,7 @@ class MirvApi {
 
   Future<http.Response?> makeAuthenticatedPostRequest(String endpoint, String body,
       {Map<String, String>? additionalHeaders, bool requireLogin = true}) async {
-    String? token = _getCurrentAuthToken();
+    String? token = await _getCurrentAuthToken();
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     if (additionalHeaders != null) {
@@ -120,24 +120,24 @@ class MirvApi {
 
   Future<RoverState?> getRoverState(String rover_id) async {
     if (loginDialogOpen) return null;
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers/$rover_id");
+    var response = await makeAuthenticatedGetRequest("${await authService.getMirvEndpoint()}/rovers/$rover_id");
     if (response == null) return null;
     return RoverState.fromJson(json.decode(response.body));
   }
 
   Future<List<RoverState>?> getRoverStates() async {
     if (loginDialogOpen) return null;
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/rovers");
+    var response = await makeAuthenticatedGetRequest("${await authService.getMirvEndpoint()}/rovers");
     if (response == null) return null;
     return (json.decode(response.body) as List).map((i) => RoverState.fromJson(i)).toList();
   }
 
   Future<http.StreamedResponse> startRoverConnection(String rover_id, RTCSessionDescription? des) async {
-    String? token = _getCurrentAuthToken();
+    String? token = await _getCurrentAuthToken();
     var headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
     var request = http.Request(
       'POST',
-      Uri.parse('${authService.getMirvEndpoint()}/rovers/connect'),
+      Uri.parse('${await authService.getMirvEndpoint()}/rovers/connect'),
     );
     request.body = json.encode({
       "connection_id": "string",
@@ -164,21 +164,21 @@ class MirvApi {
     if (garage_id == null) {
       return null;
     }
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages/$garage_id");
+    var response = await makeAuthenticatedGetRequest("${await authService.getMirvEndpoint()}/garages/$garage_id");
     if (response == null) return null;
     return response.statusCode == 200 ? GarageMetrics.fromJson(json.decode(response.body)) : null;
   }
 
   Future<List<GarageMetrics>?> getGarages() async {
     if (loginDialogOpen) return null;
-    var response = await makeAuthenticatedGetRequest("${authService.getMirvEndpoint()}/garages");
+    var response = await makeAuthenticatedGetRequest("${await authService.getMirvEndpoint()}/garages");
     if (response == null) return null;
     return (json.decode(response.body) as List).map((i) => GarageMetrics.fromJson(i)).toList();
   }
 
   Future<bool?> sendGarageCommand(String garage_id, GarageCommand command) async {
     var response = await makeAuthenticatedPostRequest(
-        "${authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
+        "${await authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
         additionalHeaders: {'Content-Type': 'application/json'});
     if (response == null) return null;
     updateGarageMetrics(garage_id);

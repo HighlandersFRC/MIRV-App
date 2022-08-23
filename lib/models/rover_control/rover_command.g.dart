@@ -10,6 +10,7 @@ _$_RoverCommand _$$_RoverCommandFromJson(Map<String, dynamic> json) =>
     _$_RoverCommand(
       $enumDecode(_$RoverSubsystemTypeEnumMap, json['subsystem']),
       $enumDecode(_$RoverCommandTypeEnumMap, json['command']),
+      client_id: json['client_id'] as String?,
       commandParameters: json['commandParameters'] == null
           ? null
           : RoverCommandParameters.fromJson(
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$_RoverCommandToJson(_$_RoverCommand instance) =>
     <String, dynamic>{
       'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
       'command': _$RoverCommandTypeEnumMap[instance.command],
+      'client_id': instance.client_id,
       'commandParameters': instance.commandParameters,
     };
 

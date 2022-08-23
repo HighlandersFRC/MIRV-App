@@ -4,33 +4,33 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:mirv/services/session_storage_service.dart';
+import 'package:mirv/services/secure_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
-  SessionStorageService sessionStorageService = SessionStorageService();
+  SecureStorageService secureStorageService = SecureStorageService();
 
   init() async {
-    await sessionStorageService.init();
+    await secureStorageService.applyDefaults();
   }
 
-  getKeycloakAuthEndpoint() {
-    return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/token');
+  Future<Uri> getKeycloakAuthEndpoint() async {
+    return Uri.parse('${await getKeycloakEndpoint()}/auth/realms/${await getKeycloakRealm()}/protocol/openid-connect/token');
   }
 
-  getKeycloakUserInfoEndpoint() {
-    return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/userinfo');
+  Future<Uri> getKeycloakUserInfoEndpoint() async {
+    return Uri.parse('${await getKeycloakEndpoint()}/auth/realms/${await getKeycloakRealm()}/protocol/openid-connect/userinfo');
   }
 
   Future<int> authenticateUser(String username, String password) async {
     try {
-      var res = await http.post(getKeycloakAuthEndpoint(), headers: {
+      var res = await http.post(await getKeycloakAuthEndpoint(), headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }, body: {
         "username": username,
         "password": password,
-        "client_id": getKeycloakClient(),
-        "client_secret": getKeycloakClientSecret(),
+        "client_id": await getKeycloakClient(),
+        "client_secret": await getKeycloakClientSecret(),
         "grant_type": "password"
       }).timeout(
         const Duration(seconds: 5),
@@ -39,7 +39,7 @@ class AuthService {
 
       switch (res.statusCode) {
         case 200:
-          sessionStorageService.saveAccessToken(res.body);
+          secureStorageService.saveAccessToken(res.body);
           return res.statusCode;
         default:
           debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
@@ -50,9 +50,9 @@ class AuthService {
     }
   }
 
-  bool isTokenExpired() {
-    int? expirationDelta = sessionStorageService.retrieveAccessTokenExpiration();
-    int? creationTime = sessionStorageService.retrieveAccessTokenCreationDate();
+  Future<bool> isTokenExpired() async {
+    int? expirationDelta = await secureStorageService.retrieveAccessTokenExpiration();
+    int? creationTime = await secureStorageService.retrieveAccessTokenCreationDate();
     int currentTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
     if (expirationDelta == null || creationTime == null) return false;
@@ -63,9 +63,9 @@ class AuthService {
   // Connection closed before full header was received
   Future<bool?> validateToken(Function()? onTimeout) async {
     try {
-      String? token = sessionStorageService.retrieveAccessToken();
+      String? token = await secureStorageService.retrieveAccessToken();
       var res = await http.post(
-        getKeycloakUserInfoEndpoint(),
+        await getKeycloakUserInfoEndpoint(),
         headers: {"Authorization": "Bearer $token"},
         body: {"client_id": "mirv"},
       ).timeout(
@@ -87,46 +87,62 @@ class AuthService {
   }
 
   setMirvEndpoint(String endpoint) {
-    return sessionStorageService.saveMirvEndpoint(endpoint);
+    return secureStorageService.saveCloudEndpoint(endpoint);
   }
 
   setKeycloakEndpoint(String keyCloakEndpoint) {
-    return sessionStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
+    return secureStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
   }
 
   setKeycloakRealm(String keyCloakRealm) {
-    return sessionStorageService.saveKeycloakRealm(keyCloakRealm);
+    return secureStorageService.saveKeycloakRealm(keyCloakRealm);
   }
 
   setKeycloakClient(String keyCloakClient) {
-    return sessionStorageService.saveKeycloakClient(keyCloakClient);
+    return secureStorageService.saveKeycloakClient(keyCloakClient);
+  }
+
+  setUsername(String val) {
+    return secureStorageService.saveUsername(val);
+  }
+
+  setPassword(String val) {
+    return secureStorageService.savePassword(val);
   }
 
   setKeycloakClientSecret(String keyCloakClientSecret) {
-    return sessionStorageService.saveKeycloakClientSecret(keyCloakClientSecret);
+    return secureStorageService.saveKeycloakClientSecret(keyCloakClientSecret);
   }
 
-  String getMirvEndpoint() {
-    return sessionStorageService.retrieveMirvEndpoint() ?? '';
+  Future<String> getMirvEndpoint() async {
+    return (await secureStorageService.retrieveCloudEndpoint()) ?? '';
   }
 
-  String getKeycloakEndpoint() {
-    return sessionStorageService.retrieveKeycloakEndpoint() ?? '';
+  Future<String> getKeycloakEndpoint() async {
+    return (await secureStorageService.retrieveKeycloakEndpoint()) ?? '';
   }
 
-  String getKeycloakRealm() {
-    return sessionStorageService.retrieveKeycloakRealm() ?? '';
+  Future<String> getKeycloakRealm() async {
+    return (await secureStorageService.retrieveKeycloakRealm()) ?? '';
   }
 
-  String getKeycloakClient() {
-    return sessionStorageService.retrieveKeycloakClient() ?? '';
+  Future<String> getKeycloakClient() async {
+    return (await secureStorageService.retrieveKeycloakClient()) ?? '';
   }
 
-  String getKeycloakClientSecret() {
-    return sessionStorageService.retrieveKeycloakClientSecret() ?? '';
+  Future<String> getKeycloakClientSecret() async {
+    return (await secureStorageService.retrieveKeycloakClientSecret()) ?? '';
   }
 
-  String? getKeycloakAccessToken() {
-    return sessionStorageService.retrieveAccessToken();
+  Future<String> getUsername() async {
+    return (await secureStorageService.retrieveUsername()) ?? '';
+  }
+
+  Future<String> getPassword() async {
+    return (await secureStorageService.retrievePassword()) ?? '';
+  }
+
+  Future<String?> getKeycloakAccessToken() async {
+    return secureStorageService.retrieveAccessToken();
   }
 }

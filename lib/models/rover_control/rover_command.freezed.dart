@@ -22,6 +22,7 @@ RoverCommand _$RoverCommandFromJson(Map<String, dynamic> json) {
 mixin _$RoverCommand {
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   RoverCommandType get command => throw _privateConstructorUsedError;
+  String? get client_id => throw _privateConstructorUsedError;
   RoverCommandParameters? get commandParameters =>
       throw _privateConstructorUsedError;
 
@@ -39,6 +40,7 @@ abstract class $RoverCommandCopyWith<$Res> {
   $Res call(
       {RoverSubsystemType subsystem,
       RoverCommandType command,
+      String? client_id,
       RoverCommandParameters? commandParameters});
 
   $RoverCommandParametersCopyWith<$Res>? get commandParameters;
@@ -56,6 +58,7 @@ class _$RoverCommandCopyWithImpl<$Res> implements $RoverCommandCopyWith<$Res> {
   $Res call({
     Object? subsystem = freezed,
     Object? command = freezed,
+    Object? client_id = freezed,
     Object? commandParameters = freezed,
   }) {
     return _then(_value.copyWith(
@@ -67,6 +70,10 @@ class _$RoverCommandCopyWithImpl<$Res> implements $RoverCommandCopyWith<$Res> {
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as RoverCommandType,
+      client_id: client_id == freezed
+          ? _value.client_id
+          : client_id // ignore: cast_nullable_to_non_nullable
+              as String?,
       commandParameters: commandParameters == freezed
           ? _value.commandParameters
           : commandParameters // ignore: cast_nullable_to_non_nullable
@@ -97,6 +104,7 @@ abstract class _$$_RoverCommandCopyWith<$Res>
   $Res call(
       {RoverSubsystemType subsystem,
       RoverCommandType command,
+      String? client_id,
       RoverCommandParameters? commandParameters});
 
   @override
@@ -118,6 +126,7 @@ class __$$_RoverCommandCopyWithImpl<$Res>
   $Res call({
     Object? subsystem = freezed,
     Object? command = freezed,
+    Object? client_id = freezed,
     Object? commandParameters = freezed,
   }) {
     return _then(_$_RoverCommand(
@@ -129,6 +138,10 @@ class __$$_RoverCommandCopyWithImpl<$Res>
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as RoverCommandType,
+      client_id: client_id == freezed
+          ? _value.client_id
+          : client_id // ignore: cast_nullable_to_non_nullable
+              as String?,
       commandParameters: commandParameters == freezed
           ? _value.commandParameters
           : commandParameters // ignore: cast_nullable_to_non_nullable
@@ -140,7 +153,8 @@ class __$$_RoverCommandCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_RoverCommand implements _RoverCommand {
-  const _$_RoverCommand(this.subsystem, this.command, {this.commandParameters});
+  const _$_RoverCommand(this.subsystem, this.command,
+      {this.client_id, this.commandParameters});
 
   factory _$_RoverCommand.fromJson(Map<String, dynamic> json) =>
       _$$_RoverCommandFromJson(json);
@@ -150,11 +164,13 @@ class _$_RoverCommand implements _RoverCommand {
   @override
   final RoverCommandType command;
   @override
+  final String? client_id;
+  @override
   final RoverCommandParameters? commandParameters;
 
   @override
   String toString() {
-    return 'RoverCommand(subsystem: $subsystem, command: $command, commandParameters: $commandParameters)';
+    return 'RoverCommand(subsystem: $subsystem, command: $command, client_id: $client_id, commandParameters: $commandParameters)';
   }
 
   @override
@@ -164,6 +180,7 @@ class _$_RoverCommand implements _RoverCommand {
             other is _$_RoverCommand &&
             const DeepCollectionEquality().equals(other.subsystem, subsystem) &&
             const DeepCollectionEquality().equals(other.command, command) &&
+            const DeepCollectionEquality().equals(other.client_id, client_id) &&
             const DeepCollectionEquality()
                 .equals(other.commandParameters, commandParameters));
   }
@@ -174,6 +191,7 @@ class _$_RoverCommand implements _RoverCommand {
       runtimeType,
       const DeepCollectionEquality().hash(subsystem),
       const DeepCollectionEquality().hash(command),
+      const DeepCollectionEquality().hash(client_id),
       const DeepCollectionEquality().hash(commandParameters));
 
   @JsonKey(ignore: true)
@@ -190,7 +208,8 @@ class _$_RoverCommand implements _RoverCommand {
 abstract class _RoverCommand implements RoverCommand {
   const factory _RoverCommand(
       final RoverSubsystemType subsystem, final RoverCommandType command,
-      {final RoverCommandParameters? commandParameters}) = _$_RoverCommand;
+      {final String? client_id,
+      final RoverCommandParameters? commandParameters}) = _$_RoverCommand;
 
   factory _RoverCommand.fromJson(Map<String, dynamic> json) =
       _$_RoverCommand.fromJson;
@@ -199,6 +218,8 @@ abstract class _RoverCommand implements RoverCommand {
   RoverSubsystemType get subsystem => throw _privateConstructorUsedError;
   @override
   RoverCommandType get command => throw _privateConstructorUsedError;
+  @override
+  String? get client_id => throw _privateConstructorUsedError;
   @override
   RoverCommandParameters? get commandParameters =>
       throw _privateConstructorUsedError;

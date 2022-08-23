@@ -19,6 +19,14 @@ class LoginController extends GetxController {
   }
 
   @override
+  void onInit() async {
+    usernameController.text = await authService.getUsername();
+    passwordController.text = await authService.getPassword();
+    login();
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     usernameController.dispose();
     passwordController.dispose();
@@ -37,6 +45,8 @@ class LoginController extends GetxController {
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
       switch (code) {
         case 200:
+          authService.setUsername(usernameController.text);
+          authService.setPassword(passwordController.text);
           onLogin();
           break;
         case 401:
@@ -60,7 +70,6 @@ class LoginController extends GetxController {
 
   Future<bool?> isCurrentTokenValid() async {
     return authService.isTokenExpired();
-    return authService.validateToken(() => Get.snackbar("Login", "Error accessing authentication server"));
   }
 }
 
@@ -125,6 +134,8 @@ class LoginPage extends StatelessWidget {
             Obx(() => controller.isLoading.value
                 ? Container(
                     color: Colors.black.withOpacity(0.5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),

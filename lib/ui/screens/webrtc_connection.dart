@@ -120,7 +120,12 @@ class WebRTCConnection {
     );
   }
 
+  RoverCommand addRoverId(RoverCommand command) {
+    return command.copyWith(client_id: roverMetricsObs.value.rover_id);
+  }
+
   sendRoverCommand(RoverCommand command) {
+    command = addRoverId(command);
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));

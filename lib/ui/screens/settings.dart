@@ -13,16 +13,19 @@ class SettingsTextBoxController extends GetxController {
   final keycloakEndpointController = TextEditingController().obs;
   final keycloakRealmController = TextEditingController().obs;
   final keycloakClientController = TextEditingController().obs;
+  final keycloakClientSecretController = TextEditingController().obs;
   Rx<String> savedEndpoint = ''.obs;
   Rx<String> savedKeycloakEndpoint = ''.obs;
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
+  Rx<String> savedKeycloakClientSecret = ''.obs;
 
-  initialize() {
-    savedEndpoint.value = (authService.getMirvEndpoint());
-    savedKeycloakEndpoint.value = (authService.getKeycloakEndpoint());
-    savedKeycloakRealm.value = (authService.getKeycloakRealm());
-    savedKeycloakClient.value = (authService.getKeycloakClient());
+  initialize() async {
+    savedEndpoint.value = await authService.getMirvEndpoint();
+    savedKeycloakEndpoint.value = await authService.getKeycloakEndpoint();
+    savedKeycloakRealm.value = await authService.getKeycloakRealm();
+    savedKeycloakClient.value = await authService.getKeycloakClient();
+    savedKeycloakClientSecret.value = await authService.getKeycloakClientSecret();
 
     if (endpointController.value.text != savedEndpoint.value) {
       endpointController.value.text = savedEndpoint.value;
@@ -36,12 +39,15 @@ class SettingsTextBoxController extends GetxController {
     if (keycloakClientController.value.text != savedKeycloakClient.value) {
       keycloakClientController.value.text = savedKeycloakClient.value;
     }
+    if (keycloakClientSecretController.value.text != savedKeycloakClientSecret.value) {
+      keycloakClientSecretController.value.text = savedKeycloakClientSecret.value;
+    }
   }
 
   @override
   void onInit() async {
     await authService.init();
-    initialize();
+    await initialize();
     super.onInit();
   }
 
@@ -51,6 +57,7 @@ class SettingsTextBoxController extends GetxController {
     keycloakEndpointController.value.dispose();
     keycloakRealmController.value.dispose();
     keycloakClientController.value.dispose();
+    keycloakClientSecretController.value.dispose();
     super.onClose();
   }
 }
@@ -62,12 +69,11 @@ class SettingsPage extends StatelessWidget {
   Rx<bool> compareOriginKeycloakEndpoint = true.obs;
   Rx<bool> compareOriginKeycloakRealm = true.obs;
   Rx<bool> compareOriginKeycloakClient = true.obs;
+  Rx<bool> compareOriginKeycloakClientSecret = true.obs;
 
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
-  SettingsPage({Key? key}) : super(key: key) {
-    // settingsTextBoxController.initialize();
-  }
+  SettingsPage({Key? key}) : super(key: key);
 
   AuthService authService = AuthService();
 
@@ -151,6 +157,9 @@ class SettingsPage extends StatelessWidget {
               if (!compareOriginKeycloakClient.value) {
                 variableList.add('Keycloak Client');
               }
+              if (!compareOriginKeycloakClientSecret.value) {
+                variableList.add('Keycloak Client Secret');
+              }
               if (variableList.isNotEmpty) {
                 _unsavedDialog(variableList);
               } else {
@@ -188,12 +197,18 @@ class SettingsPage extends StatelessWidget {
                       savedValue: settingsTextBoxController.savedKeycloakClient,
                       compareOrigin: compareOriginKeycloakClient,
                       labelText: 'Keycloak Client'),
+                  _textFieldtile(
+                      controller: settingsTextBoxController.keycloakClientSecretController,
+                      savedValue: settingsTextBoxController.savedKeycloakClientSecret,
+                      compareOrigin: compareOriginKeycloakClientSecret,
+                      labelText: 'Keycloak Client Secret'),
                   Obx(
                     () => ElevatedButton(
                         onPressed: compareOriginEndpoint.value &&
                                 compareOriginKeycloakEndpoint.value &&
                                 compareOriginKeycloakRealm.value &&
-                                compareOriginKeycloakClient.value
+                                compareOriginKeycloakClient.value &&
+                                compareOriginKeycloakClientSecret.value
                             ? null
                             : () async {
                                 //pop ups
@@ -235,16 +250,21 @@ class SettingsPage extends StatelessWidget {
 
                                   authService.setKeycloakRealm(settingsTextBoxController.keycloakRealmController.value.text);
                                   authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.value.text);
+                                  authService.setKeycloakClientSecret(
+                                      settingsTextBoxController.keycloakClientSecretController.value.text);
                                   //setting saved variable
-                                  settingsTextBoxController.savedEndpoint.value = authService.getMirvEndpoint();
-                                  settingsTextBoxController.savedKeycloakEndpoint.value = authService.getKeycloakEndpoint();
-                                  settingsTextBoxController.savedKeycloakRealm.value = authService.getKeycloakRealm();
-                                  settingsTextBoxController.savedKeycloakClient.value = authService.getKeycloakClient();
+                                  settingsTextBoxController.savedEndpoint.value = await authService.getMirvEndpoint();
+                                  settingsTextBoxController.savedKeycloakEndpoint.value = await authService.getKeycloakEndpoint();
+                                  settingsTextBoxController.savedKeycloakRealm.value = await authService.getKeycloakRealm();
+                                  settingsTextBoxController.savedKeycloakClient.value = await authService.getKeycloakClient();
+                                  settingsTextBoxController.savedKeycloakClientSecret.value =
+                                      await authService.getKeycloakClientSecret();
 
                                   compareOriginEndpoint.value = true;
                                   compareOriginKeycloakEndpoint.value = true;
                                   compareOriginKeycloakRealm.value = true;
                                   compareOriginKeycloakClient.value = true;
+                                  compareOriginKeycloakClientSecret.value = true;
                                 }
                                 loading.value = false;
                               },
