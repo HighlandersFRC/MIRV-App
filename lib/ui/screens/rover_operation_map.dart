@@ -1,51 +1,59 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mirv/constants/settings_default.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:mirv/models/pi_lit.dart';
-import 'package:mirv/models/rover_metrics.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 
 class RoverOperationMap extends StatefulWidget {
-  final BehaviorSubject<LatLng> locationStream;
-  final RoverMetrics selectedRoverMetrics;
-
-  final List<PiLit> piLitMarkers;
-
-  const RoverOperationMap(
-      {Key? key, required this.locationStream, required this.piLitMarkers, required this.selectedRoverMetrics})
-      : super(key: key);
+  late Rx<RoverGarageState> roverMetricsObs;
+  RoverOperationMap(this.roverMetricsObs, {Key? key}) : super(key: key);
 
   @override
   State<RoverOperationMap> createState() => _RoverOperationMapState();
 }
 
 class _RoverOperationMapState extends State<RoverOperationMap> {
+  StreamSubscription? getMarkerSubscription;
   final LatLng showLocation = const LatLng(40.474019558671344, -104.9693540321517);
   GoogleMapController? mapController;
   Set<Marker> markers = {};
-  BitmapDescriptor mapMarker = BitmapDescriptor.defaultMarker;
-  BitmapDescriptor roverMarker = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor mapMarkerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor roverMarkerIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor garageMarkerIcon = BitmapDescriptor.defaultMarker;
 
-  void setCustomMarker() async {
-    var tempMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+  setMarkerIcons() async {
+    mapMarkerIcon = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/pi_lit_icon.png');
+    roverMarkerIcon = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon_new.png');
+    garageMarkerIcon = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/garage_icon_2.png');
 
-    setState(() {
-      mapMarker = tempMapMarker;
-    });
+    updateMarkers(widget.roverMetricsObs.value);
   }
 
-  void setMarkerIcon() async {
-    var roverMapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'assets/images/rover_icon.png');
-
+  void updateMarkers(RoverGarageState roverGarageState) {
+    var tempMarkers = getMarkers(roverGarageState);
     setState(() {
-      roverMarker = roverMapMarker;
+      markers = tempMarkers;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    setCustomMarker();
-    setMarkerIcon();
+    setMarkerIcons();
+
+    getMarkerSubscription = widget.roverMetricsObs.listen((roverGarageState) {
+      updateMarkers(roverGarageState);
+    });
+  }
+
+  @override
+  void dispose() {
+    getMarkerSubscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -55,27 +63,22 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
         GoogleMap(
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(
-            target: showLocation,
-            zoom: 15.0,
+            target: widget.roverMetricsObs.value.telemetry.location.latLng,
+            zoom: SettingsDefaults.initialMapZoom,
           ),
-          markers: getMarkers(mapMarker),
+          markers: markers,
           mapType: MapType.hybrid,
           onMapCreated: (controller) {
             setState(() {
               mapController = controller;
             });
-            widget.locationStream.stream.listen((location) async => mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                CameraPosition(
-                    target: LatLng(location.latitude, location.longitude), zoom: await mapController!.getZoomLevel()))));
           },
         ),
         Align(
           alignment: Alignment.bottomLeft,
           child: ElevatedButton(
             onPressed: () async => mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                target: LatLng(
-                    widget.selectedRoverMetrics.telemetry.location.lat, widget.selectedRoverMetrics.telemetry.location.long),
-                zoom: await mapController!.getZoomLevel()))),
+                target: widget.roverMetricsObs.value.telemetry.location.latLng, zoom: await mapController!.getZoomLevel()))),
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
             ),
@@ -86,44 +89,40 @@ class _RoverOperationMapState extends State<RoverOperationMap> {
     );
   }
 
-  Set<Marker> getMarkers(mapMarker) {
-    //markers to place on map
-    var markers = {
-      ...widget.piLitMarkers.map((piLit) {
-        return Marker(
-          //add first marker
-          markerId: MarkerId(piLit.id),
-          position: piLit.location, //position of marker
-          infoWindow: InfoWindow(
-            //popup info
-            title: piLit.id,
-            snippet: 'Pi-lit device',
-          ),
-          icon: mapMarker,
-        );
-        //add more markers here
-      }),
-    };
+  Set<Marker> getMarkers(RoverGarageState roverGarageState) {
+    Set<Marker> markers = {};
 
-    var marker = Marker(
-        //add first marker
-        markerId: MarkerId(widget.selectedRoverMetrics.roverId),
-        position: LatLng(widget.selectedRoverMetrics.telemetry.location.lat,
-            widget.selectedRoverMetrics.telemetry.location.long), //position of marker
+    if (roverGarageState.garage != null) {
+      markers.add(Marker(
+        markerId: MarkerId(roverGarageState.garage!.garage_id),
+        position: roverGarageState.garage?.location.latLng,
         infoWindow: InfoWindow(
-          //popup info
-          title: widget.selectedRoverMetrics.roverId,
-          snippet: 'My Custom Subtitle',
+          title: roverGarageState.garage?.garage_id,
         ),
-        icon: roverMarker,
-        onTap: () async {
-          mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-              target:
-                  LatLng(widget.selectedRoverMetrics.telemetry.location.lat, widget.selectedRoverMetrics.telemetry.location.long),
-              zoom: await mapController!.getZoomLevel())));
-        });
+        icon: garageMarkerIcon,
+        zIndex: 5,
+      ));
+    }
 
-    markers.add(marker);
+    markers.addAll(roverGarageState.pi_lits.deployed_pi_lits.map((piLit) => Marker(
+          markerId: MarkerId(piLit.pi_lit_id),
+          position: piLit.location.latLng,
+          infoWindow: InfoWindow(
+            title: piLit.pi_lit_id,
+          ),
+          icon: mapMarkerIcon,
+          zIndex: 7,
+        )));
+
+    markers.add(Marker(
+      markerId: MarkerId(roverGarageState.rover_id),
+      position: roverGarageState.telemetry.location.latLng,
+      infoWindow: InfoWindow(
+        title: roverGarageState.rover_id,
+      ),
+      icon: roverMarkerIcon,
+      zIndex: 10,
+    ));
 
     return markers;
   }

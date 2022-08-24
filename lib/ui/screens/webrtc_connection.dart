@@ -1,18 +1,25 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart' as get_pkg;
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
+import 'package:mirv/models/gamepad/gamepad_command_type.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
+import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/services/gamepad_controller.dart';
+import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/home_page.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
 
 class JoystickValue extends Observable {
   final double x;
@@ -23,17 +30,21 @@ class JoystickValue extends Observable {
 }
 
 class WebRTCConnection {
-  BehaviorSubject<String> recievedCommands = BehaviorSubject<String>();
-  MirvApi mirvApi = MirvApi();
+  var logger = Logger();
+
+  late MirvApi mirvApi = MirvApi();
   RTCPeerConnection? peerConnection;
   get_pkg.Rx<RTCDataChannelState?> dataChannelState = get_pkg.Rx<RTCDataChannelState?>(null);
 
   get_pkg.Rx<RTCPeerConnectionState?> peerConnectionState = get_pkg.Rx<RTCPeerConnectionState?>(null);
 
   get_pkg.Rx<RTCVideoRenderer> localRenderer = get_pkg.Rx<RTCVideoRenderer>(RTCVideoRenderer());
+  final RoverGarageState roverGarageState;
+  late get_pkg.Rx<RoverGarageState> roverMetricsObs = get_pkg.Rx<RoverGarageState>(roverGarageState);
+  StreamSubscription? garageStateSubscription;
 
-  MediaStream? _localStream;
   GamepadController gamepadController = GamepadController();
+  JoystickController joystickController = JoystickController();
   RTCDataChannelInit? _dataChannelDict;
   RTCDataChannel? _dataChannel;
   String transformType = "none";
@@ -41,26 +52,31 @@ class WebRTCConnection {
   final StreamController<RoverCommand> _commandStreamController = StreamController<RoverCommand>.broadcast();
   Stream<RoverCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
   get_pkg.Rx<bool> useGamepad = false.obs;
+  BehaviorSubject<RoverCommand> periodicRoverCommandUpdates = BehaviorSubject<RoverCommand>();
+  Duration secondsElapsed = const Duration(seconds: 10);
+  DateTime prevHeartbeatDebugTime = DateTime.now();
+
+  DateTime? recentStatusMessage;
+
+  RoverCommand? mostRecentCommand;
+  late RoverGarageState initialCommandState = roverGarageState;
 
   // MediaStream? _localStream;
   bool inCalling = false;
-  double prevX = 0;
-  double prevY = 0;
   get_pkg.Rx<bool> loading = false.obs;
 
-  DateTime lastSendTime = DateTime.now();
-
+  Timer? peerConnectionTimer;
   Timer? timerJoy;
-
-  final joystickStream = BehaviorSubject<List<double>>();
-
-  get_pkg.Rx<JoystickValue> joystickPublish = get_pkg.Rx<JoystickValue>(JoystickValue(0.0, 0.0, DateTime.now()));
+  Timer? timer;
+  Timer? heartbeatTimer;
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
+  int GATHERING_HEARTBEAT = 2000;
+  String? deviceId;
 
-  WebRTCConnection() {
+  WebRTCConnection(this.roverGarageState) {
     init();
-    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+    peerConnectionTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       peerConnectionState.value = peerConnection?.connectionState;
     });
   }
@@ -69,27 +85,89 @@ class WebRTCConnection {
     RTCVideoRenderer val = localRenderer.value;
     await val.initialize();
     localRenderer.value = val;
+    _startGarageUpdates();
+    deviceId = await mirvApi.getDeviceId();
+  }
+
+  _startGarageUpdates() {
+    mirvApi.garageMetricsObs.listen((value) {
+      roverMetricsObs.value = roverMetricsObs.value.updateGarageState(value);
+    });
+    garageStateSubscription = roverMetricsObs.listen((value) {
+      if (value.garage != null) {
+        mirvApi.startGarageMetricUpdates(roverMetricsObs.value.garage!.garage_id);
+        garageStateSubscription?.cancel();
+      }
+    });
+  }
+
+  _showFailedConnectionDialog({
+    required String error,
+    required String roverId,
+  }) {
+    get_pkg.Get.dialog(
+      barrierDismissible: false,
+      AlertDialog(
+        title: const Text('Failed Connection'),
+        content: Text(error),
+        actions: <Widget>[
+          ElevatedButton(
+              onPressed: () {
+                get_pkg.Get.back();
+                get_pkg.Get.offAll(() => HomePage());
+              },
+              child: const Text('Home page'))
+        ],
+      ),
+    );
+  }
+
+  RoverCommand addRoverId(RoverCommand command) {
+    return command.copyWith(client_id: deviceId);
   }
 
   sendRoverCommand(RoverCommand command) {
+    command = addRoverId(command);
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
+      if (command != RoverHeartbeatCommands.heartbeat) {
+        mostRecentCommand = command;
+        initialCommandState = roverMetricsObs.value;
+        logger.i("WebRTCConnection; sendRoverCommand; Sending non-heartbeat rover command: ${json.encode(command.toJson())}");
+      }
     }
+
+    // updateRoverState(command);
   }
 
-  void setStateInFunction({required Function function}) {
-    function;
+  void updateRoverState(command) {
+    var tempRoverMetrics = roverMetricsObs.value;
+    RoverStateType state = tempRoverMetrics.state;
+    if (command == RoverGeneralCommands.eStop) {
+      state = RoverStateType.e_stop;
+    } else if (command == RoverGeneralCommands.disable) {
+      state = RoverStateType.disabled;
+    } else if (command == RoverGeneralCommands.enable) {
+      state = RoverStateType.idle;
+    } else if (command == RoverGeneralCommands.deploy) {
+      state = RoverStateType.idle;
+    } else if (command == RoverGeneralCommands.cancel) {
+      state = RoverStateType.idle;
+    } else if (command == RoverGeneralCommands.stow) {
+      state = RoverStateType.docked;
+    } else if (command == RoverGeneralCommands.deployPiLits) {
+      state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.retrievePiLits) {
+      state = RoverStateType.autonomous;
+    } else if (command == RoverGeneralCommands.enableRemoteOperation) {
+      state = RoverStateType.remote_operation;
+    } else if (command == RoverGeneralCommands.disableRemoteOperation) {
+      state = RoverStateType.idle;
+    }
+    logger.d("WebRTCConnection; updateRoverState; Automatically updating rover sate from ${tempRoverMetrics.state} to $state");
+    roverMetricsObs.value = tempRoverMetrics.copyWith(state: state);
   }
-
-  // void toggleCamera() async {
-  //   if (_localStream == null) throw Exception('Stream is not initialized');
-
-  //   final videoTrack = _localStream!
-  //       .getVideoTracks()
-  //       .firstWhere((track) => track.kind == 'video');
-  //   await Helper.switchCamera(videoTrack);
-  // }
 
   final Map<String, dynamic> offerSdpConstraints = {
     "mandatory": {
@@ -103,18 +181,61 @@ class WebRTCConnection {
 
   // This Data Channel function receives data send on the rover created data channels
   void _onDataChannel(RTCDataChannel dataChannel) {
-    // or alternatively:
     dataChannel.messageStream.listen((message) {
       if (message.type == MessageType.text) {
-      } else {
-        // do something with message.binary
+        logger.d("WebRTCConnection; _onDataChannel; receiving message over WebRTC data channel: ${message.text}");
+        roverMetricsObs.value = roverMetricsObs.value.updateState(RoverState.fromJson(json.decode(message.text)));
+        recentStatusMessage = DateTime.now();
       }
     });
   }
 
   // This Data Channel Function receives data sent on the data channel created by the flutter app
-  void _onDataChannelMessage(message) {
-    print(message.text);
+  void _onDataChannelMessage(RTCDataChannelMessage message) {
+    if (message.type == MessageType.text) {
+      if (message.text.isNotEmpty) {
+        logger.d("WebRTCConnection; _onDataChannelMessage; receiving message over WebRTC data channel: ${message.text}");
+        try {
+          roverMetricsObs.value = RoverGarageState.fromJson(json.decode(message.text));
+          roverMetricsObs.trigger(RoverGarageState.fromJson(json.decode(message.text)));
+          recentStatusMessage = DateTime.now();
+        } catch (e) {
+          logger.w(
+              "WebRTCConnection; _onDataChannelMessage; Error processing received WebRTC message: ${message.text}, because: $e");
+        }
+      }
+    }
+  }
+
+//shows pop up if inactive for over 10 seconds
+  messagesDuration(String roverId) {
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) {
+      if (recentStatusMessage == null) return;
+      final messageDifference = DateTime.now().difference(recentStatusMessage!).inSeconds.abs();
+      if (messageDifference >= 10) {
+        get_pkg.Get.dialog(
+            barrierDismissible: false,
+            AlertDialog(
+              title: const Text('Failed Connection'),
+              content: const Text('No Heartbeat Messages Received'),
+              actions: <Widget>[
+                ElevatedButton(
+                    onPressed: () {
+                      get_pkg.Get.back();
+                    },
+                    child: const Text('back')),
+                ElevatedButton(
+                    onPressed: () {
+                      stopCall();
+                      get_pkg.Get.back();
+                      get_pkg.Get.offAll(() => HomePage());
+                    },
+                    child: const Text('Disconnect and Go to Home page'))
+              ],
+            ));
+        timer?.cancel();
+      }
+    });
   }
 
   void _onTrack(RTCTrackEvent event) {
@@ -126,29 +247,25 @@ class WebRTCConnection {
     }
   }
 
+//?
   void _onDataChannelState(RTCDataChannelState? state) {
-    switch (state) {
-      case RTCDataChannelState.RTCDataChannelClosed:
-        print("Camera Closed!!!!!!!");
-        break;
-      case RTCDataChannelState.RTCDataChannelOpen:
-        print("Camera Opened!!!!!!!");
-        break;
-      default:
-        print("Data Channel State: $state");
-    }
+    logger.w("WebRTCConnection; _onDataChannelState; Data channel state changed: $state");
+    dataChannelState.value = state;
   }
 
+//checks connection state  until it is connected up to 1.5 minutes
   Future<bool> _waitForGatheringComplete(int count) async {
     if (peerConnection == null) {
+      logger.i("WebRTCConnection; _waitForGatheringComplete; peerConnection is null");
       return false;
     } else if (peerConnection!.iceGatheringState == RTCIceGatheringState.RTCIceGatheringStateComplete) {
       return true;
     } else if (count >= GATHERING_RETRY_THRESHOLD) {
+      logger.i("WebRTCConnection; _waitForGatheringComplete; Ice Gathering Timed Out");
       return false;
     } else {
       count++;
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       return await _waitForGatheringComplete(count);
     }
   }
@@ -157,15 +274,20 @@ class WebRTCConnection {
     return peerConnection!
         .createOffer(offerOptions)
         .then((offer) {
+          logger.d("WebRTCConnection; _negotiateRemoteConnection; Setting offer to local description");
           return peerConnection!.setLocalDescription(offer);
         })
         .then((_) => _waitForGatheringComplete(0))
         .then((success) async {
+          logger.d("WebRTCConnection; _negotiateRemoteConnection; ICE Gathering Complete");
           if (!success && peerConnection != null) {
+            logger.d(
+                "WebRTCConnection; _negotiateRemoteConnection; ICE Gathering failed or peerConnection is null. Stopping connection");
             await stopCall();
-            return _showReconnectDialog('Connection timed out', roverId);
+            return _showFailedConnectionDialog(error: 'Connection timed out', roverId: roverId);
           } else if (!success) {
-            return;
+            stopCall();
+            _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
           }
           try {
             var des = await peerConnection!.getLocalDescription();
@@ -187,92 +309,90 @@ class WebRTCConnection {
 
               loading.value = false;
             } else {
-              _showReconnectDialog('Failed to comunicate with rover', roverId);
+              stopCall();
+              _showFailedConnectionDialog(error: 'Failed to comunicate with rover', roverId: roverId);
             }
+          } on TimeoutException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'Request to connect timed out', roverId: roverId);
+          } on SocketException catch (_) {
+            stopCall();
+            _showFailedConnectionDialog(error: 'No internet connection', roverId: roverId);
           } catch (e) {
             stopCall();
-            _showReconnectDialog('$e', roverId);
+            _showFailedConnectionDialog(error: 'Failed to negotiate connection: $e', roverId: roverId);
           }
         });
   }
 
-  _showReconnectDialog(
-    String error,
-    String roverId,
-  ) {
-    get_pkg.Get.dialog(AlertDialog(
-      title: const Text('Failed Connection'),
-      content: Text('$error'),
-      actions: <Widget>[
-        TextButton(
-            onPressed: () {
-              makeCall(roverId);
-              get_pkg.Get.back();
-            },
-            child: Text('Reconnect?')),
-        TextButton(
-            onPressed: () {
-              get_pkg.Get.back();
-              get_pkg.Get.offAll(HomePage());
-            },
-            child: Text('Home page'))
-      ],
-    ));
-  }
-
-//public Commands
-  notificationsFromWebRTC(String roverId, context, Function() makeCallReconnect) {
+//starts listener for checking rover connection
+  _startNotificationsFromWebRTC(String roverId) {
     peerConnectionState.listen((cs) {
       switch (cs) {
         case RTCPeerConnectionState.RTCPeerConnectionStateFailed:
         case RTCPeerConnectionState.RTCPeerConnectionStateClosed:
         case RTCPeerConnectionState.RTCPeerConnectionStateDisconnected:
+        case null:
           stopCall();
-          _showReconnectDialog('Connection Failed', roverId);
+
+          _showFailedConnectionDialog(error: 'Invalid Connection State', roverId: roverId);
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-          Fluttertoast.showToast(
-            msg: "Connected",
-          );
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          Fluttertoast.showToast(
-            msg: "Connecting",
-          );
-          break;
-        case null:
-          //most times this case is here when loading or connecting
+          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
           break;
       }
     });
 
-    switch (dataChannelState.value) {
-      case RTCDataChannelState.RTCDataChannelClosing:
-      case RTCDataChannelState.RTCDataChannelClosed:
-        _showReconnectDialog('Connection Failed', roverId);
-        break;
-      case RTCDataChannelState.RTCDataChannelConnecting:
-        return Fluttertoast.showToast(
-          msg: "Connection",
-        );
-
-      case RTCDataChannelState.RTCDataChannelOpen:
-        return Fluttertoast.showToast(
-          msg: "Connected",
-        );
-      case null:
-        break;
-    }
+    dataChannelState.listen((dcs) {
+      switch (dcs) {
+        case RTCDataChannelState.RTCDataChannelClosing:
+        case RTCDataChannelState.RTCDataChannelClosed:
+          stopCall();
+          _showFailedConnectionDialog(error: 'Invalid Data Channel State', roverId: roverId);
+          break;
+        case RTCDataChannelState.RTCDataChannelConnecting:
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
+          break;
+        case RTCDataChannelState.RTCDataChannelOpen:
+          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
+          break;
+        case null:
+          break;
+      }
+    });
   }
 
+  _stopNotificationsFromWebRTC() {
+    peerConnectionTimer?.cancel();
+  }
+
+  _startHeartbeatMessages() {
+    heartbeatTimer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
+      sendRoverCommand(RoverHeartbeatCommands.heartbeat);
+      int duration = DateTime.now().difference(prevHeartbeatDebugTime).inMilliseconds;
+      if (duration > 1.2 * 1000) {
+        logger.w("MISSED HEARTBEAT COMMAND!!! $duration");
+      }
+      prevHeartbeatDebugTime = DateTime.now();
+    });
+  }
+
+  _stopHeartbeatMessages() {
+    heartbeatTimer?.cancel();
+  }
+
+  //public Commands
   Future<void> makeCall(String roverId) async {
     try {
       loading.value = true;
       var configuration = <String, dynamic>{
         'sdpSemantics': 'unified-plan',
         "iceServers": [
-          {"url": "stun:stun.l.google.com:19302"},
+          // {"url": "stun:stun.l.google.com:19302"},
         ]
       };
       //* Create Peer Connection
@@ -288,6 +408,7 @@ class WebRTCConnection {
         _dataChannelDict!,
       );
       _dataChannel!.onDataChannelState = _onDataChannelState;
+      _dataChannel!.onMessage = _onDataChannelMessage;
       final mediaConstraints = <String, dynamic>{
         'audio': false,
         'video': {
@@ -298,16 +419,18 @@ class WebRTCConnection {
       };
 
       var stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-      // _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
-      _localStream = stream;
-      // localRenderer.srcObject = _localStream;
 
       stream.getTracks().forEach((element) {
         peerConnection!.addTrack(element, stream);
       });
       await _negotiateRemoteConnection(roverId);
+      _startNotificationsFromWebRTC(roverId);
+      _startHeartbeatMessages();
+      // TODO: add back when status messages are replying
+      // messagesDuration(roverId);
     } catch (e) {
-      _showReconnectDialog(e.toString(), roverId);
+      stopCall();
+      _showFailedConnectionDialog(error: 'Failed to create connection: $e', roverId: roverId);
     }
   }
 
@@ -315,55 +438,27 @@ class WebRTCConnection {
     await _dataChannel?.close();
     await peerConnection?.close();
     peerConnection = null;
+    _stopHeartbeatMessages();
+    _stopNotificationsFromWebRTC();
+
     RTCVideoRenderer val = localRenderer.value;
     val.srcObject = null;
     localRenderer.value = val;
   }
 
-  // sendGeneralCommand(String messageText) {
-  //   if (_dataChannel != null) {
-  //     _dataChannel!.send(RTCDataChannelMessage(messageText));
-  //   }
-  // }
-//joystick
+  onJoystickChanged(GamepadAxisType axis, double x, double y) {
+    GamepadCommand command = GamepadCommand(type: GamepadCommandType.axis, command: GamepadAxisCommand(type: axis, x: x, y: y));
+    joystickController.addJoystickCommand(command);
+  }
 
   startJoystickUpdates() {
-    //put in stream
-    joystickPublish.value = JoystickValue(0, 0, DateTime.now());
+    joystickController.drivetrainCommandStream.listen((value) {
+      sendRoverCommand(value);
+    });
 
-    timerJoy = Timer.periodic(
-      const Duration(milliseconds: 110),
-      (Timer t) {
-        if (useGamepad.value) return;
-        JoystickValue joyVal = joystickPublish.value;
-        DateTime currentTime = DateTime.now();
-        DateTime prevMessTime = joyVal.ts;
-        if (currentTime.subtract(const Duration(milliseconds: 110)).isBefore(prevMessTime)) {
-          sendRoverCommand(RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, joyVal.x, joyVal.y));
-        } else {
-          sendRoverCommand(RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, 0, 0));
-        }
-      },
-    );
     gamepadController.setJoystickListener();
     gamepadController.drivetrainCommandStream.listen((value) {
-      if (!useGamepad.value) return;
       sendRoverCommand(value);
     });
   }
-
-  // sendJoystick(double x, double y) {
-  //   if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
-  //       _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
-  //     if (_dataChannel != null) {
-  //       if (_dataChannel != null) {
-  //         String messageText = json.encode({
-  //           "joystick_x": x,
-  //           "joystick_y": y,
-  //         });
-  //         _dataChannel!.send(RTCDataChannelMessage(messageText));
-  //       }
-  //     }
-  //   }
-  // }
 }

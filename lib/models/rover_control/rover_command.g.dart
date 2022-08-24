@@ -6,121 +6,64 @@ part of 'rover_command.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GeneralRoverCommand _$$GeneralRoverCommandFromJson(
-        Map<String, dynamic> json) =>
-    _$GeneralRoverCommand(
-      $enumDecode(_$RoverCommandTypeGeneralEnumMap, json['command']),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.general,
-      $type: json['runtimeType'] as String?,
+_$_RoverCommand _$$_RoverCommandFromJson(Map<String, dynamic> json) =>
+    _$_RoverCommand(
+      $enumDecode(_$RoverSubsystemTypeEnumMap, json['subsystem']),
+      $enumDecode(_$RoverCommandTypeEnumMap, json['command']),
+      client_id: json['client_id'] as String?,
+      commandParameters: json['commandParameters'] == null
+          ? null
+          : RoverCommandParameters.fromJson(
+              json['commandParameters'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GeneralRoverCommandToJson(
-        _$GeneralRoverCommand instance) =>
+Map<String, dynamic> _$$_RoverCommandToJson(_$_RoverCommand instance) =>
     <String, dynamic>{
-      'command': _$RoverCommandTypeGeneralEnumMap[instance.command],
       'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
-      'runtimeType': instance.$type,
+      'command': _$RoverCommandTypeEnumMap[instance.command],
+      'client_id': instance.client_id,
+      'commandParameters': instance.commandParameters,
     };
-
-const _$RoverCommandTypeGeneralEnumMap = {
-  RoverCommandTypeGeneral.deploy: 'deploy',
-  RoverCommandTypeGeneral.stow: 'stow',
-  RoverCommandTypeGeneral.enable: 'enable',
-  RoverCommandTypeGeneral.disable: 'disable',
-  RoverCommandTypeGeneral.e_stop: 'e_stop',
-  RoverCommandTypeGeneral.start_manual_control: 'start_manual_control',
-  RoverCommandTypeGeneral.stop_manual_control: 'stop_manual_control',
-  RoverCommandTypeGeneral.deploy_pi_lits: 'deploy_pi_lits',
-  RoverCommandTypeGeneral.retrieve_pi_lits: 'retrieve_pi_lits',
-};
 
 const _$RoverSubsystemTypeEnumMap = {
   RoverSubsystemType.general: 'general',
   RoverSubsystemType.intake: 'intake',
   RoverSubsystemType.drivetrain: 'drivetrain',
-  RoverSubsystemType.movement: 'movement',
-  RoverSubsystemType.conveyor: 'conveyor',
-  RoverSubsystemType.sensors: 'sensors',
+  RoverSubsystemType.heartbeat: 'heartbeat',
+  RoverSubsystemType.pi_lit: 'pi_lit',
+  RoverSubsystemType.garage: 'garage',
+  RoverSubsystemType.camera: 'camera',
 };
 
-_$IntakeRoverCommand _$$IntakeRoverCommandFromJson(Map<String, dynamic> json) =>
-    _$IntakeRoverCommand(
-      $enumDecode(_$RoverCommandTypeIntakeEnumMap, json['command']),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.intake,
-      $type: json['runtimeType'] as String?,
-    );
-
-Map<String, dynamic> _$$IntakeRoverCommandToJson(
-        _$IntakeRoverCommand instance) =>
-    <String, dynamic>{
-      'command': _$RoverCommandTypeIntakeEnumMap[instance.command],
-      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
-      'runtimeType': instance.$type,
-    };
-
-const _$RoverCommandTypeIntakeEnumMap = {
-  RoverCommandTypeIntake.disable: 'disable',
-  RoverCommandTypeIntake.reset: 'reset',
-  RoverCommandTypeIntake.intake: 'intake',
-  RoverCommandTypeIntake.store: 'store',
-  RoverCommandTypeIntake.deposit: 'deposit',
-  RoverCommandTypeIntake.switch_left: 'switch_left',
-  RoverCommandTypeIntake.switch_right: 'switch_right',
-};
-
-_$DrivetrainRoverCommand _$$DrivetrainRoverCommandFromJson(
-        Map<String, dynamic> json) =>
-    _$DrivetrainRoverCommand(
-      $enumDecode(_$RoverCommandTypeDrivetrainEnumMap, json['command']),
-      RoverCommandParameters.fromJson(
-          json['commandParameters'] as Map<String, dynamic>),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.drivetrain,
-      $type: json['runtimeType'] as String?,
-    );
-
-Map<String, dynamic> _$$DrivetrainRoverCommandToJson(
-        _$DrivetrainRoverCommand instance) =>
-    <String, dynamic>{
-      'command': _$RoverCommandTypeDrivetrainEnumMap[instance.command],
-      'commandParameters': instance.commandParameters,
-      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
-      'runtimeType': instance.$type,
-    };
-
-const _$RoverCommandTypeDrivetrainEnumMap = {
-  RoverCommandTypeDrivetrain.arcade: 'arcade',
-  RoverCommandTypeDrivetrain.tank: 'tank',
-};
-
-_$MovementRoverCommand _$$MovementRoverCommandFromJson(
-        Map<String, dynamic> json) =>
-    _$MovementRoverCommand(
-      $enumDecode(_$RoverCommandTypeMovementEnumMap, json['command']),
-      RoverCommandParameters.fromJson(
-          json['commandParameters'] as Map<String, dynamic>),
-      subsystem:
-          $enumDecodeNullable(_$RoverSubsystemTypeEnumMap, json['subsystem']) ??
-              RoverSubsystemType.movement,
-      $type: json['runtimeType'] as String?,
-    );
-
-Map<String, dynamic> _$$MovementRoverCommandToJson(
-        _$MovementRoverCommand instance) =>
-    <String, dynamic>{
-      'command': _$RoverCommandTypeMovementEnumMap[instance.command],
-      'commandParameters': instance.commandParameters,
-      'subsystem': _$RoverSubsystemTypeEnumMap[instance.subsystem],
-      'runtimeType': instance.$type,
-    };
-
-const _$RoverCommandTypeMovementEnumMap = {
-  RoverCommandTypeMovement.to_location: 'to_location',
+const _$RoverCommandTypeEnumMap = {
+  RoverCommandType.deploy: 'deploy',
+  RoverCommandType.cancel: 'cancel',
+  RoverCommandType.stow: 'stow',
+  RoverCommandType.enable: 'enable',
+  RoverCommandType.disable: 'disable',
+  RoverCommandType.e_stop: 'e_stop',
+  RoverCommandType.start_manual_control: 'start_manual_control',
+  RoverCommandType.stop_manual_control: 'stop_manual_control',
+  RoverCommandType.deploy_pi_lits: 'deploy_pi_lits',
+  RoverCommandType.retrieve_pi_lits: 'retrieve_pi_lits',
+  RoverCommandType.enable_remote_operation: 'enable_remote_operation',
+  RoverCommandType.disable_remote_operation: 'disable_remote_operation',
+  RoverCommandType.heartbeat: 'heartbeat',
+  RoverCommandType.place_1_pi_lit: 'place_1_pi_lit',
+  RoverCommandType.pickup_1_pi_lit: 'pickup_1_pi_lit',
+  RoverCommandType.unload_pi_lits: 'unload_pi_lits',
+  RoverCommandType.load_pi_lits: 'load_pi_lits',
+  RoverCommandType.deploy_intake: 'deploy_intake',
+  RoverCommandType.retract_intake: 'retract_intake',
+  RoverCommandType.idle: 'idle',
+  RoverCommandType.wave: 'wave',
+  RoverCommandType.wave_reverse: 'wave_reverse',
+  RoverCommandType.simultaneous: 'simultaneous',
+  RoverCommandType.set_number_pi_lits: 'set_number_pi_lits',
+  RoverCommandType.arcade: 'arcade',
+  RoverCommandType.tank: 'tank',
+  RoverCommandType.to_location: 'to_location',
+  RoverCommandType.switch_camera: 'switch_camera',
 };
 
 _$RoverCommandParametersDrivetrain _$$RoverCommandParametersDrivetrainFromJson(
@@ -139,18 +82,81 @@ Map<String, dynamic> _$$RoverCommandParametersDrivetrainToJson(
       'runtimeType': instance.$type,
     };
 
-_$RoverCommandParametersMovement _$$RoverCommandParametersMovementFromJson(
-        Map<String, dynamic> json) =>
-    _$RoverCommandParametersMovement(
-      (json['lat'] as num).toDouble(),
-      (json['long'] as num).toDouble(),
-      $type: json['runtimeType'] as String?,
-    );
+_$RoverCommandParametersDestination
+    _$$RoverCommandParametersDestinationFromJson(Map<String, dynamic> json) =>
+        _$RoverCommandParametersDestination(
+          (json['lat'] as num).toDouble(),
+          (json['long'] as num).toDouble(),
+          $type: json['runtimeType'] as String?,
+        );
 
-Map<String, dynamic> _$$RoverCommandParametersMovementToJson(
-        _$RoverCommandParametersMovement instance) =>
+Map<String, dynamic> _$$RoverCommandParametersDestinationToJson(
+        _$RoverCommandParametersDestination instance) =>
     <String, dynamic>{
       'lat': instance.lat,
       'long': instance.long,
       'runtimeType': instance.$type,
     };
+
+_$RoverCommandParametersPiLit _$$RoverCommandParametersPiLitFromJson(
+        Map<String, dynamic> json) =>
+    _$RoverCommandParametersPiLit(
+      json['piLitsLeft'] as int,
+      json['piLitsRight'] as int,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$RoverCommandParametersPiLitToJson(
+        _$RoverCommandParametersPiLit instance) =>
+    <String, dynamic>{
+      'piLitsLeft': instance.piLitsLeft,
+      'piLitsRight': instance.piLitsRight,
+      'runtimeType': instance.$type,
+    };
+
+_$RoverCommandParametersPiLitPlacement
+    _$$RoverCommandParametersPiLitPlacementFromJson(
+            Map<String, dynamic> json) =>
+        _$RoverCommandParametersPiLitPlacement(
+          DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
+          $enumDecode(_$PiLitFormationTypeEnumMap, json['formation']),
+          (json['heading'] as num).toDouble(),
+          $type: json['runtimeType'] as String?,
+        );
+
+Map<String, dynamic> _$$RoverCommandParametersPiLitPlacementToJson(
+        _$RoverCommandParametersPiLitPlacement instance) =>
+    <String, dynamic>{
+      'location': instance.location,
+      'formation': _$PiLitFormationTypeEnumMap[instance.formation],
+      'heading': instance.heading,
+      'runtimeType': instance.$type,
+    };
+
+const _$PiLitFormationTypeEnumMap = {
+  PiLitFormationType.taper_right_3: 'taper_right_3',
+  PiLitFormationType.taper_left_3: 'taper_left_3',
+  PiLitFormationType.taper_right_5: 'taper_right_5',
+  PiLitFormationType.taper_left_5: 'taper_left_5',
+  PiLitFormationType.spear_7: 'spear_7',
+};
+
+_$RoverCommandParametersCamera _$$RoverCommandParametersCameraFromJson(
+        Map<String, dynamic> json) =>
+    _$RoverCommandParametersCamera(
+      $enumDecode(_$CameraTypeEnumMap, json['camera']),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$RoverCommandParametersCameraToJson(
+        _$RoverCommandParametersCamera instance) =>
+    <String, dynamic>{
+      'camera': _$CameraTypeEnumMap[instance.camera],
+      'runtimeType': instance.$type,
+    };
+
+const _$CameraTypeEnumMap = {
+  CameraType.webcam_front: 'webcam_front',
+  CameraType.vision_front: 'vision_front',
+  CameraType.vision_back: 'vision_back',
+};

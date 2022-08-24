@@ -1,9 +1,9 @@
 name: mirv
-description: A new Flutter project.
+description: Rover control application
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.4.0+7
 
 environment:
   sdk: ">=2.17.0-266.8.beta <3.0.0"
@@ -43,49 +43,71 @@ dependencies:
   http: ^0.13.4
   get: ^4.6.5
   google_maps_flutter: ^2.1.8
-  url_launcher_android: ^6.0.17
-  location: ^4.4.0
-  flutter_polyline_points: ^1.0.0
   rxdart: ^0.27.4
   observable: ^0.24.0
-  equatable: ^2.0.3
-  bloc: ^8.0.3
-  geolocator: ^8.2.1
-  provider: ^6.0.3
   flutter_typeahead: ^4.0.0
-
-  google_fonts: ^3.0.1
 
   flutter_webrtc: ^0.8.10
   settings_ui: ^2.0.2
-  fluttertoast: ^8.0.9
   shared_preferences: ^2.0.15
+  quiver: ^3.1.0
+  logger: ^1.1.0
+  flutter_secure_storage: ^6.0.0
+  device_info_plus: ^4.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.9.3
+  test: ^1.21.1
 
-flutter_icons: 
+flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/rover_app_icon.png"
-
-
+  image_path: "assets/images/rover_app_icon_larger.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
   assets:
-  - assets/images/
+    - assets/images/lock.png
+    - assets/images/deployed.png
+    - assets/images/retracted_latched.png
+    - assets/images/retracted_unlatched.png
+    - assets/images/up_arrow.png
+    - assets/images/down_arrow.png
+    - assets/images/unlock.png
+    - assets/images/garage_icon_2.png
+    - assets/images/home.png
+    - assets/images/ramp.png
+    - assets/images/default_garage.png
+    - assets/images/garage_unavailable.png
+    - assets/images/cancel.png
+    - assets/images/pi_lit_outline_up.png
+    - assets/images/pi_lit_outline_down.png
+    - assets/images/pi_lit_outline_up_1.png
+    - assets/images/pi_lit_outline_down_1.png
+    - assets/images/pi_lit_icon.png
+    - assets/images/rover_icon_new.png
+    - assets/images/rover_icon_home_page.png
+    - assets/images/rover_app_icon.png
+    - assets/images/rover_app_icon_larger.png
+    - assets/images/mars_rover_new.png
+    - assets/images/garage_down.png
+    - assets/images/garage_up.png
+    - assets/images/closeup_locked_garage.png
+    - assets/images/closeup_unlocked_garage.png
+    - assets/images/light.png
+    - assets/images/light_off.png
+    - assets/images/light_on_close_up.png
+    - assets/images/light_off_close_up.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -98,6 +120,10 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: fonts/CustomIcons.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

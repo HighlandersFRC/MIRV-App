@@ -6,15 +6,13 @@ import 'package:mirv/models/gamepad/gamepad_axis_type.dart';
 import 'package:mirv/models/gamepad/gamepad_command_type.dart';
 import 'package:mirv/models/gamepad/gamepad_event_types.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
 
 class GamepadController {
   static const eventChannel = EventChannel('com.neaera.mirv/gamepad_channel');
   late StreamSubscription _eventChannel;
-  Timer? controllerTimer;
   final RoverDriveControlType driveType;
 
-  late Stream<DrivetrainRoverCommand> drivetrainCommandStream;
+  late Stream<RoverCommand> drivetrainCommandStream;
 
   final StreamController<GamepadCommand> _commandStreamController = StreamController<GamepadCommand>.broadcast();
   Stream<GamepadCommand> get commandStream => _commandStreamController.stream.asBroadcastStream();
@@ -29,31 +27,26 @@ class GamepadController {
     drivetrainCommandStream = Rx.combineLatest2(axisStreamLeft, axisStreamRight,
         (GamepadAxisCommand left, GamepadAxisCommand right) => _getJoystickCommandOutput(driveType, left, right));
 
-    _initializeStreams();
+    Timer(const Duration(seconds: 1), _initializeStreams);
   }
 
   _initializeStreams() {
-    _commandStreamController.add(
-        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
-    _commandStreamController.add(
-        GamepadCommand(command: GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
+    _commandStreamController.add(GamepadCommand(
+        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.right), type: GamepadCommandType.axis));
+    _commandStreamController.add(GamepadCommand(
+        command: const GamepadAxisCommand(x: 0.0, y: 0.0, type: GamepadAxisType.left), type: GamepadCommandType.axis));
   }
 
-  dispose() {
-    controllerTimer?.cancel();
-  }
-
-  DrivetrainRoverCommand _getJoystickCommandOutput(
+  // Only arcade is supported currently
+  RoverCommand _getJoystickCommandOutput(
       RoverDriveControlType driveType, GamepadAxisCommand leftStick, GamepadAxisCommand rightStick) {
     switch (driveType) {
       case RoverDriveControlType.arcade:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, rightStick.x, leftStick.y);
-      case RoverDriveControlType.single:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.x, leftStick.y);
-      case RoverDriveControlType.tank:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
-      default:
-        return RoverDrivetrainCommands.drivetrainCommand(RoverCommandTypeDrivetrain.arcade, leftStick.y, rightStick.y);
+        return RoverDrivetrainCommands.drivetrainCommand(rightStick.x, leftStick.y);
+      // case RoverDriveControlType.single:
+      //   return RoverDrivetrainCommands.drivetrainCommand(leftStick.x, leftStick.y);
+      // case RoverDriveControlType.tank:
+      //   return RoverDrivetrainCommands.drivetrainCommand(leftStick.y, rightStick.y);
     }
   }
 
@@ -99,9 +92,9 @@ class GamepadController {
       }
 
       if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.button) {
-        print('BUTTON: $eventParameters');
+        // print('BUTTON: $eventParameters');
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.axis) {
-        print('AXIS: $eventParameters');
+        // print('AXIS: $eventParameters');
         var axisType = getAxisType(eventParameters['sourceInput']);
 
         var axisCommand =
@@ -110,7 +103,7 @@ class GamepadController {
         GamepadCommand command = GamepadCommand(command: axisCommand, type: GamepadCommandType.axis);
         _commandStreamController.add(command);
       } else if (eventParameters[GamepadEventTypes.androidType] == GamepadEventTypes.dpad) {
-        print('DPAD: $eventParameters');
+        // print('DPAD: $eventParameters');
       }
     });
   }

@@ -1,131 +1,12 @@
-import 'dart:async';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:mirv/models/rover_health_type.dart';
-import 'package:mirv/models/rover_metrics.dart';
-import 'package:mirv/services/mirv_api.dart';
-import 'package:mirv/ui/screens/troubleshoot_page.dart';
+import 'package:mirv/icons/custom_icons_icons.dart';
+import 'package:mirv/models/device_health.dart';
+import 'package:mirv/models/rover/rover_garage_state.dart';
 
-class StatusPage extends StatefulWidget {
-  const StatusPage({Key? key}) : super(key: key);
-
-  @override
-  State<StatusPage> createState() => _StatusPageState();
-} // StatusPage
-
-class HealthContainer extends StatelessWidget {
-  final RoverHealthType roverHealthType;
-  final String name;
-  const HealthContainer({Key? key, required this.roverHealthType, required this.name}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          height: 150,
-          width: 1500,
-          padding: const EdgeInsets.only(top: 0),
-          decoration: BoxDecoration(
-            backgroundBlendMode: BlendMode.colorBurn,
-            boxShadow: [
-              BoxShadow(
-                color: roverHealthType.color1,
-                spreadRadius: -5,
-                blurRadius: 20,
-                offset: const Offset(-5, 5),
-              ),
-              const BoxShadow(
-                  color: Color.fromARGB(255, 250, 250, 250), offset: Offset(10, -10), blurRadius: 55, spreadRadius: 5),
-            ], //boxShadow
-            gradient: LinearGradient(
-              begin: Alignment.center,
-              end: Alignment.bottomLeft,
-              colors: [
-                roverHealthType.color4,
-                roverHealthType.color3,
-                roverHealthType.color2,
-                roverHealthType.color1,
-              ], //colors
-            ),
-            borderRadius: const BorderRadius.all(
-              Radius.elliptical(30, 25),
-            ),
-          ),
-          child: ElevatedButton(
-            onPressed: () {
-              Get.to(const TroubleShootingPage());
-            },
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.elliptical(30, 25),
-                  ),
-                ),
-              ), //shape
-              fixedSize: MaterialStateProperty.all(
-                const Size(20, 20),
-              ), //size
-              overlayColor: MaterialStateProperty.all(roverHealthType.color5),
-              alignment: Alignment.center,
-              shadowColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 0, 0, 0),
-              ), //overlay color
-              backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(0, 128, 123, 123),
-              ), //background color
-              foregroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 0, 0, 0),
-              ), //foreground color
-            ),
-            child: Text(
-              name,
-              style: GoogleFonts.play(),
-              textScaleFactor: 1.9,
-            ),
-          ),
-        ),
-      ], //children
-    );
-  } //build widget
-} //Health Container
-
-class _StatusPageState extends State<StatusPage> {
-  RoverMetrics roverMetrics = const RoverMetrics();
-
-  Timer? timer;
-
-  final MirvApi _mirvApi = MirvApi();
-
-  _updateMetrics() async {
-    var roverMetricsTemp = await _mirvApi.getRoverMetrics("bruh");
-    setState(
-      () {
-        roverMetrics = roverMetricsTemp;
-      }, //honestly i dont know
-    ); // setState
-  } //_update Metrics
-
-  @override
-  void initState() {
-    super.initState();
-    _updateMetrics();
-    timer = Timer.periodic(
-      const Duration(seconds: 2),
-      (Timer t) {
-        _updateMetrics();
-      }, //Update metrics
-    );
-  } //initState
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  } //dispose
+class StatusPage extends StatelessWidget {
+  final RoverGarageState roverGarageState;
+  const StatusPage(this.roverGarageState, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,14 +16,63 @@ class _StatusPageState extends State<StatusPage> {
       mainAxisSpacing: 100,
       crossAxisCount: 4,
       children: <Widget>[
-        HealthContainer(roverHealthType: roverMetrics.health.sensors, name: "sensors"),
-        HealthContainer(roverHealthType: roverMetrics.health.electronics, name: "electronics"),
-        HealthContainer(roverHealthType: roverMetrics.health.drivetrain, name: "drivetrain"),
-        HealthContainer(roverHealthType: roverMetrics.health.garage, name: "garage"),
-        HealthContainer(roverHealthType: roverMetrics.health.intake, name: "intake"),
-        HealthContainer(roverHealthType: roverMetrics.health.power, name: "power"),
-        HealthContainer(roverHealthType: roverMetrics.health.general, name: "general"),
+        HealthContainer(roverGarageState.subsystems.sensors, "Sensors", Icons.sensors),
+        HealthContainer(roverGarageState.subsystems.electronics, "Electronics", Icons.bolt),
+        HealthContainer(roverGarageState.subsystems.drivetrain, "Drivetrain", CustomIcons.steering_wheel),
+        HealthContainer(roverGarageState.subsystems.garage, "Garage", CustomIcons.warehouse),
+        HealthContainer(roverGarageState.subsystems.intake, "Intake", Icons.rotate_90_degrees_ccw),
+        HealthContainer(roverGarageState.subsystems.power, "Power", Icons.power),
+        HealthContainer(roverGarageState.subsystems.general, "General", Icons.smart_toy_outlined),
       ],
     );
-  } //Build Widget
-}//_Status page state
+  }
+}
+
+class HealthContainer extends StatelessWidget {
+  final DeviceHealth subsystemHealth;
+  final String name;
+  final IconData icon;
+  const HealthContainer(this.subsystemHealth, this.name, this.icon, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ElevatedButton.icon(
+          onPressed: () {
+            Get.dialog(AlertDialog(
+              title: Text('$name Status'),
+              content: Text(subsystemHealth.details != null
+                  ? ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')} \n \n Details: ${subsystemHealth.details}'
+                  : ' Health: ${subsystemHealth.health.toString().replaceAll('DeviceHealthType.', '')}'),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: const Text('Close')),
+              ],
+            ));
+          },
+          label: Text(name),
+          icon: Icon(icon),
+          style: ButtonStyle(
+            backgroundColor: subsystemHealth.health.color1,
+            shape: MaterialStateProperty.all(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+            ),
+            fixedSize: MaterialStateProperty.all(
+              const Size(150, 150),
+            ),
+            alignment: Alignment.center,
+          ),
+        ),
+      ],
+    );
+  }
+}

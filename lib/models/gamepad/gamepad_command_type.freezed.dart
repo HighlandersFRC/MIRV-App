@@ -21,7 +21,7 @@ GamepadAxisCommand _$GamepadAxisCommandFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GamepadAxisCommand {
   GamepadAxisType get type => throw _privateConstructorUsedError;
-  double get x => throw _privateConstructorUsedError; //RoverStateType
+  double get x => throw _privateConstructorUsedError; //Rover StateType
   double get y => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -127,7 +127,7 @@ class _$__GamepadAxisCommand implements __GamepadAxisCommand {
   final GamepadAxisType type;
   @override
   final double x;
-//RoverStateType
+//Rover StateType
   @override
   final double y;
 
@@ -179,7 +179,7 @@ abstract class __GamepadAxisCommand implements GamepadAxisCommand {
   GamepadAxisType get type => throw _privateConstructorUsedError;
   @override
   double get x => throw _privateConstructorUsedError;
-  @override //RoverStateType
+  @override //Rover StateType
   double get y => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
