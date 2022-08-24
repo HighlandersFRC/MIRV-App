@@ -12,18 +12,13 @@ class LoginController extends GetxController {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   AuthService authService = AuthService();
-  Rx<bool> isLoading = false.obs;
+  Rx<bool> isLoading = true.obs;
 
   Future<void> init() async {
     await authService.init();
-  }
-
-  @override
-  void onInit() async {
     usernameController.text = await authService.getUsername();
     passwordController.text = await authService.getPassword();
     login();
-    super.onInit();
   }
 
   @override
@@ -81,6 +76,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.init();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Log In Page"),

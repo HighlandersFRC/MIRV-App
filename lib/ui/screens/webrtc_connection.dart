@@ -72,6 +72,7 @@ class WebRTCConnection {
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 2000;
+  String? deviceId;
 
   WebRTCConnection(this.roverGarageState) {
     init();
@@ -85,6 +86,7 @@ class WebRTCConnection {
     await val.initialize();
     localRenderer.value = val;
     _startGarageUpdates();
+    deviceId = await mirvApi.getDeviceId();
   }
 
   _startGarageUpdates() {
@@ -121,7 +123,7 @@ class WebRTCConnection {
   }
 
   RoverCommand addRoverId(RoverCommand command) {
-    return command.copyWith(client_id: roverMetricsObs.value.rover_id);
+    return command.copyWith(client_id: deviceId);
   }
 
   sendRoverCommand(RoverCommand command) {

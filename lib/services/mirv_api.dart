@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
@@ -246,5 +247,19 @@ class MirvApi {
     ));
 
     loginDialogOpen = false;
+  }
+
+  Future<String?> getDeviceId() async {
+    String username = await authService.getUsername();
+    var deviceInfo = DeviceInfoPlugin();
+    String? deviceId;
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      deviceId = iosDeviceInfo.identifierForVendor;
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      deviceId = androidDeviceInfo.id;
+    }
+    return '$username-$deviceId';
   }
 }

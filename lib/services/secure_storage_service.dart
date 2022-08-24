@@ -11,8 +11,8 @@ class SecureStorageService {
   static const String ACCESS_TOKEN_KEY = "ACCESS_TOKEN";
   static const String ACCESS_TOKEN_CREATION_DATE_KEY = "ACCESS_TOKEN_CREATION_DATE";
 
-  static const String USERNAME_KEY = "ENDPOINT_TOKEN";
-  static const String PASSWORD_KEY = "ENDPOINT_TOKEN";
+  static const String USERNAME_KEY = "USERNAME";
+  static const String PASSWORD_KEY = "PASSWORD";
   static const String CLOUD_ENDPOINT_TOKEN_KEY = "CLOUD_ENDPOINT_TOKEN";
   static const String KEYCLOAK_ENDPOINT_TOKEN_KEY = "KEYCLOAK_ENDPOINT_TOKEN";
   static const String KEYCLOAK_REALM_TOKEN_KEY = "KEYCLOAK_REALM_TOKEN";
