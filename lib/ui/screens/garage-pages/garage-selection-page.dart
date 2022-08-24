@@ -67,9 +67,7 @@ class GarageSelectionPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          "Garage Selection",
-        ),
+        title: const Text("Garage Selection", style: TextStyle(fontSize: fontSizeHomeMenu)),
       ),
       body: Row(
         children: [
@@ -143,8 +141,11 @@ class GarageSelectionPage extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Icon(Icons.link_rounded),
-                              Text(' Connect', style: TextStyle(fontSize: homeFontSize)),
+                              Icon(
+                                Icons.link_rounded,
+                                size: 40,
+                              ),
+                              Text(' Connect', style: TextStyle(fontSize: fontSizeButton)),
                             ],
                           ),
                         ),

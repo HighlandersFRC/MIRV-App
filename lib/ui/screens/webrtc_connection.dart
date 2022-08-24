@@ -72,6 +72,7 @@ class WebRTCConnection {
 
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 2000;
+  String? deviceId;
 
   WebRTCConnection(this.roverGarageState) {
     init();
@@ -85,6 +86,7 @@ class WebRTCConnection {
     await val.initialize();
     localRenderer.value = val;
     _startGarageUpdates();
+    deviceId = await mirvApi.getDeviceId();
   }
 
   _startGarageUpdates() {
@@ -109,7 +111,7 @@ class WebRTCConnection {
         title: const Text('Failed Connection'),
         content: Text(error),
         actions: <Widget>[
-          TextButton(
+          ElevatedButton(
               onPressed: () {
                 get_pkg.Get.back();
                 get_pkg.Get.offAll(() => HomePage());
@@ -120,7 +122,12 @@ class WebRTCConnection {
     );
   }
 
+  RoverCommand addRoverId(RoverCommand command) {
+    return command.copyWith(client_id: deviceId);
+  }
+
   sendRoverCommand(RoverCommand command) {
+    command = addRoverId(command);
     if (peerConnection?.connectionState == RTCPeerConnectionState.RTCPeerConnectionStateConnected &&
         _dataChannel?.state == RTCDataChannelState.RTCDataChannelOpen) {
       _dataChannel?.send(RTCDataChannelMessage(json.encode(command.toJson())));
@@ -212,12 +219,12 @@ class WebRTCConnection {
               title: const Text('Failed Connection'),
               content: const Text('No Heartbeat Messages Received'),
               actions: <Widget>[
-                TextButton(
+                ElevatedButton(
                     onPressed: () {
                       get_pkg.Get.back();
                     },
                     child: const Text('back')),
-                TextButton(
+                ElevatedButton(
                     onPressed: () {
                       stopCall();
                       get_pkg.Get.back();

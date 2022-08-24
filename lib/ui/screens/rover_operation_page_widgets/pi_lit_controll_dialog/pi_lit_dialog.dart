@@ -129,7 +129,7 @@ class PiLitDialogButton extends StatelessWidget {
             ],
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
                   sendCommand(piLitState.value.command!);
@@ -146,7 +146,7 @@ class PiLitDialogButton extends StatelessWidget {
               },
               child: const Text('Deploy Pi-Lits'),
             ),
-            TextButton(
+            ElevatedButton(
                 onPressed: () {
                   Get.back();
                 },

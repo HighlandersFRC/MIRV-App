@@ -4,53 +4,68 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:mirv/services/session_storage_service.dart';
+import 'package:mirv/services/secure_storage_service.dart';
 
 class AuthService {
   static AuthService? service;
-  SessionStorageService sessionStorageService = SessionStorageService();
+  SecureStorageService secureStorageService = SecureStorageService();
 
   init() async {
-    await sessionStorageService.init();
+    await secureStorageService.applyDefaults();
   }
 
-  getKeycloakAuthEndpoint() {
-    return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/token');
+  Future<Uri> getKeycloakAuthEndpoint() async {
+    return Uri.parse('${await getKeycloakEndpoint()}/auth/realms/${await getKeycloakRealm()}/protocol/openid-connect/token');
   }
 
-  getKeycloakUserInfoEndpoint() {
-    return Uri.parse('${getKeycloakEndpoint()}/auth/realms/${getKeycloakRealm()}/protocol/openid-connect/userinfo');
+  Future<Uri> getKeycloakUserInfoEndpoint() async {
+    return Uri.parse('${await getKeycloakEndpoint()}/auth/realms/${await getKeycloakRealm()}/protocol/openid-connect/userinfo');
   }
 
   Future<int> authenticateUser(String username, String password) async {
     try {
-      var res = await http.post(getKeycloakAuthEndpoint(),
-          headers: {"Content-Type": "application/x-www-form-urlencoded"},
-          body: {"username": username, "password": password, "client_id": getKeycloakClient(), "grant_type": "password"}).timeout(
+      var res = await http.post(await getKeycloakAuthEndpoint(), headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }, body: {
+        "username": username,
+        "password": password,
+        "client_id": await getKeycloakClient(),
+        "client_secret": await getKeycloakClientSecret(),
+        "grant_type": "password"
+      }).timeout(
         const Duration(seconds: 5),
         onTimeout: () => http.Response('Timeout', 408),
       );
 
       switch (res.statusCode) {
         case 200:
-          sessionStorageService.saveAccessToken(res.body);
+          secureStorageService.saveAccessToken(res.body);
           return res.statusCode;
         default:
           debugPrint("An Error Occurred during loggin in. Status code: ${res.statusCode} , body: ${res.body.toString()}");
           return res.statusCode;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
       return 408;
     }
+  }
+
+  Future<bool> isTokenExpired() async {
+    int? expirationDelta = await secureStorageService.retrieveAccessTokenExpiration();
+    int? creationTime = await secureStorageService.retrieveAccessTokenCreationDate();
+    int currentTime = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+    if (expirationDelta == null || creationTime == null) return false;
+
+    return currentTime < creationTime + expirationDelta;
   }
 
   // Connection closed before full header was received
   Future<bool?> validateToken(Function()? onTimeout) async {
     try {
-      String? token = sessionStorageService.retriveAccessToken();
+      String? token = await secureStorageService.retrieveAccessToken();
       var res = await http.post(
-        getKeycloakUserInfoEndpoint(),
+        await getKeycloakUserInfoEndpoint(),
         headers: {"Authorization": "Bearer $token"},
         body: {"client_id": "mirv"},
       ).timeout(
@@ -72,38 +87,62 @@ class AuthService {
   }
 
   setMirvEndpoint(String endpoint) {
-    return sessionStorageService.saveMirvEndpoint(endpoint);
+    return secureStorageService.saveCloudEndpoint(endpoint);
   }
 
   setKeycloakEndpoint(String keyCloakEndpoint) {
-    return sessionStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
+    return secureStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
   }
 
   setKeycloakRealm(String keyCloakRealm) {
-    return sessionStorageService.saveKeycloakRealm(keyCloakRealm);
+    return secureStorageService.saveKeycloakRealm(keyCloakRealm);
   }
 
   setKeycloakClient(String keyCloakClient) {
-    return sessionStorageService.saveKeycloakClient(keyCloakClient);
+    return secureStorageService.saveKeycloakClient(keyCloakClient);
   }
 
-  String getMirvEndpoint() {
-    return sessionStorageService.retrieveMirvEndpoint() ?? '';
+  setUsername(String val) {
+    return secureStorageService.saveUsername(val);
   }
 
-  String getKeycloakEndpoint() {
-    return sessionStorageService.retrieveKeycloakEndpoint() ?? '';
+  setPassword(String val) {
+    return secureStorageService.savePassword(val);
   }
 
-  String getKeycloakRealm() {
-    return sessionStorageService.retrieveKeycloakRealm() ?? '';
+  setKeycloakClientSecret(String keyCloakClientSecret) {
+    return secureStorageService.saveKeycloakClientSecret(keyCloakClientSecret);
   }
 
-  String getKeycloakClient() {
-    return sessionStorageService.retrieveKeycloakClient() ?? '';
+  Future<String> getMirvEndpoint() async {
+    return (await secureStorageService.retrieveCloudEndpoint()) ?? '';
   }
 
-  String? getKeycloakAccessToken() {
-    return sessionStorageService.retriveAccessToken();
+  Future<String> getKeycloakEndpoint() async {
+    return (await secureStorageService.retrieveKeycloakEndpoint()) ?? '';
+  }
+
+  Future<String> getKeycloakRealm() async {
+    return (await secureStorageService.retrieveKeycloakRealm()) ?? '';
+  }
+
+  Future<String> getKeycloakClient() async {
+    return (await secureStorageService.retrieveKeycloakClient()) ?? '';
+  }
+
+  Future<String> getKeycloakClientSecret() async {
+    return (await secureStorageService.retrieveKeycloakClientSecret()) ?? '';
+  }
+
+  Future<String> getUsername() async {
+    return (await secureStorageService.retrieveUsername()) ?? '';
+  }
+
+  Future<String> getPassword() async {
+    return (await secureStorageService.retrievePassword()) ?? '';
+  }
+
+  Future<String?> getKeycloakAccessToken() async {
+    return secureStorageService.retrieveAccessToken();
   }
 }

@@ -47,13 +47,13 @@ class EStopButton extends StatelessWidget {
                       title: const Text('E Stop'),
                       content: const Text('Would you like to E Stop?'),
                       actions: [
-                        TextButton(
+                        ElevatedButton(
                             onPressed: () {
                               sendCommand(RoverGeneralCommands.eStop);
                               Get.back();
                             },
                             child: const Text('Yes')),
-                        TextButton(
+                        ElevatedButton(
                             onPressed: () {
                               Get.back();
                             },

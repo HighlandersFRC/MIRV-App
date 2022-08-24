@@ -9,11 +9,9 @@ class GarageCommandList extends StatelessWidget {
     Key? key,
     required this.garageMetrics,
     required this.sendCommand,
-    required this.resetGarageState,
   }) : super(key: key);
   final GarageMetrics? garageMetrics;
   final Function(String, GarageCommand) sendCommand;
-  final Future<void> resetGarageState;
 
   @override
   Widget build(BuildContext context) {

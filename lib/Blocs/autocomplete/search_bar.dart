@@ -70,7 +70,7 @@ class SearchBar extends StatelessWidget {
                   textFieldConfiguration: TextFieldConfiguration(
                       autofocus: false,
                       style: DefaultTextStyle.of(context).style.copyWith(fontStyle: FontStyle.italic),
-                      decoration: const InputDecoration(border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: 'Search Locations'),
                       controller: typeAheadController),
                   suggestionsCallback: (pattern) async {
                     return await searchPlaces(pattern);

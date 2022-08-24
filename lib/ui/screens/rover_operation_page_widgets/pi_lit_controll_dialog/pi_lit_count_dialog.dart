@@ -49,7 +49,9 @@ class PiLitCountDialog extends StatelessWidget {
           'Manage Pi-Lit Counts',
           textAlign: TextAlign.center,
         ),
-        onPressed: () {},
+        onPressed: () {
+          showPiLitCountDialog(context);
+        },
       ),
     );
   }
@@ -79,13 +81,13 @@ class PiLitCountDialog extends StatelessWidget {
             ],
           ),
           actions: [
-            TextButton(
+            ElevatedButton(
                 onPressed: () {
                   sendCommand(RoverPiLitCommands.setNumberPiLits(numLeft.value, numRight.value));
                   Get.back();
                 },
                 child: const Text('Update Pi-Lit Counts')),
-            TextButton(
+            ElevatedButton(
                 onPressed: () {
                   Get.back();
                 },

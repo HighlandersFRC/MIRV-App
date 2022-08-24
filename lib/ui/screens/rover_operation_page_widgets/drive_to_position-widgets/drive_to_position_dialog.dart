@@ -88,7 +88,7 @@ class DriveToPositionDialog extends StatelessWidget {
             ],
           ),
           actions: <Widget>[
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 if (targetLocation.value != null) {
                   sendCommand(RoverDrivetrainCommands.destinationCommand(
@@ -100,7 +100,7 @@ class DriveToPositionDialog extends StatelessWidget {
               },
               child: const Text('Move Rover to Location'),
             ),
-            TextButton(
+            ElevatedButton(
                 onPressed: () {
                   Get.back();
                 },

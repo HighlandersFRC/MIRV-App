@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/services/auth_service.dart';
 
 class LoginController extends GetxController {
@@ -15,6 +16,9 @@ class LoginController extends GetxController {
 
   Future<void> init() async {
     await authService.init();
+    usernameController.text = await authService.getUsername();
+    passwordController.text = await authService.getPassword();
+    login();
   }
 
   @override
@@ -32,15 +36,27 @@ class LoginController extends GetxController {
   }
 
   void login() {
+    isLoading.value = true;
     attemptLogIn(usernameController.text, passwordController.text).then((code) {
-      if (code == 200) {
-        onLogin();
-      } else if (code == 401 || code == 403) {
-        Get.snackbar('Login', 'Invalid username or password');
-      } else {
-        Get.snackbar('Login', 'Unknown error: $code');
+      switch (code) {
+        case 200:
+          authService.setUsername(usernameController.text);
+          authService.setPassword(passwordController.text);
+          onLogin();
+          break;
+        case 401:
+        case 403:
+          Get.snackbar('Login', 'Invalid username or password');
+          break;
+        case 408:
+          Get.snackbar('Login', 'Request Timed Out');
+          break;
+        default:
+          Get.snackbar('Login', 'Unknown error: $code');
+          break;
       }
     });
+    isLoading.value = false;
   }
 
   Future<int> attemptLogIn(String username, String password) async {
@@ -48,7 +64,7 @@ class LoginController extends GetxController {
   }
 
   Future<bool?> isCurrentTokenValid() async {
-    return authService.validateToken(() => Get.snackbar("Login", "Error accessing authentication server"));
+    return authService.isTokenExpired();
   }
 }
 
@@ -60,16 +76,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.init().then(
-          (_) => controller.isCurrentTokenValid().then(
-            (valid) {
-              controller.isLoading.value = false;
-              if (valid == true) {
-                onLogin();
-              }
-            },
-          ),
-        );
+    controller.init();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Log In Page"),
@@ -106,9 +113,15 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: controller.login,
-                      child: const Text('Login'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: controller.login,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('Login', style: TextStyle(fontSize: fontSizeButton)),
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -117,6 +130,8 @@ class LoginPage extends StatelessWidget {
             Obx(() => controller.isLoading.value
                 ? Container(
                     color: Colors.black.withOpacity(0.5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),

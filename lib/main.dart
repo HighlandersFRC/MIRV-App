@@ -12,7 +12,7 @@ void main() {
   } else if (WebRTC.platformIsAndroid) {
     WidgetsFlutterBinding.ensureInitialized();
   }
-
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,

@@ -20,53 +20,9 @@ class RoverCommand with _$RoverCommand {
   const factory RoverCommand(
     RoverSubsystemType subsystem,
     RoverCommandType command, {
+    String? client_id,
     RoverCommandParameters? commandParameters,
   }) = _RoverCommand;
-
-  // const factory RoverCommand.RoverSubsystemType.general(
-  //   RoverCommandTypeGeneral command, {
-  //   RoverCommandParameters? commandParameters,
-  //   @Default(RoverSubsystemType.general) RoverSubsystemType subsystem,
-  // }) = GeneralRoverCommand;
-
-  // const factory RoverCommand.heartbeatCommand(
-  //   RoverCommandTypeHeartbeat command, {
-  //   @Default(RoverSubsystemType.heartbeat) RoverSubsystemType subsystem,
-  // }) = HeartbeatRoverCommand;
-
-  // const factory RoverCommand.intakeCommand(
-  //   RoverCommandTypeIntake command, {
-  //   @Default(RoverSubsystemType.intake) RoverSubsystemType subsystem,
-  // }) = IntakeRoverCommand;
-
-  // const factory RoverCommand.garageCommand(
-  //   GarageCommandType command, {
-  //   @Default(RoverSubsystemType.garage) RoverSubsystemType subsystem,
-  // }) = GarageRoverCommand;
-
-  // const factory RoverCommand.drivetrainCommand(
-  //   RoverCommandTypeDrivetrain command,
-  //   RoverCommandParameters commandParameters, {
-  //   @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
-  // }) = DrivetrainRoverCommand;
-
-  // const factory RoverCommand.destinationCommand(
-  //   RoverCommandTypeDrivetrain command,
-  //   RoverCommandParameters commandParameters, {
-  //   @Default(RoverSubsystemType.drivetrain) RoverSubsystemType subsystem,
-  // }) = DrivetrainRoverCommandDestination;
-
-  // const factory RoverCommand.piLitCommand(
-  //   RoverCommandTypePiLit command, {
-  //   RoverCommandParameters? commandParameters,
-  //   @Default(RoverSubsystemType.pi_lit) RoverSubsystemType subsystem,
-  // }) = PiLitRoverCommand;
-
-  // const factory RoverCommand.cameraCommand(
-  //   RoverCommandTypeCamera command,
-  //   RoverCommandParameters commandParameters, {
-  //   @Default(RoverSubsystemType.camera) RoverSubsystemType subsystem,
-  // }) = CameraRoverCommand;
 
   factory RoverCommand.fromJson(Map<String, dynamic> json) => _$RoverCommandFromJson(json);
 }

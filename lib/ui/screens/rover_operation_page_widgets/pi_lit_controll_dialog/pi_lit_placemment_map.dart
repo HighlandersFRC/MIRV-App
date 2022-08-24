@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mirv/constants/settings_default.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 
@@ -127,7 +128,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(
             target: widget.roverMetricsObs.value.telemetry.location.latLng,
-            zoom: 15.0,
+            zoom: SettingsDefaults.initialMapZoom,
           ),
           markers: markers,
           mapType: MapType.hybrid,
