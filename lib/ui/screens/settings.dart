@@ -19,6 +19,8 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
   Rx<String> savedKeycloakClientSecret = ''.obs;
+  Rx<bool> useStunServer = true.obs;
+  bool useStunServerVal = true;
 
   initialize() async {
     savedEndpoint.value = await authService.getMirvEndpoint();
@@ -26,6 +28,8 @@ class SettingsTextBoxController extends GetxController {
     savedKeycloakRealm.value = await authService.getKeycloakRealm();
     savedKeycloakClient.value = await authService.getKeycloakClient();
     savedKeycloakClientSecret.value = await authService.getKeycloakClientSecret();
+    useStunServer.value = await authService.getUseStunServer();
+    useStunServerVal = useStunServer.value;
 
     if (endpointController.value.text != savedEndpoint.value) {
       endpointController.value.text = savedEndpoint.value;
@@ -202,6 +206,10 @@ class SettingsPage extends StatelessWidget {
                       savedValue: settingsTextBoxController.savedKeycloakClientSecret,
                       compareOrigin: compareOriginKeycloakClientSecret,
                       labelText: 'Keycloak Client Secret'),
+                  Obx(() => Switch(
+                        value: settingsTextBoxController.useStunServer.value,
+                        onChanged: (val) => settingsTextBoxController.useStunServer.value = val,
+                      )),
                   Obx(
                     () => ElevatedButton(
                         onPressed: compareOriginEndpoint.value &&
@@ -252,6 +260,7 @@ class SettingsPage extends StatelessWidget {
                                   authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.value.text);
                                   authService.setKeycloakClientSecret(
                                       settingsTextBoxController.keycloakClientSecretController.value.text);
+                                  authService.setUseStunServer(settingsTextBoxController.useStunServer.value);
                                   //setting saved variable
                                   settingsTextBoxController.savedEndpoint.value = await authService.getMirvEndpoint();
                                   settingsTextBoxController.savedKeycloakEndpoint.value = await authService.getKeycloakEndpoint();

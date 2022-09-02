@@ -78,11 +78,17 @@ class HomePage extends StatelessWidget {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _homeListTile(height, 'Rover Selection Page', null, const RoverSelectionPage(),
-                      validateLogin: true, image: Image.asset('assets/images/rover_icon_home_page.png', scale: 2)),
                   _homeListTile(
                     height,
-                    'Garage Selection Page',
+                    'Rover Operation',
+                    null,
+                    const RoverSelectionPage(),
+                    validateLogin: true,
+                    image: Image.asset('assets/images/rover_icon_home_page.png', scale: 2),
+                  ),
+                  _homeListTile(
+                    height,
+                    'Garage Operation',
                     CustomIcons.warehouse,
                     GarageSelectionPage(),
                     validateLogin: true,

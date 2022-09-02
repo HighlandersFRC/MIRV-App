@@ -14,6 +14,7 @@ import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
+import 'package:mirv/services/auth_service.dart';
 import 'package:mirv/services/gamepad_controller.dart';
 import 'package:mirv/services/joystick_controller.dart';
 import 'package:observable/observable.dart';
@@ -73,12 +74,14 @@ class WebRTCConnection {
   int GATHERING_RETRY_THRESHOLD = 90; //seconds
   int GATHERING_HEARTBEAT = 2000;
   String? deviceId;
+  AuthService authService = AuthService();
 
   WebRTCConnection(this.roverGarageState) {
     init();
     peerConnectionTimer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       peerConnectionState.value = peerConnection?.connectionState;
     });
+    authService.init();
   }
 
   Future<void> init() async {
@@ -387,13 +390,16 @@ class WebRTCConnection {
 
   //public Commands
   Future<void> makeCall(String roverId) async {
+    bool useStunServer = await authService.getUseStunServer();
     try {
       loading.value = true;
       var configuration = <String, dynamic>{
         'sdpSemantics': 'unified-plan',
-        "iceServers": [
-          // {"url": "stun:stun.l.google.com:19302"},
-        ]
+        "iceServers": useStunServer
+            ? [
+                {"url": "stun:stun.l.google.com:19302"}
+              ]
+            : [],
       };
       //* Create Peer Connection
       if (peerConnection != null) return;

@@ -86,63 +86,22 @@ class AuthService {
     }
   }
 
-  setMirvEndpoint(String endpoint) {
-    return secureStorageService.saveCloudEndpoint(endpoint);
-  }
+  setMirvEndpoint(String endpoint) => secureStorageService.saveCloudEndpoint(endpoint);
+  setKeycloakEndpoint(String keyCloakEndpoint) => secureStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
+  setKeycloakRealm(String keyCloakRealm) => secureStorageService.saveKeycloakRealm(keyCloakRealm);
+  setKeycloakClient(String keyCloakClient) => secureStorageService.saveKeycloakClient(keyCloakClient);
+  setUsername(String val) => secureStorageService.saveUsername(val);
+  setPassword(String val) => secureStorageService.savePassword(val);
+  setKeycloakClientSecret(String val) => secureStorageService.saveKeycloakClientSecret(val);
+  setUseStunServer(bool val) => secureStorageService.saveUseStunServer(val);
 
-  setKeycloakEndpoint(String keyCloakEndpoint) {
-    return secureStorageService.saveKeycloakEndpoint(keyCloakEndpoint);
-  }
-
-  setKeycloakRealm(String keyCloakRealm) {
-    return secureStorageService.saveKeycloakRealm(keyCloakRealm);
-  }
-
-  setKeycloakClient(String keyCloakClient) {
-    return secureStorageService.saveKeycloakClient(keyCloakClient);
-  }
-
-  setUsername(String val) {
-    return secureStorageService.saveUsername(val);
-  }
-
-  setPassword(String val) {
-    return secureStorageService.savePassword(val);
-  }
-
-  setKeycloakClientSecret(String keyCloakClientSecret) {
-    return secureStorageService.saveKeycloakClientSecret(keyCloakClientSecret);
-  }
-
-  Future<String> getMirvEndpoint() async {
-    return (await secureStorageService.retrieveCloudEndpoint()) ?? '';
-  }
-
-  Future<String> getKeycloakEndpoint() async {
-    return (await secureStorageService.retrieveKeycloakEndpoint()) ?? '';
-  }
-
-  Future<String> getKeycloakRealm() async {
-    return (await secureStorageService.retrieveKeycloakRealm()) ?? '';
-  }
-
-  Future<String> getKeycloakClient() async {
-    return (await secureStorageService.retrieveKeycloakClient()) ?? '';
-  }
-
-  Future<String> getKeycloakClientSecret() async {
-    return (await secureStorageService.retrieveKeycloakClientSecret()) ?? '';
-  }
-
-  Future<String> getUsername() async {
-    return (await secureStorageService.retrieveUsername()) ?? '';
-  }
-
-  Future<String> getPassword() async {
-    return (await secureStorageService.retrievePassword()) ?? '';
-  }
-
-  Future<String?> getKeycloakAccessToken() async {
-    return secureStorageService.retrieveAccessToken();
-  }
+  Future<String> getMirvEndpoint() async => (await secureStorageService.retrieveCloudEndpoint()) ?? '';
+  Future<String> getKeycloakEndpoint() async => (await secureStorageService.retrieveKeycloakEndpoint()) ?? '';
+  Future<String> getKeycloakRealm() async => (await secureStorageService.retrieveKeycloakRealm()) ?? '';
+  Future<String> getKeycloakClient() async => (await secureStorageService.retrieveKeycloakClient()) ?? '';
+  Future<String> getKeycloakClientSecret() async => (await secureStorageService.retrieveKeycloakClientSecret()) ?? '';
+  Future<String> getUsername() async => (await secureStorageService.retrieveUsername()) ?? '';
+  Future<String> getPassword() async => (await secureStorageService.retrievePassword()) ?? '';
+  Future<String?> getKeycloakAccessToken() async => secureStorageService.retrieveAccessToken();
+  Future<bool> getUseStunServer() async => (await secureStorageService.retrieveUseStunServer()) ?? true;
 }

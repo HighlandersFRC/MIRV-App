@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/models/auth/token_model.dart';
+import 'package:mirv/models/bool_parse.dart';
 
 class SecureStorageService {
   static const _storage = FlutterSecureStorage(aOptions: AndroidOptions(encryptedSharedPreferences: true));
@@ -18,6 +19,7 @@ class SecureStorageService {
   static const String KEYCLOAK_REALM_TOKEN_KEY = "KEYCLOAK_REALM_TOKEN";
   static const String KEYCLOAK_CLIENT_TOKEN_KEY = "KEYCLOAK_CLIENT_TOKEN";
   static const String KEYCLOAK_CLIENT_SECRET_KEY = "KEY_CLOAK_CLIENT_SECRET";
+  static const String USE_STUN_SERVER_KEY = "USE_STUN_SERVER";
 
   applyDefaults() async {
     if (await retrieveCloudEndpoint() == null) {
@@ -41,6 +43,7 @@ class SecureStorageService {
   void saveKeycloakRealm(String val) async => await _storage.write(key: KEYCLOAK_REALM_TOKEN_KEY, value: val);
   void saveKeycloakClient(String val) async => await _storage.write(key: KEYCLOAK_CLIENT_TOKEN_KEY, value: val);
   void saveKeycloakClientSecret(String val) async => await _storage.write(key: KEYCLOAK_CLIENT_SECRET_KEY, value: val);
+  void saveUseStunServer(bool val) async => await _storage.write(key: USE_STUN_SERVER_KEY, value: val.toString());
 
   void saveAccessToken(String val) async {
     await _storage.write(key: ACCESS_TOKEN_KEY, value: val);
@@ -58,6 +61,7 @@ class SecureStorageService {
   Future<String?> retrieveKeycloakRealm() async => await _storage.read(key: KEYCLOAK_REALM_TOKEN_KEY);
   Future<String?> retrieveKeycloakClient() async => await _storage.read(key: KEYCLOAK_CLIENT_TOKEN_KEY);
   Future<String?> retrieveKeycloakClientSecret() async => await _storage.read(key: KEYCLOAK_CLIENT_SECRET_KEY);
+  Future<bool?> retrieveUseStunServer() async => parseBool(await _storage.read(key: USE_STUN_SERVER_KEY));
 
   Future<String?> retrieveAccessToken() async {
     try {

@@ -1,9 +1,11 @@
 class SettingsDefaults {
-  static String endpoint = 'http://20.242.243.56:8080';
-  static String keycloakEndpoint = 'http://20.232.252.236:8080';
-  static String keycloakRealm = 'vtti';
-  static String keycloakClient = 'users';
+  static String endpoint = 'https://mirv-cloud-api-pre-prod.cloud.vtti.vt.edu';
+  static String keycloakEndpoint = 'https://keycloak.cloud.vtti.vt.edu';
+  static String keycloakRealm = 'dti';
+  static String keycloakClient = 'mirv-client-pre-prod';
   static String keycloakClientSecret = '';
+
+  static bool useStunServer = true;
 
   static double initialMapZoom = 18;
 }
