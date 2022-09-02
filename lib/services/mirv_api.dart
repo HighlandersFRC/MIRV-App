@@ -14,7 +14,6 @@ import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:mirv/ui/screens/login_page.dart';
 
 class MirvApi {
   Timer? garageMetricsUpdatesTimer;
@@ -178,6 +177,7 @@ class MirvApi {
   }
 
   Future<bool?> sendGarageCommand(String garage_id, GarageCommand command) async {
+    if (loginDialogOpen) return false;
     var response = await makeAuthenticatedPostRequest(
         "${await authService.getMirvEndpoint()}/garages/$garage_id/command", json.encode(command.toJson()),
         additionalHeaders: {'Content-Type': 'application/json'});
@@ -195,6 +195,7 @@ class MirvApi {
     if (garageUpdatesActive) return;
     garageUpdatesActive = true;
     garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
+      if (loginDialogOpen) return;
       updateGarageMetrics(garage_id);
     });
   }
@@ -202,6 +203,7 @@ class MirvApi {
   Future<void> resetGarageMetricsUpdates(String garage_id, {int seconds = 5}) async {
     garageMetricsUpdatesTimer?.cancel();
     garageMetricsUpdatesTimer = Timer.periodic(_duration, (timer) {
+      if (loginDialogOpen) return;
       getGarageMetrics(garage_id).then((value) => garageMetricsObs.value = value);
     });
   }
@@ -239,14 +241,14 @@ class MirvApi {
   }
 
   forceLogin(BuildContext context) {
-    loginDialogOpen = true;
+    // loginDialogOpen = true;
 
-    Get.to(WillPopScope(
-      onWillPop: () async => false,
-      child: LoginPage(() => Get.back()),
-    ));
+    // Get.to(WillPopScope(
+    //   onWillPop: () async => false,
+    //   child: LoginPage(() => Get.back()),
+    // ));
 
-    loginDialogOpen = false;
+    // loginDialogOpen = false;
   }
 
   Future<String?> getDeviceId() async {

@@ -19,8 +19,8 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
   Rx<String> savedKeycloakClientSecret = ''.obs;
-  Rx<bool> useStunServer = true.obs;
-  bool useStunServerVal = true;
+  Rx<bool> savedUseStunServer = true.obs;
+  Rx<bool> useStunServerVal = true.obs;
 
   initialize() async {
     savedEndpoint.value = await authService.getMirvEndpoint();
@@ -28,8 +28,8 @@ class SettingsTextBoxController extends GetxController {
     savedKeycloakRealm.value = await authService.getKeycloakRealm();
     savedKeycloakClient.value = await authService.getKeycloakClient();
     savedKeycloakClientSecret.value = await authService.getKeycloakClientSecret();
-    useStunServer.value = await authService.getUseStunServer();
-    useStunServerVal = useStunServer.value;
+    savedUseStunServer.value = await authService.getUseStunServer();
+    useStunServerVal.value = savedUseStunServer.value;
 
     if (endpointController.value.text != savedEndpoint.value) {
       endpointController.value.text = savedEndpoint.value;
@@ -74,6 +74,7 @@ class SettingsPage extends StatelessWidget {
   Rx<bool> compareOriginKeycloakRealm = true.obs;
   Rx<bool> compareOriginKeycloakClient = true.obs;
   Rx<bool> compareOriginKeycloakClientSecret = true.obs;
+  Rx<bool> compareUseStunServer = true.obs;
 
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
@@ -164,6 +165,9 @@ class SettingsPage extends StatelessWidget {
               if (!compareOriginKeycloakClientSecret.value) {
                 variableList.add('Keycloak Client Secret');
               }
+              if (!compareUseStunServer.value) {
+                variableList.add('Use Stun Server');
+              }
               if (variableList.isNotEmpty) {
                 _unsavedDialog(variableList);
               } else {
@@ -206,17 +210,43 @@ class SettingsPage extends StatelessWidget {
                       savedValue: settingsTextBoxController.savedKeycloakClientSecret,
                       compareOrigin: compareOriginKeycloakClientSecret,
                       labelText: 'Keycloak Client Secret'),
-                  Obx(() => Switch(
-                        value: settingsTextBoxController.useStunServer.value,
-                        onChanged: (val) => settingsTextBoxController.useStunServer.value = val,
-                      )),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        const Text("Use Stun Server"),
+                        Obx(() => Switch(
+                              value: settingsTextBoxController.useStunServerVal.value,
+                              onChanged: (val) {
+                                settingsTextBoxController.useStunServerVal.value = val;
+                                compareUseStunServer.value = settingsTextBoxController.useStunServerVal.value ==
+                                    settingsTextBoxController.savedUseStunServer.value;
+                              },
+                            )),
+                      ],
+                    ),
+                    trailing: Obx(
+                      () => ElevatedButton(
+                        onPressed: compareUseStunServer.value
+                            ? null
+                            : () {
+                                if (!compareUseStunServer.value) {
+                                  settingsTextBoxController.useStunServerVal.value =
+                                      settingsTextBoxController.savedUseStunServer.value;
+                                  compareUseStunServer.value = true;
+                                }
+                              },
+                        child: const Text('Reset'),
+                      ),
+                    ),
+                  ),
                   Obx(
                     () => ElevatedButton(
                         onPressed: compareOriginEndpoint.value &&
                                 compareOriginKeycloakEndpoint.value &&
                                 compareOriginKeycloakRealm.value &&
                                 compareOriginKeycloakClient.value &&
-                                compareOriginKeycloakClientSecret.value
+                                compareOriginKeycloakClientSecret.value &&
+                                compareUseStunServer.value
                             ? null
                             : () async {
                                 //pop ups
@@ -260,7 +290,7 @@ class SettingsPage extends StatelessWidget {
                                   authService.setKeycloakClient(settingsTextBoxController.keycloakClientController.value.text);
                                   authService.setKeycloakClientSecret(
                                       settingsTextBoxController.keycloakClientSecretController.value.text);
-                                  authService.setUseStunServer(settingsTextBoxController.useStunServer.value);
+                                  authService.setUseStunServer(settingsTextBoxController.useStunServerVal.value);
                                   //setting saved variable
                                   settingsTextBoxController.savedEndpoint.value = await authService.getMirvEndpoint();
                                   settingsTextBoxController.savedKeycloakEndpoint.value = await authService.getKeycloakEndpoint();
@@ -268,12 +298,14 @@ class SettingsPage extends StatelessWidget {
                                   settingsTextBoxController.savedKeycloakClient.value = await authService.getKeycloakClient();
                                   settingsTextBoxController.savedKeycloakClientSecret.value =
                                       await authService.getKeycloakClientSecret();
+                                  settingsTextBoxController.savedUseStunServer.value = await authService.getUseStunServer();
 
                                   compareOriginEndpoint.value = true;
                                   compareOriginKeycloakEndpoint.value = true;
                                   compareOriginKeycloakRealm.value = true;
                                   compareOriginKeycloakClient.value = true;
                                   compareOriginKeycloakClientSecret.value = true;
+                                  compareUseStunServer.value = true;
                                 }
                                 loading.value = false;
                               },
