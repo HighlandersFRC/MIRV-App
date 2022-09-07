@@ -14,6 +14,7 @@ import 'package:mirv/models/garage/garage_state_type.dart';
 import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:mirv/ui/screens/login_page.dart';
 
 class MirvApi {
   Timer? garageMetricsUpdatesTimer;
@@ -241,14 +242,14 @@ class MirvApi {
   }
 
   forceLogin(BuildContext context) {
-    // loginDialogOpen = true;
+    loginDialogOpen = true;
 
-    // Get.to(WillPopScope(
-    //   onWillPop: () async => false,
-    //   child: LoginPage(() => Get.back()),
-    // ));
+    Get.to(WillPopScope(
+      onWillPop: () async => false,
+      child: LoginPage(() => Get.back()),
+    ));
 
-    // loginDialogOpen = false;
+    loginDialogOpen = false;
   }
 
   Future<String?> getDeviceId() async {

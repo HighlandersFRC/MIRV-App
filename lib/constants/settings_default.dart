@@ -5,7 +5,7 @@ class SettingsDefaults {
   static String keycloakClient = 'mirv-client-pre-prod';
   static String keycloakClientSecret = '';
 
-  static bool useStunServer = true;
+  static bool useStunServer = false;
 
   static double initialMapZoom = 18;
 }

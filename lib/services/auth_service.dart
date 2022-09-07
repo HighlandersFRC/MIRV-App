@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/services/secure_storage_service.dart';
 
 class AuthService {
@@ -103,5 +104,5 @@ class AuthService {
   Future<String> getUsername() async => (await secureStorageService.retrieveUsername()) ?? '';
   Future<String> getPassword() async => (await secureStorageService.retrievePassword()) ?? '';
   Future<String?> getKeycloakAccessToken() async => secureStorageService.retrieveAccessToken();
-  Future<bool> getUseStunServer() async => (await secureStorageService.retrieveUseStunServer()) ?? true;
+  Future<bool> getUseStunServer() async => (await secureStorageService.retrieveUseStunServer()) ?? SettingsDefaults.useStunServer;
 }

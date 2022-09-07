@@ -121,37 +121,35 @@ class RoverOperationPage extends StatelessWidget {
                 ),
               ]),
             ),
-            Obx(
-              () => Positioned(
-                left: manualOperation.value ? 400 : 180,
-                bottom: 20,
-                height: 200,
-                width: 375,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.deferToChild,
-                  onDoubleTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: AspectRatio(
-                            aspectRatio: 1.5,
-                            child: roverOperationMap,
+            Positioned(
+              left: 180,
+              top: 60,
+              height: 200,
+              width: 375,
+              child: GestureDetector(
+                behavior: HitTestBehavior.deferToChild,
+                onDoubleTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: AspectRatio(
+                          aspectRatio: 1.5,
+                          child: roverOperationMap,
+                        ),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              return Navigator.pop(context);
+                            },
+                            child: const Text('Close', style: TextStyle(fontSize: fontSizeButton)),
                           ),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () {
-                                return Navigator.pop(context);
-                              },
-                              child: const Text('Close', style: TextStyle(fontSize: fontSizeButton)),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: roverOperationMap,
-                ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: roverOperationMap,
               ),
             ),
             Obx(() => webRTCConnection.roverMetricsObs.value.state == RoverStateType.idle

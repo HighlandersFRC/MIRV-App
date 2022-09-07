@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/constants/theme_data.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/services/auth_service.dart';
@@ -19,8 +20,8 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakRealm = ''.obs;
   Rx<String> savedKeycloakClient = ''.obs;
   Rx<String> savedKeycloakClientSecret = ''.obs;
-  Rx<bool> savedUseStunServer = true.obs;
-  Rx<bool> useStunServerVal = true.obs;
+  Rx<bool> savedUseStunServer = SettingsDefaults.useStunServer.obs;
+  Rx<bool> useStunServerVal = SettingsDefaults.useStunServer.obs;
 
   initialize() async {
     savedEndpoint.value = await authService.getMirvEndpoint();
