@@ -6,8 +6,6 @@ import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
-import 'package:mirv/models/rover_control/rover_command_type.dart';
-import 'package:mirv/services/mirv_api.dart';
 import 'package:mirv/ui/screens/rover_operation_map.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/app_bar.dart';
 import 'package:get/get.dart';
@@ -18,7 +16,6 @@ import 'package:mirv/ui/screens/rover_operation_page_widgets/garage_button.dart'
 import 'package:mirv/ui/screens/rover_operation_page_widgets/joystick_overlay.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/list_commands.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
 import 'rover_operation_page_widgets/task_progress_indicator.dart';
 import 'webrtc_connection.dart';
 
@@ -114,10 +111,6 @@ class RoverOperationPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Obx(() => GarageButton(webRTCConnection.mirvApi.garageMetricsObs.value, webRTCConnection.mirvApi)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Obx(() => PiLitCountDialog(webRTCConnection.roverMetricsObs.value, webRTCConnection.sendRoverCommand)),
                 ),
               ]),
             ),
