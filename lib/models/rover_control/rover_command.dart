@@ -9,7 +9,6 @@ import 'package:mirv/models/rover_control/rover_command_type.dart';
 import 'package:mirv/models/rover/rover_state_type.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/drive_to_position_dialog.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_dialog.dart';
-import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_count_dialog.dart';
 import 'package:mirv/ui/screens/webrtc_connection.dart';
 
 part 'rover_command.freezed.dart';
@@ -170,10 +169,6 @@ List<Pair<Function(WebRTCConnection, BuildContext), Widget>> allRoverCommands = 
       connection.mirvApi.sendGarageCommand(garageId, GarageCommands.lightsOff);
     }
   }, const Text('Turn Off Garage Lights')),
-  Pair((connection, context) {
-    var piLitCount = PiLitCountDialog(connection.roverMetricsObs.value, connection.sendRoverCommand);
-    piLitCount.showPiLitCountDialog(context);
-  }, const Text('Set Number of Stored PiLits')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.idle), const Text('Set PiLits Lights to idle')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.simultaneous),
       const Text('Set PiLits Lights to sequential')),

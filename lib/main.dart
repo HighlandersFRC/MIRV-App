@@ -5,7 +5,10 @@ import 'package:get/get.dart';
 
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/services/notification_controller.dart';
 import 'package:mirv/ui/screens/home_page.dart';
+
+NotificationController notificationController = NotificationController();
 
 void main() {
   if (WebRTC.platformIsDesktop) {
