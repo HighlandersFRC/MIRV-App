@@ -11,10 +11,13 @@ import 'package:get/get.dart';
 import 'package:mirv/models/garage/garage_commands.dart';
 import 'package:mirv/models/garage/garage_metrics.dart';
 import 'package:mirv/models/garage/garage_state_type.dart';
+import 'package:mirv/models/pair.dart';
 import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:mirv/ui/screens/login_page.dart';
+
+import 'package:mirv/main.dart';
 
 class MirvApi {
   Timer? garageMetricsUpdatesTimer;
@@ -58,13 +61,13 @@ class MirvApi {
           if (requireLogin && buildContext != null) forceLogin(buildContext!);
           return null;
         // case 408:
-        //   Get.snackbar("Timeout", "Request timed out");
+        //   notificationController.queueNotification("Timeout", "Request timed out");
         //   return null;
         default:
           return response;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return null;
     }
   }
@@ -77,7 +80,7 @@ class MirvApi {
           );
       return response.statusCode == 200;
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return false;
     }
   }
@@ -108,13 +111,13 @@ class MirvApi {
           if (requireLogin && buildContext != null) forceLogin(buildContext!);
           return null;
         // case 408:
-        //   Get.snackbar("Timeout", "Request timed out");
+        //   notificationController.queueNotification("Timeout", "Request timed out");
         //   return null;
         default:
           return response;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return null;
     }
   }

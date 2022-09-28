@@ -171,9 +171,8 @@ List<Pair<Function(WebRTCConnection, BuildContext), Widget>> allRoverCommands = 
     }
   }, const Text('Turn Off Garage Lights')),
   Pair((connection, context) {
-    var piLitCount = PiLitCountDialog(connection.roverMetricsObs.value, connection.sendRoverCommand);
-    piLitCount.showPiLitCountDialog(context);
-  }, const Text('Set Number of Stored PiLits')),
+    connection.sendRoverCommand(RoverPiLitCommands.setNumberPiLits(4, 4));
+  }, const Text('Re-Set Pi-Lit Count')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.idle), const Text('Set PiLits Lights to idle')),
   Pair((connection, context) => connection.sendRoverCommand(RoverPiLitCommands.simultaneous),
       const Text('Set PiLits Lights to sequential')),

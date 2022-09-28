@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:mirv/models/searchbox_places.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../../main.dart';
 
 class PlacesRepository {
   final String key = 'AIzaSyDnVF4wZWvY3vq3vz1Ogv2Vib3_qEy02pM';
@@ -27,13 +28,13 @@ class PlacesRepository {
           var results = json['predictions'] as List;
           return results.map((place) => PlaceSearch.fromJson(place)).toList();
         case 408:
-          Get.snackbar("Timeout", "Places search timed out");
+          notificationController.queueNotification("Timeout", "Places search timed out");
           return [];
         default:
           return [];
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return [];
     }
   }
