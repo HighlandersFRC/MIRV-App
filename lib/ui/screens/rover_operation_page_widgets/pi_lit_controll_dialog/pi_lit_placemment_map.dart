@@ -5,18 +5,21 @@ import 'package:get/get.dart';
 import 'package:mirv/constants/settings_default.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 
 class PiLitPlacementMap extends StatefulWidget {
   final Rx<RoverGarageState> roverMetricsObs;
   final Rx<LatLng?> startPoint;
   final Rx<LatLng?> endPoint;
   final Rx<bool> startPointOnMap;
+  final Rx<List<RoverStatePiLit>> testPiLitLocations;
 
   const PiLitPlacementMap(
     this.roverMetricsObs,
     this.startPoint,
     this.endPoint,
-    this.startPointOnMap, {
+    this.startPointOnMap,
+    this.testPiLitLocations, {
     Key? key,
   }) : super(key: key);
 
@@ -43,7 +46,10 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
   }
 
   void updateMarkers(RoverGarageState roverGarageState) {
-    var tempMarkers = getMarkers(roverGarageState);
+    var tempMarkers = getMarkers(
+      roverGarageState,
+      widget.testPiLitLocations.value,
+    );
     setState(() {
       markers = tempMarkers;
     });
@@ -115,6 +121,10 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         updateMarkers(widget.roverMetricsObs.value);
       }
     });
+
+    resetSub = widget.testPiLitLocations.listen((value) {
+      updateMarkers(widget.roverMetricsObs.value);
+    });
   }
 
   @override
@@ -153,8 +163,18 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     );
   }
 
-  Set<Marker> getMarkers(RoverGarageState roverGarageState) {
+  Set<Marker> getMarkers(RoverGarageState roverGarageState, List<RoverStatePiLit> piLitLocations) {
     Set<Marker> markers = {};
+
+    markers.addAll(piLitLocations.map((piLit) => Marker(
+          markerId: MarkerId(piLit.pi_lit_id),
+          position: piLit.location.latLng,
+          infoWindow: InfoWindow(
+            title: piLit.pi_lit_id,
+          ),
+          icon: mapMarkerIcon,
+          zIndex: 3,
+        )));
 
     if (roverGarageState.garage != null) {
       markers.add(Marker(

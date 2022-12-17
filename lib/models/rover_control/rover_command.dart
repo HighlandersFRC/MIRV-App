@@ -32,8 +32,9 @@ class RoverCommandParameters with _$RoverCommandParameters {
   const factory RoverCommandParameters.drivetrain(double x, double y) = RoverCommandParametersDrivetrain;
   const factory RoverCommandParameters.destination(double lat, double long) = RoverCommandParametersDestination;
   const factory RoverCommandParameters.numberPiLitsOverride(int piLitsLeft, int piLitsRight) = RoverCommandParametersPiLit;
-  const factory RoverCommandParameters.piLitPlacement(DeviceLocation location, PiLitFormationType formation, double heading) =
-      RoverCommandParametersPiLitPlacement;
+  // const factory RoverCommandParameters.piLitPlacementFormation(DeviceLocation location, PiLitFormationType formation, double heading) =
+  //     RoverCommandParametersPiLitPlacement;
+  const factory RoverCommandParameters.piLitPlacement(List<DeviceLocation> locations) = RoverCommandParametersPiLitPlacement;
   const factory RoverCommandParameters.switchCamera(CameraType camera) = RoverCommandParametersCamera;
 
   factory RoverCommandParameters.fromJson(Map<String, dynamic> json) => _$RoverCommandParametersFromJson(json);
@@ -49,9 +50,13 @@ class RoverGeneralCommands {
   static const retrievePiLits = RoverCommand(RoverSubsystemType.general, RoverCommandType.retrieve_pi_lits);
   static const enableRemoteOperation = RoverCommand(RoverSubsystemType.general, RoverCommandType.enable_remote_operation);
   static const disableRemoteOperation = RoverCommand(RoverSubsystemType.general, RoverCommandType.disable_remote_operation);
-  static RoverCommand deployPiLits(PiLitFormationType formation, DeviceLocation location, double heading) {
+  // static RoverCommand deployPiLitFormation(PiLitFormationType formation, DeviceLocation location, double heading) {
+  //   return RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy_pi_lits,
+  //       commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading));
+  // }
+  static RoverCommand deployPiLits(List<DeviceLocation> locations) {
     return RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy_pi_lits,
-        commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading));
+        commandParameters: RoverCommandParametersPiLitPlacement(locations));
   }
 }
 

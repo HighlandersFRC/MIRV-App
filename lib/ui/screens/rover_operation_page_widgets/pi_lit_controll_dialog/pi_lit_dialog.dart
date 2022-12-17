@@ -6,7 +6,9 @@ import 'package:mirv/models/device_location.dart';
 import 'package:mirv/models/pi_lit_formation_type.dart';
 import 'package:mirv/models/pi_lit_state_type.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
+import 'package:mirv/services/pi_lit_location_service.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lit_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/list_pi_lits_deploy_commands_drop_down.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/pi_lit_controll_dialog/pi_lit_placemment_map.dart';
@@ -21,8 +23,9 @@ class PiLitDialogButton extends StatelessWidget {
 
   final Rx<RoverGarageState> roverGarageState;
   late Rx<PiLitStateType> piLitState = Rx<PiLitStateType>(roverGarageState.value.pi_lits.state);
-  late Rx<PiLitFormationType> piLitForamtionType = PiLitFormationType.taper_right_5.obs;
+  late Rx<PiLitFormationType> piLitFormationType = PiLitFormationType.taper_right_5.obs;
   final Rx<bool> startPointOnMap = false.obs;
+  final Rx<List<RoverStatePiLit>> testPiLitList = Rx<List<RoverStatePiLit>>([]);
 
   final Rx<LatLng?> startPoint = Rx<LatLng?>(null);
   final Rx<LatLng?> endPoint = Rx<LatLng?>(null);
@@ -103,7 +106,7 @@ class PiLitDialogButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: PiLitFormationCommandDropdown(
-                      piLitFormationType: piLitForamtionType,
+                      piLitFormationType: piLitFormationType,
                       piLitAmount: piLitAmount,
                     ),
                   ),
@@ -112,6 +115,7 @@ class PiLitDialogButton extends StatelessWidget {
                     child: ElevatedButton(
                       child: const Text("Reset Markers"),
                       onPressed: () {
+                        testPiLitList.value = [];
                         startPoint.value = null;
                         endPoint.value = null;
                         startPointOnMap.value = false;
@@ -125,10 +129,34 @@ class PiLitDialogButton extends StatelessWidget {
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: AspectRatio(
-                      aspectRatio: 2.5, child: PiLitPlacementMap(roverGarageState, startPoint, endPoint, startPointOnMap))),
+                      aspectRatio: 2.5,
+                      child: PiLitPlacementMap(roverGarageState, startPoint, endPoint, startPointOnMap, testPiLitList))),
             ],
           ),
           actions: <Widget>[
+            ElevatedButton(
+                onPressed: () {
+                  if (startPoint.value != null && endPoint.value != null) {
+                    double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
+                    double laneWidth = 3;
+                    List<LatLng> piLitLocations = PiLitLocationService.generatePiLitFormation(
+                        startPoint.value!, heading, laneWidth, piLitFormationType.value);
+                    List<RoverStatePiLit> piLits = [];
+
+                    int i = 0;
+                    for (LatLng pos in piLitLocations) {
+                      RoverStatePiLit piLit =
+                          RoverStatePiLit(pi_lit_id: "PiLit test $i", location: DeviceLocation.fromLatLng(pos));
+                      i += 1;
+                      piLits.add(piLit);
+                    }
+                    testPiLitList.value = piLits;
+                  } else {
+                    testPiLitList.value = [];
+                    Get.snackbar('Pilit Control', 'No starting point selected');
+                  }
+                },
+                child: const Text('render')),
             ElevatedButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
@@ -138,7 +166,7 @@ class PiLitDialogButton extends StatelessWidget {
                 if (startPoint.value != null && endPoint.value != null) {
                   double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
                   sendCommand(RoverGeneralCommands.deployPiLits(
-                      piLitForamtionType.value, DeviceLocation.fromLatLng(startPoint.value!), heading));
+                      piLitFormationType.value, DeviceLocation.fromLatLng(startPoint.value!), heading));
                   Get.back();
                 } else {
                   Get.snackbar('Pilit Control', 'No starting point selected');
