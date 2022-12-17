@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:mirv/constants/settings_default.dart';
 import 'package:mirv/services/secure_storage_service.dart';
+
+import 'package:mirv/main.dart';
 
 class AuthService {
   static AuthService? service;
@@ -82,7 +83,7 @@ class AuthService {
           return false;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return null;
     }
   }

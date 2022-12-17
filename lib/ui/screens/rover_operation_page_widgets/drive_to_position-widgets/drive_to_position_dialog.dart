@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mirv/main.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
 import 'package:mirv/models/rover_control/rover_command.dart';
 import 'package:mirv/ui/screens/rover_operation_page_widgets/drive_to_position-widgets/pi_lit_placemment_map.dart';
@@ -95,7 +96,7 @@ class DriveToPositionDialog extends StatelessWidget {
                       targetLocation.value!.latitude, targetLocation.value!.longitude));
                   Get.back();
                 } else {
-                  Get.snackbar('Rover Movement', 'No target location selected');
+                  notificationController.queueNotification('Rover Movement', 'No target location selected');
                 }
               },
               child: const Text('Move Rover to Location'),

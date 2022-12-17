@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mirv/constants/theme_data.dart';
+import 'package:mirv/main.dart';
 import 'package:mirv/services/auth_service.dart';
 
 class LoginController extends GetxController {
@@ -46,13 +47,13 @@ class LoginController extends GetxController {
           break;
         case 401:
         case 403:
-          Get.snackbar('Login', 'Invalid username or password');
+          notificationController.queueNotification('Login', 'Invalid username or password');
           break;
         case 408:
-          Get.snackbar('Login', 'Request Timed Out');
+          notificationController.queueNotification('Login', 'Request Timed Out');
           break;
         default:
-          Get.snackbar('Login', 'Unknown error: $code');
+          notificationController.queueNotification('Login', 'Unknown error: $code');
           break;
       }
     });

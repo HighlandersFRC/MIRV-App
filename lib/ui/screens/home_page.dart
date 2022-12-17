@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
 
   Future<bool?> isCurrentTokenValid() async {
     return authService.isTokenExpired();
-    // return authService.validateToken(() => Get.snackbar("Login", "Error accessing authentication server"));
+    // return authService.validateToken(() => notificationController.queueNotification("Login", "Error accessing authentication server"));
   }
 
   @override

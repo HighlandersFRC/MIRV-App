@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mirv/main.dart';
 import 'package:mirv/models/place.dart';
 import 'dart:convert' as convert;
 import 'package:mirv/models/searchbox_places.dart';
@@ -22,13 +22,13 @@ class PlacesService {
           var results = json['predictions'] as List;
           return results.map((place) => PlaceSearch.fromJson(place)).toList();
         case 408:
-          Get.snackbar("Timeout", "Places search timed out");
+          notificationController.queueNotification("Timeout", "Places search timed out");
           return [];
         default:
           return [];
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return [];
     }
   }
@@ -46,13 +46,13 @@ class PlacesService {
           var jsonResult = json['result'] as Map<String, dynamic>;
           return Place.fromJson(jsonResult);
         case 408:
-          Get.snackbar("Timeout", "Places search timed out");
+          notificationController.queueNotification("Timeout", "Places search timed out");
           return null;
         default:
           return null;
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return null;
     }
   }
@@ -71,13 +71,13 @@ class PlacesService {
           var jsonResults = json['results'] as List;
           return jsonResults.map((place) => Place.fromJson(place)).toList();
         case 408:
-          Get.snackbar("Timeout", "Places search timed out");
+          notificationController.queueNotification("Timeout", "Places search timed out");
           return [];
         default:
           return [];
       }
     } on SocketException catch (_) {
-      Get.snackbar("Internet", "No internet connection");
+      notificationController.queueNotification("Internet", "No internet connection");
       return [];
     }
   }

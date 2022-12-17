@@ -342,10 +342,10 @@ class WebRTCConnection {
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateNew:
         case RTCPeerConnectionState.RTCPeerConnectionStateConnected:
-          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connected');
+          // get_pkg.notificationController.queueNotification("Rover Connection", 'Peer Connection Connected');
           break;
         case RTCPeerConnectionState.RTCPeerConnectionStateConnecting:
-          // get_pkg.Get.snackbar("Rover Connection", 'Peer Connection Connecting');
+          // get_pkg.notificationController.queueNotification("Rover Connection", 'Peer Connection Connecting');
           break;
       }
     });
@@ -358,10 +358,10 @@ class WebRTCConnection {
           _showFailedConnectionDialog(error: 'Invalid Data Channel State', roverId: roverId);
           break;
         case RTCDataChannelState.RTCDataChannelConnecting:
-          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connecting');
+          // get_pkg.notificationController.queueNotification("Rover Connection", 'Data Chanel Connecting');
           break;
         case RTCDataChannelState.RTCDataChannelOpen:
-          // get_pkg.Get.snackbar("Rover Connection", 'Data Chanel Connected');
+          // get_pkg.notificationController.queueNotification("Rover Connection", 'Data Chanel Connected');
           break;
         case null:
           break;
