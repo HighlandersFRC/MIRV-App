@@ -33,7 +33,9 @@ class RoverCommandParameters with _$RoverCommandParameters {
   const factory RoverCommandParameters.numberPiLitsOverride(int piLitsLeft, int piLitsRight) = RoverCommandParametersPiLit;
   // const factory RoverCommandParameters.piLitPlacementFormation(DeviceLocation location, PiLitFormationType formation, double heading) =
   //     RoverCommandParametersPiLitPlacement;
-  const factory RoverCommandParameters.piLitPlacement(List<DeviceLocation> locations) = RoverCommandParametersPiLitPlacement;
+  const factory RoverCommandParameters.piLitPlacement(
+          DeviceLocation location, PiLitFormationType formation, double heading, List<DeviceLocation> locations) =
+      RoverCommandParametersPiLitPlacement;
   const factory RoverCommandParameters.switchCamera(CameraType camera) = RoverCommandParametersCamera;
 
   factory RoverCommandParameters.fromJson(Map<String, dynamic> json) => _$RoverCommandParametersFromJson(json);
@@ -53,9 +55,10 @@ class RoverGeneralCommands {
   //   return RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy_pi_lits,
   //       commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading));
   // }
-  static RoverCommand deployPiLits(List<DeviceLocation> locations) {
+  static RoverCommand deployPiLits(
+      DeviceLocation location, PiLitFormationType formation, double heading, List<DeviceLocation> locations) {
     return RoverCommand(RoverSubsystemType.general, RoverCommandType.deploy_pi_lits,
-        commandParameters: RoverCommandParametersPiLitPlacement(locations));
+        commandParameters: RoverCommandParametersPiLitPlacement(location, formation, heading, locations));
   }
 }
 

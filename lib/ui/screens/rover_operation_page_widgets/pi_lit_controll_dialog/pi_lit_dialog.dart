@@ -165,8 +165,8 @@ class PiLitDialogButton extends StatelessWidget {
 
                 if (startPoint.value != null && endPoint.value != null) {
                   double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
-                  sendCommand(RoverGeneralCommands.deployPiLits(
-                      piLitFormationType.value, DeviceLocation.fromLatLng(startPoint.value!), heading));
+                  sendCommand(RoverGeneralCommands.deployPiLits(DeviceLocation.fromLatLng(startPoint.value!),
+                      piLitFormationType.value, heading, testPiLitList.value.map((item) => item.location).toList()));
                   Get.back();
                 } else {
                   Get.snackbar('Pilit Control', 'No starting point selected');
