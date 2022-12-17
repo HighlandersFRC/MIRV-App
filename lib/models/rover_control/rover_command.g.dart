@@ -121,6 +121,9 @@ _$RoverCommandParametersPiLitPlacement
           DeviceLocation.fromJson(json['location'] as Map<String, dynamic>),
           $enumDecode(_$PiLitFormationTypeEnumMap, json['formation']),
           (json['heading'] as num).toDouble(),
+          (json['locations'] as List<dynamic>)
+              .map((e) => DeviceLocation.fromJson(e as Map<String, dynamic>))
+              .toList(),
           $type: json['runtimeType'] as String?,
         );
 
@@ -130,6 +133,7 @@ Map<String, dynamic> _$$RoverCommandParametersPiLitPlacementToJson(
       'location': instance.location,
       'formation': _$PiLitFormationTypeEnumMap[instance.formation],
       'heading': instance.heading,
+      'locations': instance.locations,
       'runtimeType': instance.$type,
     };
 
