@@ -199,6 +199,40 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
       zIndex: 10,
     ));
 
+    if (widget.startPoint.value != null) {
+      markers.add(
+        Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(115),
+            draggable: true,
+            onDragEnd: (newValue) {
+              widget.startPoint.value = newValue;
+            },
+            markerId: const MarkerId('Selected Start Point'),
+            position: widget.startPoint.value!,
+            infoWindow: const InfoWindow(
+              title: 'Selected Start Point',
+            ),
+            zIndex: 12),
+      );
+      widget.startPointOnMap.value = true;
+    }
+
+    if (widget.endPoint.value != null) {
+      markers.add(
+        Marker(
+            draggable: true,
+            onDragEnd: (newValue) {
+              widget.endPoint.value = newValue;
+            },
+            markerId: const MarkerId('Selected End Point'),
+            position: widget.endPoint.value!,
+            infoWindow: const InfoWindow(
+              title: 'Selected End Point',
+            ),
+            zIndex: 12),
+      );
+    }
+
     return markers;
   }
 }

@@ -27,7 +27,7 @@ extension PiLitFormationType1 on PiLitFormationType {
       case PiLitFormationType.taper_left_5:
         return 'Taper Left 5';
       case PiLitFormationType.taper_right_3:
-        return 'Reverse Taper Left 5';
+        return 'Taper Right 3';
       case PiLitFormationType.taper_left_3:
         return 'Taper Left 3';
     }

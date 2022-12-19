@@ -9,7 +9,7 @@ class Geometry {
   static double FEET_PER_METERS = 0.3048;
 
   // ignore: non_constant_identifier_names
-  static double bearing_between_coordiantes(LatLng a, LatLng b) {
+  static double bearing_between_coordinates(LatLng a, LatLng b) {
     double dL = b.longitude - a.longitude;
     double X = cos(b.latitude / DEGREES_PER_RADIAN) * sin(dL / DEGREES_PER_RADIAN);
     double Y = cos(a.latitude / DEGREES_PER_RADIAN) * sin(b.latitude / DEGREES_PER_RADIAN) -

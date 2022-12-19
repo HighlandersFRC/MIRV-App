@@ -137,7 +137,7 @@ class PiLitDialogButton extends StatelessWidget {
             ElevatedButton(
                 onPressed: () {
                   if (startPoint.value != null && endPoint.value != null) {
-                    double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
+                    double heading = Geometry.bearing_between_coordinates(startPoint.value!, endPoint.value!);
                     double laneWidth = 3;
                     List<LatLng> piLitLocations = PiLitLocationService.generatePiLitFormation(
                         startPoint.value!, heading, laneWidth, piLitFormationType.value);
@@ -156,7 +156,7 @@ class PiLitDialogButton extends StatelessWidget {
                     Get.snackbar('Pilit Control', 'No starting point selected');
                   }
                 },
-                child: const Text('render')),
+                child: const Text('Render Pi-Lits')),
             ElevatedButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
@@ -164,9 +164,16 @@ class PiLitDialogButton extends StatelessWidget {
                 }
 
                 if (startPoint.value != null && endPoint.value != null) {
-                  double heading = Geometry.bearing_between_coordiantes(startPoint.value!, endPoint.value!);
-                  sendCommand(RoverGeneralCommands.deployPiLits(DeviceLocation.fromLatLng(startPoint.value!),
-                      piLitFormationType.value, heading, testPiLitList.value.map((item) => item.location).toList()));
+                  double heading = Geometry.bearing_between_coordinates(startPoint.value!, endPoint.value!);
+                  double laneWidth = 3;
+                  List<LatLng> piLitLocations = PiLitLocationService.generatePiLitFormation(
+                      startPoint.value!, heading, laneWidth, piLitFormationType.value);
+                  sendCommand(RoverGeneralCommands.deployPiLits(
+                    DeviceLocation.fromLatLng(startPoint.value!),
+                    piLitFormationType.value,
+                    heading,
+                    piLitLocations.map((item) => DeviceLocation.fromLatLng(item)).toList() as List<DeviceLocation>,
+                  ));
                   Get.back();
                 } else {
                   Get.snackbar('Pilit Control', 'No starting point selected');
