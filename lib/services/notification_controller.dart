@@ -29,7 +29,7 @@ class NotificationController {
 
       if (lastNotificationTime == null) {
         sendNotification(message);
-      } else if (DateTime.now().difference(lastNotificationTime!).inSeconds.abs() > 10) {
+      } else if (DateTime.now().difference(lastNotificationTime!).inSeconds.abs() > 5) {
         sendNotification(message);
       } else {
         // Do nothing, too soon

@@ -15,7 +15,7 @@ class DeviceLocation with _$DeviceLocation {
 
   get latLng => LatLng(lat, long);
 
-  static fromLatLng(LatLng latLng) {
+  static DeviceLocation fromLatLng(LatLng latLng) {
     return DeviceLocation(lat: latLng.latitude, long: latLng.longitude);
   }
 

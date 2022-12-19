@@ -260,8 +260,11 @@ mixin _$RoverCommandParameters {
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) =>
@@ -272,7 +275,7 @@ mixin _$RoverCommandParameters {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) =>
@@ -283,7 +286,7 @@ mixin _$RoverCommandParameters {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
@@ -438,8 +441,11 @@ class _$RoverCommandParametersDrivetrain
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) {
@@ -453,7 +459,7 @@ class _$RoverCommandParametersDrivetrain
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) {
@@ -467,7 +473,7 @@ class _$RoverCommandParametersDrivetrain
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
@@ -641,8 +647,11 @@ class _$RoverCommandParametersDestination
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) {
@@ -656,7 +665,7 @@ class _$RoverCommandParametersDestination
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) {
@@ -670,7 +679,7 @@ class _$RoverCommandParametersDestination
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
@@ -844,8 +853,11 @@ class _$RoverCommandParametersPiLit implements RoverCommandParametersPiLit {
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) {
@@ -859,7 +871,7 @@ class _$RoverCommandParametersPiLit implements RoverCommandParametersPiLit {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) {
@@ -873,7 +885,7 @@ class _$RoverCommandParametersPiLit implements RoverCommandParametersPiLit {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
@@ -958,7 +970,10 @@ abstract class _$$RoverCommandParametersPiLitPlacementCopyWith<$Res> {
           $Res Function(_$RoverCommandParametersPiLitPlacement) then) =
       __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>;
   $Res call(
-      {DeviceLocation location, PiLitFormationType formation, double heading});
+      {DeviceLocation location,
+      PiLitFormationType formation,
+      double heading,
+      List<DeviceLocation> locations});
 
   $DeviceLocationCopyWith<$Res> get location;
 }
@@ -982,6 +997,7 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
     Object? location = freezed,
     Object? formation = freezed,
     Object? heading = freezed,
+    Object? locations = freezed,
   }) {
     return _then(_$RoverCommandParametersPiLitPlacement(
       location == freezed
@@ -996,6 +1012,10 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
           ? _value.heading
           : heading // ignore: cast_nullable_to_non_nullable
               as double,
+      locations == freezed
+          ? _value._locations
+          : locations // ignore: cast_nullable_to_non_nullable
+              as List<DeviceLocation>,
     ));
   }
 
@@ -1011,10 +1031,11 @@ class __$$RoverCommandParametersPiLitPlacementCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoverCommandParametersPiLitPlacement
     implements RoverCommandParametersPiLitPlacement {
-  const _$RoverCommandParametersPiLitPlacement(
-      this.location, this.formation, this.heading,
+  const _$RoverCommandParametersPiLitPlacement(this.location, this.formation,
+      this.heading, final List<DeviceLocation> locations,
       {final String? $type})
-      : $type = $type ?? 'piLitPlacement';
+      : _locations = locations,
+        $type = $type ?? 'piLitPlacement';
 
   factory _$RoverCommandParametersPiLitPlacement.fromJson(
           Map<String, dynamic> json) =>
@@ -1026,13 +1047,19 @@ class _$RoverCommandParametersPiLitPlacement
   final PiLitFormationType formation;
   @override
   final double heading;
+  final List<DeviceLocation> _locations;
+  @override
+  List<DeviceLocation> get locations {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_locations);
+  }
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'RoverCommandParameters.piLitPlacement(location: $location, formation: $formation, heading: $heading)';
+    return 'RoverCommandParameters.piLitPlacement(location: $location, formation: $formation, heading: $heading, locations: $locations)';
   }
 
   @override
@@ -1042,7 +1069,9 @@ class _$RoverCommandParametersPiLitPlacement
             other is _$RoverCommandParametersPiLitPlacement &&
             const DeepCollectionEquality().equals(other.location, location) &&
             const DeepCollectionEquality().equals(other.formation, formation) &&
-            const DeepCollectionEquality().equals(other.heading, heading));
+            const DeepCollectionEquality().equals(other.heading, heading) &&
+            const DeepCollectionEquality()
+                .equals(other._locations, _locations));
   }
 
   @JsonKey(ignore: true)
@@ -1051,7 +1080,8 @@ class _$RoverCommandParametersPiLitPlacement
       runtimeType,
       const DeepCollectionEquality().hash(location),
       const DeepCollectionEquality().hash(formation),
-      const DeepCollectionEquality().hash(heading));
+      const DeepCollectionEquality().hash(heading),
+      const DeepCollectionEquality().hash(_locations));
 
   @JsonKey(ignore: true)
   @override
@@ -1067,12 +1097,15 @@ class _$RoverCommandParametersPiLitPlacement
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) {
-    return piLitPlacement(location, formation, heading);
+    return piLitPlacement(location, formation, heading, locations);
   }
 
   @override
@@ -1082,11 +1115,11 @@ class _$RoverCommandParametersPiLitPlacement
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) {
-    return piLitPlacement?.call(location, formation, heading);
+    return piLitPlacement?.call(location, formation, heading, locations);
   }
 
   @override
@@ -1096,13 +1129,13 @@ class _$RoverCommandParametersPiLitPlacement
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),
   }) {
     if (piLitPlacement != null) {
-      return piLitPlacement(location, formation, heading);
+      return piLitPlacement(location, formation, heading, locations);
     }
     return orElse();
   }
@@ -1162,9 +1195,11 @@ class _$RoverCommandParametersPiLitPlacement
 abstract class RoverCommandParametersPiLitPlacement
     implements RoverCommandParameters {
   const factory RoverCommandParametersPiLitPlacement(
-      final DeviceLocation location,
-      final PiLitFormationType formation,
-      final double heading) = _$RoverCommandParametersPiLitPlacement;
+          final DeviceLocation location,
+          final PiLitFormationType formation,
+          final double heading,
+          final List<DeviceLocation> locations) =
+      _$RoverCommandParametersPiLitPlacement;
 
   factory RoverCommandParametersPiLitPlacement.fromJson(
           Map<String, dynamic> json) =
@@ -1173,6 +1208,7 @@ abstract class RoverCommandParametersPiLitPlacement
   DeviceLocation get location => throw _privateConstructorUsedError;
   PiLitFormationType get formation => throw _privateConstructorUsedError;
   double get heading => throw _privateConstructorUsedError;
+  List<DeviceLocation> get locations => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$RoverCommandParametersPiLitPlacementCopyWith<
           _$RoverCommandParametersPiLitPlacement>
@@ -1260,8 +1296,11 @@ class _$RoverCommandParametersCamera implements RoverCommandParametersCamera {
     required TResult Function(double lat, double long) destination,
     required TResult Function(int piLitsLeft, int piLitsRight)
         numberPiLitsOverride,
-    required TResult Function(DeviceLocation location,
-            PiLitFormationType formation, double heading)
+    required TResult Function(
+            DeviceLocation location,
+            PiLitFormationType formation,
+            double heading,
+            List<DeviceLocation> locations)
         piLitPlacement,
     required TResult Function(CameraType camera) switchCamera,
   }) {
@@ -1275,7 +1314,7 @@ class _$RoverCommandParametersCamera implements RoverCommandParametersCamera {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
   }) {
@@ -1289,7 +1328,7 @@ class _$RoverCommandParametersCamera implements RoverCommandParametersCamera {
     TResult Function(double lat, double long)? destination,
     TResult Function(int piLitsLeft, int piLitsRight)? numberPiLitsOverride,
     TResult Function(DeviceLocation location, PiLitFormationType formation,
-            double heading)?
+            double heading, List<DeviceLocation> locations)?
         piLitPlacement,
     TResult Function(CameraType camera)? switchCamera,
     required TResult orElse(),

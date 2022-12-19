@@ -5,18 +5,21 @@ import 'package:get/get.dart';
 import 'package:mirv/constants/settings_default.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/models/rover/rover_garage_state.dart';
+import 'package:mirv/models/rover/rover_state.dart';
 
 class PiLitPlacementMap extends StatefulWidget {
   final Rx<RoverGarageState> roverMetricsObs;
   final Rx<LatLng?> startPoint;
   final Rx<LatLng?> endPoint;
   final Rx<bool> startPointOnMap;
+  final Rx<List<RoverStatePiLit>> testPiLitLocations;
 
   const PiLitPlacementMap(
     this.roverMetricsObs,
     this.startPoint,
     this.endPoint,
-    this.startPointOnMap, {
+    this.startPointOnMap,
+    this.testPiLitLocations, {
     Key? key,
   }) : super(key: key);
 
@@ -43,7 +46,10 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
   }
 
   void updateMarkers(RoverGarageState roverGarageState) {
-    var tempMarkers = getMarkers(roverGarageState);
+    var tempMarkers = getMarkers(
+      roverGarageState,
+      widget.testPiLitLocations.value,
+    );
     setState(() {
       markers = tempMarkers;
     });
@@ -51,6 +57,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   setStartMarker(LatLng tappedPoint) {
     widget.startPoint.value = tappedPoint;
+    widget.startPoint.trigger(tappedPoint);
     setState(
       () {
         if (widget.startPoint.value != null) {
@@ -76,6 +83,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   setEndMarker(LatLng tappedPoint) {
     widget.endPoint.value = tappedPoint;
+    widget.endPoint.trigger(tappedPoint);
 
     setState(
       () {
@@ -115,6 +123,10 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
         updateMarkers(widget.roverMetricsObs.value);
       }
     });
+
+    resetSub = widget.testPiLitLocations.listen((value) {
+      updateMarkers(widget.roverMetricsObs.value);
+    });
   }
 
   @override
@@ -153,8 +165,15 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     );
   }
 
-  Set<Marker> getMarkers(RoverGarageState roverGarageState) {
+  Set<Marker> getMarkers(RoverGarageState roverGarageState, List<RoverStatePiLit> piLitLocations) {
     Set<Marker> markers = {};
+
+    markers.addAll(piLitLocations.map((piLit) => Marker(
+          markerId: MarkerId(piLit.pi_lit_id),
+          position: piLit.location.latLng,
+          icon: mapMarkerIcon,
+          zIndex: 3,
+        )));
 
     if (roverGarageState.garage != null) {
       markers.add(Marker(
@@ -178,6 +197,40 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
       icon: roverMarkerIcon,
       zIndex: 10,
     ));
+
+    if (widget.startPoint.value != null) {
+      markers.add(
+        Marker(
+            icon: BitmapDescriptor.defaultMarkerWithHue(115),
+            draggable: true,
+            onDragEnd: (newValue) {
+              widget.startPoint.value = newValue;
+            },
+            markerId: const MarkerId('Selected Start Point'),
+            position: widget.startPoint.value!,
+            infoWindow: const InfoWindow(
+              title: 'Selected Start Point',
+            ),
+            zIndex: 12),
+      );
+      widget.startPointOnMap.value = true;
+    }
+
+    if (widget.endPoint.value != null) {
+      markers.add(
+        Marker(
+            draggable: true,
+            onDragEnd: (newValue) {
+              widget.endPoint.value = newValue;
+            },
+            markerId: const MarkerId('Selected End Point'),
+            position: widget.endPoint.value!,
+            infoWindow: const InfoWindow(
+              title: 'Selected End Point',
+            ),
+            zIndex: 12),
+      );
+    }
 
     return markers;
   }

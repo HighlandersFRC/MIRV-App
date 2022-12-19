@@ -42,25 +42,8 @@ class EStopButton extends StatelessWidget {
           ),
           onPressed: isEnabled == true
               ? () {
-                  Get.dialog(
-                    AlertDialog(
-                      title: const Text('E Stop'),
-                      content: const Text('Would you like to E Stop?'),
-                      actions: [
-                        ElevatedButton(
-                            onPressed: () {
-                              sendCommand(RoverGeneralCommands.eStop);
-                              Get.back();
-                            },
-                            child: const Text('Yes')),
-                        ElevatedButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text('No'))
-                      ],
-                    ),
-                  );
+                  sendCommand(RoverGeneralCommands.eStop);
+                  Get.back();
                 }
               : null,
           child: const Icon(Icons.warning_amber_rounded, size: 64, color: Colors.red),
