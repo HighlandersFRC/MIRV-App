@@ -57,6 +57,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   setStartMarker(LatLng tappedPoint) {
     widget.startPoint.value = tappedPoint;
+    widget.startPoint.trigger(tappedPoint);
     setState(
       () {
         if (widget.startPoint.value != null) {
@@ -82,6 +83,7 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
 
   setEndMarker(LatLng tappedPoint) {
     widget.endPoint.value = tappedPoint;
+    widget.endPoint.trigger(tappedPoint);
 
     setState(
       () {
@@ -169,9 +171,6 @@ class _PiLitPlacementMapState extends State<PiLitPlacementMap> {
     markers.addAll(piLitLocations.map((piLit) => Marker(
           markerId: MarkerId(piLit.pi_lit_id),
           position: piLit.location.latLng,
-          infoWindow: InfoWindow(
-            title: piLit.pi_lit_id,
-          ),
           icon: mapMarkerIcon,
           zIndex: 3,
         )));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mirv/constants/geometry.dart';
@@ -26,6 +27,7 @@ class PiLitDialogButton extends StatelessWidget {
   late Rx<PiLitFormationType> piLitFormationType = PiLitFormationType.taper_right_5.obs;
   final Rx<bool> startPointOnMap = false.obs;
   final Rx<List<RoverStatePiLit>> testPiLitList = Rx<List<RoverStatePiLit>>([]);
+  final Rx<double> laneWidthMeters = 3.0.obs;
 
   final Rx<LatLng?> startPoint = Rx<LatLng?>(null);
   final Rx<LatLng?> endPoint = Rx<LatLng?>(null);
@@ -33,6 +35,25 @@ class PiLitDialogButton extends StatelessWidget {
   final Function(RoverCommand) sendCommand;
 
   late int piLitAmount = roverGarageState.value.pi_lits.numPiLitsStowed;
+
+  void renderPiLits() {
+    if (startPoint.value == null || endPoint.value == null) {
+      return;
+    }
+
+    double heading = Geometry.bearing_between_coordinates(startPoint.value!, endPoint.value!);
+    List<LatLng> piLitLocations =
+        PiLitLocationService.generatePiLitFormation(startPoint.value!, heading, laneWidthMeters.value, piLitFormationType.value);
+    List<RoverStatePiLit> piLits = [];
+
+    int i = 0;
+    for (LatLng pos in piLitLocations) {
+      RoverStatePiLit piLit = RoverStatePiLit(pi_lit_id: "PiLit test $i", location: DeviceLocation.fromLatLng(pos));
+      i += 1;
+      piLits.add(piLit);
+    }
+    testPiLitList.value = piLits;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,74 +110,75 @@ class PiLitDialogButton extends StatelessWidget {
   }
 
   void piLitDialog(BuildContext context) {
+    startPoint.listen((val) => renderPiLits());
+    endPoint.listen((val) => renderPiLits());
+    piLitFormationType.listen((val) => renderPiLits());
+    laneWidthMeters.listen((val) => renderPiLits());
+
     Get.dialog(
         barrierDismissible: true,
         AlertDialog(
           title: const Text('PiLit Controll'),
-          content: Column(
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: PiLitCommandDropdown(
-                      piLitState,
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: PiLitCommandDropdown(
+                        piLitState,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: PiLitFormationCommandDropdown(
-                      piLitFormationType: piLitFormationType,
-                      piLitAmount: piLitAmount,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: PiLitFormationCommandDropdown(
+                        piLitFormationType: piLitFormationType,
+                        piLitAmount: piLitAmount,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      child: const Text("Reset Markers"),
-                      onPressed: () {
-                        testPiLitList.value = [];
-                        startPoint.value = null;
-                        endPoint.value = null;
-                        startPointOnMap.value = false;
-                      },
+                    SizedBox(
+                      width: 200,
+                      child: TextFormField(
+                          decoration: const InputDecoration(labelText: "Lane Width (m)"),
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[.0-9]')),
+                          ],
+                          initialValue: "${laneWidthMeters.value}",
+                          onChanged: (lw) {
+                            laneWidthMeters.value = double.tryParse(lw)!;
+                            if (double.tryParse(lw) == null) {
+                              Get.snackbar('Pilit Control', 'Ivalid lane width');
+                            }
+                          }),
                     ),
-                  ),
-                ],
-              ),
-              Obx(() => Text(startPointOnMap.value ? 'Place End Point (Red Marker)' : 'Place Start Point (Green Marker)')),
-              const SizedBox(height: 10),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: AspectRatio(
-                      aspectRatio: 2.5,
-                      child: PiLitPlacementMap(roverGarageState, startPoint, endPoint, startPointOnMap, testPiLitList))),
-            ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        child: const Text("Reset Markers"),
+                        onPressed: () {
+                          testPiLitList.value = [];
+                          startPoint.value = null;
+                          endPoint.value = null;
+                          startPointOnMap.value = false;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Obx(() => Text(startPointOnMap.value ? 'Place End Point (Red Marker)' : 'Place Start Point (Green Marker)')),
+                const SizedBox(height: 10),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: AspectRatio(
+                        aspectRatio: 2.5,
+                        child: PiLitPlacementMap(roverGarageState, startPoint, endPoint, startPointOnMap, testPiLitList))),
+              ],
+            ),
           ),
           actions: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  if (startPoint.value != null && endPoint.value != null) {
-                    double heading = Geometry.bearing_between_coordinates(startPoint.value!, endPoint.value!);
-                    double laneWidth = 3;
-                    List<LatLng> piLitLocations = PiLitLocationService.generatePiLitFormation(
-                        startPoint.value!, heading, laneWidth, piLitFormationType.value);
-                    List<RoverStatePiLit> piLits = [];
-
-                    int i = 0;
-                    for (LatLng pos in piLitLocations) {
-                      RoverStatePiLit piLit =
-                          RoverStatePiLit(pi_lit_id: "PiLit test $i", location: DeviceLocation.fromLatLng(pos));
-                      i += 1;
-                      piLits.add(piLit);
-                    }
-                    testPiLitList.value = piLits;
-                  } else {
-                    testPiLitList.value = [];
-                    Get.snackbar('Pilit Control', 'No starting point selected');
-                  }
-                },
-                child: const Text('Render Pi-Lits')),
             ElevatedButton(
               onPressed: () {
                 if (piLitState.value.command != null) {
@@ -165,14 +187,13 @@ class PiLitDialogButton extends StatelessWidget {
 
                 if (startPoint.value != null && endPoint.value != null) {
                   double heading = Geometry.bearing_between_coordinates(startPoint.value!, endPoint.value!);
-                  double laneWidth = 3;
                   List<LatLng> piLitLocations = PiLitLocationService.generatePiLitFormation(
-                      startPoint.value!, heading, laneWidth, piLitFormationType.value);
+                      startPoint.value!, heading, laneWidthMeters.value, piLitFormationType.value);
                   sendCommand(RoverGeneralCommands.deployPiLits(
                     DeviceLocation.fromLatLng(startPoint.value!),
                     piLitFormationType.value,
                     heading,
-                    piLitLocations.map((item) => DeviceLocation.fromLatLng(item)).toList() as List<DeviceLocation>,
+                    piLitLocations.map((item) => DeviceLocation.fromLatLng(item)).toList(),
                   ));
                   Get.back();
                 } else {
