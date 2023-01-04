@@ -96,6 +96,7 @@ class AuthService {
   setPassword(String val) => secureStorageService.savePassword(val);
   setKeycloakClientSecret(String val) => secureStorageService.saveKeycloakClientSecret(val);
   setUseStunServer(bool val) => secureStorageService.saveUseStunServer(val);
+  setUseKeycloak(bool val) => secureStorageService.saveUseKeycloak(val);
 
   Future<String> getMirvEndpoint() async => (await secureStorageService.retrieveCloudEndpoint()) ?? '';
   Future<String> getKeycloakEndpoint() async => (await secureStorageService.retrieveKeycloakEndpoint()) ?? '';
@@ -106,4 +107,5 @@ class AuthService {
   Future<String> getPassword() async => (await secureStorageService.retrievePassword()) ?? '';
   Future<String?> getKeycloakAccessToken() async => secureStorageService.retrieveAccessToken();
   Future<bool> getUseStunServer() async => (await secureStorageService.retrieveUseStunServer()) ?? SettingsDefaults.useStunServer;
+  Future<bool> getUseKeycloak() async => (await secureStorageService.retrieveUseKeycloak()) ?? SettingsDefaults.useKeycloak;
 }

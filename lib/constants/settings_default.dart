@@ -6,6 +6,7 @@ class SettingsDefaults {
   static String keycloakClientSecret = '';
 
   static bool useStunServer = false;
+  static bool useKeycloak = false;
 
   static double initialMapZoom = 18;
 }

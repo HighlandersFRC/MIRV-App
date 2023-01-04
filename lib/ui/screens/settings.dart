@@ -22,6 +22,8 @@ class SettingsTextBoxController extends GetxController {
   Rx<String> savedKeycloakClientSecret = ''.obs;
   Rx<bool> savedUseStunServer = SettingsDefaults.useStunServer.obs;
   Rx<bool> useStunServerVal = SettingsDefaults.useStunServer.obs;
+  Rx<bool> savedUseKeycloak = false.obs;
+  Rx<bool> useKeycloakVal = SettingsDefaults.useKeycloak.obs;
 
   initialize() async {
     savedEndpoint.value = await authService.getMirvEndpoint();
@@ -31,6 +33,7 @@ class SettingsTextBoxController extends GetxController {
     savedKeycloakClientSecret.value = await authService.getKeycloakClientSecret();
     savedUseStunServer.value = await authService.getUseStunServer();
     useStunServerVal.value = savedUseStunServer.value;
+    useKeycloakVal.value = savedUseKeycloak.value;
 
     if (endpointController.value.text != savedEndpoint.value) {
       endpointController.value.text = savedEndpoint.value;
@@ -76,6 +79,7 @@ class SettingsPage extends StatelessWidget {
   Rx<bool> compareOriginKeycloakClient = true.obs;
   Rx<bool> compareOriginKeycloakClientSecret = true.obs;
   Rx<bool> compareUseStunServer = true.obs;
+  Rx<bool> compareUseKeycloak = true.obs;
 
   final settingsTextBoxController = Get.put(SettingsTextBoxController());
 
@@ -169,6 +173,9 @@ class SettingsPage extends StatelessWidget {
               if (!compareUseStunServer.value) {
                 variableList.add('Use Stun Server');
               }
+              if (!compareUseKeycloak.value) {
+                variableList.add('Use Keycloak Server');
+              }
               if (variableList.isNotEmpty) {
                 _unsavedDialog(variableList);
               } else {
@@ -240,6 +247,35 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        const Text("Use Keycloak Server"),
+                        Obx(() => Switch(
+                              value: settingsTextBoxController.useKeycloakVal.value,
+                              onChanged: (val) {
+                                settingsTextBoxController.useKeycloakVal.value = val;
+                                compareUseKeycloak.value = settingsTextBoxController.useKeycloakVal.value ==
+                                    settingsTextBoxController.savedUseKeycloak.value;
+                              },
+                            )),
+                      ],
+                    ),
+                    trailing: Obx(
+                      () => ElevatedButton(
+                        onPressed: compareUseKeycloak.value
+                            ? null
+                            : () {
+                                if (!compareUseKeycloak.value) {
+                                  settingsTextBoxController.useKeycloakVal.value =
+                                      settingsTextBoxController.savedUseKeycloak.value;
+                                  compareUseKeycloak.value = true;
+                                }
+                              },
+                        child: const Text('Reset'),
+                      ),
+                    ),
+                  ),
                   Obx(
                     () => ElevatedButton(
                         onPressed: compareOriginEndpoint.value &&
@@ -266,8 +302,9 @@ class SettingsPage extends StatelessWidget {
                                       ],
                                     ),
                                   );
-                                } else if (!await mirvApi
-                                    .testEndpoint(settingsTextBoxController.keycloakEndpointController.value.text)) {
+                                } else if (settingsTextBoxController.useKeycloakVal.value &&
+                                    !await mirvApi
+                                        .testEndpoint(settingsTextBoxController.keycloakEndpointController.value.text)) {
                                   authService.setMirvEndpoint(settingsTextBoxController.endpointController.value.text);
                                   Get.dialog(
                                     AlertDialog(
@@ -292,6 +329,7 @@ class SettingsPage extends StatelessWidget {
                                   authService.setKeycloakClientSecret(
                                       settingsTextBoxController.keycloakClientSecretController.value.text);
                                   authService.setUseStunServer(settingsTextBoxController.useStunServerVal.value);
+                                  authService.setUseKeycloak(settingsTextBoxController.useKeycloakVal.value);
                                   //setting saved variable
                                   settingsTextBoxController.savedEndpoint.value = await authService.getMirvEndpoint();
                                   settingsTextBoxController.savedKeycloakEndpoint.value = await authService.getKeycloakEndpoint();
@@ -300,6 +338,7 @@ class SettingsPage extends StatelessWidget {
                                   settingsTextBoxController.savedKeycloakClientSecret.value =
                                       await authService.getKeycloakClientSecret();
                                   settingsTextBoxController.savedUseStunServer.value = await authService.getUseStunServer();
+                                  settingsTextBoxController.savedUseKeycloak.value = await authService.getUseKeycloak();
 
                                   compareOriginEndpoint.value = true;
                                   compareOriginKeycloakEndpoint.value = true;
@@ -307,6 +346,7 @@ class SettingsPage extends StatelessWidget {
                                   compareOriginKeycloakClient.value = true;
                                   compareOriginKeycloakClientSecret.value = true;
                                   compareUseStunServer.value = true;
+                                  compareUseKeycloak.value = true;
                                 }
                                 loading.value = false;
                               },

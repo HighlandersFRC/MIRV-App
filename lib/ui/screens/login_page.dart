@@ -61,7 +61,11 @@ class LoginController extends GetxController {
   }
 
   Future<int> attemptLogIn(String username, String password) async {
-    return authService.authenticateUser(username, password);
+    if (!await authService.getUseKeycloak()) {
+      return 200;
+    } else {
+      return authService.authenticateUser(username, password);
+    }
   }
 
   Future<bool?> isCurrentTokenValid() async {
