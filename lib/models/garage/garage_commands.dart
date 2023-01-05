@@ -28,46 +28,46 @@ Map<Pair<GarageStateType?, bool?>, List<Pair<GarageCommand, Widget>>> garageComm
   Pair(GarageStateType.retracted_latched, false): [
     Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
-    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
+    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.retracted_latched, true): [
     Pair(GarageCommands.unlock, Image.asset('assets/images/unlock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
-    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
+    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.deployed, false): [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
-    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
+    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.deployed, true): [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
-    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
+    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.retracted_unlatched, false): [
     Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
-    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
+    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.retracted_unlatched, true): [
     Pair(GarageCommands.lock, Image.asset('assets/images/lock.png')),
     Pair(GarageCommands.deploy, Image.asset('assets/images/down_arrow.png')),
-    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
+    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.in_motion_deploy, false): [
     Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
-    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
+    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.in_motion_deploy, true): [
     Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
-    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
+    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.in_motion_retract, false): [
     Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
-    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light_off.png')),
+    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light_off.png')),
   ],
   Pair(GarageStateType.in_motion_retract, true): [
     Pair(GarageCommands.stop, const Icon(Icons.stop_circle_outlined, size: 60, color: Colors.white)),
-    Pair(GarageCommands.lightsOn, Image.asset('assets/images/light.png')),
+    Pair(GarageCommands.lightsOff, Image.asset('assets/images/light.png')),
   ],
   Pair(GarageStateType.unavailable, false): [
     Pair(GarageCommands.retract, Image.asset('assets/images/up_arrow.png')),
